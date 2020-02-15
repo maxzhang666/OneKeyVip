@@ -1,4 +1,13 @@
-# 一键Vip解析工具箱
+<h1 align="center">一键Vip解析工具箱</h1> 
+
+本脚本可安装于支持 Tampermonkey 或 暴力猴扩展的浏览器，包括但不限于Chrome，360，QQ，UC等。
+
+<p align="center"> 
+    <img src="https://img.shields.io/badge/tamperMonkey-v4.8-brightgreen.svg" alt="tampermonkey">
+    <img src="https://img.shields.io/badge/chrome%20x64-v76.0-brightgreen.svg" alt="chrome">
+    <img src="https://img.shields.io/badge/safari%20-v12.0-brightgreen.svg" alt="safari">
+    <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Mac%20%7C%20Android-blue.svg" alt="platform">
+</p>
 
 ## 💕 友情捐助
 ![](https://i.loli.net/2019/05/14/5cda672add6f594934.jpg)
@@ -13,7 +22,7 @@
 
  最后，反馈时请给予“**Good**！”评价，并附上需要支持的网址，以及你所期望的需求！
 
-## 💩 交流群：
+## 💩 交流群
 ### 一群[**340569308**](http://shang.qq.com/wpa/qunwpa?idkey=7fc3fef0db96421305e65c41cc081ffeca507fdc23cab93d731277be829985ec) [**一键加群**](http://shang.qq.com/wpa/qunwpa?idkey=7fc3fef0db96421305e65c41cc081ffeca507fdc23cab93d731277be829985ec)
 
 ### 二群[**655341576**](https://shang.qq.com/wpa/qunwpa?idkey=dd0275fbf9149b71e4f2f4e44902b552c846e9a2234f68eaca35a442510f061b) 
