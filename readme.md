@@ -2,16 +2,20 @@
 
 本脚本可安装于支持 Tampermonkey 或 暴力猴扩展的浏览器，包括但不限于Chrome，360，QQ，UC等。
 
-<p align="center"> 
+<center> 
     <img src="https://img.shields.io/github/v/release/maxzhang666/OneKeyVip?style=flat" alt="release">
     <img src="https://img.shields.io/badge/tamperMonkey-v4.8-brightgreen.svg" alt="tampermonkey">
     <img src="https://img.shields.io/badge/chrome%20x64-v76.0-brightgreen.svg" alt="chrome">
     <img src="https://img.shields.io/badge/safari%20-v12.0-brightgreen.svg" alt="safari">
     <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Mac%20%7C%20Android-blue.svg" alt="platform">
-</p>
+</center>
 
 ## 💕 友情捐助
+<center>
+
 ![](https://i.loli.net/2019/05/14/5cda672add6f594934.jpg)
+
+</center>
 ## 📜 反馈说明
 > 反馈问题请按照以下格式进行：
 
