@@ -1,90 +1,89 @@
-/**
- * // ==UserScript==
- * // @name         一键VIP视频解析工具箱 2020-02-14 更新，报错请及时反馈
- * // @namespace    http://www.wandhi.com/
- * // @version      4.0.1
- * // @homepage     https://www.wandhi.com/post-647.html
- * // @supportURL   https://www.wandhi.com/post-647.html
- * // @description  在视频播放页悬浮VIP按钮，可在线播放vip视频；支持优酷vip，腾讯vip，爱奇艺vip，芒果vip，乐视vip等常用视频...一站式音乐搜索解决方案，网易云音乐，QQ音乐，酷狗音乐，酷我音乐，虾米音乐，百度音乐，蜻蜓FM，荔枝FM，喜马拉雅，集成优惠券查询按钮
- * // @author       MaxZhang
- * // @icon         http://www.wandhi.com//favicon.ico
- * // @updateURL    https://tools.wandhi.com/index/scripts/onekeyvip.user.js
- * // @include      *://m.youku.com/v*
- * // @include      *://m.youku.com/a*
- * // @include      *://v.youku.com/v_*
- * // @include      *://*.iqiyi.com/v_*
- * // @include      *://*.iqiyi.com/w_*
- * // @include      *://*.iqiyi.com/a_*
- * // @include      *://*.iqiyi.com/adv*
- * // @include      *://*.le.com/ptv/vplay/*
- * // @include      *v.qq.com/x/cover/*
- * // @include      *v.qq.com/x/page/*
- * // @include      *v.qq.com/*play*
- * // @include      *v.qq.com/cover*
- * // @include      *://*.tudou.com/listplay/*
- * // @include      *://*.tudou.com/albumplay/*
- * // @include      *://*.tudou.com/programs/view/*
- * // @include      *://*.tudou.com/v*
- * // @include      *://*.mgtv.com/b/*
- * // @include      *://film.sohu.com/album/*
- * // @include      *://tv.sohu.com/v/*
- * // @include      *://*.acfun.cn/v/*
- * // @include      *://*.bilibili.com/video/*
- * // @include      *://*.bilibili.com/anime/*
- * // @include      *://*.bilibili.com/bangumi/play/*
- * // @include      *://*.pptv.com/show/*
- * // @include      *://*.baofeng.com/play/*
- * // @include      *://*.wasu.cn/Play/show*
- * // @include      *://v.yinyuetai.com/video/*
- * // @include      *://v.yinyuetai.com/playlist/*
- * // @include      *://*.wasu.cn/Play/show/*
- * // @include      *://music.taihe.com/song*
- * // @include      *://item.taobao.com/*
- * // @include      *://detail.tmall.com/*
- * // @include      *://detail.tmall.hk/*
- * // @include      *://item.jd.com/*
- * // @include      *://music.163.com/song*
- * // @include      *://music.163.com/m/song*
- * // @include      *://y.qq.com/*
- * // @include      *://*.kugou.com/*
- * // @include      *://*.kuwo.cn/*
- * // @include      *://*.xiami.com/*
- * // @include      *://music.taihe.com/*
- * // @include      *://*.1ting.com/player*
- * // @include      *://www.qingting.fm/*
- * // @include      *://www.lizhi.fm/*
- * // @include      *://music.migu.cn/*
- * // @include      *://www.shangxueba.com/ask/*.html
- * // @include      *://www.ximalaya.com/*
- * // @include      *://www.shangxueba.com/ask/*.html
- * // @include      *://pan.baidu.com/disk/home*
- * // @include      *://yun.baidu.com/disk/home*
- * // @include      *://pan.baidu.com/s/*
- * // @include      *://yun.baidu.com/s/*
- * // @include      *://pan.baidu.com/share/link*
- * // @include      *://yun.baidu.com/share/link*
- * // @exclude      *://*.wandhi.com/*
- * // @require      https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js
- * // @require      https://greasyfork.org/scripts/373336-layer-wandhi/code/layer_wandhi.js?version=637587
- * // @require      https://cdn.bootcss.com/sweetalert/2.1.2/sweetalert.min.js
- * // @license      GPL License
- * // @grant        GM_setClipboard
- * // @run-at       document-end
- * // @connect      shangxueba365.com
- * // @grant        unsafeWindow
- * // @grant        GM_xmlhttpRequest
- * // @grant        GM_info
- * // @grant        GM.getValue
- * // @grant        GM.setValue
- * // @grant        GM_getValue
- * // @grant        GM_setValue
- * // @grant        GM_notification
- * // @grant        GM_openInTab
- * // @grant        GM_deleteValue
- * // @grant        GM_registerMenuCommand
- * // @grant        GM_unregisterMenuCommand
- * // ==/UserScript==
- */
+// ==UserScript==
+// @name         一键VIP视频解析工具箱 2020-02-14 更新，报错请及时反馈
+// @namespace    http://www.wandhi.com/
+// @version      4.0.1
+// @homepage     https://www.wandhi.com/post-647.html
+// @supportURL   https://www.wandhi.com/post-647.html
+// @description  在视频播放页悬浮VIP按钮，可在线播放vip视频；支持优酷vip，腾讯vip，爱奇艺vip，芒果vip，乐视vip等常用视频...一站式音乐搜索解决方案，网易云音乐，QQ音乐，酷狗音乐，酷我音乐，虾米音乐，百度音乐，蜻蜓FM，荔枝FM，喜马拉雅，集成优惠券查询按钮
+// @author       MaxZhang
+// @icon         http://www.wandhi.com//favicon.ico
+// @updateURL    https://tools.wandhi.com/index/scripts/onekeyvip.user.js
+// @include      *://m.youku.com/v*
+// @include      *://m.youku.com/a*
+// @include      *://v.youku.com/v_*
+// @include      *://*.iqiyi.com/v_*
+// @include      *://*.iqiyi.com/w_*
+// @include      *://*.iqiyi.com/a_*
+// @include      *://*.iqiyi.com/adv*
+// @include      *://*.le.com/ptv/vplay/*
+// @include      *v.qq.com/x/cover/*
+// @include      *v.qq.com/x/page/*
+// @include      *v.qq.com/*play*
+// @include      *v.qq.com/cover*
+// @include      *://*.tudou.com/listplay/*
+// @include      *://*.tudou.com/albumplay/*
+// @include      *://*.tudou.com/programs/view/*
+// @include      *://*.tudou.com/v*
+// @include      *://*.mgtv.com/b/*
+// @include      *://film.sohu.com/album/*
+// @include      *://tv.sohu.com/v/*
+// @include      *://*.acfun.cn/v/*
+// @include      *://*.bilibili.com/video/*
+// @include      *://*.bilibili.com/anime/*
+// @include      *://*.bilibili.com/bangumi/play/*
+// @include      *://*.pptv.com/show/*
+// @include      *://*.baofeng.com/play/*
+// @include      *://*.wasu.cn/Play/show*
+// @include      *://v.yinyuetai.com/video/*
+// @include      *://v.yinyuetai.com/playlist/*
+// @include      *://*.wasu.cn/Play/show/*
+// @include      *://music.taihe.com/song*
+// @include      *://item.taobao.com/*
+// @include      *://detail.tmall.com/*
+// @include      *://detail.tmall.hk/*
+// @include      *://item.jd.com/*
+// @include      *://music.163.com/song*
+// @include      *://music.163.com/m/song*
+// @include      *://y.qq.com/*
+// @include      *://*.kugou.com/*
+// @include      *://*.kuwo.cn/*
+// @include      *://*.xiami.com/*
+// @include      *://music.taihe.com/*
+// @include      *://*.1ting.com/player*
+// @include      *://www.qingting.fm/*
+// @include      *://www.lizhi.fm/*
+// @include      *://music.migu.cn/*
+// @include      *://www.shangxueba.com/ask/*.html
+// @include      *://www.ximalaya.com/*
+// @include      *://www.shangxueba.com/ask/*.html
+// @include      *://pan.baidu.com/disk/home*
+// @include      *://yun.baidu.com/disk/home*
+// @include      *://pan.baidu.com/s/*
+// @include      *://yun.baidu.com/s/*
+// @include      *://pan.baidu.com/share/link*
+// @include      *://yun.baidu.com/share/link*
+// @exclude      *://*.wandhi.com/*
+// @require      https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js
+// @require      https://greasyfork.org/scripts/373336-layer-wandhi/code/layer_wandhi.js?version=637587
+// @require      https://cdn.bootcss.com/sweetalert/2.1.2/sweetalert.min.js
+// @license      GPL License
+// @grant        GM_setClipboard
+// @run-at       document-end
+// @connect      shangxueba365.com
+// @grant        unsafeWindow
+// @grant        GM_xmlhttpRequest
+// @grant        GM_info
+// @grant        GM.getValue
+// @grant        GM.setValue
+// @grant        GM_getValue
+// @grant        GM_setValue
+// @grant        GM_notification
+// @grant        GM_openInTab
+// @grant        GM_deleteValue
+// @grant        GM_registerMenuCommand
+// @grant        GM_unregisterMenuCommand
+// ==/UserScript==
+
 
 (function () {
     'use strict';
