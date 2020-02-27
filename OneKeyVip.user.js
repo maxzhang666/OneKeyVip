@@ -1,13 +1,12 @@
 // ==UserScript==
-// @name         一键VIP视频解析工具箱 2020-02-14 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,百度云离线跳转,获取B站封面,淘宝京东优惠券 2020-02-27 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.0.1
+// @version      4.0.3 
 // @homepage     https://www.wandhi.com/post-647.html
 // @supportURL   https://www.wandhi.com/post-647.html
 // @description  在视频播放页悬浮VIP按钮，可在线播放vip视频；支持优酷vip，腾讯vip，爱奇艺vip，芒果vip，乐视vip等常用视频...一站式音乐搜索解决方案，网易云音乐，QQ音乐，酷狗音乐，酷我音乐，虾米音乐，百度音乐，蜻蜓FM，荔枝FM，喜马拉雅，集成优惠券查询按钮
 // @author       MaxZhang
 // @icon         http://www.wandhi.com//favicon.ico
-// @updateURL    https://tools.wandhi.com/index/scripts/onekeyvip.user.js
 // @include      *://m.youku.com/v*
 // @include      *://m.youku.com/a*
 // @include      *://v.youku.com/v_*
@@ -73,6 +72,7 @@
 // @grant        unsafeWindow
 // @grant        GM_xmlhttpRequest
 // @grant        GM_info
+// @grant        GM.addStyle
 // @grant        GM.getValue
 // @grant        GM.setValue
 // @grant        GM_getValue
@@ -83,8 +83,6 @@
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
 // ==/UserScript==
-
-
 (function () {
     'use strict';
 
@@ -123,32 +121,42 @@
         Http.prototype.ajax = function (request) {
             GM_xmlhttpRequest(request);
         };
+        Http.getData = function (url, callback) {
+            $.getJSON(url, function (d) {
+                callback(d);
+            });
+        };
         return Http;
     }());
 
     var Core = (function () {
         function Core() {
-            this.head = document.getElementsByTagName('head')[0];
             this.topUrl = top.window.location.href;
             this.url = this.currentUrl();
             this.http = new Http();
         }
+        Core.addUrl = function (key, url) {
+            GM_setValue(key, url);
+        };
+        Core.openUrl = function (key) {
+            this.open(GM_getValue(key));
+        };
         Core.prototype.getPar = function (option, url) {
             if (url === void 0) { url = window.location.search; }
             var v = url.match(new RegExp("[\?\&]" + option + "=([^\&]+)", "i"));
             return v == null || v.length < 1 ? "" : v[1];
         };
-        Core.prototype.appendCss = function (url) {
+        Core.appendCss = function (url) {
             var linkCSS = document.createElement("link");
             linkCSS.type = "text/css";
             linkCSS.rel = "stylesheet";
             linkCSS.href = url;
-            this.head.appendChild(linkCSS);
+            Core.head.appendChild(linkCSS);
         };
         Core.prototype.accpendCssContent = function (content) {
             var Style = document.createElement("style");
             Style.innerHTML = content;
-            this.head.appendChild(Style);
+            Core.head.appendChild(Style);
         };
         Core.prototype.bodyAppendCss = function (url) {
             $('body').append($('<link rel="stylesheet" href="' + url + '">'));
@@ -156,7 +164,7 @@
         Core.prototype.bodyAppend = function (html) {
             $("body").append(html);
         };
-        Core.prototype.appendJs = function (url) {
+        Core.appendJs = function (url) {
             var linkScript = document.createElement("script");
             linkScript.type = "text/" + ("javascript");
             linkScript.src = url;
@@ -180,6 +188,34 @@
         Core.prototype.closeAll = function () {
             layer.closeAll();
         };
+        Core.open = function (url, loadInBackGround) {
+            if (loadInBackGround === void 0) { loadInBackGround = false; }
+            GM_openInTab(url, loadInBackGround);
+        };
+        Core.uuid = function (len, radix) {
+            if (len === void 0) { len = 10; }
+            if (radix === void 0) { radix = 16; }
+            var chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+            var uuid = [], i;
+            radix = radix || chars.length;
+            if (len) {
+                for (i = 0; i < len; i++)
+                    uuid[i] = chars[0 | Math.random() * radix];
+            }
+            else {
+                var r = void 0;
+                uuid[8] = uuid[13] = uuid[18] = uuid[23] = '-';
+                uuid[14] = '4';
+                for (i = 0; i < 36; i++) {
+                    if (!uuid[i]) {
+                        r = 0 | Math.random() * 16;
+                        uuid[i] = chars[(i == 19) ? (r & 0x3) | 0x8 : r];
+                    }
+                }
+            }
+            return uuid.join('');
+        };
+        Core.head = document.getElementsByTagName('head')[0];
         return Core;
     }());
 
@@ -205,8 +241,7 @@
             return flag;
         };
         PluginBase.prototype.Process = function () {
-            this.loader();
-            this.run();
+            new Promise(this.loader).then(this.run);
         };
         PluginBase.prototype.getData = function (url, callback) {
             $.getJSON(url, function (d) {
@@ -246,6 +281,10 @@
         SiteEnum[SiteEnum["LiZhi"] = 22] = "LiZhi";
         SiteEnum[SiteEnum["MiGu"] = 23] = "MiGu";
         SiteEnum[SiteEnum["XiMaLaYa"] = 24] = "XiMaLaYa";
+        SiteEnum[SiteEnum["SXB"] = 25] = "SXB";
+        SiteEnum[SiteEnum["BDY"] = 26] = "BDY";
+        SiteEnum[SiteEnum["BDY1"] = 27] = "BDY1";
+        SiteEnum[SiteEnum["LZY"] = 28] = "LZY";
     })(SiteEnum || (SiteEnum = {}));
 
     var Common;
@@ -259,7 +298,7 @@
                 this.menuSelecter = "#Wandhi-nav";
             }
             Menu.prototype.loader = function () {
-                this.core.accpendCssContent("\n            html {\n                -ms-text-size-adjust: 100%;\n                -webkit-text-size-adjust: 100%;\n                -webkit-font-smoothing: antialiased;\n                font-size: 62.5%\n            }\n            body .aside-nav {\n                font-family: \"Helvetica Neue\", Helvetica, \"Microsoft YaHei\", Arial, sans-serif;\n                margin: 0;\n                font-size: 1.6rem;\n                /*background-color: #f9f9f9;*/\n                color: #4E546B\n            }\n            .aside-nav {\n                position: fixed;\n                /*right: -50px;*/\n                top: 350px;\n                width: 260px;\n                height: 260px;\n                -webkit-filter: url(#goo);\n                filter: url(#goo);\n                -ms-user-select: none;\n                -moz-user-select: none;\n                -webkit-user-select: none;\n                user-select: none;\n                opacity: .75;\n                z-index: 20180817;\n            }\n            .aside-nav.no-filter {\n                -webkit-filter: none;\n                filter: none\n            }\n            .aside-nav .aside-menu {\n                position: absolute;\n                width: 70px;\n                height: 70px;\n                -webkit-border-radius: 50%;\n                border-radius: 50%;\n                background: #f34444;\n                left: 0;\n                top: 0;\n                right: 0;\n                bottom: 0;\n                margin: auto;\n                text-align: center;\n                line-height: 70px;\n                color: #fff;\n                font-size: 20px;\n                z-index: 1;\n                cursor: move\n            }\n            .aside-nav .menu-item {\n                position: absolute;\n                width: 60px;\n                height: 60px;\n                background-color: #FF7676;\n                left: 0;\n                top: 0;\n                right: 0;\n                bottom: 0;\n                margin: auto;\n                line-height: 60px;\n                text-align: center;\n                -webkit-border-radius: 50%;\n                border-radius: 50%;\n                text-decoration: none;\n                color: #fff;\n                -webkit-transition: background .5s, -webkit-transform .6s;\n                transition: background .5s, -webkit-transform .6s;\n                -moz-transition: transform .6s, background .5s, -moz-transform .6s;\n                transition: transform .6s, background .5s;\n                transition: transform .6s, background .5s, -webkit-transform .6s, -moz-transform .6s;\n                font-size: 14px;\n                -webkit-box-sizing: border-box;\n                -moz-box-sizing: border-box;\n                box-sizing: border-box\n            }\n            .aside-nav .menu-item:hover {\n                background: #A9C734;\n            }\n            .aside-nav .menu-line {\n                line-height: 20px;\n                padding-top: 10px;\n            }\n            .aside-nav:hover {\n                opacity: 1;\n            }\n            .aside-nav:hover .aside-menu {\n                -webkit-animation: jello 1s;\n                -moz-animation: jello 1s;\n                animation: jello 1s\n            }\n            .aside-nav:hover .menu-first {\n                -webkit-transform: translate3d(0, -135%, 0);\n                -moz-transform: translate3d(0, -135%, 0);\n                transform: translate3d(0, -135%, 0)\n            }\n            .aside-nav:hover .menu-second {\n                -webkit-transform: translate3d(120%, -70%, 0);\n                -moz-transform: translate3d(120%, -70%, 0);\n                transform: translate3d(120%, -70%, 0)\n            }\n            .aside-nav:hover .menu-third {\n                -webkit-transform: translate3d(120%, 70%, 0);\n                -moz-transform: translate3d(120%, 70%, 0);\n                transform: translate3d(120%, 70%, 0)\n            }\n            .aside-nav:hover .menu-fourth {\n                -webkit-transform: translate3d(0, 135%, 0);\n                -moz-transform: translate3d(0, 135%, 0);\n                transform: translate3d(0, 135%, 0)\n            }\n            @-webkit-keyframes jello {\n            from, 11.1%, to {\n            -webkit-transform:none;\n            transform:none\n            }\n            22.2% {\n            -webkit-transform:skewX(-12.5deg) skewY(-12.5deg);\n            transform:skewX(-12.5deg) skewY(-12.5deg)\n            }\n            33.3% {\n            -webkit-transform:skewX(6.25deg) skewY(6.25deg);\n            transform:skewX(6.25deg) skewY(6.25deg)\n            }\n            44.4% {\n            -webkit-transform:skewX(-3.125deg) skewY(-3.125deg);\n            transform:skewX(-3.125deg) skewY(-3.125deg)\n            }\n            55.5% {\n            -webkit-transform:skewX(1.5625deg) skewY(1.5625deg);\n            transform:skewX(1.5625deg) skewY(1.5625deg)\n            }\n            66.6% {\n            -webkit-transform:skewX(-.78125deg) skewY(-.78125deg);\n            transform:skewX(-.78125deg) skewY(-.78125deg)\n            }\n            77.7% {\n            -webkit-transform:skewX(0.390625deg) skewY(0.390625deg);\n            transform:skewX(0.390625deg) skewY(0.390625deg)\n            }\n            88.8% {\n            -webkit-transform:skewX(-.1953125deg) skewY(-.1953125deg);\n            transform:skewX(-.1953125deg) skewY(-.1953125deg)\n            }\n            }\n            @-moz-keyframes jello {\n            from, 11.1%, to {\n            -moz-transform:none;\n            transform:none\n            }\n            22.2% {\n            -moz-transform:skewX(-12.5deg) skewY(-12.5deg);\n            transform:skewX(-12.5deg) skewY(-12.5deg)\n            }\n            33.3% {\n            -moz-transform:skewX(6.25deg) skewY(6.25deg);\n            transform:skewX(6.25deg) skewY(6.25deg)\n            }\n            44.4% {\n            -moz-transform:skewX(-3.125deg) skewY(-3.125deg);\n            transform:skewX(-3.125deg) skewY(-3.125deg)\n            }\n            55.5% {\n            -moz-transform:skewX(1.5625deg) skewY(1.5625deg);\n            transform:skewX(1.5625deg) skewY(1.5625deg)\n            }\n            66.6% {\n            -moz-transform:skewX(-.78125deg) skewY(-.78125deg);\n            transform:skewX(-.78125deg) skewY(-.78125deg)\n            }\n            77.7% {\n            -moz-transform:skewX(0.390625deg) skewY(0.390625deg);\n            transform:skewX(0.390625deg) skewY(0.390625deg)\n            }\n            88.8% {\n            -moz-transform:skewX(-.1953125deg) skewY(-.1953125deg);\n            transform:skewX(-.1953125deg) skewY(-.1953125deg)\n            }\n            }\n            @keyframes jello {\n            from, 11.1%, to {\n            -webkit-transform:none;\n            -moz-transform:none;\n            transform:none\n            }\n            22.2% {\n            -webkit-transform:skewX(-12.5deg) skewY(-12.5deg);\n            -moz-transform:skewX(-12.5deg) skewY(-12.5deg);\n            transform:skewX(-12.5deg) skewY(-12.5deg)\n            }\n            33.3% {\n            -webkit-transform:skewX(6.25deg) skewY(6.25deg);\n            -moz-transform:skewX(6.25deg) skewY(6.25deg);\n            transform:skewX(6.25deg) skewY(6.25deg)\n            }\n            44.4% {\n            -webkit-transform:skewX(-3.125deg) skewY(-3.125deg);\n            -moz-transform:skewX(-3.125deg) skewY(-3.125deg);\n            transform:skewX(-3.125deg) skewY(-3.125deg)\n            }\n            55.5% {\n            -webkit-transform:skewX(1.5625deg) skewY(1.5625deg);\n            -moz-transform:skewX(1.5625deg) skewY(1.5625deg);\n            transform:skewX(1.5625deg) skewY(1.5625deg)\n            }\n            66.6% {\n            -webkit-transform:skewX(-.78125deg) skewY(-.78125deg);\n            -moz-transform:skewX(-.78125deg) skewY(-.78125deg);\n            transform:skewX(-.78125deg) skewY(-.78125deg)\n            }\n            77.7% {\n            -webkit-transform:skewX(0.390625deg) skewY(0.390625deg);\n            -moz-transform:skewX(0.390625deg) skewY(0.390625deg);\n            transform:skewX(0.390625deg) skewY(0.390625deg)\n            }\n            88.8% {\n            -webkit-transform:skewX(-.1953125deg) skewY(-.1953125deg);\n            -moz-transform:skewX(-.1953125deg) skewY(-.1953125deg);\n            transform:skewX(-.1953125deg) skewY(-.1953125deg)\n            }\n            }\n            \n            .animated {\n                -webkit-animation-duration: 1s;\n                -moz-animation-duration: 1s;\n                animation-duration: 1s;\n                -webkit-animation-fill-mode: both;\n                -moz-animation-fill-mode: both;\n                animation-fill-mode: both\n            }\n            \n            @-webkit-keyframes bounceInUp {\n            from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function:cubic-bezier(0.215, .61, .355, 1);\n            animation-timing-function:cubic-bezier(0.215, .61, .355, 1)\n            }\n            from {\n                opacity: 0;\n                -webkit-transform: translate3d(0, 800px, 0);\n                transform: translate3d(0, 800px, 0)\n            }\n            60% {\n            opacity:1;\n            -webkit-transform:translate3d(0, -20px, 0);\n            transform:translate3d(0, -20px, 0)\n            }\n            75% {\n            -webkit-transform:translate3d(0, 10px, 0);\n            transform:translate3d(0, 10px, 0)\n            }\n            90% {\n            -webkit-transform:translate3d(0, -5px, 0);\n            transform:translate3d(0, -5px, 0)\n            }\n            to {\n                -webkit-transform: translate3d(0, 0, 0);\n                transform: translate3d(0, 0, 0)\n            }\n            }\n            @-moz-keyframes bounceInUp {\n            from, 60%, 75%, 90%, to {\n            -moz-animation-timing-function:cubic-bezier(0.215, .61, .355, 1);\n            animation-timing-function:cubic-bezier(0.215, .61, .355, 1)\n            }\n            from {\n                opacity: 0;\n                -moz-transform: translate3d(0, 800px, 0);\n                transform: translate3d(0, 800px, 0)\n            }\n            60% {\n            opacity:1;\n            -moz-transform:translate3d(0, -20px, 0);\n            transform:translate3d(0, -20px, 0)\n            }\n            75% {\n            -moz-transform:translate3d(0, 10px, 0);\n            transform:translate3d(0, 10px, 0)\n            }\n            90% {\n            -moz-transform:translate3d(0, -5px, 0);\n            transform:translate3d(0, -5px, 0)\n            }\n            to {\n                -moz-transform: translate3d(0, 0, 0);\n                transform: translate3d(0, 0, 0)\n            }\n            }\n            @keyframes bounceInUp {\n            from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function:cubic-bezier(0.215, .61, .355, 1);\n            -moz-animation-timing-function:cubic-bezier(0.215, .61, .355, 1);\n            animation-timing-function:cubic-bezier(0.215, .61, .355, 1)\n            }\n            from {\n                opacity: 0;\n                -webkit-transform: translate3d(0, 800px, 0);\n                -moz-transform: translate3d(0, 800px, 0);\n                transform: translate3d(0, 800px, 0)\n            }\n            60% {\n            opacity:1;\n            -webkit-transform:translate3d(0, -20px, 0);\n            -moz-transform:translate3d(0, -20px, 0);\n            transform:translate3d(0, -20px, 0)\n            }\n            75% {\n            -webkit-transform:translate3d(0, 10px, 0);\n            -moz-transform:translate3d(0, 10px, 0);\n            transform:translate3d(0, 10px, 0)\n            }\n            90% {\n            -webkit-transform:translate3d(0, -5px, 0);\n            -moz-transform:translate3d(0, -5px, 0);\n            transform:translate3d(0, -5px, 0)\n            }\n            to {\n                -webkit-transform: translate3d(0, 0, 0);\n                -moz-transform: translate3d(0, 0, 0);\n                transform: translate3d(0, 0, 0)\n            }\n            }\n            .bounceInUp {\n                -webkit-animation-name: bounceInUp;\n                -moz-animation-name: bounceInUp;\n                animation-name: bounceInUp;\n                -webkit-animation-delay: 1s;\n                -moz-animation-delay: 1s;\n                animation-delay: 1s\n            }\n            \n            @media screen and (max-width:640px) {\n            .aside-nav {/* display: none!important */}\n            }\n            @media screen and (min-width:641px) and (max-width:1367px) {\n            .aside-nav {top: 50px}\n            }\n            ");
+                this.core.accpendCssContent("\n            html .aside-nav {\n                -ms-text-size-adjust: 100%;\n                -webkit-text-size-adjust: 100%;\n                -webkit-font-smoothing: antialiased;\n                font-size: 62.5%\n            }\n            body .aside-nav {\n                font-family: \"Helvetica Neue\", Helvetica, \"Microsoft YaHei\", Arial, sans-serif;\n                margin: 0;\n                font-size: 1.6rem;\n                /*background-color: #f9f9f9;*/\n                color: #4E546B\n            }\n            .aside-nav {\n                position: fixed;\n                /*right: -50px;*/\n                top: 350px;\n                width: 260px;\n                height: 260px;\n                -webkit-filter: url(#goo);\n                filter: url(#goo);\n                -ms-user-select: none;\n                -moz-user-select: none;\n                -webkit-user-select: none;\n                user-select: none;\n                opacity: .75;\n                z-index: 20180817;\n            }\n            .aside-nav.no-filter {\n                -webkit-filter: none;\n                filter: none\n            }\n            .aside-nav .aside-menu {\n                position: absolute;\n                width: 70px;\n                height: 70px;\n                -webkit-border-radius: 50%;\n                border-radius: 50%;\n                background: #f34444;\n                left: 0;\n                top: 0;\n                right: 0;\n                bottom: 0;\n                margin: auto;\n                text-align: center;\n                line-height: 70px;\n                color: #fff;\n                font-size: 20px;\n                z-index: 1;\n                cursor: move\n            }\n            .aside-nav .menu-item {\n                position: absolute;\n                width: 60px;\n                height: 60px;\n                background-color: #FF7676;\n                left: 0;\n                top: 0;\n                right: 0;\n                bottom: 0;\n                margin: auto;\n                line-height: 60px;\n                text-align: center;\n                -webkit-border-radius: 50%;\n                border-radius: 50%;\n                text-decoration: none;\n                color: #fff;\n                -webkit-transition: background .5s, -webkit-transform .6s;\n                transition: background .5s, -webkit-transform .6s;\n                -moz-transition: transform .6s, background .5s, -moz-transform .6s;\n                transition: transform .6s, background .5s;\n                transition: transform .6s, background .5s, -webkit-transform .6s, -moz-transform .6s;\n                font-size: 14px;\n                -webkit-box-sizing: border-box;\n                -moz-box-sizing: border-box;\n                box-sizing: border-box\n            }\n            .aside-nav .menu-item:hover {\n                background: #A9C734;\n            }\n            .aside-nav .menu-line {\n                line-height: 20px;\n                padding-top: 10px;\n            }\n            .aside-nav:hover {\n                opacity: 1;\n            }\n            .aside-nav:hover .aside-menu {\n                -webkit-animation: jello 1s;\n                -moz-animation: jello 1s;\n                animation: jello 1s\n            }\n            .aside-nav:hover .menu-first {\n                -webkit-transform: translate3d(0, -135%, 0);\n                -moz-transform: translate3d(0, -135%, 0);\n                transform: translate3d(0, -135%, 0)\n            }\n            .aside-nav:hover .menu-second {\n                -webkit-transform: translate3d(120%, -70%, 0);\n                -moz-transform: translate3d(120%, -70%, 0);\n                transform: translate3d(120%, -70%, 0)\n            }\n            .aside-nav:hover .menu-third {\n                -webkit-transform: translate3d(120%, 70%, 0);\n                -moz-transform: translate3d(120%, 70%, 0);\n                transform: translate3d(120%, 70%, 0)\n            }\n            .aside-nav:hover .menu-fourth {\n                -webkit-transform: translate3d(0, 135%, 0);\n                -moz-transform: translate3d(0, 135%, 0);\n                transform: translate3d(0, 135%, 0)\n            }\n            @-webkit-keyframes jello {\n            from, 11.1%, to {\n            -webkit-transform:none;\n            transform:none\n            }\n            22.2% {\n            -webkit-transform:skewX(-12.5deg) skewY(-12.5deg);\n            transform:skewX(-12.5deg) skewY(-12.5deg)\n            }\n            33.3% {\n            -webkit-transform:skewX(6.25deg) skewY(6.25deg);\n            transform:skewX(6.25deg) skewY(6.25deg)\n            }\n            44.4% {\n            -webkit-transform:skewX(-3.125deg) skewY(-3.125deg);\n            transform:skewX(-3.125deg) skewY(-3.125deg)\n            }\n            55.5% {\n            -webkit-transform:skewX(1.5625deg) skewY(1.5625deg);\n            transform:skewX(1.5625deg) skewY(1.5625deg)\n            }\n            66.6% {\n            -webkit-transform:skewX(-.78125deg) skewY(-.78125deg);\n            transform:skewX(-.78125deg) skewY(-.78125deg)\n            }\n            77.7% {\n            -webkit-transform:skewX(0.390625deg) skewY(0.390625deg);\n            transform:skewX(0.390625deg) skewY(0.390625deg)\n            }\n            88.8% {\n            -webkit-transform:skewX(-.1953125deg) skewY(-.1953125deg);\n            transform:skewX(-.1953125deg) skewY(-.1953125deg)\n            }\n            }\n            @-moz-keyframes jello {\n            from, 11.1%, to {\n            -moz-transform:none;\n            transform:none\n            }\n            22.2% {\n            -moz-transform:skewX(-12.5deg) skewY(-12.5deg);\n            transform:skewX(-12.5deg) skewY(-12.5deg)\n            }\n            33.3% {\n            -moz-transform:skewX(6.25deg) skewY(6.25deg);\n            transform:skewX(6.25deg) skewY(6.25deg)\n            }\n            44.4% {\n            -moz-transform:skewX(-3.125deg) skewY(-3.125deg);\n            transform:skewX(-3.125deg) skewY(-3.125deg)\n            }\n            55.5% {\n            -moz-transform:skewX(1.5625deg) skewY(1.5625deg);\n            transform:skewX(1.5625deg) skewY(1.5625deg)\n            }\n            66.6% {\n            -moz-transform:skewX(-.78125deg) skewY(-.78125deg);\n            transform:skewX(-.78125deg) skewY(-.78125deg)\n            }\n            77.7% {\n            -moz-transform:skewX(0.390625deg) skewY(0.390625deg);\n            transform:skewX(0.390625deg) skewY(0.390625deg)\n            }\n            88.8% {\n            -moz-transform:skewX(-.1953125deg) skewY(-.1953125deg);\n            transform:skewX(-.1953125deg) skewY(-.1953125deg)\n            }\n            }\n            @keyframes jello {\n            from, 11.1%, to {\n            -webkit-transform:none;\n            -moz-transform:none;\n            transform:none\n            }\n            22.2% {\n            -webkit-transform:skewX(-12.5deg) skewY(-12.5deg);\n            -moz-transform:skewX(-12.5deg) skewY(-12.5deg);\n            transform:skewX(-12.5deg) skewY(-12.5deg)\n            }\n            33.3% {\n            -webkit-transform:skewX(6.25deg) skewY(6.25deg);\n            -moz-transform:skewX(6.25deg) skewY(6.25deg);\n            transform:skewX(6.25deg) skewY(6.25deg)\n            }\n            44.4% {\n            -webkit-transform:skewX(-3.125deg) skewY(-3.125deg);\n            -moz-transform:skewX(-3.125deg) skewY(-3.125deg);\n            transform:skewX(-3.125deg) skewY(-3.125deg)\n            }\n            55.5% {\n            -webkit-transform:skewX(1.5625deg) skewY(1.5625deg);\n            -moz-transform:skewX(1.5625deg) skewY(1.5625deg);\n            transform:skewX(1.5625deg) skewY(1.5625deg)\n            }\n            66.6% {\n            -webkit-transform:skewX(-.78125deg) skewY(-.78125deg);\n            -moz-transform:skewX(-.78125deg) skewY(-.78125deg);\n            transform:skewX(-.78125deg) skewY(-.78125deg)\n            }\n            77.7% {\n            -webkit-transform:skewX(0.390625deg) skewY(0.390625deg);\n            -moz-transform:skewX(0.390625deg) skewY(0.390625deg);\n            transform:skewX(0.390625deg) skewY(0.390625deg)\n            }\n            88.8% {\n            -webkit-transform:skewX(-.1953125deg) skewY(-.1953125deg);\n            -moz-transform:skewX(-.1953125deg) skewY(-.1953125deg);\n            transform:skewX(-.1953125deg) skewY(-.1953125deg)\n            }\n            }\n            \n            .animated {\n                -webkit-animation-duration: 1s;\n                -moz-animation-duration: 1s;\n                animation-duration: 1s;\n                -webkit-animation-fill-mode: both;\n                -moz-animation-fill-mode: both;\n                animation-fill-mode: both\n            }\n            \n            @-webkit-keyframes bounceInUp {\n            from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function:cubic-bezier(0.215, .61, .355, 1);\n            animation-timing-function:cubic-bezier(0.215, .61, .355, 1)\n            }\n            from {\n                opacity: 0;\n                -webkit-transform: translate3d(0, 800px, 0);\n                transform: translate3d(0, 800px, 0)\n            }\n            60% {\n            opacity:1;\n            -webkit-transform:translate3d(0, -20px, 0);\n            transform:translate3d(0, -20px, 0)\n            }\n            75% {\n            -webkit-transform:translate3d(0, 10px, 0);\n            transform:translate3d(0, 10px, 0)\n            }\n            90% {\n            -webkit-transform:translate3d(0, -5px, 0);\n            transform:translate3d(0, -5px, 0)\n            }\n            to {\n                -webkit-transform: translate3d(0, 0, 0);\n                transform: translate3d(0, 0, 0)\n            }\n            }\n            @-moz-keyframes bounceInUp {\n            from, 60%, 75%, 90%, to {\n            -moz-animation-timing-function:cubic-bezier(0.215, .61, .355, 1);\n            animation-timing-function:cubic-bezier(0.215, .61, .355, 1)\n            }\n            from {\n                opacity: 0;\n                -moz-transform: translate3d(0, 800px, 0);\n                transform: translate3d(0, 800px, 0)\n            }\n            60% {\n            opacity:1;\n            -moz-transform:translate3d(0, -20px, 0);\n            transform:translate3d(0, -20px, 0)\n            }\n            75% {\n            -moz-transform:translate3d(0, 10px, 0);\n            transform:translate3d(0, 10px, 0)\n            }\n            90% {\n            -moz-transform:translate3d(0, -5px, 0);\n            transform:translate3d(0, -5px, 0)\n            }\n            to {\n                -moz-transform: translate3d(0, 0, 0);\n                transform: translate3d(0, 0, 0)\n            }\n            }\n            @keyframes bounceInUp {\n            from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function:cubic-bezier(0.215, .61, .355, 1);\n            -moz-animation-timing-function:cubic-bezier(0.215, .61, .355, 1);\n            animation-timing-function:cubic-bezier(0.215, .61, .355, 1)\n            }\n            from {\n                opacity: 0;\n                -webkit-transform: translate3d(0, 800px, 0);\n                -moz-transform: translate3d(0, 800px, 0);\n                transform: translate3d(0, 800px, 0)\n            }\n            60% {\n            opacity:1;\n            -webkit-transform:translate3d(0, -20px, 0);\n            -moz-transform:translate3d(0, -20px, 0);\n            transform:translate3d(0, -20px, 0)\n            }\n            75% {\n            -webkit-transform:translate3d(0, 10px, 0);\n            -moz-transform:translate3d(0, 10px, 0);\n            transform:translate3d(0, 10px, 0)\n            }\n            90% {\n            -webkit-transform:translate3d(0, -5px, 0);\n            -moz-transform:translate3d(0, -5px, 0);\n            transform:translate3d(0, -5px, 0)\n            }\n            to {\n                -webkit-transform: translate3d(0, 0, 0);\n                -moz-transform: translate3d(0, 0, 0);\n                transform: translate3d(0, 0, 0)\n            }\n            }\n            .bounceInUp {\n                -webkit-animation-name: bounceInUp;\n                -moz-animation-name: bounceInUp;\n                animation-name: bounceInUp;\n                -webkit-animation-delay: 1s;\n                -moz-animation-delay: 1s;\n                animation-delay: 1s\n            }\n            \n            @media screen and (max-width:640px) {\n            .aside-nav {/* display: none!important */}\n            }\n            @media screen and (min-width:641px) and (max-width:1367px) {\n            .aside-nav {top: 50px}\n            }\n            ");
             };
             Menu.prototype.getBody = function (option) {
                 return "<svg width=\"0\" height=\"0\"><defs><filter id=\"goo\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"10\" result=\"blur\"></feGaussianBlur><feColorMatrix in=\"blur\" mode=\"matrix\" values=\"1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9\" result=\"goo\"></feColorMatrix><feComposite in=\"SourceGraphic\" in2=\"goo\" operator=\"atop\"></feComposite></filter></defs></svg><div class=\"aside-nav bounceInUp animated\" id=\"Wandhi-nav\"><label for=\"\" class=\"aside-menu\" title=\"\u6309\u4F4F\u62D6\u52A8\">VIP</label>" + option + "</div>";
@@ -305,6 +344,34 @@
         Common.Menu = Menu;
     })(Common || (Common = {}));
 
+    var UrlHelper = (function () {
+        function UrlHelper() {
+        }
+        UrlHelper.Bind = function (CssSelector, method, doc) {
+            $(CssSelector).click(function () {
+                debugger;
+                Core.openUrl($(this).data('key'));
+            });
+        };
+        UrlHelper.urlEncode = function (url) {
+            return encodeURIComponent(url);
+        };
+        UrlHelper.urlDecode = function (url) {
+            return decodeURIComponent(url);
+        };
+        return UrlHelper;
+    }());
+
+    var Runtime = (function () {
+        function Runtime() {
+        }
+        Runtime._url = function () {
+            return window.location.href;
+        };
+        Runtime.url = Runtime._url();
+        return Runtime;
+    }());
+
     var MusicService = (function (_super) {
         __extends(MusicService, _super);
         function MusicService() {
@@ -325,7 +392,7 @@
             return _this;
         }
         MusicService.prototype.loader = function () {
-            this.core.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
+            Core.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
         };
         MusicService.prototype.run = function () {
             this.menu.Init([
@@ -336,10 +403,11 @@
             ], this._OnClick);
         };
         MusicService.prototype._OnClick = function () {
+            var rules = this.rules;
             $('body').on('click', '[data-cat=process]', function () {
-                if (/ximalaya/i.test(new Core().url)) {
+                if (rules.get(SiteEnum.XiMaLaYa).test(Runtime.url)) {
                     if (__INITIAL_STATE__ && __INITIAL_STATE__.SoundDetailPage != undefined) {
-                        window.open('http://music.wandhi.com/?id=' + __INITIAL_STATE__.SoundDetailPage.trackId + '&type=ximalaya');
+                        Core.open('http://music.wandhi.com/?id=' + __INITIAL_STATE__.SoundDetailPage.trackId + '&type=ximalaya');
                     }
                     else {
                         layer.closeAll();
@@ -349,21 +417,21 @@
                         layer.open({ type: 1, area: ['auto', '30%'], title: "\u4E3A\u4F60\u627E\u5230\u4E86\u8FD9\u4E9B\u66F2\u76EE\u89E3\u6790\u2026\u2026\u4EC0\u4E48\uFF1F\u6211\u4E11\uFF1F\u4EE5\u540E\u518D\u8BF4\u5427", shade: 0.6, maxmin: false, anim: 2, content: html });
                     }
                 }
-                else if (/taihe.com/i.test(new Core().url)) {
-                    window.open('http://music.wandhi.com/?url=' + encodeURIComponent(new Core().url.replace("taihe", "baidu")));
+                else if (rules.get(SiteEnum.TaiHe).test(Runtime.url)) {
+                    Core.open('http://music.wandhi.com/?url=' + UrlHelper.urlEncode(Runtime.url.replace("taihe", "baidu")));
                 }
                 else {
-                    window.open('http://music.wandhi.com/?url=' + encodeURIComponent(new Core().url));
+                    Core.open('http://music.wandhi.com/?url=' + UrlHelper.urlEncode(Runtime.url));
                 }
             });
             $('body').on('click', '[data-cat=search]', function () {
-                window.open('http://tv.wandhi.com/');
+                Core.open('http://tv.wandhi.com/');
             });
             $('body').on('click', '[data-cat=tb]', function () {
-                window.open('https://link.zhihu.com/?target=https://api.wandhi.com/goto/DUVAFQgZTEEVFAQcDhYKSFkDDh9XCl8=');
+                Core.open('https://link.zhihu.com/?target=https://api.wandhi.com/goto/DUVAFQgZTEEVFAQcDhYKSFkDDh9XCl8=');
             });
             $('body').on('click', '[data-cat=jd]', function () {
-                window.open('https://link.zhihu.com/?target=https://api.wandhi.com/goto/DUVAFQgZTFwGTVhHDxkLV1pIBl5Z');
+                Core.open('https://link.zhihu.com/?target=https://api.wandhi.com/goto/DUVAFQgZTFwGTVhHDxkLV1pIBl5Z');
             });
         };
         return MusicService;
@@ -411,7 +479,7 @@
         }
         MovieService.prototype.loader = function () {
             if (typeof ($) === 'undefined') {
-                this.core.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js");
+                Core.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js");
             }
         };
         MovieService.prototype.run = function () {
@@ -424,16 +492,16 @@
         };
         MovieService.prototype._onClick = function () {
             $('body').on('click', '[data-cat=process]', function () {
-                window.open('http://tv.wandhi.com/go.html?url=' + encodeURIComponent(window.location.href));
+                Core.open('http://tv.wandhi.com/go.html?url=' + encodeURIComponent(window.location.href));
             });
             $('body').on('click', '[data-cat=search]', function () {
-                window.open('http://tv.wandhi.com/');
+                Core.open('http://tv.wandhi.com/');
             });
             $('body').on('click', '[data-cat=tb]', function () {
-                window.open('http://sign.wandhi.com/jump.php?target=https://api.wandhi.com/goto/DUVAFQgZTEEVFAQcDhYKSFkDDh9XCl8=');
+                Core.open('http://sign.wandhi.com/jump.php?target=https://api.wandhi.com/goto/DUVAFQgZTEEVFAQcDhYKSFkDDh9XCl8=');
             });
             $('body').on('click', '[data-cat=jd]', function () {
-                window.open('http://sign.wandhi.com/jump.php?target=https://api.wandhi.com/goto/DUVAFQgZTFwGTVhHDxkLV1pIBl5Z');
+                Core.open('http://sign.wandhi.com/jump.php?target=https://api.wandhi.com/goto/DUVAFQgZTFwGTVhHDxkLV1pIBl5Z');
             });
         };
         return MovieService;
@@ -447,6 +515,7 @@
                 [SiteEnum.TaoBao, /taobao.com/i],
                 [SiteEnum.TMall, /tmall/i]
             ]);
+            _this.UrlTag = "Wandhi_qLink";
             return _this;
         }
         TaoBaoService.prototype.getRules = function () {
@@ -454,9 +523,9 @@
         };
         TaoBaoService.prototype.loader = function () {
             if (typeof ($) === 'undefined') {
-                this.core.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js");
+                Core.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js");
             }
-            this.core.appendCss("//cdn.wandhi.com/style/extenstion/hui.style.css");
+            Core.appendCss("//cdn.wandhi.com/style/extenstion/hui.style.css");
         };
         TaoBaoService.prototype.run = function () {
             this.init();
@@ -507,16 +576,99 @@
             var btn = "<a href=\"javascript:;\" class=\"btn-special1 btn-lg btn-yhj\"><span class=\"\">\u67E5\u8BE2\u4F18\u60E0\u5238</span></a>";
             var keywords = $(".sku-name").text().trim();
             $("#choose-btns").prepend(btn);
-            $(".btn-yhj").on('click', function () { window.open("http://jd.huizhek.com/?ah=total&kw=" + encodeURIComponent(keywords)); });
+            $(".btn-yhj").on('click', function () {
+                Core.open("http://jd.huizhek.com/?ah=total&kw=" + encodeURIComponent(keywords));
+            });
         };
         return JdService;
+    }(PluginBase));
+
+    var Route = (function () {
+        function Route() {
+            this.queryTao = "";
+        }
+        Object.defineProperty(Route, "apiRoot", {
+            get: function () {
+                return "https://api.wandhi.com/api";
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return Route;
+    }());
+
+    var Alert = (function () {
+        function Alert() {
+        }
+        Alert.open = function (titls, content, area, shade, offset, maxmin) {
+            if (area === void 0) { area = ['400px', '300px']; }
+            if (shade === void 0) { shade = 0; }
+            if (offset === void 0) { offset = "lb"; }
+            if (maxmin === void 0) { maxmin = true; }
+            layer.open({
+                type: 1,
+                title: titls,
+                area: area,
+                shade: shade,
+                offset: offset,
+                maxmin: maxmin,
+                content: content
+            });
+        };
+        return Alert;
+    }());
+
+    var StuService = (function (_super) {
+        __extends(StuService, _super);
+        function StuService() {
+            var _this = _super.call(this) || this;
+            _this.rules = new Map([
+                [SiteEnum.SXB, /shangxueba.com\/ask\/.*html/i]
+            ]);
+            _this.menu = new Common.Menu();
+            return _this;
+        }
+        StuService.prototype.loader = function () {
+            if (typeof ($) === 'undefined') {
+                Core.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js");
+            }
+            Core.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
+        };
+        StuService.prototype.run = function () {
+            this.menu.Init([
+                { title: "\u67E5\u770B\u7B54\u6848", show: "\u67E5\u770B<br>\u7B54\u6848", type: "search" },
+                { title: "\u6253\u8D4F\u4F5C\u8005", show: "\u6253\u8D4F<br>\u4F5C\u8005", type: "process" },
+                { title: "\u7EDD\u4E16\u597D\u5238", show: "\u7EDD\u4E16<br>\u597D\u5238", type: "tb" },
+                { title: "\u4EAC\u4E1C\u597D\u5238", show: "\u4EAC\u4E1C<br>\u597D\u5238", type: "jd" }
+            ], this._onClick);
+        };
+        StuService.prototype._onClick = function () {
+            $('body').on('click', '[data-cat=process]', function () {
+                layer.open({ type: 1, title: "\u8BF7\u6211\u559D\u4E00\u676F", shadeClose: true, area: '800px', content: '<img src="https://i.loli.net/2019/05/14/5cda672add6f594934.jpg">' });
+            });
+            $('body').on('click', '[data-cat=search]', function () {
+                Http.getData(Route.apiRoot + "/tools/sxb/" + $("#Hidd_id").val(), function (res) {
+                    if (res.code) {
+                        Alert.open("答案", res.data);
+                    }
+                });
+            });
+            $('body').on('click', '[data-cat=tb]', function () {
+                Core.open('http://sign.wandhi.com/jump.php?target=https://api.wandhi.com/goto/DUVAFQgZTEEVFAQcDhYKSFkDDh9XCl8=');
+            });
+            $('body').on('click', '[data-cat=jd]', function () {
+                Core.open('http://sign.wandhi.com/jump.php?target=https://api.wandhi.com/goto/DUVAFQgZTFwGTVhHDxkLV1pIBl5Z');
+            });
+        };
+        return StuService;
     }(PluginBase));
 
     var app = new WandhiInjection([
         new MovieService(),
         new TaoBaoService(),
         new JdService(),
-        new MusicService()
+        new MusicService(),
+        new StuService()
     ]);
     app.Init();
 
