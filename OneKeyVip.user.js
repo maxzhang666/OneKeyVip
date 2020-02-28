@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,百度云离线跳转,获取B站封面,淘宝京东优惠券 2020-02-27 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,百度云离线跳转,获取B站封面,淘宝京东优惠券 2020-02-28 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
 // @version      4.0.3 
-// @homepage     https://www.wandhi.com/post-647.html
+// @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://www.wandhi.com/post-647.html
 // @description  在视频播放页悬浮VIP按钮，可在线播放vip视频；支持优酷vip，腾讯vip，爱奇艺vip，芒果vip，乐视vip等常用视频...一站式音乐搜索解决方案，网易云音乐，QQ音乐，酷狗音乐，酷我音乐，虾米音乐，百度音乐，蜻蜓FM，荔枝FM，喜马拉雅，集成优惠券查询按钮
 // @author       MaxZhang
@@ -241,7 +241,8 @@
             return flag;
         };
         PluginBase.prototype.Process = function () {
-            new Promise(this.loader).then(this.run);
+            this.loader();
+            this.run();
         };
         PluginBase.prototype.getData = function (url, callback) {
             $.getJSON(url, function (d) {
