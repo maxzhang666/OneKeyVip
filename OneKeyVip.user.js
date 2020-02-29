@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,百度云离线跳转,获取B站封面,淘宝京东优惠券 2020-02-28 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,百度云离线跳转,获取B站封面,淘宝京东优惠券 2020-02-29 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.0.3 
+// @version      4.0.4 
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://www.wandhi.com/post-647.html
 // @description  在视频播放页悬浮VIP按钮，可在线播放vip视频；支持优酷vip，腾讯vip，爱奇艺vip，芒果vip，乐视vip等常用视频...一站式音乐搜索解决方案，网易云音乐，QQ音乐，酷狗音乐，酷我音乐，虾米音乐，百度音乐，蜻蜓FM，荔枝FM，喜马拉雅，集成优惠券查询按钮
@@ -380,7 +380,7 @@
             _this.rules = new Map([
                 [SiteEnum.WangYi, /163(.*)song/i],
                 [SiteEnum.Tencent_M, /y.QQ(.*)song/i],
-                [SiteEnum.KuGou, /kugou(.*)song/i],
+                [SiteEnum.KuGou, /kugou.com\/song\/*/i],
                 [SiteEnum.KuWo, /kuwo(.*)yinyue/i],
                 [SiteEnum.XiaMi, /xiami/i],
                 [SiteEnum.TaiHe, /taihe.com/i],
@@ -404,9 +404,9 @@
             ], this._OnClick);
         };
         MusicService.prototype._OnClick = function () {
-            var rules = this.rules;
+            var _rules = this.rules;
             $('body').on('click', '[data-cat=process]', function () {
-                if (rules.get(SiteEnum.XiMaLaYa).test(Runtime.url)) {
+                if (/ximalaya/i.test(Runtime.url)) {
                     if (__INITIAL_STATE__ && __INITIAL_STATE__.SoundDetailPage != undefined) {
                         Core.open('http://music.wandhi.com/?id=' + __INITIAL_STATE__.SoundDetailPage.trackId + '&type=ximalaya');
                     }
@@ -418,7 +418,7 @@
                         layer.open({ type: 1, area: ['auto', '30%'], title: "\u4E3A\u4F60\u627E\u5230\u4E86\u8FD9\u4E9B\u66F2\u76EE\u89E3\u6790\u2026\u2026\u4EC0\u4E48\uFF1F\u6211\u4E11\uFF1F\u4EE5\u540E\u518D\u8BF4\u5427", shade: 0.6, maxmin: false, anim: 2, content: html });
                     }
                 }
-                else if (rules.get(SiteEnum.TaiHe).test(Runtime.url)) {
+                else if (/taihe.com/i.test(Runtime.url)) {
                     Core.open('http://music.wandhi.com/?url=' + UrlHelper.urlEncode(Runtime.url.replace("taihe", "baidu")));
                 }
                 else {
