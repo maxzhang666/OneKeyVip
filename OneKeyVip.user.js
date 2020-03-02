@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,百度云离线跳转,获取B站封面,淘宝京东优惠券 2020-02-29 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,百度云离线跳转,获取B站封面,淘宝京东优惠券 2020-03-02 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.0.4 
+// @version      4.0.5 
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://www.wandhi.com/post-647.html
 // @description  在视频播放页悬浮VIP按钮，可在线播放vip视频；支持优酷vip，腾讯vip，爱奇艺vip，芒果vip，乐视vip等常用视频...一站式音乐搜索解决方案，网易云音乐，QQ音乐，酷狗音乐，酷我音乐，虾米音乐，百度音乐，蜻蜓FM，荔枝FM，喜马拉雅，集成优惠券查询按钮
@@ -115,11 +115,86 @@
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     }
 
+    var HttpRequest = (function () {
+        function HttpRequest(option) {
+            this.headers = new Map();
+            this.url = option.url;
+            this.method = option.methodType;
+            this.dataType = option.dataType;
+            this._option = option;
+        }
+        HttpRequest.prototype.onload = function (res) {
+            this._option.onSuccess(res);
+        };
+        HttpRequest.prototype.onerror = function () {
+            this.onerror();
+        };
+        HttpRequest.prototype.setQueryData = function (datas) {
+            if (datas instanceof FormData) {
+                this.data = datas;
+            }
+            else {
+                var fd = new FormData();
+                for (var i in datas) {
+                    fd.append(i, datas[i]);
+                }
+                this.data = fd;
+            }
+        };
+        Object.defineProperty(HttpRequest.prototype, "onLoad", {
+            get: function () {
+                return this.onSuccess;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return HttpRequest;
+    }());
+    var AjaxOption = (function () {
+        function AjaxOption(_url, _methodType, _dataType, _data, _success, _header) {
+            if (_methodType === void 0) { _methodType = "GET"; }
+            if (_header === void 0) { _header = new Map(); }
+            this.url = _url;
+            this.methodType = _methodType;
+            this.dataType = _dataType;
+            this.onSuccess = _success;
+            this.data = _data;
+            this.headers = _header;
+        }
+        AjaxOption.prototype.getData = function () {
+            if (this.data instanceof FormData) {
+                return this.data;
+            }
+            else {
+                var fd = new FormData();
+                for (var i in this.data) {
+                    fd.append(i, this.data[i]);
+                }
+                return fd;
+            }
+        };
+        return AjaxOption;
+    }());
+
     var Http = (function () {
         function Http() {
         }
-        Http.prototype.ajax = function (request) {
-            GM_xmlhttpRequest(request);
+        Http.ajax = function (option) {
+            var rq = new HttpRequest(option);
+            option.headers.set('User-Agent', 'Mozilla/4.0 (compatible) Greasemonkey');
+            option.headers.set('Accept', 'application/atom+xml,application/xml,text/xml');
+            GM_xmlhttpRequest({
+                url: option.url,
+                method: option.methodType,
+                headers: option.headers,
+                data: option.getData(),
+                onload: function (res) {
+                    option.onSuccess && option.onSuccess(JSON.parse(res.responseText));
+                },
+                onerror: function (res) {
+                    option.onError && option.onError(res);
+                }
+            });
         };
         Http.getData = function (url, callback) {
             $.getJSON(url, function (d) {
@@ -248,9 +323,6 @@
             $.getJSON(url, function (d) {
                 callback(d);
             });
-        };
-        PluginBase.prototype.queryData = function (request) {
-            this.core.http.ajax(request);
         };
         return PluginBase;
     }());
@@ -584,20 +656,6 @@
         return JdService;
     }(PluginBase));
 
-    var Route = (function () {
-        function Route() {
-            this.queryTao = "";
-        }
-        Object.defineProperty(Route, "apiRoot", {
-            get: function () {
-                return "https://api.wandhi.com/api";
-            },
-            enumerable: true,
-            configurable: true
-        });
-        return Route;
-    }());
-
     var Alert = (function () {
         function Alert() {
         }
@@ -615,6 +673,12 @@
                 maxmin: maxmin,
                 content: content
             });
+        };
+        Alert.info = function (msg) {
+            layer.msg(msg, { time: 2000 });
+        };
+        Alert.error = function (msg) {
+            layer.msg(msg, { icon: 5, time: 2000 });
         };
         return Alert;
     }());
@@ -648,11 +712,17 @@
                 layer.open({ type: 1, title: "\u8BF7\u6211\u559D\u4E00\u676F", shadeClose: true, area: '800px', content: '<img src="https://i.loli.net/2019/05/14/5cda672add6f594934.jpg">' });
             });
             $('body').on('click', '[data-cat=search]', function () {
-                Http.getData(Route.apiRoot + "/tools/sxb/" + $("#Hidd_id").val(), function (res) {
-                    if (res.code) {
-                        Alert.open("答案", res.data);
+                Http.ajax(new AjaxOption("http://www.shangxueba365.com/get.php", "POST", "JSON", {
+                    "docinfo": "https://www.shangxueba.com/ask/" + $("#Hidd_id").val() + ".html",
+                    "anhao": "2232"
+                }, function (data) {
+                    if (data.status) {
+                        Alert.open("答案", data.msg);
                     }
-                });
+                    else {
+                        Alert.error("没找到答案");
+                    }
+                }));
             });
             $('body').on('click', '[data-cat=tb]', function () {
                 Core.open('http://sign.wandhi.com/jump.php?target=https://api.wandhi.com/goto/DUVAFQgZTEEVFAQcDhYKSFkDDh9XCl8=');
