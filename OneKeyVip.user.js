@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,百度云离线跳转,获取B站封面,淘宝京东优惠券 2020-03-02 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,百度云离线跳转,获取B站封面,淘宝京东优惠券 2020-03-08 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.0.5 
+// @version      4.0.6 
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://www.wandhi.com/post-647.html
 // @description  在视频播放页悬浮VIP按钮，可在线播放vip视频；支持优酷vip，腾讯vip，爱奇艺vip，芒果vip，乐视vip等常用视频...一站式音乐搜索解决方案，网易云音乐，QQ音乐，酷狗音乐，酷我音乐，虾米音乐，百度音乐，蜻蜓FM，荔枝FM，喜马拉雅，集成优惠券查询按钮
@@ -734,7 +734,55 @@
         return StuService;
     }(PluginBase));
 
+    var Route = (function () {
+        function Route() {
+            this.queryTao = "";
+        }
+        Object.defineProperty(Route, "apiRoot", {
+            get: function () {
+                return "https://api.wandhi.com/api";
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return Route;
+    }());
+
+    var BiliImgService = (function (_super) {
+        __extends(BiliImgService, _super);
+        function BiliImgService() {
+            var _this = _super !== null && _super.apply(this, arguments) || this;
+            _this.rules = new Map([
+                [SiteEnum.JingDong, /bilibili.com\/video\/av*/i]
+            ]);
+            return _this;
+        }
+        BiliImgService.prototype.loader = function () {
+            Core.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
+        };
+        BiliImgService.prototype.run = function () {
+            if ($(".tit").length) {
+                setTimeout(function () {
+                    $(".tit").after(BiliImgService.btn);
+                    $('body').on('click', '#findimg', function () {
+                        Http.getData(Route.apiRoot + "/tools/bili?url=" + Runtime.url, function (res) {
+                            if (res.code) {
+                                Alert.open("\u5C01\u9762\u9171", "<img src=\"" + res.data + "\">");
+                            }
+                            else {
+                                Alert.error("\u54CE\u54DF\u6CA1\u627E\u5230\u5C01\u9762\u54E6\uFF0C\u8981\u4E0D\u8DDF\u4F5C\u8005\u62A5\u544A\u4E00\u4E0B\uFF1F");
+                            }
+                        });
+                    });
+                }, 5000);
+            }
+        };
+        BiliImgService.btn = "\n    <span id=\"findimg\" style=\"\n        background-color: #fb7199;\n        color: white;\n        font-size: 1.5rem;\n        text-align: center;\n        margin-left: 1rem;\n        padding: 1.5rem;\n        cursor: pointer;\n    \">\n        \u83B7\u53D6\u5C01\u9762\n    </span>";
+        return BiliImgService;
+    }(PluginBase));
+
     var app = new WandhiInjection([
+        new BiliImgService,
         new MovieService(),
         new TaoBaoService(),
         new JdService(),
