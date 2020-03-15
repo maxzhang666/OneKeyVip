@@ -65,7 +65,7 @@
 // @require      https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js
 // @require      https://greasyfork.org/scripts/373336-layer-wandhi/code/layer_wandhi.js?version=637587
 // @require      https://cdn.bootcss.com/sweetalert/2.1.2/sweetalert.min.js
-// @license      GPL License
+// @license      MIT
 // @grant        GM_setClipboard
 // @run-at       document-end
 // @connect      shangxueba365.com
