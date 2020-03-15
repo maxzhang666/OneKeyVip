@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,百度云离线跳转,获取B站封面,淘宝京东优惠券 2020-03-08 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,百度云离线跳转,获取B站封面,淘宝京东优惠券 2020-03-15 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.0.6 
+// @version      4.0.7 
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://www.wandhi.com/post-647.html
 // @description  在视频播放页悬浮VIP按钮，可在线播放vip视频；支持优酷vip，腾讯vip，爱奇艺vip，芒果vip，乐视vip等常用视频...一站式音乐搜索解决方案，网易云音乐，QQ音乐，酷狗音乐，酷我音乐，虾米音乐，百度音乐，蜻蜓FM，荔枝FM，喜马拉雅，集成优惠券查询按钮
@@ -62,13 +62,15 @@
 // @include      *://pan.baidu.com/share/link*
 // @include      *://yun.baidu.com/share/link*
 // @exclude      *://*.wandhi.com/*
-// @require      https://cdn.staticfile.org/jquery/1.12.4/jquery.min.js
+// @require      https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
 // @require      https://greasyfork.org/scripts/373336-layer-wandhi/code/layer_wandhi.js?version=637587
 // @require      https://cdn.bootcss.com/sweetalert/2.1.2/sweetalert.min.js
+// @require      https://lib.baomitu.com/echarts/4.6.0/echarts.min.js
 // @license      MIT
 // @grant        GM_setClipboard
 // @run-at       document-end
 // @connect      shangxueba365.com
+// @connect      api.wandhi.com
 // @grant        unsafeWindow
 // @grant        GM_xmlhttpRequest
 // @grant        GM_info
@@ -151,12 +153,11 @@
         return HttpRequest;
     }());
     var AjaxOption = (function () {
-        function AjaxOption(_url, _methodType, _dataType, _data, _success, _header) {
+        function AjaxOption(_url, _methodType, _data, _success, _header) {
             if (_methodType === void 0) { _methodType = "GET"; }
             if (_header === void 0) { _header = new Map(); }
             this.url = _url;
             this.methodType = _methodType;
-            this.dataType = _dataType;
             this.onSuccess = _success;
             this.data = _data;
             this.headers = _header;
@@ -164,6 +165,13 @@
         AjaxOption.prototype.getData = function () {
             if (this.data instanceof FormData) {
                 return this.data;
+            }
+            else if (this.data instanceof Map) {
+                var fd_1 = new FormData();
+                this.data.forEach(function (v, k) {
+                    fd_1.append(k, v);
+                });
+                return fd_1;
             }
             else {
                 var fd = new FormData();
@@ -201,6 +209,22 @@
                 callback(d);
             });
         };
+        Http.post = function (url, data) {
+            var p = new Promise(function (resolve) {
+                Http.ajax(new AjaxOption(url, "POST", data, function (data) {
+                    resolve(data);
+                }));
+            });
+            return p;
+        };
+        Http.get = function (url, data) {
+            var p = new Promise(function (resolve) {
+                Http.ajax(new AjaxOption(url, "GET", data, function (data) {
+                    resolve(data);
+                }));
+            });
+            return p;
+        };
         return Http;
     }());
 
@@ -210,6 +234,9 @@
             this.url = this.currentUrl();
             this.http = new Http();
         }
+        Core.appendTo = function (selecter, html) {
+            $(selecter).append(html);
+        };
         Core.addUrl = function (key, url) {
             GM_setValue(key, url);
         };
@@ -228,7 +255,7 @@
             linkCSS.href = url;
             Core.head.appendChild(linkCSS);
         };
-        Core.prototype.accpendCssContent = function (content) {
+        Core.appendCssContent = function (content) {
             var Style = document.createElement("style");
             Style.innerHTML = content;
             Core.head.appendChild(Style);
@@ -236,7 +263,7 @@
         Core.prototype.bodyAppendCss = function (url) {
             $('body').append($('<link rel="stylesheet" href="' + url + '">'));
         };
-        Core.prototype.bodyAppend = function (html) {
+        Core.bodyAppend = function (html) {
             $("body").append(html);
         };
         Core.appendJs = function (url) {
@@ -291,6 +318,7 @@
             return uuid.join('');
         };
         Core.head = document.getElementsByTagName('head')[0];
+        Core.top_url = top.window.location.href;
         return Core;
     }());
 
@@ -371,10 +399,13 @@
                 this.menuSelecter = "#Wandhi-nav";
             }
             Menu.prototype.loader = function () {
-                this.core.accpendCssContent("\n            html .aside-nav {\n                -ms-text-size-adjust: 100%;\n                -webkit-text-size-adjust: 100%;\n                -webkit-font-smoothing: antialiased;\n                font-size: 62.5%\n            }\n            body .aside-nav {\n                font-family: \"Helvetica Neue\", Helvetica, \"Microsoft YaHei\", Arial, sans-serif;\n                margin: 0;\n                font-size: 1.6rem;\n                /*background-color: #f9f9f9;*/\n                color: #4E546B\n            }\n            .aside-nav {\n                position: fixed;\n                /*right: -50px;*/\n                top: 350px;\n                width: 260px;\n                height: 260px;\n                -webkit-filter: url(#goo);\n                filter: url(#goo);\n                -ms-user-select: none;\n                -moz-user-select: none;\n                -webkit-user-select: none;\n                user-select: none;\n                opacity: .75;\n                z-index: 20180817;\n            }\n            .aside-nav.no-filter {\n                -webkit-filter: none;\n                filter: none\n            }\n            .aside-nav .aside-menu {\n                position: absolute;\n                width: 70px;\n                height: 70px;\n                -webkit-border-radius: 50%;\n                border-radius: 50%;\n                background: #f34444;\n                left: 0;\n                top: 0;\n                right: 0;\n                bottom: 0;\n                margin: auto;\n                text-align: center;\n                line-height: 70px;\n                color: #fff;\n                font-size: 20px;\n                z-index: 1;\n                cursor: move\n            }\n            .aside-nav .menu-item {\n                position: absolute;\n                width: 60px;\n                height: 60px;\n                background-color: #FF7676;\n                left: 0;\n                top: 0;\n                right: 0;\n                bottom: 0;\n                margin: auto;\n                line-height: 60px;\n                text-align: center;\n                -webkit-border-radius: 50%;\n                border-radius: 50%;\n                text-decoration: none;\n                color: #fff;\n                -webkit-transition: background .5s, -webkit-transform .6s;\n                transition: background .5s, -webkit-transform .6s;\n                -moz-transition: transform .6s, background .5s, -moz-transform .6s;\n                transition: transform .6s, background .5s;\n                transition: transform .6s, background .5s, -webkit-transform .6s, -moz-transform .6s;\n                font-size: 14px;\n                -webkit-box-sizing: border-box;\n                -moz-box-sizing: border-box;\n                box-sizing: border-box\n            }\n            .aside-nav .menu-item:hover {\n                background: #A9C734;\n            }\n            .aside-nav .menu-line {\n                line-height: 20px;\n                padding-top: 10px;\n            }\n            .aside-nav:hover {\n                opacity: 1;\n            }\n            .aside-nav:hover .aside-menu {\n                -webkit-animation: jello 1s;\n                -moz-animation: jello 1s;\n                animation: jello 1s\n            }\n            .aside-nav:hover .menu-first {\n                -webkit-transform: translate3d(0, -135%, 0);\n                -moz-transform: translate3d(0, -135%, 0);\n                transform: translate3d(0, -135%, 0)\n            }\n            .aside-nav:hover .menu-second {\n                -webkit-transform: translate3d(120%, -70%, 0);\n                -moz-transform: translate3d(120%, -70%, 0);\n                transform: translate3d(120%, -70%, 0)\n            }\n            .aside-nav:hover .menu-third {\n                -webkit-transform: translate3d(120%, 70%, 0);\n                -moz-transform: translate3d(120%, 70%, 0);\n                transform: translate3d(120%, 70%, 0)\n            }\n            .aside-nav:hover .menu-fourth {\n                -webkit-transform: translate3d(0, 135%, 0);\n                -moz-transform: translate3d(0, 135%, 0);\n                transform: translate3d(0, 135%, 0)\n            }\n            @-webkit-keyframes jello {\n            from, 11.1%, to {\n            -webkit-transform:none;\n            transform:none\n            }\n            22.2% {\n            -webkit-transform:skewX(-12.5deg) skewY(-12.5deg);\n            transform:skewX(-12.5deg) skewY(-12.5deg)\n            }\n            33.3% {\n            -webkit-transform:skewX(6.25deg) skewY(6.25deg);\n            transform:skewX(6.25deg) skewY(6.25deg)\n            }\n            44.4% {\n            -webkit-transform:skewX(-3.125deg) skewY(-3.125deg);\n            transform:skewX(-3.125deg) skewY(-3.125deg)\n            }\n            55.5% {\n            -webkit-transform:skewX(1.5625deg) skewY(1.5625deg);\n            transform:skewX(1.5625deg) skewY(1.5625deg)\n            }\n            66.6% {\n            -webkit-transform:skewX(-.78125deg) skewY(-.78125deg);\n            transform:skewX(-.78125deg) skewY(-.78125deg)\n            }\n            77.7% {\n            -webkit-transform:skewX(0.390625deg) skewY(0.390625deg);\n            transform:skewX(0.390625deg) skewY(0.390625deg)\n            }\n            88.8% {\n            -webkit-transform:skewX(-.1953125deg) skewY(-.1953125deg);\n            transform:skewX(-.1953125deg) skewY(-.1953125deg)\n            }\n            }\n            @-moz-keyframes jello {\n            from, 11.1%, to {\n            -moz-transform:none;\n            transform:none\n            }\n            22.2% {\n            -moz-transform:skewX(-12.5deg) skewY(-12.5deg);\n            transform:skewX(-12.5deg) skewY(-12.5deg)\n            }\n            33.3% {\n            -moz-transform:skewX(6.25deg) skewY(6.25deg);\n            transform:skewX(6.25deg) skewY(6.25deg)\n            }\n            44.4% {\n            -moz-transform:skewX(-3.125deg) skewY(-3.125deg);\n            transform:skewX(-3.125deg) skewY(-3.125deg)\n            }\n            55.5% {\n            -moz-transform:skewX(1.5625deg) skewY(1.5625deg);\n            transform:skewX(1.5625deg) skewY(1.5625deg)\n            }\n            66.6% {\n            -moz-transform:skewX(-.78125deg) skewY(-.78125deg);\n            transform:skewX(-.78125deg) skewY(-.78125deg)\n            }\n            77.7% {\n            -moz-transform:skewX(0.390625deg) skewY(0.390625deg);\n            transform:skewX(0.390625deg) skewY(0.390625deg)\n            }\n            88.8% {\n            -moz-transform:skewX(-.1953125deg) skewY(-.1953125deg);\n            transform:skewX(-.1953125deg) skewY(-.1953125deg)\n            }\n            }\n            @keyframes jello {\n            from, 11.1%, to {\n            -webkit-transform:none;\n            -moz-transform:none;\n            transform:none\n            }\n            22.2% {\n            -webkit-transform:skewX(-12.5deg) skewY(-12.5deg);\n            -moz-transform:skewX(-12.5deg) skewY(-12.5deg);\n            transform:skewX(-12.5deg) skewY(-12.5deg)\n            }\n            33.3% {\n            -webkit-transform:skewX(6.25deg) skewY(6.25deg);\n            -moz-transform:skewX(6.25deg) skewY(6.25deg);\n            transform:skewX(6.25deg) skewY(6.25deg)\n            }\n            44.4% {\n            -webkit-transform:skewX(-3.125deg) skewY(-3.125deg);\n            -moz-transform:skewX(-3.125deg) skewY(-3.125deg);\n            transform:skewX(-3.125deg) skewY(-3.125deg)\n            }\n            55.5% {\n            -webkit-transform:skewX(1.5625deg) skewY(1.5625deg);\n            -moz-transform:skewX(1.5625deg) skewY(1.5625deg);\n            transform:skewX(1.5625deg) skewY(1.5625deg)\n            }\n            66.6% {\n            -webkit-transform:skewX(-.78125deg) skewY(-.78125deg);\n            -moz-transform:skewX(-.78125deg) skewY(-.78125deg);\n            transform:skewX(-.78125deg) skewY(-.78125deg)\n            }\n            77.7% {\n            -webkit-transform:skewX(0.390625deg) skewY(0.390625deg);\n            -moz-transform:skewX(0.390625deg) skewY(0.390625deg);\n            transform:skewX(0.390625deg) skewY(0.390625deg)\n            }\n            88.8% {\n            -webkit-transform:skewX(-.1953125deg) skewY(-.1953125deg);\n            -moz-transform:skewX(-.1953125deg) skewY(-.1953125deg);\n            transform:skewX(-.1953125deg) skewY(-.1953125deg)\n            }\n            }\n            \n            .animated {\n                -webkit-animation-duration: 1s;\n                -moz-animation-duration: 1s;\n                animation-duration: 1s;\n                -webkit-animation-fill-mode: both;\n                -moz-animation-fill-mode: both;\n                animation-fill-mode: both\n            }\n            \n            @-webkit-keyframes bounceInUp {\n            from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function:cubic-bezier(0.215, .61, .355, 1);\n            animation-timing-function:cubic-bezier(0.215, .61, .355, 1)\n            }\n            from {\n                opacity: 0;\n                -webkit-transform: translate3d(0, 800px, 0);\n                transform: translate3d(0, 800px, 0)\n            }\n            60% {\n            opacity:1;\n            -webkit-transform:translate3d(0, -20px, 0);\n            transform:translate3d(0, -20px, 0)\n            }\n            75% {\n            -webkit-transform:translate3d(0, 10px, 0);\n            transform:translate3d(0, 10px, 0)\n            }\n            90% {\n            -webkit-transform:translate3d(0, -5px, 0);\n            transform:translate3d(0, -5px, 0)\n            }\n            to {\n                -webkit-transform: translate3d(0, 0, 0);\n                transform: translate3d(0, 0, 0)\n            }\n            }\n            @-moz-keyframes bounceInUp {\n            from, 60%, 75%, 90%, to {\n            -moz-animation-timing-function:cubic-bezier(0.215, .61, .355, 1);\n            animation-timing-function:cubic-bezier(0.215, .61, .355, 1)\n            }\n            from {\n                opacity: 0;\n                -moz-transform: translate3d(0, 800px, 0);\n                transform: translate3d(0, 800px, 0)\n            }\n            60% {\n            opacity:1;\n            -moz-transform:translate3d(0, -20px, 0);\n            transform:translate3d(0, -20px, 0)\n            }\n            75% {\n            -moz-transform:translate3d(0, 10px, 0);\n            transform:translate3d(0, 10px, 0)\n            }\n            90% {\n            -moz-transform:translate3d(0, -5px, 0);\n            transform:translate3d(0, -5px, 0)\n            }\n            to {\n                -moz-transform: translate3d(0, 0, 0);\n                transform: translate3d(0, 0, 0)\n            }\n            }\n            @keyframes bounceInUp {\n            from, 60%, 75%, 90%, to {\n            -webkit-animation-timing-function:cubic-bezier(0.215, .61, .355, 1);\n            -moz-animation-timing-function:cubic-bezier(0.215, .61, .355, 1);\n            animation-timing-function:cubic-bezier(0.215, .61, .355, 1)\n            }\n            from {\n                opacity: 0;\n                -webkit-transform: translate3d(0, 800px, 0);\n                -moz-transform: translate3d(0, 800px, 0);\n                transform: translate3d(0, 800px, 0)\n            }\n            60% {\n            opacity:1;\n            -webkit-transform:translate3d(0, -20px, 0);\n            -moz-transform:translate3d(0, -20px, 0);\n            transform:translate3d(0, -20px, 0)\n            }\n            75% {\n            -webkit-transform:translate3d(0, 10px, 0);\n            -moz-transform:translate3d(0, 10px, 0);\n            transform:translate3d(0, 10px, 0)\n            }\n            90% {\n            -webkit-transform:translate3d(0, -5px, 0);\n            -moz-transform:translate3d(0, -5px, 0);\n            transform:translate3d(0, -5px, 0)\n            }\n            to {\n                -webkit-transform: translate3d(0, 0, 0);\n                -moz-transform: translate3d(0, 0, 0);\n                transform: translate3d(0, 0, 0)\n            }\n            }\n            .bounceInUp {\n                -webkit-animation-name: bounceInUp;\n                -moz-animation-name: bounceInUp;\n                animation-name: bounceInUp;\n                -webkit-animation-delay: 1s;\n                -moz-animation-delay: 1s;\n                animation-delay: 1s\n            }\n            \n            @media screen and (max-width:640px) {\n            .aside-nav {/* display: none!important */}\n            }\n            @media screen and (min-width:641px) and (max-width:1367px) {\n            .aside-nav {top: 50px}\n            }\n            ");
+                Core.appendCssContent(this.getCss());
             };
             Menu.prototype.getBody = function (option) {
                 return "<svg width=\"0\" height=\"0\"><defs><filter id=\"goo\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"10\" result=\"blur\"></feGaussianBlur><feColorMatrix in=\"blur\" mode=\"matrix\" values=\"1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9\" result=\"goo\"></feColorMatrix><feComposite in=\"SourceGraphic\" in2=\"goo\" operator=\"atop\"></feComposite></filter></defs></svg><div class=\"aside-nav bounceInUp animated\" id=\"Wandhi-nav\"><label for=\"\" class=\"aside-menu\" title=\"\u6309\u4F4F\u62D6\u52A8\">VIP</label>" + option + "</div>";
+            };
+            Menu.prototype.getCss = function () {
+                return "html .aside-nav{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased;font-size:62.5%}body .aside-nav{font-family:\"Helvetica Neue\",Helvetica,\"Microsoft YaHei\",Arial,sans-serif;margin:0;font-size:1.6rem;color:#4e546b}.aside-nav{position:fixed;top:350px;width:260px;height:260px;-webkit-filter:url(#goo);filter:url(#goo);-ms-user-select:none;-moz-user-select:none;-webkit-user-select:none;user-select:none;opacity:.75;z-index:20180817}.aside-nav.no-filter{-webkit-filter:none;filter:none}.aside-nav .aside-menu{position:absolute;width:70px;height:70px;-webkit-border-radius:50%;border-radius:50%;background:#f34444;left:0;top:0;right:0;bottom:0;margin:auto;text-align:center;line-height:70px;color:#fff;font-size:20px;z-index:1;cursor:move}.aside-nav .menu-item{position:absolute;width:60px;height:60px;background-color:#ff7676;left:0;top:0;right:0;bottom:0;margin:auto;line-height:60px;text-align:center;-webkit-border-radius:50%;border-radius:50%;text-decoration:none;color:#fff;-webkit-transition:background .5s,-webkit-transform .6s;transition:background .5s,-webkit-transform .6s;-moz-transition:transform .6s,background .5s,-moz-transform .6s;transition:transform .6s,background .5s;transition:transform .6s,background .5s,-webkit-transform .6s,-moz-transform .6s;font-size:14px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}.aside-nav .menu-item:hover{background:#a9c734}.aside-nav .menu-line{line-height:20px;padding-top:10px}.aside-nav:hover{opacity:1}.aside-nav:hover .aside-menu{-webkit-animation:jello 1s;-moz-animation:jello 1s;animation:jello 1s}.aside-nav:hover .menu-first{-webkit-transform:translate3d(0,-135%,0);-moz-transform:translate3d(0,-135%,0);transform:translate3d(0,-135%,0)}.aside-nav:hover .menu-second{-webkit-transform:translate3d(120%,-70%,0);-moz-transform:translate3d(120%,-70%,0);transform:translate3d(120%,-70%,0)}.aside-nav:hover .menu-third{-webkit-transform:translate3d(120%,70%,0);-moz-transform:translate3d(120%,70%,0);transform:translate3d(120%,70%,0)}.aside-nav:hover .menu-fourth{-webkit-transform:translate3d(0,135%,0);-moz-transform:translate3d(0,135%,0);transform:translate3d(0,135%,0)}@-webkit-keyframes jello{from,11.1%,to{-webkit-transform:none;transform:none}22.2%{-webkit-transform:skewX(-12.5deg) skewY(-12.5deg);transform:skewX(-12.5deg) skewY(-12.5deg)}33.3%{-webkit-transform:skewX(6.25deg) skewY(6.25deg);transform:skewX(6.25deg) skewY(6.25deg)}44.4%{-webkit-transform:skewX(-3.125deg) skewY(-3.125deg);transform:skewX(-3.125deg) skewY(-3.125deg)}55.5%{-webkit-transform:skewX(1.5625deg) skewY(1.5625deg);transform:skewX(1.5625deg) skewY(1.5625deg)}66.6%{-webkit-transform:skewX(-.78125deg) skewY(-.78125deg);transform:skewX(-.78125deg) skewY(-.78125deg)}77.7%{-webkit-transform:skewX(0.390625deg) skewY(0.390625deg);transform:skewX(0.390625deg) skewY(0.390625deg)}88.8%{-webkit-transform:skewX(-.1953125deg) skewY(-.1953125deg);transform:skewX(-.1953125deg) skewY(-.1953125deg)}}@-moz-keyframes jello{from,11.1%,to{-moz-transform:none;transform:none}22.2%{-moz-transform:skewX(-12.5deg) skewY(-12.5deg);transform:skewX(-12.5deg) skewY(-12.5deg)}33.3%{-moz-transform:skewX(6.25deg) skewY(6.25deg);transform:skewX(6.25deg) skewY(6.25deg)}44.4%{-moz-transform:skewX(-3.125deg) skewY(-3.125deg);transform:skewX(-3.125deg) skewY(-3.125deg)}55.5%{-moz-transform:skewX(1.5625deg) skewY(1.5625deg);transform:skewX(1.5625deg) skewY(1.5625deg)}66.6%{-moz-transform:skewX(-.78125deg) skewY(-.78125deg);transform:skewX(-.78125deg) skewY(-.78125deg)}77.7%{-moz-transform:skewX(0.390625deg) skewY(0.390625deg);transform:skewX(0.390625deg) skewY(0.390625deg)}88.8%{-moz-transform:skewX(-.1953125deg) skewY(-.1953125deg);transform:skewX(-.1953125deg) skewY(-.1953125deg)}}@keyframes jello{from,11.1%,to{-webkit-transform:none;-moz-transform:none;transform:none}22.2%{-webkit-transform:skewX(-12.5deg) skewY(-12.5deg);-moz-transform:skewX(-12.5deg) skewY(-12.5deg);transform:skewX(-12.5deg) skewY(-12.5deg)}33.3%{-webkit-transform:skewX(6.25deg) skewY(6.25deg);-moz-transform:skewX(6.25deg) skewY(6.25deg);transform:skewX(6.25deg) skewY(6.25deg)}44.4%{-webkit-transform:skewX(-3.125deg) skewY(-3.125deg);-moz-transform:skewX(-3.125deg) skewY(-3.125deg);transform:skewX(-3.125deg) skewY(-3.125deg)}55.5%{-webkit-transform:skewX(1.5625deg) skewY(1.5625deg);-moz-transform:skewX(1.5625deg) skewY(1.5625deg);transform:skewX(1.5625deg) skewY(1.5625deg)}66.6%{-webkit-transform:skewX(-.78125deg) skewY(-.78125deg);-moz-transform:skewX(-.78125deg) skewY(-.78125deg);transform:skewX(-.78125deg) skewY(-.78125deg)}77.7%{-webkit-transform:skewX(0.390625deg) skewY(0.390625deg);-moz-transform:skewX(0.390625deg) skewY(0.390625deg);transform:skewX(0.390625deg) skewY(0.390625deg)}88.8%{-webkit-transform:skewX(-.1953125deg) skewY(-.1953125deg);-moz-transform:skewX(-.1953125deg) skewY(-.1953125deg);transform:skewX(-.1953125deg) skewY(-.1953125deg)}}.animated{-webkit-animation-duration:1s;-moz-animation-duration:1s;animation-duration:1s;-webkit-animation-fill-mode:both;-moz-animation-fill-mode:both;animation-fill-mode:both}\n@-webkit-keyframes bounceInUp{from,60%,75%,90%,to{-webkit-animation-timing-function:cubic-bezier(0.215,.61,.355,1);animation-timing-function:cubic-bezier(0.215,.61,.355,1)}from{opacity:0;-webkit-transform:translate3d(0,800px,0);transform:translate3d(0,800px,0)}60%{opacity:1;-webkit-transform:translate3d(0,-20px,0);transform:translate3d(0,-20px,0)}75%{-webkit-transform:translate3d(0,10px,0);transform:translate3d(0,10px,0)}90%{-webkit-transform:translate3d(0,-5px,0);transform:translate3d(0,-5px,0)}to{-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}}@-moz-keyframes bounceInUp{from,60%,75%,90%,to{-moz-animation-timing-function:cubic-bezier(0.215,.61,.355,1);animation-timing-function:cubic-bezier(0.215,.61,.355,1)}from{opacity:0;-moz-transform:translate3d(0,800px,0);transform:translate3d(0,800px,0)}60%{opacity:1;-moz-transform:translate3d(0,-20px,0);transform:translate3d(0,-20px,0)}75%{-moz-transform:translate3d(0,10px,0);transform:translate3d(0,10px,0)}90%{-moz-transform:translate3d(0,-5px,0);transform:translate3d(0,-5px,0)}to{-moz-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}}@keyframes bounceInUp{from,60%,75%,90%,to{-webkit-animation-timing-function:cubic-bezier(0.215,.61,.355,1);-moz-animation-timing-function:cubic-bezier(0.215,.61,.355,1);animation-timing-function:cubic-bezier(0.215,.61,.355,1)}from{opacity:0;-webkit-transform:translate3d(0,800px,0);-moz-transform:translate3d(0,800px,0);transform:translate3d(0,800px,0)}60%{opacity:1;-webkit-transform:translate3d(0,-20px,0);-moz-transform:translate3d(0,-20px,0);transform:translate3d(0,-20px,0)}75%{-webkit-transform:translate3d(0,10px,0);-moz-transform:translate3d(0,10px,0);transform:translate3d(0,10px,0)}90%{-webkit-transform:translate3d(0,-5px,0);-moz-transform:translate3d(0,-5px,0);transform:translate3d(0,-5px,0)}to{-webkit-transform:translate3d(0,0,0);-moz-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}}.bounceInUp{-webkit-animation-name:bounceInUp;-moz-animation-name:bounceInUp;animation-name:bounceInUp;-webkit-animation-delay:1s;-moz-animation-delay:1s;animation-delay:1s}@media screen and (max-width:640px){}@media screen and (min-width:641px) and (max-width:1367px){.aside-nav{top:50px}}";
             };
             Menu.prototype.Init = function (menus, callback) {
                 var _this = this;
@@ -386,7 +417,7 @@
                 menus.forEach(function (element, index) {
                     str += "<a href=\"javascript:void(0)\" title=\"" + element.title + "\" data-cat=\"" + element.type + "\" class=\"menu-item menu-line menu-" + _this.menusClass[index] + "\">" + element.show + "</a>";
                 });
-                this.core.bodyAppend(this.getBody(str));
+                Core.bodyAppend(this.getBody(str));
                 /Safari|iPhone/i.test(this.userAgent) && /chrome/i.test(this.userAgent) && $("#Wandhi-nav").addClass("no-filter");
                 var drags = { down: !1, x: 0, y: 0, winWid: 0, winHei: 0, clientX: 0, clientY: 0 };
                 var asideNav = $(this.menuSelecter)[0];
@@ -580,6 +611,42 @@
         return MovieService;
     }(PluginBase));
 
+    var Route = (function () {
+        function Route() {
+            this.queryTao = "";
+        }
+        Object.defineProperty(Route, "apiRoot", {
+            get: function () {
+                return "https://api.wandhi.com/api";
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Route.querySbx = function (id, callback) {
+            Http.post(Route.sbx, new Map([
+                ["docinfo", "https://www.shangxueba.com/ask/" + id + ".html"],
+                ["anhao", "2232"]
+            ])).then(function (res) { callback(res); });
+        };
+        Route.queryHistory = function (url, callback) {
+            this.baseApi("/history/", new Map([['url', url]])).then(function (res) {
+                callback(res);
+            });
+        };
+        Route.baseApi = function (api, data) {
+            return Http.post(Route.apiRoot + api, data);
+        };
+        Route.sbx = "http://www.shangxueba365.com/get.php";
+        Route.history = "/history/";
+        return Route;
+    }());
+
+    var LinesOption = (function () {
+        function LinesOption() {
+        }
+        return LinesOption;
+    }());
+
     var TaoBaoService = (function (_super) {
         __extends(TaoBaoService, _super);
         function TaoBaoService() {
@@ -595,9 +662,6 @@
             throw new Error("Method not implemented.");
         };
         TaoBaoService.prototype.loader = function () {
-            if (typeof ($) === 'undefined') {
-                Core.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js");
-            }
             Core.appendCss("//cdn.wandhi.com/style/extenstion/hui.style.css");
         };
         TaoBaoService.prototype.run = function () {
@@ -617,6 +681,8 @@
             }
             var url = this.apiRoot + "/tb/infos/" + this.core.getPar("id");
             this.getData(url, function (data) { return _this.initElement(data); });
+            this.InitTao();
+            this.InitPriceHistory();
         };
         TaoBaoService.prototype.initElement = function (data) {
             $("#wandhi_table tbody tr").remove();
@@ -630,6 +696,412 @@
                 row = "<tr><td colspan='4'>\u8FD9\u4E2A\u5546\u54C1\u6CA1\u6709\u8D85\u503C\u4F18\u60E0\u5238</td></tr>";
             }
             $("#wandhi_table tbody").append(row);
+        };
+        TaoBaoService.prototype.InitTao = function () {
+            Core.appendCssContent(this.getHistoryCss());
+            if ($("#J_DetailMeta").length) {
+                Core.appendTo("#J_DetailMeta", this.getHistoryHtml());
+            }
+            else {
+                Core.appendTo("#detail", this.getHistoryHtml() + "<br/>");
+            }
+        };
+        TaoBaoService.prototype.InitPriceHistory = function () {
+            var _this = this;
+            $("#vip-plugin-outside").show();
+            this.theme();
+            this.chartMsg("\u5386\u53F2\u4EF7\u683C\u67E5\u8BE2\u4E2D");
+            Route.queryHistory(Runtime.url, function (data) {
+                var msg = "";
+                if (data.code) {
+                    $(".vip-plugin-outside-chart-container").html("<div id=\"vip-plugin-outside-chart-container-line\"></div>");
+                    echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), _this.theme()).setOption(_this.getChartOption(data.data));
+                }
+                else {
+                    msg = "\u672A\u67E5\u5230\u5386\u53F2\u6570\u636E";
+                }
+                _this.chartMsg(msg);
+            });
+        };
+        TaoBaoService.prototype.getHistoryHtml = function () {
+            return "<div id=\"vip-plugin-outside\">\n                    <div id=\"vip-plugin-outside-history\" class=\"vip-plugin-outside-history\">\n                        <div class=\"vip-plugin-outside-chart-container\"></div>\n                        <p class=\"vip-plugin-outside-history-tip\"></p>\n                    </div>    \n                </div>";
+        };
+        TaoBaoService.prototype.getHistoryCss = function () {
+            return "\n        #vip-plugin-outside {\n            border: 1px solid #eee;\n            margin: 0 auto;\n            position: relative;\n            clear: both;\n            display: none\n        }\n        #vip-plugin-outside .vip-plugin-outside-history .vip-plugin-outside-history-tip {\n            position: absolute;\n            margin: 0;\n            top: 50%;\n            left: 50%;\n            letter-spacing: 1px;\n            font-size: 15px;\n            transform: translateX(-50%) translateY(-50%)\n        }\n        #vip-plugin-outside .vip-plugin-outside-history ,#vip-plugin-outside-chart-body{\n            height: 300px;\n            overflow: hidden;\n            position: relative\n        }    \n        #vip-plugin-outside .vip-plugin-outside-history .vip-plugin-outside-chart-container,\n        #vip-plugin-outside-chart-container-line {\n            width: 100%;\n            height: 100%\n        }";
+        };
+        TaoBaoService.prototype.chartMsg = function (msg) {
+            $(".vip-plugin-outside-history-tip").html(msg);
+        };
+        TaoBaoService.prototype.getChartOption = function (data) {
+            var _a, _b;
+            var text = "\u5386\u53F2\u4F4E\u4EF7\uFF1A{red|\uFFE5" + data.min + "} ( {red|" + data.date + "} ) \u5206\u6790\uFF1A" + data.mark;
+            var chartOption = new LinesOption();
+            var datas = function (data) {
+                var l = [];
+                data.price_detail.forEach(function (v) {
+                    var p = {
+                        name: v.time,
+                        value: [
+                            v.timestamp, v.price, v.mark
+                        ]
+                    };
+                    l.push(p);
+                });
+                return l;
+            };
+            chartOption = {
+                title: {
+                    left: "center",
+                    subtext: text,
+                    subtextStyle: {
+                        color: "#000",
+                        rich: {
+                            red: {
+                                color: "red"
+                            }
+                        }
+                    }
+                },
+                tooltip: {
+                    trigger: "axis",
+                    axisPointer: {
+                        type: "cross"
+                    },
+                    formatter: function (params) {
+                        params = params[0];
+                        var date = new Date(params.name);
+                        var year = date.getFullYear();
+                        var month = date.getMonth() + 1;
+                        var day = date.getDate();
+                        var monthStr = month.toString();
+                        var dayStr = day.toString();
+                        if (month < 10) {
+                            monthStr = "0" + month;
+                        }
+                        if (day < 10) {
+                            dayStr = "0" + day;
+                        }
+                        return "\u65E5\u671F\uFF1A" + year + "-" + monthStr + "-" + dayStr + "<br/>\u4EF7\u683C\uFF1A\uFFE5" + params.value[1].toFixed(2) + (params.value[2] == "" ? "" : "<br/>" + params.value[2]);
+                    }
+                },
+                grid: {
+                    left: 0,
+                    right: 20,
+                    top: 50,
+                    bottom: 10,
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'time'
+                },
+                yAxis: {
+                    type: "value"
+                },
+                series: [
+                    {
+                        type: "line",
+                        step: "end",
+                        data: datas(data),
+                        showSymbol: false,
+                        symbolSize: 3,
+                        lineStyle: {
+                            width: 1.5,
+                            color: "#ff0036"
+                        }
+                    }
+                ]
+            };
+            var step = 10;
+            chartOption.yAxis = {
+                min: Math.floor(data.min * 0.9 / step) * step,
+                max: Math.ceil(data.max * 1.1 / step) * step
+            };
+            var line = (_a = chartOption.series) === null || _a === void 0 ? void 0 : _a.pop();
+            line.markPoint = {
+                data: [
+                    {
+                        value: data.min,
+                        coord: [data.date, data.min],
+                        name: "最小值",
+                        itemStyle: {
+                            color: "green"
+                        }
+                    },
+                    {
+                        value: data.max,
+                        coord: [data.max_date, data.max],
+                        name: "最大值",
+                        itemStyle: {
+                            color: "red"
+                        }
+                    }
+                ]
+            };
+            (_b = chartOption.series) === null || _b === void 0 ? void 0 : _b.push(line);
+            chartOption.dataZoom = [
+                {
+                    type: "inside",
+                    start: 0,
+                    end: 100
+                }
+            ];
+            return chartOption;
+        };
+        TaoBaoService.prototype.theme = function () {
+            var theme = {
+                color: [
+                    '#2ec7c9', '#b6a2de', '#5ab1ef', '#ffb980', '#d87a80',
+                    '#8d98b3', '#e5cf0d', '#97b552', '#95706d', '#dc69aa',
+                    '#07a2a4', '#9a7fd1', '#588dd5', '#f5994e', '#c05050',
+                    '#59678c', '#c9ab00', '#7eb00a', '#6f5553', '#c14089'
+                ],
+                title: {
+                    itemGap: 8,
+                    textStyle: {
+                        fontWeight: 'normal',
+                        color: '#008acd'
+                    }
+                },
+                legend: {
+                    itemGap: 8
+                },
+                dataRange: {
+                    itemWidth: 15,
+                    color: ['#2ec7c9', '#b6a2de']
+                },
+                toolbox: {
+                    color: ['#1e90ff', '#1e90ff', '#1e90ff', '#1e90ff'],
+                    effectiveColor: '#ff4500',
+                    itemGap: 8
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(50,50,50,0.5)',
+                    axisPointer: {
+                        type: 'line',
+                        lineStyle: {
+                            color: '#008acd'
+                        },
+                        crossStyle: {
+                            color: '#008acd'
+                        },
+                        shadowStyle: {
+                            color: 'rgba(200,200,200,0.2)'
+                        }
+                    }
+                },
+                dataZoom: {
+                    dataBackgroundColor: '#efefff',
+                    fillerColor: 'rgba(182,162,222,0.2)',
+                    handleColor: '#008acd'
+                },
+                grid: {
+                    borderColor: '#eee'
+                },
+                categoryAxis: {
+                    axisLine: {
+                        lineStyle: {
+                            color: '#008acd'
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: ['#eee']
+                        }
+                    }
+                },
+                valueAxis: {
+                    axisLine: {
+                        lineStyle: {
+                            color: '#008acd'
+                        }
+                    },
+                    splitArea: {
+                        show: true,
+                        areaStyle: {
+                            color: ['rgba(250,250,250,0.1)', 'rgba(200,200,200,0.1)']
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: ['#eee']
+                        }
+                    }
+                },
+                polar: {
+                    axisLine: {
+                        lineStyle: {
+                            color: '#ddd'
+                        }
+                    },
+                    splitArea: {
+                        show: true,
+                        areaStyle: {
+                            color: ['rgba(250,250,250,0.2)', 'rgba(200,200,200,0.2)']
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: '#ddd'
+                        }
+                    }
+                },
+                timeline: {
+                    lineStyle: {
+                        color: '#008acd'
+                    },
+                    controlStyle: {
+                        normal: { color: '#008acd' },
+                        emphasis: { color: '#008acd' }
+                    },
+                    symbol: 'emptyCircle',
+                    symbolSize: 3
+                },
+                bar: {
+                    itemStyle: {
+                        normal: {
+                            borderRadius: 5
+                        },
+                        emphasis: {
+                            borderRadius: 5
+                        }
+                    }
+                },
+                line: {
+                    smooth: true,
+                    symbol: 'emptyCircle',
+                    symbolSize: 3
+                },
+                k: {
+                    itemStyle: {
+                        normal: {
+                            color: '#d87a80',
+                            color0: '#2ec7c9',
+                            lineStyle: {
+                                width: 1,
+                                color: '#d87a80',
+                                color0: '#2ec7c9'
+                            }
+                        }
+                    }
+                },
+                scatter: {
+                    symbol: 'circle',
+                    symbolSize: 4
+                },
+                radar: {
+                    symbol: 'emptyCircle',
+                    symbolSize: 3
+                },
+                map: {
+                    itemStyle: {
+                        normal: {
+                            areaStyle: {
+                                color: '#ddd'
+                            },
+                            label: {
+                                textStyle: {
+                                    color: '#d87a80'
+                                }
+                            }
+                        },
+                        emphasis: {
+                            areaStyle: {
+                                color: '#fe994e'
+                            },
+                            label: {
+                                textStyle: {
+                                    color: 'rgb(100,0,0)'
+                                }
+                            }
+                        }
+                    }
+                },
+                force: {
+                    itemStyle: {
+                        normal: {
+                            linkStyle: {
+                                strokeColor: '#1e90ff'
+                            }
+                        }
+                    }
+                },
+                chord: {
+                    padding: 4,
+                    itemStyle: {
+                        normal: {
+                            lineStyle: {
+                                width: 1,
+                                color: 'rgba(128, 128, 128, 0.5)'
+                            },
+                            chordStyle: {
+                                lineStyle: {
+                                    width: 1,
+                                    color: 'rgba(128, 128, 128, 0.5)'
+                                }
+                            }
+                        },
+                        emphasis: {
+                            lineStyle: {
+                                width: 1,
+                                color: 'rgba(128, 128, 128, 0.5)'
+                            },
+                            chordStyle: {
+                                lineStyle: {
+                                    width: 1,
+                                    color: 'rgba(128, 128, 128, 0.5)'
+                                }
+                            }
+                        }
+                    }
+                },
+                gauge: {
+                    startAngle: 225,
+                    endAngle: -45,
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            color: [[0.2, '#2ec7c9'], [0.8, '#5ab1ef'], [1, '#d87a80']],
+                            width: 10
+                        }
+                    },
+                    axisTick: {
+                        splitNumber: 10,
+                        length: 15,
+                        lineStyle: {
+                            color: 'auto'
+                        }
+                    },
+                    axisLabel: {
+                        textStyle: {
+                            color: 'auto'
+                        }
+                    },
+                    splitLine: {
+                        length: 22,
+                        lineStyle: {
+                            color: 'auto'
+                        }
+                    },
+                    pointer: {
+                        width: 5,
+                        color: 'auto'
+                    },
+                    title: {
+                        textStyle: {
+                            color: '#333'
+                        }
+                    },
+                    detail: {
+                        textStyle: {
+                            color: 'auto'
+                        }
+                    }
+                },
+                textStyle: {
+                    fontFamily: '微软雅黑, Arial, Verdana, sans-serif'
+                }
+            };
+            return theme;
         };
         return TaoBaoService;
     }(PluginBase));
@@ -664,7 +1136,7 @@
             if (shade === void 0) { shade = 0; }
             if (offset === void 0) { offset = "lb"; }
             if (maxmin === void 0) { maxmin = true; }
-            layer.open({
+            return layer.open({
                 type: 1,
                 title: titls,
                 area: area,
@@ -675,10 +1147,10 @@
             });
         };
         Alert.info = function (msg) {
-            layer.msg(msg, { time: 2000 });
+            return layer.msg(msg, { time: 2000 });
         };
         Alert.error = function (msg) {
-            layer.msg(msg, { icon: 5, time: 2000 });
+            return layer.msg(msg, { icon: 5, time: 2000 });
         };
         return Alert;
     }());
@@ -712,17 +1184,14 @@
                 layer.open({ type: 1, title: "\u8BF7\u6211\u559D\u4E00\u676F", shadeClose: true, area: '800px', content: '<img src="https://i.loli.net/2019/05/14/5cda672add6f594934.jpg">' });
             });
             $('body').on('click', '[data-cat=search]', function () {
-                Http.ajax(new AjaxOption("http://www.shangxueba365.com/get.php", "POST", "JSON", {
-                    "docinfo": "https://www.shangxueba.com/ask/" + $("#Hidd_id").val() + ".html",
-                    "anhao": "2232"
-                }, function (data) {
+                Route.querySbx($("#Hidd_id").val(), function (data) {
                     if (data.status) {
-                        Alert.open("答案", data.msg);
+                        Alert.open("\u7B54\u6848", data.msg);
                     }
                     else {
-                        Alert.error("没找到答案");
+                        Alert.error("\u6CA1\u627E\u5230\u7B54\u6848");
                     }
-                }));
+                });
             });
             $('body').on('click', '[data-cat=tb]', function () {
                 Core.open('http://sign.wandhi.com/jump.php?target=https://api.wandhi.com/goto/DUVAFQgZTEEVFAQcDhYKSFkDDh9XCl8=');
@@ -733,20 +1202,6 @@
         };
         return StuService;
     }(PluginBase));
-
-    var Route = (function () {
-        function Route() {
-            this.queryTao = "";
-        }
-        Object.defineProperty(Route, "apiRoot", {
-            get: function () {
-                return "https://api.wandhi.com/api";
-            },
-            enumerable: true,
-            configurable: true
-        });
-        return Route;
-    }());
 
     var BiliImgService = (function (_super) {
         __extends(BiliImgService, _super);
