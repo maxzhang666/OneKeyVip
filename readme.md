@@ -84,7 +84,7 @@
 * 4.0.1 添加匹配规则，变更CSS样式加载方式
 * 4.0.0 版本重构
 
-[**More**](https://github.com/maxzhang666/OneKeyVip/blob/master/UpdateLog.md)
+[**More**](https://github.com/maxzhang666/OneKeyVip/blob/master/CHANGELOG)
 
 ## 💕 友情捐助
 
