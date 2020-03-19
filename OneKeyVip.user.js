@@ -1213,10 +1213,10 @@
             $('body').on('click', '[data-cat=search]', function () {
                 Route.querySbx($("#Hidd_id").val(), function (data) {
                     if (data.status) {
-                        Alert.open("答案", data.msg);
+                        Alert.open("\u7B54\u6848", data.msg);
                     }
                     else {
-                        Alert.error("没找到答案");
+                        Alert.error("\u6CA1\u627E\u5230\u7B54\u6848");
                     }
                 });
             });
