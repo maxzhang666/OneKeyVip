@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,百度云离线跳转,获取B站封面,淘宝京东优惠券 2020-03-15 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,百度云离线跳转,获取B站封面,淘宝京东优惠券 2020-03-19 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.0.7 
+// @version      4.0.8 
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://www.wandhi.com/post-647.html
-// @description  在视频播放页悬浮VIP按钮，可在线播放vip视频；支持优酷vip，腾讯vip，爱奇艺vip，芒果vip，乐视vip等常用视频...一站式音乐搜索解决方案，网易云音乐，QQ音乐，酷狗音乐，酷我音乐，虾米音乐，百度音乐，蜻蜓FM，荔枝FM，喜马拉雅，集成优惠券查询按钮
+// @description  功能介绍:1、Vip视频解析;2、一站式音乐搜索解决方案;3、bilibili视频封面获取;4、上学吧答案查询;5、商品历史价格展示(一次性告别虚假降价);6、优惠券查询
 // @author       MaxZhang
 // @icon         http://www.wandhi.com//favicon.ico
 // @include      *://m.youku.com/v*
@@ -75,8 +75,6 @@
 // @grant        GM_xmlhttpRequest
 // @grant        GM_info
 // @grant        GM.addStyle
-// @grant        GM.getValue
-// @grant        GM.setValue
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_notification
@@ -116,6 +114,19 @@
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     }
+
+    var Runtime = (function () {
+        function Runtime() {
+        }
+        Object.defineProperty(Runtime, "url", {
+            get: function () {
+                return window.location.href;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return Runtime;
+    }());
 
     var HttpRequest = (function () {
         function HttpRequest(option) {
@@ -184,6 +195,50 @@
         return AjaxOption;
     }());
 
+    var Alert = (function () {
+        function Alert() {
+        }
+        Alert.open = function (titls, content, area, shade, offset, maxmin) {
+            if (area === void 0) { area = ['400px', '300px']; }
+            if (shade === void 0) { shade = 0; }
+            if (offset === void 0) { offset = "lb"; }
+            if (maxmin === void 0) { maxmin = true; }
+            return layer.open({
+                type: 1,
+                title: titls,
+                area: area,
+                shade: shade,
+                offset: offset,
+                maxmin: maxmin,
+                content: content
+            });
+        };
+        Alert.info = function (msg) {
+            return layer.msg(msg, { time: 2000 });
+        };
+        Alert.error = function (msg) {
+            return layer.msg(msg, { icon: 5, time: 2000 });
+        };
+        Alert.confim = function (title, msg, buttons, callback) {
+            return layer.open({
+                type: 1,
+                title: title || false,
+                closeBtn: true,
+                shade: 0.8,
+                id: 'LAY_layuipro',
+                resize: false,
+                btn: buttons,
+                btnAlign: 'c',
+                moveType: 1,
+                content: msg,
+                yes: function (index) {
+                    callback(index);
+                }
+            });
+        };
+        return Alert;
+    }());
+
     var Http = (function () {
         function Http() {
         }
@@ -197,7 +252,12 @@
                 headers: option.headers,
                 data: option.getData(),
                 onload: function (res) {
-                    option.onSuccess && option.onSuccess(JSON.parse(res.responseText));
+                    try {
+                        option.onSuccess && option.onSuccess(JSON.parse(res.responseText));
+                    }
+                    catch (error) {
+                        Alert.confim("", "\n                    <div style=\"padding: 20px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;\">                        \n                        <h1>\u8BF7\u6C42\u5931\u8D25\uFF0C\u8BF7\u590D\u5236\u4E0B\u5217\u4FE1\u606F\u5411\u5F00\u53D1\u8005\u53CD\u9988\u95EE\u9898</h1><br>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u65E5\u5FD7\uFF1A</span><br>\n                        <p>" + error + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u8BE6\u60C5\uFF1A</span><br>\n                        <p>" + res.responseText + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u9875\u9762\uFF1A</span><br>\n                        <p>" + Runtime.url + "</p>\n                    </div>\n                    ", ['去反馈', "\u5173\u95ED"], function (index) { Core.open("https://gitee.com/ixysy/OneKeyVip/issues"); });
+                    }
                 },
                 onerror: function (res) {
                     option.onError && option.onError(res);
@@ -466,16 +526,6 @@
         return UrlHelper;
     }());
 
-    var Runtime = (function () {
-        function Runtime() {
-        }
-        Runtime._url = function () {
-            return window.location.href;
-        };
-        Runtime.url = Runtime._url();
-        return Runtime;
-    }());
-
     var MusicService = (function (_super) {
         __extends(MusicService, _super);
         function MusicService() {
@@ -629,15 +679,19 @@
             ])).then(function (res) { callback(res); });
         };
         Route.queryHistory = function (url, callback) {
-            this.baseApi("/history/", new Map([['url', url]])).then(function (res) {
+            this.baseApi(this.history, new Map([['url', url]]), callback);
+        };
+        Route.queryBiliImg = function (callback) {
+            this.baseApi(this.bili, new Map([['url', Runtime.url]]), callback);
+        };
+        Route.baseApi = function (api, data, callback) {
+            Http.post(Route.apiRoot + api, data).then(function (res) {
                 callback(res);
             });
         };
-        Route.baseApi = function (api, data) {
-            return Http.post(Route.apiRoot + api, data);
-        };
         Route.sbx = "http://www.shangxueba365.com/get.php";
         Route.history = "/history/";
+        Route.bili = "/tools/bili";
         return Route;
     }());
 
@@ -1128,33 +1182,6 @@
         return JdService;
     }(PluginBase));
 
-    var Alert = (function () {
-        function Alert() {
-        }
-        Alert.open = function (titls, content, area, shade, offset, maxmin) {
-            if (area === void 0) { area = ['400px', '300px']; }
-            if (shade === void 0) { shade = 0; }
-            if (offset === void 0) { offset = "lb"; }
-            if (maxmin === void 0) { maxmin = true; }
-            return layer.open({
-                type: 1,
-                title: titls,
-                area: area,
-                shade: shade,
-                offset: offset,
-                maxmin: maxmin,
-                content: content
-            });
-        };
-        Alert.info = function (msg) {
-            return layer.msg(msg, { time: 2000 });
-        };
-        Alert.error = function (msg) {
-            return layer.msg(msg, { icon: 5, time: 2000 });
-        };
-        return Alert;
-    }());
-
     var StuService = (function (_super) {
         __extends(StuService, _super);
         function StuService() {
@@ -1186,10 +1213,10 @@
             $('body').on('click', '[data-cat=search]', function () {
                 Route.querySbx($("#Hidd_id").val(), function (data) {
                     if (data.status) {
-                        Alert.open("\u7B54\u6848", data.msg);
+                        Alert.open("答案", data.msg);
                     }
                     else {
-                        Alert.error("\u6CA1\u627E\u5230\u7B54\u6848");
+                        Alert.error("没找到答案");
                     }
                 });
             });
@@ -1220,7 +1247,7 @@
                 setTimeout(function () {
                     $(".tit").after(BiliImgService.btn);
                     $('body').on('click', '#findimg', function () {
-                        Http.getData(Route.apiRoot + "/tools/bili?url=" + Runtime.url, function (res) {
+                        Route.queryBiliImg(function (res) {
                             if (res.code) {
                                 Alert.open("\u5C01\u9762\u9171", "<img src=\"" + res.data + "\">");
                             }
