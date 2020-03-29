@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-03-29 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.0.9
+// @version      4.1.0
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://www.wandhi.com/post-647.html
 // @description  功能介绍:1、Vip视频解析;2、一站式音乐搜索解决方案;3、bilibili视频封面获取;4、上学吧答案查询;5、商品历史价格展示(一次性告别虚假降价);6、优惠券查询
