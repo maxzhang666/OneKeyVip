@@ -246,7 +246,7 @@
             if (style === void 0) { style = 1; }
             if (_time === void 0) { _time = 10; }
             if (_shade === void 0) { _shade = 0.3; }
-            return layer.load(style, { shade: _shade, time: _time });
+            return layer.load(style, { shade: _shade, time: _time * 1000 });
         };
         return Alert;
     }());
