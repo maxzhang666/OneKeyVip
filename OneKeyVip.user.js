@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-03-29 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-03-31 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.1.0
+// @version      4.1.1
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://www.wandhi.com/post-647.html
 // @description  功能介绍:1、Vip视频解析;2、一站式音乐搜索解决方案;3、bilibili视频封面获取;4、上学吧答案查询;5、商品历史价格展示(一次性告别虚假降价);6、优惠券查询
@@ -75,8 +75,6 @@
 // @grant        GM_xmlhttpRequest
 // @grant        GM_info
 // @grant        GM.addStyle
-// @grant        GM.getValue
-// @grant        GM.setValue
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_notification
@@ -116,6 +114,19 @@
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     }
+
+    var Runtime = (function () {
+        function Runtime() {
+        }
+        Object.defineProperty(Runtime, "url", {
+            get: function () {
+                return window.location.href;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return Runtime;
+    }());
 
     var HttpRequest = (function () {
         function HttpRequest(option) {
@@ -208,6 +219,23 @@
         Alert.error = function (msg) {
             return layer.msg(msg, { icon: 5, time: 2000 });
         };
+        Alert.confim = function (title, msg, buttons, callback) {
+            return layer.open({
+                type: 1,
+                title: title || false,
+                closeBtn: true,
+                shade: 0.8,
+                id: 'LAY_layuipro',
+                resize: false,
+                btn: buttons,
+                btnAlign: 'c',
+                moveType: 1,
+                content: msg,
+                yes: function (index) {
+                    callback(index);
+                }
+            });
+        };
         Alert.close = function (index) {
             layer.close(index);
         };
@@ -236,9 +264,15 @@
                 headers: option.headers,
                 data: option.getData(),
                 onload: function (res) {
-                    option.onSuccess && option.onSuccess(JSON.parse(res.responseText));
+                    try {
+                        option.onSuccess && option.onSuccess(JSON.parse(res.responseText));
+                    }
+                    catch (error) {
+                        Alert.confim("", "\n                    <div style=\"padding: 20px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;\">                        \n                        <h1>\u8BF7\u6C42\u5931\u8D25\uFF0C\u8BF7\u590D\u5236\u4E0B\u5217\u4FE1\u606F\u5411\u5F00\u53D1\u8005\u53CD\u9988\u95EE\u9898</h1><br>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u65E5\u5FD7\uFF1A</span><br>\n                        <p>" + error + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u8BE6\u60C5\uFF1A</span><br>\n                        <p>" + res.responseText + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u9875\u9762\uFF1A</span><br>\n                        <p>" + Runtime.url + "</p>\n                    </div>\n                    ", ['去反馈', "\u5173\u95ED"], function (index) { Core.open("https://gitee.com/ixysy/OneKeyVip/issues"); });
+                    }
                 },
                 onerror: function (res) {
+                    Alert.confim("", "\n                    <div style=\"padding: 20px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;\">                        \n                        <h1>\u8BF7\u6C42\u5931\u8D25\uFF0C\u8BF7\u590D\u5236\u4E0B\u5217\u4FE1\u606F\u5411\u5F00\u53D1\u8005\u53CD\u9988\u95EE\u9898</h1><br>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u8BE6\u60C5\uFF1A</span><br>\n                        <p>" + res.responseText + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u9875\u9762\uFF1A</span><br>\n                        <p>" + Runtime.url + "</p>\n                    </div>\n                    ", ['去反馈', "\u5173\u95ED"], function (index) { Core.open("https://gitee.com/ixysy/OneKeyVip/issues"); });
                     option.onError && option.onError(res);
                 }
             });
@@ -507,19 +541,6 @@
         return UrlHelper;
     }());
 
-    var Runtime = (function () {
-        function Runtime() {
-        }
-        Object.defineProperty(Runtime, "url", {
-            get: function () {
-                return window.location.href;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        return Runtime;
-    }());
-
     var MusicService = (function (_super) {
         __extends(MusicService, _super);
         function MusicService() {
@@ -683,7 +704,7 @@
                 callback(res);
             });
         };
-        Route.sbx = "http://www.shangxueba365.com/get.php";
+        Route.sbx = "http://www.shangxueba365.com/get1.php";
         Route.history = "/history/";
         Route.bili = "/tools/bili";
         return Route;
@@ -1208,6 +1229,9 @@
                 Route.querySbx($("#Hidd_id").val(), function (data) {
                     if (data.status) {
                         Alert.open("\u7B54\u6848", data.msg);
+                    }
+                    else if (data.msg == 'wronganhao') {
+                        Alert.error("\u6CA1\u627E\u5230\u7B54\u6848,\u53EF\u80FD\u662F\u6697\u53F7\u9519\u8BEF\u5FEB\u7ED9\u4F5C\u8005\u53CD\u9988\u4E00\u4E0B");
                     }
                     else {
                         Alert.error("\u6CA1\u627E\u5230\u7B54\u6848");
