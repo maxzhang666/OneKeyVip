@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-04-03 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-04-08 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.1.2
+// @version      4.1.3
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍:1、Vip视频解析;2、一站式音乐搜索解决方案;3、bilibili视频封面获取;4、上学吧答案查询(接口偶尔抽风);5、商品历史价格展示(一次性告别虚假降价);6、优惠券查询
@@ -170,6 +170,7 @@
             this.url = _url;
             this.methodType = _methodType;
             this.onSuccess = _success;
+            this.onError = _success;
             this.data = _data;
             this.headers = _header;
         }
@@ -236,6 +237,17 @@
                 }
             });
         };
+        Alert.prompt = function (title, v, callback, size, type) {
+            if (type === void 0) { type = 0; }
+            layer.prompt({
+                title: title,
+                value: v,
+                formType: type,
+            }, function (v, i, ele) {
+                callback(v);
+                layer.close(i);
+            });
+        };
         Alert.close = function (index) {
             layer.close(index);
         };
@@ -269,6 +281,7 @@
                     }
                     catch (error) {
                         Alert.confim("", "                                        \n                        <h1>\u8BF7\u6C42\u5931\u8D25\uFF0C\u8BF7\u590D\u5236\u4E0B\u5217\u4FE1\u606F\u5411\u5F00\u53D1\u8005\u53CD\u9988\u95EE\u9898</h1><br>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u65E5\u5FD7\uFF1A</span><br>\n                        <p>" + error + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u8BE6\u60C5\uFF1A</span><br>\n                        <p>" + res.responseText + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u9875\u9762\uFF1A</span><br>\n                        <p>" + Runtime.url + "</p>\n                    ", ['去反馈', "\u5173\u95ED"], function (index) { Core.open("https://gitee.com/ixysy/OneKeyVip/issues"); });
+                        option.onSuccess && option.onSuccess(null);
                     }
                 },
                 onerror: function (res) {
@@ -289,7 +302,7 @@
                     Alert.close(index);
                     resolve(data);
                 }));
-            });
+            }).finally(function () { return Alert.close(index); });
             return p;
         };
         Http.get = function (url, data) {
@@ -676,6 +689,26 @@
         return MovieService;
     }(PluginBase));
 
+    var Config = (function () {
+        function Config() {
+        }
+        Object.defineProperty(Config, "env", {
+            get: function () {
+                return GM_info;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        Config.get = function (key, de) {
+            if (de === void 0) { de = ""; }
+            return GM_getValue(key, de);
+        };
+        Config.set = function (key, v) {
+            GM_setValue(key, v);
+        };
+        return Config;
+    }());
+
     var Route = (function () {
         function Route() {
             this.queryTao = "";
@@ -689,9 +722,21 @@
         });
         Route.querySbx = function (id, callback) {
             var _this = this;
-            this.queryValue('sxb_anhao', function (res) {
-                _this.query365(id, res.data, callback);
-            });
+            if (Config.get(this.sxb_key, "") !== "") {
+                this.query365(id, Config.get(this.sxb_key), callback);
+            }
+            else {
+                this.queryValue('sxb_anhao', function (res) {
+                    _this.query365(id, res.data, callback);
+                });
+            }
+        };
+        Route.sbxFeedback = function (id, answer) {
+            this.baseApi('/tools/record', new Map([
+                ['id', id],
+                ['data', answer],
+                ['anhao', Config.get(this.sxb_key)]
+            ]), function () { });
         };
         Route.query365 = function (id, anhao, callback) {
             Http.post(Route.sbx, new Map([
@@ -716,6 +761,8 @@
             });
         };
         Route.sbx = "http://www.shangxueba365.com/get1.php";
+        Route.sxb_anhao = "http://www.lelunwen.com/e/action/ListInfo/?classid=45";
+        Route.sxb_key = "sxb_anhao";
         Route.config = "/config/query";
         Route.history = "/history/";
         Route.bili = "/tools/bili";
@@ -1241,9 +1288,13 @@
                 Route.querySbx($("#Hidd_id").val(), function (data) {
                     if (data.status) {
                         Alert.open("\u7B54\u6848", data.msg);
+                        Route.sbxFeedback(dataid, data.msg);
                     }
                     else if (data.msg == 'wronganhao') {
-                        Alert.error("\u6CA1\u627E\u5230\u7B54\u6848,\u53EF\u80FD\u662F\u6697\u53F7\u9519\u8BEF\u5FEB\u7ED9\u4F5C\u8005\u53CD\u9988\u4E00\u4E0B");
+                        Alert.prompt("口令错误，请将弹出的页面中的口令填入后重试！", Config.get("sxb_anhao", ""), function (v) {
+                            Config.set("sxb_anhao", v);
+                        }, 4);
+                        Core.open("http://www.lelunwen.com/e/action/ListInfo/?classid=45");
                     }
                     else {
                         Alert.confim("", "\u8981\u4E0D\u8981\u8DF3\u8F6C\u5230\u67E5\u8BE2\u9875\u770B\u770B\uFF1F", ["\u597D\u7684\u8D70\u8D77", "\u8FD8\u662F\u7B97\u4E86"], function (index) {
