@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-04-08 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-04-13 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.1.3
+// @version      4.1.4
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍:1、Vip视频解析;2、一站式音乐搜索解决方案;3、bilibili视频封面获取;4、上学吧答案查询(接口偶尔抽风);5、商品历史价格展示(一次性告别虚假降价);6、优惠券查询
@@ -445,35 +445,35 @@
 
     var SiteEnum;
     (function (SiteEnum) {
-        SiteEnum[SiteEnum["TaoBao"] = 0] = "TaoBao";
-        SiteEnum[SiteEnum["TMall"] = 1] = "TMall";
-        SiteEnum[SiteEnum["JingDong"] = 2] = "JingDong";
-        SiteEnum[SiteEnum["IQiYi"] = 3] = "IQiYi";
-        SiteEnum[SiteEnum["YouKu"] = 4] = "YouKu";
-        SiteEnum[SiteEnum["LeShi"] = 5] = "LeShi";
-        SiteEnum[SiteEnum["TuDou"] = 6] = "TuDou";
-        SiteEnum[SiteEnum["Tencent_V"] = 7] = "Tencent_V";
-        SiteEnum[SiteEnum["MangGuo"] = 8] = "MangGuo";
-        SiteEnum[SiteEnum["SoHu"] = 9] = "SoHu";
-        SiteEnum[SiteEnum["Acfun"] = 10] = "Acfun";
-        SiteEnum[SiteEnum["BiliBili"] = 11] = "BiliBili";
-        SiteEnum[SiteEnum["M1905"] = 12] = "M1905";
-        SiteEnum[SiteEnum["PPTV"] = 13] = "PPTV";
-        SiteEnum[SiteEnum["YinYueTai"] = 14] = "YinYueTai";
-        SiteEnum[SiteEnum["WangYi"] = 15] = "WangYi";
-        SiteEnum[SiteEnum["Tencent_M"] = 16] = "Tencent_M";
-        SiteEnum[SiteEnum["KuGou"] = 17] = "KuGou";
-        SiteEnum[SiteEnum["KuWo"] = 18] = "KuWo";
-        SiteEnum[SiteEnum["XiaMi"] = 19] = "XiaMi";
-        SiteEnum[SiteEnum["TaiHe"] = 20] = "TaiHe";
-        SiteEnum[SiteEnum["QingTing"] = 21] = "QingTing";
-        SiteEnum[SiteEnum["LiZhi"] = 22] = "LiZhi";
-        SiteEnum[SiteEnum["MiGu"] = 23] = "MiGu";
-        SiteEnum[SiteEnum["XiMaLaYa"] = 24] = "XiMaLaYa";
-        SiteEnum[SiteEnum["SXB"] = 25] = "SXB";
-        SiteEnum[SiteEnum["BDY"] = 26] = "BDY";
-        SiteEnum[SiteEnum["BDY1"] = 27] = "BDY1";
-        SiteEnum[SiteEnum["LZY"] = 28] = "LZY";
+        SiteEnum["TaoBao"] = "TaoBao";
+        SiteEnum["TMall"] = "TMall";
+        SiteEnum["JingDong"] = "JingDong";
+        SiteEnum["IQiYi"] = "IQiYi";
+        SiteEnum["YouKu"] = "YouKu";
+        SiteEnum["LeShi"] = "LeShi";
+        SiteEnum["TuDou"] = "TuDou";
+        SiteEnum["Tencent_V"] = "Tencent_V";
+        SiteEnum["MangGuo"] = "MangGuo";
+        SiteEnum["SoHu"] = "SoHu";
+        SiteEnum["Acfun"] = "Acfun";
+        SiteEnum["BiliBili"] = "BiliBili";
+        SiteEnum["M1905"] = "M1905";
+        SiteEnum["PPTV"] = "PPTV";
+        SiteEnum["YinYueTai"] = "YinYueTai";
+        SiteEnum["WangYi"] = "WangYi";
+        SiteEnum["Tencent_M"] = "Tencent_M";
+        SiteEnum["KuGou"] = "KuGou";
+        SiteEnum["KuWo"] = "KuWo";
+        SiteEnum["XiaMi"] = "XiaMi";
+        SiteEnum["TaiHe"] = "TaiHe";
+        SiteEnum["QingTing"] = "QingTing";
+        SiteEnum["LiZhi"] = "LiZhi";
+        SiteEnum["MiGu"] = "MiGu";
+        SiteEnum["XiMaLaYa"] = "XiMaLaYa";
+        SiteEnum["SXB"] = "SXB";
+        SiteEnum["BDY"] = "BDY";
+        SiteEnum["BDY1"] = "BDY1";
+        SiteEnum["LZY"] = "LZY";
     })(SiteEnum || (SiteEnum = {}));
 
     var Common;
@@ -689,6 +689,12 @@
         return MovieService;
     }(PluginBase));
 
+    var LinesOption = (function () {
+        function LinesOption() {
+        }
+        return LinesOption;
+    }());
+
     var Config = (function () {
         function Config() {
         }
@@ -749,8 +755,8 @@
                 ["key", key]
             ]), callback);
         };
-        Route.queryHistory = function (url, callback) {
-            this.baseApi(this.history, new Map([['url', url]]), callback);
+        Route.queryHistory = function (url, siteType, callback) {
+            this.baseApi(this.history, new Map([['url', url], ['type', siteType]]), callback);
         };
         Route.queryBiliImg = function (callback) {
             this.baseApi(this.bili, new Map([['url', Runtime.url]]), callback);
@@ -769,77 +775,57 @@
         return Route;
     }());
 
-    var LinesOption = (function () {
-        function LinesOption() {
-        }
-        return LinesOption;
-    }());
-
-    var TaoBaoService = (function (_super) {
-        __extends(TaoBaoService, _super);
-        function TaoBaoService() {
+    var HistoryService = (function (_super) {
+        __extends(HistoryService, _super);
+        function HistoryService() {
             var _this = _super !== null && _super.apply(this, arguments) || this;
             _this.rules = new Map([
-                [SiteEnum.TaoBao, /taobao.com/i],
-                [SiteEnum.TMall, /tmall/i]
+                [SiteEnum.TaoBao, /detail.tmall.com\/item.htm/i],
+                [SiteEnum.JingDong, /item.jd.com\/[0-9]*.html/i],
             ]);
-            _this.UrlTag = "Wandhi_qLink";
             return _this;
         }
-        TaoBaoService.prototype.getRules = function () {
-            throw new Error("Method not implemented.");
-        };
-        TaoBaoService.prototype.loader = function () {
-            Core.appendCss("//cdn.wandhi.com/style/extenstion/hui.style.css");
-        };
-        TaoBaoService.prototype.run = function () {
-            this.init();
-        };
-        TaoBaoService.prototype.init = function () {
-            var _this = this;
-            var _a;
-            var init = "<div id='wandhi_div'><table class='wandhi_tab' id='wandhi_table'><thead><tr><th><b style='cursor:pointer'>\u4F18\u60E0\u5238</b></th><th>\u5238\u540E</th><th>\u6709 \u6548 \u671F</th><th>\u64CD\u4F5C</th></tr></thead><tr><td colspan='4'>\u6B63\u5728\u67E5\u8BE2\u4F18\u60E0\u4FE1\u606F\uFF0C\u8BF7\u7A0D\u5019...</td></tr></table></div>";
-            $('#J_LinkBasket').parent().parent().prepend(init);
-            $('.J_LinkAdd').parent().parent().prepend(init);
-            if ((_a = this.rules.get(SiteEnum.TaoBao)) === null || _a === void 0 ? void 0 : _a.test(this.core.currentUrl())) {
-                $('#wandhi_table').addClass('wandhi_tab_taobao');
-            }
-            else {
-                $('#wandhi_table').addClass('wandhi_tab_tmall');
-            }
-            var url = this.apiRoot + "/tb/infos/" + this.core.getPar("id");
-            this.getData(url, function (data) { return _this.initElement(data); });
-            this.InitTao();
-            this.InitPriceHistory();
-        };
-        TaoBaoService.prototype.initElement = function (data) {
-            $("#wandhi_table tbody tr").remove();
-            var row = "";
-            if (data.code) {
-                data.data.forEach(function (e) {
-                    row += "<tr><td>" + e.quan_context + "</td><td>" + e.after_price + "</td><td>" + e.quan_time + "</td><td><b onclick=window.open(decodeURIComponent('" + e.quan_link + "')) style='cursor:pointer'>\u9886\u53D6</b></td></tr>";
-                });
-            }
-            else {
-                row = "<tr><td colspan='4'>\u8FD9\u4E2A\u5546\u54C1\u6CA1\u6709\u8D85\u503C\u4F18\u60E0\u5238</td></tr>";
-            }
-            $("#wandhi_table tbody").append(row);
-        };
-        TaoBaoService.prototype.InitTao = function () {
+        HistoryService.prototype.loader = function () {
             Core.appendCssContent(this.getHistoryCss());
+        };
+        HistoryService.prototype.run = function () {
+            this.injectHistory();
+        };
+        HistoryService.prototype.injectHistory = function () {
+            switch (this.site) {
+                case SiteEnum.TaoBao:
+                case SiteEnum.TMall:
+                    this.initHistoryTao();
+                    break;
+                case SiteEnum.JingDong:
+                    this.initHistoryJd();
+                    break;
+            }
+        };
+        HistoryService.prototype.initHistoryTao = function () {
             if ($("#J_DetailMeta").length) {
                 Core.appendTo("#J_DetailMeta", this.getHistoryHtml());
             }
             else {
                 Core.appendTo("#detail", this.getHistoryHtml() + "<br/>");
             }
+            this.InitPriceHistory();
         };
-        TaoBaoService.prototype.InitPriceHistory = function () {
+        HistoryService.prototype.initHistoryJd = function () {
+            if ($(".product-intro").length) {
+                Core.appendTo(".product-intro", this.getHistoryHtml());
+                this.InitPriceHistory();
+            }
+            else {
+                setTimeout(this.initHistoryJd, 2000);
+            }
+        };
+        HistoryService.prototype.InitPriceHistory = function () {
             var _this = this;
             $("#vip-plugin-outside").show();
             this.theme();
             this.chartMsg("\u5386\u53F2\u4EF7\u683C\u67E5\u8BE2\u4E2D");
-            Route.queryHistory(Runtime.url, function (data) {
+            Route.queryHistory(Runtime.url, this.site.toString(), function (data) {
                 var msg = "";
                 if (data.code) {
                     $(".vip-plugin-outside-chart-container").html("<div id=\"vip-plugin-outside-chart-container-line\"></div>");
@@ -851,16 +837,16 @@
                 _this.chartMsg(msg);
             });
         };
-        TaoBaoService.prototype.getHistoryHtml = function () {
+        HistoryService.prototype.getHistoryHtml = function () {
             return "<div id=\"vip-plugin-outside\">\n                    <div id=\"vip-plugin-outside-history\" class=\"vip-plugin-outside-history\">\n                        <div class=\"vip-plugin-outside-chart-container\"></div>\n                        <p class=\"vip-plugin-outside-history-tip\"></p>\n                    </div>    \n                </div>";
         };
-        TaoBaoService.prototype.getHistoryCss = function () {
+        HistoryService.prototype.getHistoryCss = function () {
             return "\n        #vip-plugin-outside {\n            border: 1px solid #eee;\n            margin: 0 auto;\n            position: relative;\n            clear: both;\n            display: none\n        }\n        #vip-plugin-outside .vip-plugin-outside-history .vip-plugin-outside-history-tip {\n            position: absolute;\n            margin: 0;\n            top: 50%;\n            left: 50%;\n            letter-spacing: 1px;\n            font-size: 15px;\n            transform: translateX(-50%) translateY(-50%)\n        }\n        #vip-plugin-outside .vip-plugin-outside-history ,#vip-plugin-outside-chart-body{\n            height: 300px;\n            overflow: hidden;\n            position: relative\n        }    \n        #vip-plugin-outside .vip-plugin-outside-history .vip-plugin-outside-chart-container,\n        #vip-plugin-outside-chart-container-line {\n            width: 100%;\n            height: 100%\n        }";
         };
-        TaoBaoService.prototype.chartMsg = function (msg) {
+        HistoryService.prototype.chartMsg = function (msg) {
             $(".vip-plugin-outside-history-tip").html(msg);
         };
-        TaoBaoService.prototype.getChartOption = function (data) {
+        HistoryService.prototype.getChartOption = function (data) {
             var _a, _b;
             var text = "\u5386\u53F2\u4F4E\u4EF7\uFF1A{red|\uFFE5" + data.min + "} ( {red|" + data.date + "} ) \u5206\u6790\uFF1A" + data.mark;
             var chartOption = new LinesOption();
@@ -975,7 +961,7 @@
             ];
             return chartOption;
         };
-        TaoBaoService.prototype.theme = function () {
+        HistoryService.prototype.theme = function () {
             var theme = {
                 color: [
                     '#2ec7c9', '#b6a2de', '#5ab1ef', '#ffb980', '#d87a80',
@@ -1231,6 +1217,59 @@
             };
             return theme;
         };
+        return HistoryService;
+    }(PluginBase));
+
+    var TaoBaoService = (function (_super) {
+        __extends(TaoBaoService, _super);
+        function TaoBaoService() {
+            var _this = _super !== null && _super.apply(this, arguments) || this;
+            _this.rules = new Map([
+                [SiteEnum.TaoBao, /taobao.com/i],
+                [SiteEnum.TMall, /tmall/i]
+            ]);
+            _this.UrlTag = "Wandhi_qLink";
+            return _this;
+        }
+        TaoBaoService.prototype.getRules = function () {
+            throw new Error("Method not implemented.");
+        };
+        TaoBaoService.prototype.loader = function () {
+            Core.appendCss("//cdn.wandhi.com/style/extenstion/hui.style.css");
+        };
+        TaoBaoService.prototype.run = function () {
+            this.init();
+            var h = new HistoryService();
+            h.linkTest() && h.Process();
+        };
+        TaoBaoService.prototype.init = function () {
+            var _this = this;
+            var _a;
+            var init = "<div id='wandhi_div'><table class='wandhi_tab' id='wandhi_table'><thead><tr><th><b style='cursor:pointer'>\u4F18\u60E0\u5238</b></th><th>\u5238\u540E</th><th>\u6709 \u6548 \u671F</th><th>\u64CD\u4F5C</th></tr></thead><tr><td colspan='4'>\u6B63\u5728\u67E5\u8BE2\u4F18\u60E0\u4FE1\u606F\uFF0C\u8BF7\u7A0D\u5019...</td></tr></table></div>";
+            $('#J_LinkBasket').parent().parent().prepend(init);
+            $('.J_LinkAdd').parent().parent().prepend(init);
+            if ((_a = this.rules.get(SiteEnum.TaoBao)) === null || _a === void 0 ? void 0 : _a.test(this.core.currentUrl())) {
+                $('#wandhi_table').addClass('wandhi_tab_taobao');
+            }
+            else {
+                $('#wandhi_table').addClass('wandhi_tab_tmall');
+            }
+            var url = this.apiRoot + "/tb/infos/" + this.core.getPar("id");
+            this.getData(url, function (data) { return _this.initElement(data); });
+        };
+        TaoBaoService.prototype.initElement = function (data) {
+            $("#wandhi_table tbody tr").remove();
+            var row = "";
+            if (data.code) {
+                data.data.forEach(function (e) {
+                    row += "<tr><td>" + e.quan_context + "</td><td>" + e.after_price + "</td><td>" + e.quan_time + "</td><td><b onclick=window.open(decodeURIComponent('" + e.quan_link + "')) style='cursor:pointer'>\u9886\u53D6</b></td></tr>";
+                });
+            }
+            else {
+                row = "<tr><td colspan='4'>\u8FD9\u4E2A\u5546\u54C1\u6CA1\u6709\u8D85\u503C\u4F18\u60E0\u5238</td></tr>";
+            }
+            $("#wandhi_table tbody").append(row);
+        };
         return TaoBaoService;
     }(PluginBase));
 
@@ -1244,6 +1283,8 @@
             return _this;
         }
         JdService.prototype.loader = function () {
+            var h = new HistoryService();
+            h.linkTest() && h.Process();
         };
         JdService.prototype.run = function () {
             var btn = "<a href=\"javascript:;\" class=\"btn-special1 btn-lg btn-yhj\"><span class=\"\">\u67E5\u8BE2\u4F18\u60E0\u5238</span></a>";
