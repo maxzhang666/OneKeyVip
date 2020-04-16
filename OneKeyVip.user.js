@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-04-13 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-04-16 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.1.4
+// @version      4.1.5
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍:1、Vip视频解析;2、一站式音乐搜索解决方案;3、bilibili视频封面获取;4、上学吧答案查询(接口偶尔抽风);5、商品历史价格展示(一次性告别虚假降价);6、优惠券查询
@@ -115,212 +115,10 @@
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     }
 
-    var Runtime = (function () {
-        function Runtime() {
-        }
-        Object.defineProperty(Runtime, "url", {
-            get: function () {
-                return window.location.href;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        return Runtime;
-    }());
-
-    var HttpRequest = (function () {
-        function HttpRequest(option) {
-            this.headers = new Map();
-            this.url = option.url;
-            this.method = option.methodType;
-            this.dataType = option.dataType;
-            this._option = option;
-        }
-        HttpRequest.prototype.onload = function (res) {
-            this._option.onSuccess(res);
-        };
-        HttpRequest.prototype.onerror = function () {
-            this.onerror();
-        };
-        HttpRequest.prototype.setQueryData = function (datas) {
-            if (datas instanceof FormData) {
-                this.data = datas;
-            }
-            else {
-                var fd = new FormData();
-                for (var i in datas) {
-                    fd.append(i, datas[i]);
-                }
-                this.data = fd;
-            }
-        };
-        Object.defineProperty(HttpRequest.prototype, "onLoad", {
-            get: function () {
-                return this.onSuccess;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        return HttpRequest;
-    }());
-    var AjaxOption = (function () {
-        function AjaxOption(_url, _methodType, _data, _success, _header) {
-            if (_methodType === void 0) { _methodType = "GET"; }
-            if (_header === void 0) { _header = new Map(); }
-            this.url = _url;
-            this.methodType = _methodType;
-            this.onSuccess = _success;
-            this.onError = _success;
-            this.data = _data;
-            this.headers = _header;
-        }
-        AjaxOption.prototype.getData = function () {
-            if (this.data instanceof FormData) {
-                return this.data;
-            }
-            else if (this.data instanceof Map) {
-                var fd_1 = new FormData();
-                this.data.forEach(function (v, k) {
-                    fd_1.append(k, v);
-                });
-                return fd_1;
-            }
-            else {
-                var fd = new FormData();
-                for (var i in this.data) {
-                    fd.append(i, this.data[i]);
-                }
-                return fd;
-            }
-        };
-        return AjaxOption;
-    }());
-
-    var Alert = (function () {
-        function Alert() {
-        }
-        Alert.open = function (titls, content, area, shade, offset, maxmin) {
-            if (area === void 0) { area = ['400px', '300px']; }
-            if (shade === void 0) { shade = 0; }
-            if (offset === void 0) { offset = "lb"; }
-            if (maxmin === void 0) { maxmin = true; }
-            return layer.open({
-                type: 1,
-                title: titls,
-                area: area,
-                shade: shade,
-                offset: offset,
-                maxmin: maxmin,
-                content: content
-            });
-        };
-        Alert.info = function (msg) {
-            return layer.msg(msg, { time: 2000 });
-        };
-        Alert.error = function (msg) {
-            return layer.msg(msg, { icon: 5, time: 2000 });
-        };
-        Alert.confim = function (title, msg, buttons, callback) {
-            return layer.open({
-                type: 1,
-                title: title || false,
-                closeBtn: true,
-                shade: 0.8,
-                id: 'LAY_layuipro',
-                resize: false,
-                btn: buttons,
-                btnAlign: 'c',
-                moveType: 1,
-                content: "<div style=\"padding: 20px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;\">" + msg + "</div>",
-                yes: function (index) {
-                    callback(index);
-                }
-            });
-        };
-        Alert.prompt = function (title, v, callback, size, type) {
-            if (type === void 0) { type = 0; }
-            layer.prompt({
-                title: title,
-                value: v,
-                formType: type,
-            }, function (v, i, ele) {
-                callback(v);
-                layer.close(i);
-            });
-        };
-        Alert.close = function (index) {
-            layer.close(index);
-        };
-        Alert.closeAll = function () {
-            layer.closeAll();
-        };
-        Alert.loading = function (style, _time, _shade) {
-            if (style === void 0) { style = 1; }
-            if (_time === void 0) { _time = 10; }
-            if (_shade === void 0) { _shade = 0.3; }
-            return layer.load(style, { shade: _shade, time: _time * 1000 });
-        };
-        return Alert;
-    }());
-
-    var Http = (function () {
-        function Http() {
-        }
-        Http.ajax = function (option) {
-            var rq = new HttpRequest(option);
-            option.headers.set('User-Agent', 'Mozilla/4.0 (compatible) Greasemonkey');
-            option.headers.set('Accept', 'application/atom+xml,application/xml,text/xml');
-            GM_xmlhttpRequest({
-                url: option.url,
-                method: option.methodType,
-                headers: option.headers,
-                data: option.getData(),
-                onload: function (res) {
-                    try {
-                        option.onSuccess && option.onSuccess(JSON.parse(res.responseText));
-                    }
-                    catch (error) {
-                        Alert.confim("", "                                        \n                        <h1>\u8BF7\u6C42\u5931\u8D25\uFF0C\u8BF7\u590D\u5236\u4E0B\u5217\u4FE1\u606F\u5411\u5F00\u53D1\u8005\u53CD\u9988\u95EE\u9898</h1><br>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u65E5\u5FD7\uFF1A</span><br>\n                        <p>" + error + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u8BE6\u60C5\uFF1A</span><br>\n                        <p>" + res.responseText + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u9875\u9762\uFF1A</span><br>\n                        <p>" + Runtime.url + "</p>\n                    ", ['去反馈', "\u5173\u95ED"], function (index) { Core.open("https://gitee.com/ixysy/OneKeyVip/issues"); });
-                        option.onSuccess && option.onSuccess(null);
-                    }
-                },
-                onerror: function (res) {
-                    Alert.confim("", "              \n                        <h1>\u8BF7\u6C42\u5931\u8D25\uFF0C\u8BF7\u590D\u5236\u4E0B\u5217\u4FE1\u606F\u5411\u5F00\u53D1\u8005\u53CD\u9988\u95EE\u9898</h1><br>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u8BE6\u60C5\uFF1A</span><br>\n                        <p>" + res.responseText + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u9875\u9762\uFF1A</span><br>\n                        <p>" + Runtime.url + "</p>                    \n                    ", ['去反馈', "\u5173\u95ED"], function (index) { Core.open("https://gitee.com/ixysy/OneKeyVip/issues"); });
-                    option.onError && option.onError(res);
-                }
-            });
-        };
-        Http.getData = function (url, callback) {
-            $.getJSON(url, function (d) {
-                callback(d);
-            });
-        };
-        Http.post = function (url, data) {
-            var index = Alert.loading();
-            var p = new Promise(function (resolve) {
-                Http.ajax(new AjaxOption(url, "POST", data, function (data) {
-                    Alert.close(index);
-                    resolve(data);
-                }));
-            }).finally(function () { return Alert.close(index); });
-            return p;
-        };
-        Http.get = function (url, data) {
-            var p = new Promise(function (resolve) {
-                Http.ajax(new AjaxOption(url, "GET", data, function (data) {
-                    resolve(data);
-                }));
-            });
-            return p;
-        };
-        return Http;
-    }());
-
     var Core = (function () {
         function Core() {
             this.topUrl = top.window.location.href;
             this.url = this.currentUrl();
-            this.http = new Http();
         }
         Core.appendTo = function (selecter, html) {
             $(selecter).append(html);
@@ -554,6 +352,19 @@
         return UrlHelper;
     }());
 
+    var Runtime = (function () {
+        function Runtime() {
+        }
+        Object.defineProperty(Runtime, "url", {
+            get: function () {
+                return window.location.href;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return Runtime;
+    }());
+
     var MusicService = (function (_super) {
         __extends(MusicService, _super);
         function MusicService() {
@@ -715,6 +526,194 @@
         return Config;
     }());
 
+    var HttpRequest = (function () {
+        function HttpRequest(option) {
+            this.headers = new Map();
+            this.url = option.url;
+            this.method = option.methodType;
+            this.dataType = option.dataType;
+            this._option = option;
+        }
+        HttpRequest.prototype.onload = function (res) {
+            this._option.onSuccess(res);
+        };
+        HttpRequest.prototype.onerror = function () {
+            this.onerror();
+        };
+        HttpRequest.prototype.setQueryData = function (datas) {
+            if (datas instanceof FormData) {
+                this.data = datas;
+            }
+            else {
+                var fd = new FormData();
+                for (var i in datas) {
+                    fd.append(i, datas[i]);
+                }
+                this.data = fd;
+            }
+        };
+        Object.defineProperty(HttpRequest.prototype, "onLoad", {
+            get: function () {
+                return this.onSuccess;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return HttpRequest;
+    }());
+    var AjaxOption = (function () {
+        function AjaxOption(_url, _methodType, _data, _success, _header) {
+            if (_methodType === void 0) { _methodType = "GET"; }
+            if (_header === void 0) { _header = new Map(); }
+            this.url = _url;
+            this.methodType = _methodType;
+            this.onSuccess = _success;
+            this.onError = _success;
+            this.data = _data;
+            this.headers = _header;
+        }
+        AjaxOption.prototype.getData = function () {
+            if (this.data instanceof FormData) {
+                return this.data;
+            }
+            else if (this.data instanceof Map) {
+                var fd_1 = new FormData();
+                this.data.forEach(function (v, k) {
+                    fd_1.append(k, v);
+                });
+                return fd_1;
+            }
+            else {
+                var fd = new FormData();
+                for (var i in this.data) {
+                    fd.append(i, this.data[i]);
+                }
+                return fd;
+            }
+        };
+        return AjaxOption;
+    }());
+
+    var Alert = (function () {
+        function Alert() {
+        }
+        Alert.open = function (titls, content, area, shade, offset, maxmin) {
+            if (area === void 0) { area = ['400px', '300px']; }
+            if (shade === void 0) { shade = 0; }
+            if (offset === void 0) { offset = "lb"; }
+            if (maxmin === void 0) { maxmin = true; }
+            return layer.open({
+                type: 1,
+                title: titls,
+                area: area,
+                shade: shade,
+                offset: offset,
+                maxmin: maxmin,
+                content: content
+            });
+        };
+        Alert.info = function (msg) {
+            return layer.msg(msg, { time: 2000 });
+        };
+        Alert.error = function (msg) {
+            return layer.msg(msg, { icon: 5, time: 2000 });
+        };
+        Alert.confim = function (title, msg, buttons, callback) {
+            return layer.open({
+                type: 1,
+                title: title || false,
+                closeBtn: true,
+                shade: 0.8,
+                id: 'LAY_layuipro',
+                resize: false,
+                btn: buttons,
+                btnAlign: 'c',
+                moveType: 1,
+                content: "<div style=\"padding: 20px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;\">" + msg + "</div>",
+                yes: function (index) {
+                    callback(index);
+                }
+            });
+        };
+        Alert.prompt = function (title, v, callback, size, type) {
+            if (type === void 0) { type = 0; }
+            layer.prompt({
+                title: title,
+                value: v,
+                formType: type,
+            }, function (v, i, ele) {
+                callback(v);
+                layer.close(i);
+            });
+        };
+        Alert.close = function (index) {
+            layer.close(index);
+        };
+        Alert.closeAll = function () {
+            layer.closeAll();
+        };
+        Alert.loading = function (style, _time, _shade) {
+            if (style === void 0) { style = 1; }
+            if (_time === void 0) { _time = 10; }
+            if (_shade === void 0) { _shade = 0.3; }
+            return layer.load(style, { shade: _shade, time: _time * 1000 });
+        };
+        return Alert;
+    }());
+
+    var Http = (function () {
+        function Http() {
+        }
+        Http.ajax = function (option) {
+            var rq = new HttpRequest(option);
+            option.headers.set('User-Agent', 'Mozilla/4.0 (compatible) Greasemonkey');
+            option.headers.set('Accept', 'application/atom+xml,application/xml,text/xml');
+            GM_xmlhttpRequest({
+                url: option.url,
+                method: option.methodType,
+                headers: option.headers,
+                data: option.getData(),
+                onload: function (res) {
+                    try {
+                        option.onSuccess && option.onSuccess(JSON.parse(res.responseText));
+                    }
+                    catch (error) {
+                        Alert.confim("", "                                        \n                        <h1>\u8BF7\u6C42\u5931\u8D25\uFF0C\u8BF7\u590D\u5236\u4E0B\u5217\u4FE1\u606F\u5411\u5F00\u53D1\u8005\u53CD\u9988\u95EE\u9898</h1><br>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u65E5\u5FD7\uFF1A</span><br>\n                        <p>" + error + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u8BE6\u60C5\uFF1A</span><br>\n                        <p>" + res.responseText + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u9875\u9762\uFF1A</span><br>\n                        <p>" + Runtime.url + "</p>\n                    ", ['去反馈', "\u5173\u95ED"], function (index) { Core.open("https://gitee.com/ixysy/OneKeyVip/issues"); });
+                        option.onSuccess && option.onSuccess(null);
+                    }
+                },
+                onerror: function (res) {
+                    Alert.confim("", "              \n                        <h1>\u8BF7\u6C42\u5931\u8D25\uFF0C\u8BF7\u590D\u5236\u4E0B\u5217\u4FE1\u606F\u5411\u5F00\u53D1\u8005\u53CD\u9988\u95EE\u9898</h1><br>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u8BE6\u60C5\uFF1A</span><br>\n                        <p>" + res.responseText + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u9875\u9762\uFF1A</span><br>\n                        <p>" + Runtime.url + "</p>                    \n                    ", ['去反馈', "\u5173\u95ED"], function (index) { Core.open("https://gitee.com/ixysy/OneKeyVip/issues"); });
+                    option.onError && option.onError(res);
+                }
+            });
+        };
+        Http.getData = function (url, callback) {
+            $.getJSON(url, function (d) {
+                callback(d);
+            });
+        };
+        Http.post = function (url, data) {
+            var index = Alert.loading();
+            var p = new Promise(function (resolve) {
+                Http.ajax(new AjaxOption(url, "POST", data, function (data) {
+                    Alert.close(index);
+                    resolve(data);
+                }));
+            }).finally(function () { return Alert.close(index); });
+            return p;
+        };
+        Http.get = function (url, data) {
+            var p = new Promise(function (resolve) {
+                Http.ajax(new AjaxOption(url, "GET", data, function (data) {
+                    resolve(data);
+                }));
+            });
+            return p;
+        };
+        return Http;
+    }());
+
     var Route = (function () {
         function Route() {
             this.queryTao = "";
@@ -766,7 +765,7 @@
                 callback(res);
             });
         };
-        Route.sbx = "http://www.shangxueba365.com/get1.php";
+        Route.sbx = "http://www.shangxueba365.com/api.php";
         Route.sxb_anhao = "http://www.lelunwen.com/e/action/ListInfo/?classid=45";
         Route.sxb_key = "sxb_anhao";
         Route.config = "/config/query";
