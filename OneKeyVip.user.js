@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-04-17 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-04-23 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.1.5
+// @version      4.1.6
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍:1、Vip视频解析;2、一站式音乐搜索解决方案;3、bilibili视频封面获取;4、上学吧答案查询(接口偶尔抽风);5、商品历史价格展示(一次性告别虚假降价);6、优惠券查询
@@ -66,6 +66,7 @@
 // @require      https://cdn.bootcss.com/sweetalert/2.1.2/sweetalert.min.js
 // @require      https://lib.baomitu.com/echarts/4.6.0/echarts.min.js
 // @require      https://lib.baomitu.com/layer/2.3/layer.js
+// @require      https://lib.baomitu.com/reflect-metadata/0.1.13/Reflect.min.js
 // @license      MIT
 // @grant        GM_setClipboard
 // @run-at       document-end
@@ -113,6 +114,17 @@
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    }
+
+    function __decorate(decorators, target, key, desc) {
+        var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+        if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+        else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+        return c > 3 && r && Object.defineProperty(target, key, r), r;
+    }
+
+    function __metadata(metadataKey, metadataValue) {
+        if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
     }
 
     var Core = (function () {
@@ -208,72 +220,6 @@
         return Core;
     }());
 
-    var PluginBase = (function () {
-        function PluginBase() {
-            this.core = new Core();
-            this.apiRoot = "https://api.wandhi.com/api";
-        }
-        PluginBase.prototype.linkTest = function (url) {
-            var _this = this;
-            if (!url) {
-                url = this.core.currentUrl();
-            }
-            var flag = false;
-            this.rules.forEach(function (v, k) {
-                if (v.test(url)) {
-                    flag = true;
-                    _this.site = k;
-                    return false;
-                }
-                return true;
-            });
-            return flag;
-        };
-        PluginBase.prototype.Process = function () {
-            this.loader();
-            this.run();
-        };
-        PluginBase.prototype.getData = function (url, callback) {
-            $.getJSON(url, function (d) {
-                callback(d);
-            });
-        };
-        return PluginBase;
-    }());
-
-    var SiteEnum;
-    (function (SiteEnum) {
-        SiteEnum["TaoBao"] = "TaoBao";
-        SiteEnum["TMall"] = "TMall";
-        SiteEnum["JingDong"] = "JingDong";
-        SiteEnum["IQiYi"] = "IQiYi";
-        SiteEnum["YouKu"] = "YouKu";
-        SiteEnum["LeShi"] = "LeShi";
-        SiteEnum["TuDou"] = "TuDou";
-        SiteEnum["Tencent_V"] = "Tencent_V";
-        SiteEnum["MangGuo"] = "MangGuo";
-        SiteEnum["SoHu"] = "SoHu";
-        SiteEnum["Acfun"] = "Acfun";
-        SiteEnum["BiliBili"] = "BiliBili";
-        SiteEnum["M1905"] = "M1905";
-        SiteEnum["PPTV"] = "PPTV";
-        SiteEnum["YinYueTai"] = "YinYueTai";
-        SiteEnum["WangYi"] = "WangYi";
-        SiteEnum["Tencent_M"] = "Tencent_M";
-        SiteEnum["KuGou"] = "KuGou";
-        SiteEnum["KuWo"] = "KuWo";
-        SiteEnum["XiaMi"] = "XiaMi";
-        SiteEnum["TaiHe"] = "TaiHe";
-        SiteEnum["QingTing"] = "QingTing";
-        SiteEnum["LiZhi"] = "LiZhi";
-        SiteEnum["MiGu"] = "MiGu";
-        SiteEnum["XiMaLaYa"] = "XiMaLaYa";
-        SiteEnum["SXB"] = "SXB";
-        SiteEnum["BDY"] = "BDY";
-        SiteEnum["BDY1"] = "BDY1";
-        SiteEnum["LZY"] = "LZY";
-    })(SiteEnum || (SiteEnum = {}));
-
     var Common;
     (function (Common) {
         var Menu = (function () {
@@ -334,171 +280,94 @@
         Common.Menu = Menu;
     })(Common || (Common = {}));
 
-    var UrlHelper = (function () {
-        function UrlHelper() {
+    var container = new Map();
+    var Container = (function () {
+        function Container() {
         }
-        UrlHelper.Bind = function (CssSelector, method, doc) {
-            $(CssSelector).click(function () {
-                debugger;
-                Core.openUrl($(this).data('key'));
+        Container.Registe = function (type, args) {
+            var className = this.processName(type.name);
+            container.set(className, window.Reflect.construct(type, this.buildParams(args)));
+            return container.get(className);
+        };
+        Container.buildParams = function (args) {
+            var para = [];
+            args === null || args === void 0 ? void 0 : args.map(function (item) {
+                para.push(item);
             });
+            return para;
         };
-        UrlHelper.urlEncode = function (url) {
-            return encodeURIComponent(url);
+        Container.processName = function (name) {
+            return name.toLowerCase();
         };
-        UrlHelper.urlDecode = function (url) {
-            return decodeURIComponent(url);
-        };
-        return UrlHelper;
-    }());
-
-    var Runtime = (function () {
-        function Runtime() {
-        }
-        Object.defineProperty(Runtime, "url", {
-            get: function () {
-                return window.location.href;
-            },
-            enumerable: true,
-            configurable: true
-        });
-        return Runtime;
-    }());
-
-    var MusicService = (function (_super) {
-        __extends(MusicService, _super);
-        function MusicService() {
-            var _this = _super.call(this) || this;
-            _this.rules = new Map([
-                [SiteEnum.WangYi, /163(.*)song/i],
-                [SiteEnum.Tencent_M, /y.QQ(.*)song/i],
-                [SiteEnum.KuGou, /kugou.com\/song\/*/i],
-                [SiteEnum.KuWo, /kuwo(.*)yinyue/i],
-                [SiteEnum.XiaMi, /xiami/i],
-                [SiteEnum.TaiHe, /taihe.com/i],
-                [SiteEnum.QingTing, /qingting/i],
-                [SiteEnum.LiZhi, /lizhi/i],
-                [SiteEnum.MiGu, /migu/i],
-                [SiteEnum.XiMaLaYa, /ximalaya/i],
-            ]);
-            _this.menu = new Common.Menu();
-            return _this;
-        }
-        MusicService.prototype.loader = function () {
-            Core.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
-        };
-        MusicService.prototype.run = function () {
-            this.menu.Init([
-                { title: "\u7535\u5F71\u641C\u7D22", show: "\u7535\u5F71<br>\u641C\u7D22", type: "search" },
-                { title: "\u97F3\u4E50\u4E0B\u8F7D", show: "\u97F3\u4E50<br>\u4E0B\u8F7D", type: "process" },
-                { title: "\u7EDD\u4E16\u597D\u5238", show: "\u7EDD\u4E16<br>\u597D\u5238", type: "tb" },
-                { title: "\u4EAC\u4E1C\u597D\u5238", show: "\u4EAC\u4E1C<br>\u597D\u5238", type: "jd" }
-            ], this._OnClick);
-        };
-        MusicService.prototype._OnClick = function () {
-            var _rules = this.rules;
-            $('body').on('click', '[data-cat=process]', function () {
-                if (/ximalaya/i.test(Runtime.url)) {
-                    if (__INITIAL_STATE__ && __INITIAL_STATE__.SoundDetailPage != undefined) {
-                        Core.open('http://music.wandhi.com/?id=' + __INITIAL_STATE__.SoundDetailPage.trackId + '&type=ximalaya');
-                    }
-                    else {
-                        layer.closeAll();
-                        var html = '<div style="padding:0px 50px 0px 50px;"><ul class="sound-list dOi2">';
-                        $.each(__INITIAL_STATE__.AlbumDetailTrackList.tracksInfo.tracks, function (index, item) { html += '<li class="dOi2"><a href="http://music.wandhi.com/?id=' + item.trackId + '&type=ximalaya" target="_blank">' + item.title + '</a></li>'; });
-                        html += '</ul></div>';
-                        layer.open({ type: 1, area: ['auto', '30%'], title: "\u4E3A\u4F60\u627E\u5230\u4E86\u8FD9\u4E9B\u66F2\u76EE\u89E3\u6790\u2026\u2026\u4EC0\u4E48\uFF1F\u6211\u4E11\uFF1F\u4EE5\u540E\u518D\u8BF4\u5427", shade: 0.6, maxmin: false, anim: 2, content: html });
-                    }
-                }
-                else if (/taihe.com/i.test(Runtime.url)) {
-                    Core.open('http://music.wandhi.com/?url=' + UrlHelper.urlEncode(Runtime.url.replace("taihe", "baidu")));
-                }
-                else {
-                    Core.open('http://music.wandhi.com/?url=' + UrlHelper.urlEncode(Runtime.url));
-                }
-            });
-            $('body').on('click', '[data-cat=search]', function () {
-                Core.open('http://tv.wandhi.com/');
-            });
-            $('body').on('click', '[data-cat=tb]', function () {
-                Core.open('https://link.zhihu.com/?target=https://api.wandhi.com/goto/DUVAFQgZTEEVFAQcDhYKSFkDDh9XCl8=');
-            });
-            $('body').on('click', '[data-cat=jd]', function () {
-                Core.open('https://link.zhihu.com/?target=https://api.wandhi.com/goto/DUVAFQgZTFwGTVhHDxkLV1pIBl5Z');
-            });
-        };
-        return MusicService;
-    }(PluginBase));
-
-    var WandhiInjection = (function () {
-        function WandhiInjection(plugins) {
-            this.plugins = new Array();
-            if (plugins) {
-                this.plugins = plugins;
+        Container.Require = function (type) {
+            var _this = this;
+            var name = this.processName(type.name);
+            if (container.has(name)) {
+                return container.get(name);
             }
+            var classParams = Reflect.getMetadata(METADATA_PARAMS, type);
+            var args;
+            if (classParams === null || classParams === void 0 ? void 0 : classParams.length) {
+                args = classParams.map(function (item) {
+                    return _this.Require(item);
+                });
+            }
+            return this.Registe(type, args);
+        };
+        Container.define = function (target, key) {
+            var _a;
+            var classType = Reflect.getMetadata(METADATA_TYPE, target, key);
+            var desc = (_a = Object.getOwnPropertyDescriptor(target, key)) !== null && _a !== void 0 ? _a : { writable: true, configurable: true };
+            desc.value = this.Require(classType);
+            Object.defineProperty(target, key, desc);
+        };
+        return Container;
+    }());
+    var METADATA_TYPE = "design:type";
+    var METADATA_PARAMS = "design:paramtypes";
+    function WandhiAuto(target, key) {
+        Container.define(target, key);
+    }
+
+    var PluginBase = (function () {
+        function PluginBase() {
         }
-        WandhiInjection.prototype.Init = function () {
-            this.plugins.every(function (element) {
-                if (element.linkTest()) {
-                    element.Process();
+        PluginBase.prototype.linkTest = function (url) {
+            var _this = this;
+            if (!url) {
+                url = this.core.currentUrl();
+            }
+            var flag = false;
+            this.rules.forEach(function (v, k) {
+                if (v.test(url)) {
+                    flag = true;
+                    _this.site = k;
                     return false;
                 }
                 return true;
             });
+            return flag;
         };
-        return WandhiInjection;
+        PluginBase.prototype.Process = function () {
+            this.loader();
+            this.run();
+        };
+        PluginBase.prototype.getData = function (url, callback) {
+            $.getJSON(url, function (d) {
+                callback(d);
+            });
+        };
+        var _a, _b;
+        __decorate([
+            WandhiAuto,
+            __metadata("design:type", typeof (_a = typeof Core !== "undefined" && Core) === "function" ? _a : Object)
+        ], PluginBase.prototype, "core", void 0);
+        __decorate([
+            WandhiAuto,
+            __metadata("design:type", typeof (_b = typeof Common !== "undefined" && Common.Menu) === "function" ? _b : Object)
+        ], PluginBase.prototype, "menu", void 0);
+        return PluginBase;
     }());
-
-    var MovieService = (function (_super) {
-        __extends(MovieService, _super);
-        function MovieService() {
-            var _this = _super.call(this) || this;
-            _this.rules = new Map([
-                [SiteEnum.YouKu, /youku/i],
-                [SiteEnum.IQiYi, /iqiyi/i],
-                [SiteEnum.LeShi, /le.com/i],
-                [SiteEnum.Tencent_V, /v.qq/i],
-                [SiteEnum.TuDou, /tudou/i],
-                [SiteEnum.MangGuo, /mgtv/i],
-                [SiteEnum.SoHu, /sohu/i],
-                [SiteEnum.Acfun, /acfun/i],
-                [SiteEnum.BiliBili, /bilibili/i],
-                [SiteEnum.M1905, /1905/i],
-                [SiteEnum.PPTV, /pptv/i],
-                [SiteEnum.YinYueTai, /yinyuetai/],
-            ]);
-            _this.menu = new Common.Menu();
-            return _this;
-        }
-        MovieService.prototype.loader = function () {
-            if (typeof ($) === 'undefined') {
-                Core.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js");
-            }
-        };
-        MovieService.prototype.run = function () {
-            this.menu.Init([
-                { title: "\u7535\u5F71\u641C\u7D22", show: "\u7535\u5F71<br>\u641C\u7D22", type: "search" },
-                { title: "\u89C6\u9891\u89E3\u6790", show: "\u89C6\u9891<br>\u89E3\u6790", type: "process" },
-                { title: "\u7EDD\u4E16\u597D\u5238", show: "\u7EDD\u4E16<br>\u597D\u5238", type: "tb" },
-                { title: "\u4EAC\u4E1C\u597D\u5238", show: "\u4EAC\u4E1C<br>\u597D\u5238", type: "jd" }
-            ], this._onClick);
-        };
-        MovieService.prototype._onClick = function () {
-            $('body').on('click', '[data-cat=process]', function () {
-                Core.open('http://tv.wandhi.com/go.html?url=' + encodeURIComponent(window.location.href));
-            });
-            $('body').on('click', '[data-cat=search]', function () {
-                Core.open('http://tv.wandhi.com/');
-            });
-            $('body').on('click', '[data-cat=tb]', function () {
-                Core.open('http://sign.wandhi.com/jump.php?target=https://api.wandhi.com/goto/DUVAFQgZTEEVFAQcDhYKSFkDDh9XCl8=');
-            });
-            $('body').on('click', '[data-cat=jd]', function () {
-                Core.open('http://sign.wandhi.com/jump.php?target=https://api.wandhi.com/goto/DUVAFQgZTFwGTVhHDxkLV1pIBl5Z');
-            });
-        };
-        return MovieService;
-    }(PluginBase));
 
     var LinesOption = (function () {
         function LinesOption() {
@@ -524,6 +393,19 @@
             GM_setValue(key, v);
         };
         return Config;
+    }());
+
+    var Runtime = (function () {
+        function Runtime() {
+        }
+        Object.defineProperty(Runtime, "url", {
+            get: function () {
+                return window.location.href;
+            },
+            enumerable: true,
+            configurable: true
+        });
+        return Runtime;
     }());
 
     var HttpRequest = (function () {
@@ -665,26 +547,32 @@
         function Http() {
         }
         Http.ajax = function (option) {
-            var rq = new HttpRequest(option);
+            var _a, _b;
             option.headers.set('User-Agent', 'Mozilla/4.0 (compatible) Greasemonkey');
             option.headers.set('Accept', 'application/atom+xml,application/xml,text/xml');
+            option.headers.set('version', Config.env.script.version);
+            option.headers.set('auth', (_a = Config.env.script.author) !== null && _a !== void 0 ? _a : '');
+            option.headers.set('namespace', (_b = Config.env.script.namespace) !== null && _b !== void 0 ? _b : '');
             GM_xmlhttpRequest({
                 url: option.url,
                 method: option.methodType,
                 headers: option.headers,
                 data: option.getData(),
+                timeout: 1000 * 10,
                 onload: function (res) {
+                    var _a, _b;
                     try {
-                        option.onSuccess && option.onSuccess(JSON.parse(res.responseText));
+                        (_a = option.onSuccess) === null || _a === void 0 ? void 0 : _a.call(option, JSON.parse(res.responseText));
                     }
                     catch (error) {
-                        Alert.confim("", "                                        \n                        <h1>\u8BF7\u6C42\u5931\u8D25\uFF0C\u8BF7\u590D\u5236\u4E0B\u5217\u4FE1\u606F\u5411\u5F00\u53D1\u8005\u53CD\u9988\u95EE\u9898</h1><br>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u65E5\u5FD7\uFF1A</span><br>\n                        <p>" + error + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u8BE6\u60C5\uFF1A</span><br>\n                        <p>" + res.responseText + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u9875\u9762\uFF1A</span><br>\n                        <p>" + Runtime.url + "</p>\n                    ", ['去反馈', "\u5173\u95ED"], function (index) { Core.open("https://gitee.com/ixysy/OneKeyVip/issues"); });
-                        option.onSuccess && option.onSuccess(null);
+                        Alert.confim("", "                                        \n                        <h1>\u8BF7\u6C42\u5931\u8D25\uFF0C\u8BF7\u590D\u5236\u4E0B\u5217\u4FE1\u606F\u5411\u5F00\u53D1\u8005\u53CD\u9988\u95EE\u9898</h1><br>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u65E5\u5FD7\uFF1A</span><br>\n                        <p>" + error + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u8BE6\u60C5\uFF1A</span><br>\n                        <p>" + escape(res.responseText) + "</p>                        \n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u73AF\u5883\u4FE1\u606F\uFF1A</span><br>\n                        <p>\u6CB9\u7334\u7248\u672C\uFF1A" + Config.env.version + "</p>\n                        <p>\u811A\u672C\u7248\u672C\uFF1A" + Config.env.script.version + "</p>\n                        <p>Url\uFF1A" + Runtime.url + "</p>\n                    ", ['去反馈', "\u5173\u95ED"], function (index) { Core.open("https://gitee.com/ixysy/OneKeyVip/issues"); });
+                        (_b = option.onSuccess) === null || _b === void 0 ? void 0 : _b.call(option, null);
                     }
                 },
                 onerror: function (res) {
-                    Alert.confim("", "              \n                        <h1>\u8BF7\u6C42\u5931\u8D25\uFF0C\u8BF7\u590D\u5236\u4E0B\u5217\u4FE1\u606F\u5411\u5F00\u53D1\u8005\u53CD\u9988\u95EE\u9898</h1><br>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u8BE6\u60C5\uFF1A</span><br>\n                        <p>" + res.responseText + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u9875\u9762\uFF1A</span><br>\n                        <p>" + Runtime.url + "</p>                    \n                    ", ['去反馈', "\u5173\u95ED"], function (index) { Core.open("https://gitee.com/ixysy/OneKeyVip/issues"); });
-                    option.onError && option.onError(res);
+                    var _a;
+                    Alert.confim("", "              \n                        <h1>\u8BF7\u6C42\u5931\u8D25\uFF0C\u8BF7\u590D\u5236\u4E0B\u5217\u4FE1\u606F\u5411\u5F00\u53D1\u8005\u53CD\u9988\u95EE\u9898</h1><br>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u8BE6\u60C5\uFF1A</span><br>\n                        <p>" + escape(res.responseText) + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u73AF\u5883\u4FE1\u606F\uFF1A</span><br>\n                        <p>\u6CB9\u7334\u7248\u672C\uFF1A" + Config.env.version + "</p>\n                        <p>\u811A\u672C\u7248\u672C\uFF1A" + Config.env.script.version + "</p>\n                        <p>Url\uFF1A" + Runtime.url + "</p>           \n                    ", ['去反馈', "\u5173\u95ED"], function (index) { Core.open("https://gitee.com/ixysy/OneKeyVip/issues"); });
+                    (_a = option.onError) === null || _a === void 0 ? void 0 : _a.call(option, res);
                 }
             });
         };
@@ -773,6 +661,39 @@
         Route.bili = "/tools/bili";
         return Route;
     }());
+
+    var SiteEnum;
+    (function (SiteEnum) {
+        SiteEnum["TaoBao"] = "TaoBao";
+        SiteEnum["TMall"] = "TMall";
+        SiteEnum["JingDong"] = "JingDong";
+        SiteEnum["IQiYi"] = "IQiYi";
+        SiteEnum["YouKu"] = "YouKu";
+        SiteEnum["LeShi"] = "LeShi";
+        SiteEnum["TuDou"] = "TuDou";
+        SiteEnum["Tencent_V"] = "Tencent_V";
+        SiteEnum["MangGuo"] = "MangGuo";
+        SiteEnum["SoHu"] = "SoHu";
+        SiteEnum["Acfun"] = "Acfun";
+        SiteEnum["BiliBili"] = "BiliBili";
+        SiteEnum["M1905"] = "M1905";
+        SiteEnum["PPTV"] = "PPTV";
+        SiteEnum["YinYueTai"] = "YinYueTai";
+        SiteEnum["WangYi"] = "WangYi";
+        SiteEnum["Tencent_M"] = "Tencent_M";
+        SiteEnum["KuGou"] = "KuGou";
+        SiteEnum["KuWo"] = "KuWo";
+        SiteEnum["XiaMi"] = "XiaMi";
+        SiteEnum["TaiHe"] = "TaiHe";
+        SiteEnum["QingTing"] = "QingTing";
+        SiteEnum["LiZhi"] = "LiZhi";
+        SiteEnum["MiGu"] = "MiGu";
+        SiteEnum["XiMaLaYa"] = "XiMaLaYa";
+        SiteEnum["SXB"] = "SXB";
+        SiteEnum["BDY"] = "BDY";
+        SiteEnum["BDY1"] = "BDY1";
+        SiteEnum["LZY"] = "LZY";
+    })(SiteEnum || (SiteEnum = {}));
 
     var HistoryService = (function (_super) {
         __extends(HistoryService, _super);
@@ -1238,8 +1159,7 @@
         };
         TaoBaoService.prototype.run = function () {
             this.init();
-            var h = new HistoryService();
-            h.linkTest() && h.Process();
+            this.historyService.linkTest() && this.historyService.Process();
         };
         TaoBaoService.prototype.init = function () {
             var _this = this;
@@ -1253,7 +1173,7 @@
             else {
                 $('#wandhi_table').addClass('wandhi_tab_tmall');
             }
-            var url = this.apiRoot + "/tb/infos/" + this.core.getPar("id");
+            var url = Route.apiRoot + "/tb/infos/" + this.core.getPar("id");
             this.getData(url, function (data) { return _this.initElement(data); });
         };
         TaoBaoService.prototype.initElement = function (data) {
@@ -1269,88 +1189,12 @@
             }
             $("#wandhi_table tbody").append(row);
         };
+        var _a;
+        __decorate([
+            WandhiAuto,
+            __metadata("design:type", typeof (_a = typeof HistoryService !== "undefined" && HistoryService) === "function" ? _a : Object)
+        ], TaoBaoService.prototype, "historyService", void 0);
         return TaoBaoService;
-    }(PluginBase));
-
-    var JdService = (function (_super) {
-        __extends(JdService, _super);
-        function JdService() {
-            var _this = _super.call(this) || this;
-            _this.rules = new Map([
-                [SiteEnum.JingDong, /item.jd/i]
-            ]);
-            return _this;
-        }
-        JdService.prototype.loader = function () {
-            var h = new HistoryService();
-            h.linkTest() && h.Process();
-        };
-        JdService.prototype.run = function () {
-            var btn = "<a href=\"javascript:;\" class=\"btn-special1 btn-lg btn-yhj\"><span class=\"\">\u67E5\u8BE2\u4F18\u60E0\u5238</span></a>";
-            var keywords = $(".sku-name").text().trim();
-            $("#choose-btns").prepend(btn);
-            $(".btn-yhj").on('click', function () {
-                Core.open("http://jd.huizhek.com/?ah=total&kw=" + encodeURIComponent(keywords));
-            });
-        };
-        return JdService;
-    }(PluginBase));
-
-    var StuService = (function (_super) {
-        __extends(StuService, _super);
-        function StuService() {
-            var _this = _super.call(this) || this;
-            _this.rules = new Map([
-                [SiteEnum.SXB, /shangxueba.com\/ask\/.*html/i]
-            ]);
-            _this.menu = new Common.Menu();
-            return _this;
-        }
-        StuService.prototype.loader = function () {
-            if (typeof ($) === 'undefined') {
-                Core.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js");
-            }
-            Core.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
-        };
-        StuService.prototype.run = function () {
-            this.menu.Init([
-                { title: "\u67E5\u770B\u7B54\u6848", show: "\u67E5\u770B<br>\u7B54\u6848", type: "search" },
-                { title: "\u6253\u8D4F\u4F5C\u8005", show: "\u6253\u8D4F<br>\u4F5C\u8005", type: "process" },
-                { title: "\u7EDD\u4E16\u597D\u5238", show: "\u7EDD\u4E16<br>\u597D\u5238", type: "tb" },
-                { title: "\u4EAC\u4E1C\u597D\u5238", show: "\u4EAC\u4E1C<br>\u597D\u5238", type: "jd" }
-            ], this._onClick);
-        };
-        StuService.prototype._onClick = function () {
-            $('body').on('click', '[data-cat=process]', function () {
-                layer.open({ type: 1, title: "\u8BF7\u6211\u559D\u4E00\u676F", shadeClose: true, area: '800px', content: '<img src="https://i.loli.net/2019/05/14/5cda672add6f594934.jpg">' });
-            });
-            $('body').on('click', '[data-cat=search]', function () {
-                Route.querySbx($("#Hidd_id").val(), function (data) {
-                    if (data.status) {
-                        Alert.open("\u7B54\u6848", data.msg);
-                        Route.sbxFeedback(dataid, data.msg);
-                    }
-                    else if (data.msg == 'wronganhao') {
-                        Alert.prompt("口令错误，请将弹出的页面中的口令填入后重试！", Config.get("sxb_anhao", ""), function (v) {
-                            Config.set("sxb_anhao", v);
-                        }, 4);
-                        Core.open("http://www.lelunwen.com/e/action/ListInfo/?classid=45");
-                    }
-                    else {
-                        Alert.confim("", "\u8981\u4E0D\u8981\u8DF3\u8F6C\u5230\u67E5\u8BE2\u9875\u770B\u770B\uFF1F", ["\u597D\u7684\u8D70\u8D77", "\u8FD8\u662F\u7B97\u4E86"], function (index) {
-                            Core.open(Runtime.url.replace('shangxueba', "shangxueba365"));
-                        });
-                    }
-                });
-            });
-            $('body').on('click', '[data-cat=tb]', function () {
-                Core.open('http://sign.wandhi.com/jump.php?target=https://api.wandhi.com/goto/DUVAFQgZTEEVFAQcDhYKSFkDDh9XCl8=');
-            });
-            $('body').on('click', '[data-cat=jd]', function () {
-                Core.open('http://sign.wandhi.com/jump.php?target=https://api.wandhi.com/goto/DUVAFQgZTFwGTVhHDxkLV1pIBl5Z');
-            });
-        };
-        return StuService;
     }(PluginBase));
 
     var BiliImgService = (function (_super) {
@@ -1386,14 +1230,248 @@
         return BiliImgService;
     }(PluginBase));
 
-    var app = new WandhiInjection([
-        new BiliImgService,
-        new MovieService(),
-        new TaoBaoService(),
-        new JdService(),
-        new MusicService(),
-        new StuService()
-    ]);
-    app.Init();
+    var MovieService = (function (_super) {
+        __extends(MovieService, _super);
+        function MovieService() {
+            var _this = _super.call(this) || this;
+            _this.rules = new Map([
+                [SiteEnum.YouKu, /youku/i],
+                [SiteEnum.IQiYi, /iqiyi/i],
+                [SiteEnum.LeShi, /le.com/i],
+                [SiteEnum.Tencent_V, /v.qq/i],
+                [SiteEnum.TuDou, /tudou/i],
+                [SiteEnum.MangGuo, /mgtv/i],
+                [SiteEnum.SoHu, /sohu/i],
+                [SiteEnum.Acfun, /acfun/i],
+                [SiteEnum.BiliBili, /bilibili/i],
+                [SiteEnum.M1905, /1905/i],
+                [SiteEnum.PPTV, /pptv/i],
+                [SiteEnum.YinYueTai, /yinyuetai/],
+            ]);
+            _this.menu = new Common.Menu();
+            return _this;
+        }
+        MovieService.prototype.loader = function () {
+            if (typeof ($) === 'undefined') {
+                Core.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js");
+            }
+        };
+        MovieService.prototype.run = function () {
+            this.menu.Init([
+                { title: "\u7535\u5F71\u641C\u7D22", show: "\u7535\u5F71<br>\u641C\u7D22", type: "search" },
+                { title: "\u89C6\u9891\u89E3\u6790", show: "\u89C6\u9891<br>\u89E3\u6790", type: "process" },
+                { title: "\u7EDD\u4E16\u597D\u5238", show: "\u7EDD\u4E16<br>\u597D\u5238", type: "tb" },
+                { title: "\u4EAC\u4E1C\u597D\u5238", show: "\u4EAC\u4E1C<br>\u597D\u5238", type: "jd" }
+            ], this._onClick);
+        };
+        MovieService.prototype._onClick = function () {
+            $('body').on('click', '[data-cat=process]', function () {
+                Core.open('http://tv.wandhi.com/go.html?url=' + encodeURIComponent(window.location.href));
+            });
+            $('body').on('click', '[data-cat=search]', function () {
+                Core.open('http://tv.wandhi.com/');
+            });
+            $('body').on('click', '[data-cat=tb]', function () {
+                Core.open('http://sign.wandhi.com/jump.php?target=https://api.wandhi.com/goto/DUVAFQgZTEEVFAQcDhYKSFkDDh9XCl8=');
+            });
+            $('body').on('click', '[data-cat=jd]', function () {
+                Core.open('http://sign.wandhi.com/jump.php?target=https://api.wandhi.com/goto/DUVAFQgZTFwGTVhHDxkLV1pIBl5Z');
+            });
+        };
+        return MovieService;
+    }(PluginBase));
+
+    var JdService = (function (_super) {
+        __extends(JdService, _super);
+        function JdService() {
+            var _this = _super.call(this) || this;
+            _this.rules = new Map([
+                [SiteEnum.JingDong, /item.jd/i]
+            ]);
+            return _this;
+        }
+        JdService.prototype.loader = function () {
+            this.historyService.linkTest() && this.historyService.Process();
+        };
+        JdService.prototype.run = function () {
+            var btn = "<a href=\"javascript:;\" class=\"btn-special1 btn-lg btn-yhj\"><span class=\"\">\u67E5\u8BE2\u4F18\u60E0\u5238</span></a>";
+            var keywords = $(".sku-name").text().trim();
+            $("#choose-btns").prepend(btn);
+            $(".btn-yhj").on('click', function () {
+                Core.open("http://jd.huizhek.com/?ah=total&kw=" + encodeURIComponent(keywords));
+            });
+        };
+        var _a;
+        __decorate([
+            WandhiAuto,
+            __metadata("design:type", typeof (_a = typeof HistoryService !== "undefined" && HistoryService) === "function" ? _a : Object)
+        ], JdService.prototype, "historyService", void 0);
+        return JdService;
+    }(PluginBase));
+
+    var UrlHelper = (function () {
+        function UrlHelper() {
+        }
+        UrlHelper.Bind = function (CssSelector, method, doc) {
+            $(CssSelector).click(function () {
+                debugger;
+                Core.openUrl($(this).data('key'));
+            });
+        };
+        UrlHelper.urlEncode = function (url) {
+            return encodeURIComponent(url);
+        };
+        UrlHelper.urlDecode = function (url) {
+            return decodeURIComponent(url);
+        };
+        return UrlHelper;
+    }());
+
+    var MusicService = (function (_super) {
+        __extends(MusicService, _super);
+        function MusicService() {
+            var _this = _super.call(this) || this;
+            _this.rules = new Map([
+                [SiteEnum.WangYi, /163(.*)song/i],
+                [SiteEnum.Tencent_M, /y.QQ(.*)song/i],
+                [SiteEnum.KuGou, /kugou.com\/song\/*/i],
+                [SiteEnum.KuWo, /kuwo(.*)yinyue/i],
+                [SiteEnum.XiaMi, /xiami/i],
+                [SiteEnum.TaiHe, /taihe.com/i],
+                [SiteEnum.QingTing, /qingting/i],
+                [SiteEnum.LiZhi, /lizhi/i],
+                [SiteEnum.MiGu, /migu/i],
+                [SiteEnum.XiMaLaYa, /ximalaya/i],
+            ]);
+            _this.menu = new Common.Menu();
+            return _this;
+        }
+        MusicService.prototype.loader = function () {
+            Core.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
+        };
+        MusicService.prototype.run = function () {
+            this.menu.Init([
+                { title: "\u7535\u5F71\u641C\u7D22", show: "\u7535\u5F71<br>\u641C\u7D22", type: "search" },
+                { title: "\u97F3\u4E50\u4E0B\u8F7D", show: "\u97F3\u4E50<br>\u4E0B\u8F7D", type: "process" },
+                { title: "\u7EDD\u4E16\u597D\u5238", show: "\u7EDD\u4E16<br>\u597D\u5238", type: "tb" },
+                { title: "\u4EAC\u4E1C\u597D\u5238", show: "\u4EAC\u4E1C<br>\u597D\u5238", type: "jd" }
+            ], this._OnClick);
+        };
+        MusicService.prototype._OnClick = function () {
+            var _rules = this.rules;
+            $('body').on('click', '[data-cat=process]', function () {
+                if (/ximalaya/i.test(Runtime.url)) {
+                    if (__INITIAL_STATE__ && __INITIAL_STATE__.SoundDetailPage != undefined) {
+                        Core.open('http://music.wandhi.com/?id=' + __INITIAL_STATE__.SoundDetailPage.trackId + '&type=ximalaya');
+                    }
+                    else {
+                        layer.closeAll();
+                        var html = '<div style="padding:0px 50px 0px 50px;"><ul class="sound-list dOi2">';
+                        $.each(__INITIAL_STATE__.AlbumDetailTrackList.tracksInfo.tracks, function (index, item) { html += '<li class="dOi2"><a href="http://music.wandhi.com/?id=' + item.trackId + '&type=ximalaya" target="_blank">' + item.title + '</a></li>'; });
+                        html += '</ul></div>';
+                        layer.open({ type: 1, area: ['auto', '30%'], title: "\u4E3A\u4F60\u627E\u5230\u4E86\u8FD9\u4E9B\u66F2\u76EE\u89E3\u6790\u2026\u2026\u4EC0\u4E48\uFF1F\u6211\u4E11\uFF1F\u4EE5\u540E\u518D\u8BF4\u5427", shade: 0.6, maxmin: false, anim: 2, content: html });
+                    }
+                }
+                else if (/taihe.com/i.test(Runtime.url)) {
+                    Core.open('http://music.wandhi.com/?url=' + UrlHelper.urlEncode(Runtime.url.replace("taihe", "baidu")));
+                }
+                else {
+                    Core.open('http://music.wandhi.com/?url=' + UrlHelper.urlEncode(Runtime.url));
+                }
+            });
+            $('body').on('click', '[data-cat=search]', function () {
+                Core.open('http://tv.wandhi.com/');
+            });
+            $('body').on('click', '[data-cat=tb]', function () {
+                Core.open('https://link.zhihu.com/?target=https://api.wandhi.com/goto/DUVAFQgZTEEVFAQcDhYKSFkDDh9XCl8=');
+            });
+            $('body').on('click', '[data-cat=jd]', function () {
+                Core.open('https://link.zhihu.com/?target=https://api.wandhi.com/goto/DUVAFQgZTFwGTVhHDxkLV1pIBl5Z');
+            });
+        };
+        return MusicService;
+    }(PluginBase));
+
+    var StuService = (function (_super) {
+        __extends(StuService, _super);
+        function StuService() {
+            var _this = _super.call(this) || this;
+            _this.rules = new Map([
+                [SiteEnum.SXB, /shangxueba.com\/ask\/.*html/i]
+            ]);
+            return _this;
+        }
+        StuService.prototype.loader = function () {
+            if (typeof ($) === 'undefined') {
+                Core.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js");
+            }
+            Core.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
+        };
+        StuService.prototype.run = function () {
+            this.menu.Init([
+                { title: "\u67E5\u770B\u7B54\u6848", show: "\u67E5\u770B<br>\u7B54\u6848", type: "search" },
+                { title: "\u6253\u8D4F\u4F5C\u8005", show: "\u6253\u8D4F<br>\u4F5C\u8005", type: "process" },
+                { title: "\u7EDD\u4E16\u597D\u5238", show: "\u7EDD\u4E16<br>\u597D\u5238", type: "tb" },
+                { title: "\u4EAC\u4E1C\u597D\u5238", show: "\u4EAC\u4E1C<br>\u597D\u5238", type: "jd" }
+            ], this._onClick);
+        };
+        StuService.prototype._onClick = function () {
+            $('body').on('click', '[data-cat=process]', function () {
+                layer.open({ type: 1, title: "\u8BF7\u6211\u559D\u4E00\u676F", shadeClose: true, area: '800px', content: '<img src="https://i.loli.net/2019/05/14/5cda672add6f594934.jpg">' });
+            });
+            $('body').on('click', '[data-cat=search]', function () {
+                Route.querySbx($("#Hidd_id").val(), function (data) {
+                    if (data.status) {
+                        Alert.open("\u7B54\u6848", data.msg);
+                        Route.sbxFeedback(dataid, data.msg);
+                    }
+                    else if (data.msg == 'wronganhao') {
+                        Alert.prompt("\u53E3\u4EE4\u9519\u8BEF\uFF0C\u8BF7\u5C06\u5F39\u51FA\u7684\u9875\u9762\u4E2D\u7684\u53E3\u4EE4\u586B\u5165\u540E\u91CD\u8BD5\uFF01", Config.get("sxb_anhao", ""), function (v) {
+                            Config.set("sxb_anhao", v);
+                        }, 4);
+                        Core.open("http://www.lelunwen.com/e/action/ListInfo/?classid=45");
+                    }
+                    else {
+                        Alert.confim("", "\u8981\u4E0D\u8981\u8DF3\u8F6C\u5230\u67E5\u8BE2\u9875\u770B\u770B\uFF1F", ["\u597D\u7684\u8D70\u8D77", "\u8FD8\u662F\u7B97\u4E86"], function (index) {
+                            Core.open(Runtime.url.replace('shangxueba', "shangxueba365"));
+                        });
+                    }
+                });
+            });
+            $('body').on('click', '[data-cat=tb]', function () {
+                Core.open('http://sign.wandhi.com/jump.php?target=https://api.wandhi.com/goto/DUVAFQgZTEEVFAQcDhYKSFkDDh9XCl8=');
+            });
+            $('body').on('click', '[data-cat=jd]', function () {
+                Core.open('http://sign.wandhi.com/jump.php?target=https://api.wandhi.com/goto/DUVAFQgZTFwGTVhHDxkLV1pIBl5Z');
+            });
+        };
+        return StuService;
+    }(PluginBase));
+
+    var WandhiInjection = (function () {
+        function WandhiInjection() {
+            this.plugins = new Array();
+            this.plugins = [
+                Container.Require(BiliImgService),
+                Container.Require(MovieService),
+                Container.Require(TaoBaoService),
+                Container.Require(JdService),
+                Container.Require(MusicService),
+                Container.Require(StuService)
+            ];
+        }
+        WandhiInjection.prototype.Init = function () {
+            this.plugins.every(function (element) {
+                if (element.linkTest()) {
+                    element.Process();
+                    return false;
+                }
+                return true;
+            });
+        };
+        return WandhiInjection;
+    }());
+
+    Container.Require(WandhiInjection).Init();
 
 }());
