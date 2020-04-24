@@ -658,7 +658,7 @@
             var api = Config.get('sxb_api');
             if (!api) {
                 this.queryValue('sxb_api', function (res) {
-                    Config.set('sxb_api', res.data);
+                    Config.set('sxb_api', res.data, 1000 * 60 * 60 * 24);
                     Http.post(res.data, new Map([
                         ["docinfo", "https://www.shangxueba.com/ask/" + id + ".html"],
                         ["anhao", anhao]
