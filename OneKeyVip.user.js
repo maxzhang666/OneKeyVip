@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-04-23 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-04-24 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.1.6
+// @version      4.1.7
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍:1、Vip视频解析;2、一站式音乐搜索解决方案;3、bilibili视频封面获取;4、上学吧答案查询(接口偶尔抽风);5、商品历史价格展示(一次性告别虚假降价);6、优惠券查询
@@ -387,10 +387,29 @@
         });
         Config.get = function (key, de) {
             if (de === void 0) { de = ""; }
-            return GM_getValue(key, de);
+            var objStr = GM_getValue(this.encode(key), de);
+            if (objStr) {
+                var obj = JSON.parse(objStr);
+                if (obj.exp == -1 || obj.exp > new Date().getTime()) {
+                    return obj.value;
+                }
+            }
+            return de;
         };
-        Config.set = function (key, v) {
-            GM_setValue(key, v);
+        Config.set = function (key, v, exp) {
+            if (exp === void 0) { exp = -1; }
+            var obj = {
+                key: key,
+                value: v,
+                exp: exp == -1 ? exp : new Date().getTime() + exp
+            };
+            GM_setValue(this.encode(key), JSON.stringify(obj));
+        };
+        Config.decode = function (str) {
+            return atob(str);
+        };
+        Config.encode = function (str) {
+            return btoa(str);
         };
         return Config;
     }());
@@ -547,7 +566,7 @@
         function Http() {
         }
         Http.ajax = function (option) {
-            var _a, _b;
+            var _a, _b, _c, _d;
             option.headers.set('User-Agent', 'Mozilla/4.0 (compatible) Greasemonkey');
             option.headers.set('Accept', 'application/atom+xml,application/xml,text/xml');
             option.headers.set('version', Config.env.script.version);
@@ -556,7 +575,11 @@
             GM_xmlhttpRequest({
                 url: option.url,
                 method: option.methodType,
-                headers: option.headers,
+                headers: {
+                    'version': Config.env.script.version,
+                    'auth': (_c = Config.env.script.author) !== null && _c !== void 0 ? _c : '',
+                    'namespace': (_d = Config.env.script.namespace) !== null && _d !== void 0 ? _d : '',
+                },
                 data: option.getData(),
                 timeout: 1000 * 10,
                 onload: function (res) {
@@ -565,13 +588,13 @@
                         (_a = option.onSuccess) === null || _a === void 0 ? void 0 : _a.call(option, JSON.parse(res.responseText));
                     }
                     catch (error) {
-                        Alert.confim("", "                                        \n                        <h1>\u8BF7\u6C42\u5931\u8D25\uFF0C\u8BF7\u590D\u5236\u4E0B\u5217\u4FE1\u606F\u5411\u5F00\u53D1\u8005\u53CD\u9988\u95EE\u9898</h1><br>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u65E5\u5FD7\uFF1A</span><br>\n                        <p>" + error + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u8BE6\u60C5\uFF1A</span><br>\n                        <p>" + escape(res.responseText) + "</p>                        \n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u73AF\u5883\u4FE1\u606F\uFF1A</span><br>\n                        <p>\u6CB9\u7334\u7248\u672C\uFF1A" + Config.env.version + "</p>\n                        <p>\u811A\u672C\u7248\u672C\uFF1A" + Config.env.script.version + "</p>\n                        <p>Url\uFF1A" + Runtime.url + "</p>\n                    ", ['去反馈', "\u5173\u95ED"], function (index) { Core.open("https://gitee.com/ixysy/OneKeyVip/issues"); });
+                        Alert.confim("", "                                        \n                        <h1>\u8BF7\u6C42\u5931\u8D25\uFF0C\u8BF7\u590D\u5236\u4E0B\u5217\u4FE1\u606F\u5411\u5F00\u53D1\u8005\u53CD\u9988\u95EE\u9898</h1><br>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u65E5\u5FD7\uFF1A</span><br>\n                        <p>" + error + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u8BE6\u60C5\uFF1A</span><br>\n                        <p>" + escape(res.responseText) + "</p>                        \n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u73AF\u5883\u4FE1\u606F\uFF1A</span><br>\n                        <p>\u6CB9\u7334\u7248\u672C\uFF1A" + Config.env.version + "</p>\n                        <p>\u811A\u672C\u7248\u672C\uFF1A" + Config.env.script.version + "</p>\n                        <p>Url\uFF1A" + Runtime.url + "</p>\n                    ", ['去反馈', "\u5173\u95ED"], function () { Core.open("https://gitee.com/ixysy/OneKeyVip/issues"); });
                         (_b = option.onSuccess) === null || _b === void 0 ? void 0 : _b.call(option, null);
                     }
                 },
                 onerror: function (res) {
                     var _a;
-                    Alert.confim("", "              \n                        <h1>\u8BF7\u6C42\u5931\u8D25\uFF0C\u8BF7\u590D\u5236\u4E0B\u5217\u4FE1\u606F\u5411\u5F00\u53D1\u8005\u53CD\u9988\u95EE\u9898</h1><br>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u8BE6\u60C5\uFF1A</span><br>\n                        <p>" + escape(res.responseText) + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u73AF\u5883\u4FE1\u606F\uFF1A</span><br>\n                        <p>\u6CB9\u7334\u7248\u672C\uFF1A" + Config.env.version + "</p>\n                        <p>\u811A\u672C\u7248\u672C\uFF1A" + Config.env.script.version + "</p>\n                        <p>Url\uFF1A" + Runtime.url + "</p>           \n                    ", ['去反馈', "\u5173\u95ED"], function (index) { Core.open("https://gitee.com/ixysy/OneKeyVip/issues"); });
+                    Alert.confim("", "              \n                        <h1>\u8BF7\u6C42\u5931\u8D25\uFF0C\u8BF7\u590D\u5236\u4E0B\u5217\u4FE1\u606F\u5411\u5F00\u53D1\u8005\u53CD\u9988\u95EE\u9898</h1><br>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u8BE6\u60C5\uFF1A</span><br>\n                        <p>" + escape(res.responseText) + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u73AF\u5883\u4FE1\u606F\uFF1A</span><br>\n                        <p>\u6CB9\u7334\u7248\u672C\uFF1A" + Config.env.version + "</p>\n                        <p>\u811A\u672C\u7248\u672C\uFF1A" + Config.env.script.version + "</p>\n                        <p>Url\uFF1A" + Runtime.url + "</p>           \n                    ", ['去反馈', "\u5173\u95ED"], function () { Core.open("https://gitee.com/ixysy/OneKeyVip/issues"); });
                     (_a = option.onError) === null || _a === void 0 ? void 0 : _a.call(option, res);
                 }
             });
@@ -632,10 +655,22 @@
             ]), function () { });
         };
         Route.query365 = function (id, anhao, callback) {
-            Http.post(Route.sbx, new Map([
-                ["docinfo", "https://www.shangxueba.com/ask/" + id + ".html"],
-                ["anhao", anhao]
-            ])).then(function (res) { callback(res); });
+            var api = Config.get('sxb_api');
+            if (!api) {
+                this.queryValue('sxb_api', function (res) {
+                    Config.set('sxb_api', res.data);
+                    Http.post(res.data, new Map([
+                        ["docinfo", "https://www.shangxueba.com/ask/" + id + ".html"],
+                        ["anhao", anhao]
+                    ]));
+                });
+            }
+            else {
+                Http.post(api, new Map([
+                    ["docinfo", "https://www.shangxueba.com/ask/" + id + ".html"],
+                    ["anhao", anhao]
+                ])).then(function (res) { callback(res); });
+            }
         };
         Route.queryValue = function (key, callback) {
             this.baseApi(Route.config, new Map([
@@ -653,7 +688,6 @@
                 callback(res);
             });
         };
-        Route.sbx = "http://www.shangxueba365.com/api.php";
         Route.sxb_anhao = "http://www.lelunwen.com/e/action/ListInfo/?classid=45";
         Route.sxb_key = "sxb_anhao";
         Route.config = "/config/query";
