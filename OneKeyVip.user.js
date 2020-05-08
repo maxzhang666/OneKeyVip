@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-04-24 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-05-08 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.1.7
+// @version      4.1.8
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍:1、Vip视频解析;2、一站式音乐搜索解决方案;3、bilibili视频封面获取;4、上学吧答案查询(接口偶尔抽风);5、商品历史价格展示(一次性告别虚假降价);6、优惠券查询
@@ -88,18 +88,18 @@
     'use strict';
 
     /*! *****************************************************************************
-    Copyright (c) Microsoft Corporation. All rights reserved.
-    Licensed under the Apache License, Version 2.0 (the "License"); you may not use
-    this file except in compliance with the License. You may obtain a copy of the
-    License at http://www.apache.org/licenses/LICENSE-2.0
+    Copyright (c) Microsoft Corporation.
 
-    THIS CODE IS PROVIDED ON AN *AS IS* BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-    KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION ANY IMPLIED
-    WARRANTIES OR CONDITIONS OF TITLE, FITNESS FOR A PARTICULAR PURPOSE,
-    MERCHANTABLITY OR NON-INFRINGEMENT.
+    Permission to use, copy, modify, and/or distribute this software for any
+    purpose with or without fee is hereby granted.
 
-    See the Apache Version 2.0 License for specific language governing permissions
-    and limitations under the License.
+    THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+    REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+    AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+    INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+    LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+    OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+    PERFORMANCE OF THIS SOFTWARE.
     ***************************************************************************** */
     /* global Reflect, Promise */
 
@@ -734,7 +734,8 @@
         function HistoryService() {
             var _this = _super !== null && _super.apply(this, arguments) || this;
             _this.rules = new Map([
-                [SiteEnum.TaoBao, /detail.tmall.com\/item.htm/i],
+                [SiteEnum.TMall, /detail.tmall.com\/item.htm/i],
+                [SiteEnum.TaoBao, /item.taobao.com/i],
                 [SiteEnum.JingDong, /item.jd.com\/[0-9]*.html/i],
             ]);
             return _this;
@@ -1466,7 +1467,7 @@
                         Core.open("http://www.lelunwen.com/e/action/ListInfo/?classid=45");
                     }
                     else {
-                        Alert.confim("", "\u8981\u4E0D\u8981\u8DF3\u8F6C\u5230\u67E5\u8BE2\u9875\u770B\u770B\uFF1F", ["\u597D\u7684\u8D70\u8D77", "\u8FD8\u662F\u7B97\u4E86"], function (index) {
+                        Alert.confim("", "\u8981\u4E0D\u8981\u8DF3\u8F6C\u5230\u67E5\u8BE2\u9875\u770B\u770B\uFF1F", ["\u597D\u7684\u8D70\u8D77", "\u8FD8\u662F\u7B97\u4E86"], function () {
                             Core.open(Runtime.url.replace('shangxueba', "shangxueba365"));
                         });
                     }
