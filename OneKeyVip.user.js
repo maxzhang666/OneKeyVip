@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-05-08 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-05-11 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.1.8
+// @version      4.1.9
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
-// @description  功能介绍:1、Vip视频解析;2、一站式音乐搜索解决方案;3、bilibili视频封面获取;4、上学吧答案查询(接口偶尔抽风);5、商品历史价格展示(一次性告别虚假降价);6、优惠券查询
+// @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、上学吧答案查询(接口偶尔抽风)；5、商品历史价格展示(一次性告别虚假降价)；6、优惠券查询
 // @author       MaxZhang
 // @icon         http://www.wandhi.com//favicon.ico
 // @include      *://m.youku.com/v*
@@ -1245,23 +1245,32 @@
             Core.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
         };
         BiliImgService.prototype.run = function () {
-            if ($(".video-data").length) {
-                setTimeout(function () {
-                    $(".video-data").last().append(BiliImgService.btn);
-                    $('body').on('click', '#findimg', function () {
-                        Route.queryBiliImg(function (res) {
-                            if (res.code) {
-                                Alert.open("\u5C01\u9762\u9171", "<img src=\"" + res.data + "\">");
-                            }
-                            else {
-                                Alert.error("\u54CE\u54DF\u6CA1\u627E\u5230\u5C01\u9762\u54E6\uFF0C\u8981\u4E0D\u8DDF\u4F5C\u8005\u62A5\u544A\u4E00\u4E0B\uFF1F");
-                            }
-                        });
-                    });
-                }, 5000);
-            }
+            this.addBtn();
         };
-        BiliImgService.btn = "\n    <span id=\"findimg\" style=\"\n    background-color: #fb7199;\n    color: white;\n    font-size: 1rem;\n    text-align: center;\n    margin-left: 1rem;\n    padding: 0.5rem;\n    cursor: pointer;\n    border-radius: 1rem;\n    \">\n        \u83B7\u53D6\u5C01\u9762\n    </span>";
+        BiliImgService.prototype.addBtn = function () {
+            var _this = this;
+            setTimeout(function () {
+                if ($(".video-data").length) {
+                    if ($(".bilibili-player-video-info-people-number")) {
+                        $(".video-data").last().append(BiliImgService.btn);
+                        $('body').on('click', '#findimg', function () {
+                            Route.queryBiliImg(function (res) {
+                                if (res.code) {
+                                    Alert.open("\u5C01\u9762\u9171", "<img src=\"" + res.data + "\" style=\"width: 705px;height: 400px;\">", ['725px', '400px']);
+                                }
+                                else {
+                                    Alert.error("\u54CE\u54DF\u6CA1\u627E\u5230\u5C01\u9762\u54E6\uFF0C\u8981\u4E0D\u8DDF\u4F5C\u8005\u62A5\u544A\u4E00\u4E0B\uFF1F");
+                                }
+                            });
+                        });
+                    }
+                    else {
+                        _this.addBtn();
+                    }
+                }
+            }, 5000);
+        };
+        BiliImgService.btn = "\n    <span id=\"findimg\" style=\"\n    background-color: #fb7199;\n    color: white;\n    font-size: 1rem;\n    text-align: center;\n    margin-left: 1rem;\n    padding:0.5rem;\n    cursor: pointer;\n    border-radius: 1rem;\n    \">\n        \u83B7\u53D6\u5C01\u9762\n    </span>";
         return BiliImgService;
     }(PluginBase));
 
