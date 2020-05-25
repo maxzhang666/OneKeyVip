@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-05-11 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-05-25 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.1.9
+// @version      4.2.0
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、上学吧答案查询(接口偶尔抽风)；5、商品历史价格展示(一次性告别虚假降价)；6、优惠券查询
@@ -352,11 +352,6 @@
             this.loader();
             this.run();
         };
-        PluginBase.prototype.getData = function (url, callback) {
-            $.getJSON(url, function (d) {
-                callback(d);
-            });
-        };
         var _a, _b;
         __decorate([
             WandhiAuto,
@@ -382,7 +377,7 @@
             get: function () {
                 return GM_info;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         Config.get = function (key, de) {
@@ -421,7 +416,7 @@
             get: function () {
                 return window.location.href;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         return Runtime;
@@ -457,7 +452,7 @@
             get: function () {
                 return this.onSuccess;
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
         return HttpRequest;
@@ -633,9 +628,14 @@
             get: function () {
                 return "https://api.wandhi.com/api";
             },
-            enumerable: true,
+            enumerable: false,
             configurable: true
         });
+        Route.baseApi = function (api, data, callback) {
+            Http.post(Route.apiRoot + api, data).then(function (res) {
+                callback(res);
+            });
+        };
         Route.querySbx = function (id, callback) {
             var _this = this;
             if (Config.get(this.sxb_key, "") !== "") {
@@ -683,16 +683,15 @@
         Route.queryBiliImg = function (callback) {
             this.baseApi(this.bili, new Map([['url', Runtime.url]]), callback);
         };
-        Route.baseApi = function (api, data, callback) {
-            Http.post(Route.apiRoot + api, data).then(function (res) {
-                callback(res);
-            });
+        Route.queryCoupons = function (itemId, callback) {
+            this.baseApi(this.coupons, new Map([['id', itemId]]), callback);
         };
         Route.sxb_anhao = "http://www.lelunwen.com/e/action/ListInfo/?classid=45";
         Route.sxb_key = "sxb_anhao";
         Route.config = "/config/query";
         Route.history = "/history/";
         Route.bili = "/tools/bili";
+        Route.coupons = "/tb/infos/";
         return Route;
     }());
 
@@ -1208,8 +1207,7 @@
             else {
                 $('#wandhi_table').addClass('wandhi_tab_tmall');
             }
-            var url = Route.apiRoot + "/tb/infos/" + this.core.getPar("id");
-            this.getData(url, function (data) { return _this.initElement(data); });
+            Route.queryCoupons(this.core.getPar('id'), function (data) { return _this.initElement(data); });
         };
         TaoBaoService.prototype.initElement = function (data) {
             $("#wandhi_table tbody tr").remove();
