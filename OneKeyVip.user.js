@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-05-25 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-05-27 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.2.0
+// @version      4.2.1
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、上学吧答案查询(接口偶尔抽风)；5、商品历史价格展示(一次性告别虚假降价)；6、优惠券查询
@@ -1249,7 +1249,7 @@
             var _this = this;
             setTimeout(function () {
                 if ($(".video-data").length) {
-                    if ($(".bilibili-player-video-info-people-number")) {
+                    if ($(".bilibili-player-video-info-people-number") && ($('.coin').text().trim() !== "--")) {
                         $(".video-data").last().append(BiliImgService.btn);
                         $('body').on('click', '#findimg', function () {
                             Route.queryBiliImg(function (res) {
@@ -1266,7 +1266,7 @@
                         _this.addBtn();
                     }
                 }
-            }, 5000);
+            }, 1000);
         };
         BiliImgService.btn = "\n    <span id=\"findimg\" style=\"\n    background-color: #fb7199;\n    color: white;\n    font-size: 1rem;\n    text-align: center;\n    margin-left: 1rem;\n    padding:0.5rem;\n    cursor: pointer;\n    border-radius: 1rem;\n    \">\n        \u83B7\u53D6\u5C01\u9762\n    </span>";
         return BiliImgService;
@@ -1470,6 +1470,7 @@
                     else if (data.msg == 'wronganhao') {
                         Alert.prompt("\u53E3\u4EE4\u9519\u8BEF\uFF0C\u8BF7\u5C06\u5F39\u51FA\u7684\u9875\u9762\u4E2D\u7684\u53E3\u4EE4\u586B\u5165\u540E\u91CD\u8BD5\uFF01", Config.get("sxb_anhao", ""), function (v) {
                             Config.set("sxb_anhao", v);
+                            Alert.info("\u8BF7\u518D\u6B21\u70B9\u51FB\u67E5\u770B\u7B54\u6848\u6309\u94AE");
                         }, 4);
                         Core.open("http://www.lelunwen.com/e/action/ListInfo/?classid=45");
                     }
