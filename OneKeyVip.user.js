@@ -67,6 +67,8 @@
 // @require      https://lib.baomitu.com/echarts/4.6.0/echarts.min.js
 // @require      https://lib.baomitu.com/layer/2.3/layer.js
 // @require      https://lib.baomitu.com/reflect-metadata/0.1.13/Reflect.min.js
+// @require      https://lib.baomitu.com/vue/2.6.11/vue.min.js
+// @require      https://lib.baomitu.com/vuex/3.1.3/vuex.min.js
 // @license      MIT
 // @grant        GM_setClipboard
 // @run-at       document-end
@@ -84,8 +86,13 @@
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
 // ==/UserScript==
-(function () {
-    'use strict';
+(function (global, factory) {
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('vue'), require('reflect-metadata')) :
+    typeof define === 'function' && define.amd ? define(['vue', 'reflect-metadata'], factory) :
+    (global = global || self, factory(global.Vue));
+}(this, (function (Vue) { 'use strict';
+
+    Vue = Vue && Object.prototype.hasOwnProperty.call(Vue, 'default') ? Vue['default'] : Vue;
 
     /*! *****************************************************************************
     Copyright (c) Microsoft Corporation.
@@ -126,6 +133,101 @@
     function __metadata(metadataKey, metadataValue) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
     }
+
+    var Toast = (function () {
+        function Toast(msg, title, type) {
+            this.creationTime = new Date;
+            this.message = msg;
+            this.type = type;
+            this.title = title;
+            this.duration = 3e3;
+            this.randomKey = Math.floor(Math.random() * (Number.MAX_SAFE_INTEGER + 1));
+        }
+        Toast.prototype.show = function () {
+            var _this = this;
+            Toast.containerVM.cards.splice(0, 0, this);
+            if (this.duration !== undefined && this.duration != -1) {
+                setTimeout(function () { return _this.dismiss(); }, this.duration);
+            }
+        };
+        Toast.prototype.dismiss = function () {
+            if (Toast.containerVM.cards.includes(this)) {
+                Toast.containerVM.cards.splice(Toast.containerVM.cards.indexOf(this), 1);
+            }
+        };
+        Object.defineProperty(Toast.prototype, "element", {
+            get: function () {
+                return $(".toast-card[data-key='" + this.key + "']");
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(Toast.prototype, "key", {
+            get: function () {
+                return this.creationTime.toISOString() + ("[" + this.randomKey + "]");
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(Toast, "containerVM", {
+            get: function () {
+                if (!this.element) {
+                    Toast.createToastContainer();
+                }
+                return this.element;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Toast.createToastContainer = function () {
+            if (!document.querySelector(".toast-card-container")) {
+                document.body.insertAdjacentHTML("beforeend", "<transition-group class=\"toast-card-container\" name=\"toast-card-container\" tag=\"div\">\n                    <toast-card v-for=\"card of cards\" :data-key=\"card.key\" :key=\"card.key\" :card=\"card\"></toast-card>\n                </transition-group>");
+                document.body.insertAdjacentHTML("afterend", "<style>.toast-card-container{--card-min-width:240px;--card-min-width-negative:-240px;position:fixed;left:0;bottom:0;display:flex;flex-direction:column-reverse;align-items:start;padding-left:16px;z-index:100001;pointer-events:none;overflow:hidden;width:100%;height:100%;transition:.2s ease-out}.toast-card-container *{pointer-events:initial;transition:.2s ease-out}.toast-card.toast-card-container-enter,.toast-card.toast-card-container-leave-to{opacity:0;transform:translateX(var(--card-min-width-negative))}.toast-card{background:#fff;min-width:var(--card-min-width);max-width:60vw;min-height:96px;margin:8px 0;box-shadow:rgba(0,0,0,.2) 0 4px 8px 0;transform-origin:left;overflow:hidden;display:flex;flex-direction:column;border-left-style:solid;transition:.3s cubic-bezier(.18,.89,.32,1.28);position:relative;border-left-width:0;padding-left:var(--corner-radius);border-radius:var(--corner-radius)}.toast-card.toast-card-container-leave-active{position:absolute;transition:.3s cubic-bezier(.6,-.28,.74,.05)}.toast-card-header{display:flex;align-items:center}.toast-card-title{font-size:18px;color:#000;opacity:.5;margin:16px;font-weight:700;flex:1 1 auto}.toast-card-dismiss{height:24px;width:24px;flex:0 0 auto;padding:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:.2s ease-out;transform-origin:center;opacity:.5;box-sizing:content-box}.toast-card-dismiss:hover{transform:scale(1.2)}.toast-card-dismiss:active{transform:scale(1.1)}.toast-card-message{color:#000;font-size:14px;margin:0 16px 16px;white-space:pre-wrap;display:flex;align-items:center;line-height:1.5;flex-wrap:wrap;word-break:break-all;max-height:200px;overflow:auto}.toast-card.toast-default{border-left-color:#444}.toast-card.toast-error{border-left-color:#f44336}.toast-card.toast-info{border-left-color:#2196f3}.toast-card.toast-success{border-left-color:#8bc34a}.toast-card .toast-card-border{position:absolute;height:100%;width:4px;border-radius:var(--corner-radius);height:calc(100% - 10px);width:var(--corner-radius);top:5px;left:0}.toast-card.toast-default .toast-card-border{background-color:#444}.toast-card.toast-error .toast-card-border{background-color:#f44336}.toast-card.toast-info .toast-card-border{background-color:#2196f3}.toast-card.toast-success .toast-card-border{background-color:#8bc34a}.toast-card .link,.toast-card span{display:inline-block;padding:4px 6px;margin:0 2px;background-color:#8882;text-decoration:none;color:#000;transition:.2s ease-out;border-radius:var(--corner-radius)}.toast-card .link:hover{background-color:#8883}.toast-card .link:active{background-color:#8884}.toast-card .download-link{color:inherit!important;text-decoration:underline;word-break:break-all}@keyframes loading{0%,100%{top:0;left:50%}25%{top:50%;left:100%}50%{top:100%;left:50%}75%{top:50%;left:0}}.toast-card .loading{width:14px;height:14px;display:inline-block;margin-right:14px;position:relative}.toast-card .loading::after{content:\"\";width:10px;height:10px;background-color:#8884;border-radius:50%;display:block;transform:translateX(-50%) translateY(-50%);position:absolute;top:0;left:50%;animation:1s cubic-bezier(.22,.61,.36,1) infinite loading}</style>");
+                this.element = new Vue({
+                    el: ".toast-card-container",
+                    components: {
+                        "toast-card": {
+                            props: ["card"],
+                            template: "<div class=\"toast-card icons-enabled visible\" :class=\"'toast-' + card.type\">\n                            <div class=\"toast-card-border\"></div>\n                            <div class=\"toast-card-header\">\n                                <h1 class=\"toast-card-title\">{{card.title}}</h1>\n                                <div class=\"toast-card-dismiss\" @click=\"card.dismiss()\">\n                                    <svg style=\"width:22px;height:22px\" viewBox=\"0 0 24 24\">\n                                        <path d=\"M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z\" />\n                                    </svg>\n                                </div>\n                            </div>\n                        <div class=\"toast-card-message\" v-html=\"card.message\"></div>\n                        </div>"
+                        }
+                    },
+                    data: {
+                        cards: []
+                    }
+                });
+            }
+        };
+        Toast.internalShow = function (msg, title, time, e) {
+            var n = new Toast(msg, title, e);
+            n.duration = time;
+            n.show();
+            return n;
+        };
+        Toast.show = function (msg, title, time) {
+            if (time === void 0) { time = -1; }
+            return this.internalShow(msg, title, time, ToastType.Default);
+        };
+        Toast.info = function (msg, title, time) {
+            if (time === void 0) { time = -1; }
+            return this.internalShow(msg, title, time, ToastType.Info);
+        };
+        Toast.success = function (msg, title, time) {
+            if (time === void 0) { time = -1; }
+            return this.internalShow(msg, title, time, ToastType.Success);
+        };
+        Toast.error = function (msg, title, time) {
+            if (time === void 0) { time = -1; }
+            return this.internalShow(msg, title, time, ToastType.Error);
+        };
+        return Toast;
+    }());
+    var ToastType;
+    (function (ToastType) {
+        ToastType["Default"] = "default";
+        ToastType["Info"] = "info";
+        ToastType["Success"] = "success";
+        ToastType["Error"] = "error";
+    })(ToastType || (ToastType = {}));
 
     var Core = (function () {
         function Core() {
@@ -331,7 +433,16 @@
 
     var PluginBase = (function () {
         function PluginBase() {
+            var _this = this;
+            this._unique = true;
+            this.Process = function () {
+                _this.loader();
+                _this.run();
+            };
         }
+        PluginBase.prototype.unique = function () {
+            return this._unique;
+        };
         PluginBase.prototype.linkTest = function (url) {
             var _this = this;
             if (!url) {
@@ -348,10 +459,6 @@
             });
             return flag;
         };
-        PluginBase.prototype.Process = function () {
-            this.loader();
-            this.run();
-        };
         var _a, _b;
         __decorate([
             WandhiAuto,
@@ -363,6 +470,58 @@
         ], PluginBase.prototype, "menu", void 0);
         return PluginBase;
     }());
+
+    var SiteEnum;
+    (function (SiteEnum) {
+        SiteEnum["All"] = "All";
+        SiteEnum["TaoBao"] = "TaoBao";
+        SiteEnum["TMall"] = "TMall";
+        SiteEnum["JingDong"] = "JingDong";
+        SiteEnum["IQiYi"] = "IQiYi";
+        SiteEnum["YouKu"] = "YouKu";
+        SiteEnum["LeShi"] = "LeShi";
+        SiteEnum["TuDou"] = "TuDou";
+        SiteEnum["Tencent_V"] = "Tencent_V";
+        SiteEnum["MangGuo"] = "MangGuo";
+        SiteEnum["SoHu"] = "SoHu";
+        SiteEnum["Acfun"] = "Acfun";
+        SiteEnum["BiliBili"] = "BiliBili";
+        SiteEnum["M1905"] = "M1905";
+        SiteEnum["PPTV"] = "PPTV";
+        SiteEnum["YinYueTai"] = "YinYueTai";
+        SiteEnum["WangYi"] = "WangYi";
+        SiteEnum["Tencent_M"] = "Tencent_M";
+        SiteEnum["KuGou"] = "KuGou";
+        SiteEnum["KuWo"] = "KuWo";
+        SiteEnum["XiaMi"] = "XiaMi";
+        SiteEnum["TaiHe"] = "TaiHe";
+        SiteEnum["QingTing"] = "QingTing";
+        SiteEnum["LiZhi"] = "LiZhi";
+        SiteEnum["MiGu"] = "MiGu";
+        SiteEnum["XiMaLaYa"] = "XiMaLaYa";
+        SiteEnum["SXB"] = "SXB";
+        SiteEnum["BDY"] = "BDY";
+        SiteEnum["BDY1"] = "BDY1";
+        SiteEnum["LZY"] = "LZY";
+    })(SiteEnum || (SiteEnum = {}));
+
+    var UpdateService = (function (_super) {
+        __extends(UpdateService, _super);
+        function UpdateService() {
+            var _this = _super.call(this) || this;
+            _this.rules = new Map([
+                [SiteEnum.All, /(.*)/i]
+            ]);
+            _this._unique = false;
+            return _this;
+        }
+        UpdateService.prototype.loader = function () {
+        };
+        UpdateService.prototype.run = function () {
+            Toast.show("\u68C0\u67E5\u66F4\u65B0\u6765\u5566", "\u81EA\u52A8\u66F4\u65B0");
+        };
+        return UpdateService;
+    }(PluginBase));
 
     var LinesOption = (function () {
         function LinesOption() {
@@ -694,39 +853,6 @@
         Route.coupons = "/tb/infos/";
         return Route;
     }());
-
-    var SiteEnum;
-    (function (SiteEnum) {
-        SiteEnum["TaoBao"] = "TaoBao";
-        SiteEnum["TMall"] = "TMall";
-        SiteEnum["JingDong"] = "JingDong";
-        SiteEnum["IQiYi"] = "IQiYi";
-        SiteEnum["YouKu"] = "YouKu";
-        SiteEnum["LeShi"] = "LeShi";
-        SiteEnum["TuDou"] = "TuDou";
-        SiteEnum["Tencent_V"] = "Tencent_V";
-        SiteEnum["MangGuo"] = "MangGuo";
-        SiteEnum["SoHu"] = "SoHu";
-        SiteEnum["Acfun"] = "Acfun";
-        SiteEnum["BiliBili"] = "BiliBili";
-        SiteEnum["M1905"] = "M1905";
-        SiteEnum["PPTV"] = "PPTV";
-        SiteEnum["YinYueTai"] = "YinYueTai";
-        SiteEnum["WangYi"] = "WangYi";
-        SiteEnum["Tencent_M"] = "Tencent_M";
-        SiteEnum["KuGou"] = "KuGou";
-        SiteEnum["KuWo"] = "KuWo";
-        SiteEnum["XiaMi"] = "XiaMi";
-        SiteEnum["TaiHe"] = "TaiHe";
-        SiteEnum["QingTing"] = "QingTing";
-        SiteEnum["LiZhi"] = "LiZhi";
-        SiteEnum["MiGu"] = "MiGu";
-        SiteEnum["XiMaLaYa"] = "XiMaLaYa";
-        SiteEnum["SXB"] = "SXB";
-        SiteEnum["BDY"] = "BDY";
-        SiteEnum["BDY1"] = "BDY1";
-        SiteEnum["LZY"] = "LZY";
-    })(SiteEnum || (SiteEnum = {}));
 
     var HistoryService = (function (_super) {
         __extends(HistoryService, _super);
@@ -1495,6 +1621,7 @@
         function WandhiInjection() {
             this.plugins = new Array();
             this.plugins = [
+                Container.Require(UpdateService),
                 Container.Require(BiliImgService),
                 Container.Require(MovieService),
                 Container.Require(TaoBaoService),
@@ -1506,8 +1633,8 @@
         WandhiInjection.prototype.Init = function () {
             this.plugins.every(function (element) {
                 if (element.linkTest()) {
-                    element.Process();
-                    return false;
+                    new Promise(function (resolve) { resolve(); }).then(element.Process);
+                    return !element.unique();
                 }
                 return true;
             });
@@ -1517,4 +1644,4 @@
 
     Container.Require(WandhiInjection).Init();
 
-}());
+})));
