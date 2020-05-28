@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-05-27 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-05-28 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
 // @version      4.2.1
 // @homepage     https://tools.wandhi.com/scripts
