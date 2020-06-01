@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-05-29 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-06-01 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
 // @version      4.2.1
 // @homepage     https://tools.wandhi.com/scripts
@@ -63,12 +63,12 @@
 // @include      *://yun.baidu.com/share/link*
 // @exclude      *://*.wandhi.com/*
 // @require      https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
-// @require      https://cdn.bootcss.com/sweetalert/2.1.2/sweetalert.min.js
+// @require      https://cdn.jsdelivr.net/npm/sweetalert2@9.14.0/dist/sweetalert2.min.js
 // @require      https://lib.baomitu.com/echarts/4.6.0/echarts.min.js
 // @require      https://lib.baomitu.com/layer/2.3/layer.js
 // @require      https://lib.baomitu.com/reflect-metadata/0.1.13/Reflect.min.js
-// @require      https://lib.baomitu.com/vue/2.6.11/vue.min.js
-// @require      https://lib.baomitu.com/vuex/3.1.3/vuex.min.js
+// @require      https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js
+// @require      https://cdn.jsdelivr.net/npm/vuex@3.4.0/dist/vuex.min.js
 // @license      MIT
 // @grant        GM_setClipboard
 // @run-at       document-end
