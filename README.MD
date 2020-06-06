@@ -10,7 +10,7 @@
     <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Mac%20%7C%20Android-blue.svg" alt="platform">
 </p>
 
-## 🔧 插件功能
+## 🔧 [插件功能(点我查看详情)](https://wiki.wandhi.com/zh-cn/Feature.htm)
 
 * ✅ 视频解析
 * ✅ 音乐下载

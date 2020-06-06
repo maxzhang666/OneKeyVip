@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-06-01 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-06-06 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.2.1
+// @version      4.2.2
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、上学吧答案查询(接口偶尔抽风)；5、商品历史价格展示(一次性告别虚假降价)；6、优惠券查询
@@ -39,6 +39,7 @@
 // @include      *://music.taihe.com/song*
 // @include      *://item.taobao.com/*
 // @include      *://detail.tmall.com/*
+// @include      *://chaoshi.detail.tmall.com/*                     
 // @include      *://detail.tmall.hk/*
 // @include      *://item.jd.com/*
 // @include      *://music.163.com/song*
@@ -69,11 +70,13 @@
 // @require      https://lib.baomitu.com/reflect-metadata/0.1.13/Reflect.min.js
 // @require      https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js
 // @require      https://cdn.jsdelivr.net/npm/vuex@3.4.0/dist/vuex.min.js
+// @require      https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js
 // @license      MIT
 // @grant        GM_setClipboard
 // @run-at       document-end
 // @connect      shangxueba365.com
 // @connect      api.wandhi.com
+// @connect      cdn.jsdelivr.net
 // @grant        unsafeWindow
 // @grant        GM_xmlhttpRequest
 // @grant        GM_info
@@ -134,100 +137,62 @@
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(metadataKey, metadataValue);
     }
 
-    var Toast = (function () {
-        function Toast(msg, title, type) {
-            this.creationTime = new Date;
-            this.message = msg;
-            this.type = type;
-            this.title = title;
-            this.duration = 3e3;
-            this.randomKey = Math.floor(Math.random() * (Number.MAX_SAFE_INTEGER + 1));
+    var update_key = "isUpdate";
+    var Min = 60 * 1e3;
+    var Hour = 60 * Min;
+    var Day = 24 * Hour;
+
+    var Config = (function () {
+        function Config() {
         }
-        Toast.prototype.show = function () {
-            var _this = this;
-            Toast.containerVM.cards.splice(0, 0, this);
-            if (this.duration !== undefined && this.duration != -1) {
-                setTimeout(function () { return _this.dismiss(); }, this.duration);
-            }
-        };
-        Toast.prototype.dismiss = function () {
-            if (Toast.containerVM.cards.includes(this)) {
-                Toast.containerVM.cards.splice(Toast.containerVM.cards.indexOf(this), 1);
-            }
-        };
-        Object.defineProperty(Toast.prototype, "element", {
+        Object.defineProperty(Config, "env", {
             get: function () {
-                return $(".toast-card[data-key='" + this.key + "']");
+                return GM_info;
             },
             enumerable: false,
             configurable: true
         });
-        Object.defineProperty(Toast.prototype, "key", {
-            get: function () {
-                return this.creationTime.toISOString() + ("[" + this.randomKey + "]");
-            },
-            enumerable: false,
-            configurable: true
-        });
-        Object.defineProperty(Toast, "containerVM", {
-            get: function () {
-                if (!this.element) {
-                    Toast.createToastContainer();
+        Config.get = function (key, de) {
+            if (de === void 0) { de = ""; }
+            var objStr = GM_getValue(this.encode(key), de);
+            if (objStr) {
+                var obj = JSON.parse(objStr);
+                if (obj.exp == -1 || obj.exp > new Date().getTime()) {
+                    return obj.value;
                 }
-                return this.element;
+            }
+            return de;
+        };
+        Config.set = function (key, v, exp) {
+            if (exp === void 0) { exp = -1; }
+            var obj = {
+                key: key,
+                value: v,
+                exp: exp == -1 ? exp : new Date().getTime() + exp * 1000
+            };
+            GM_setValue(this.encode(key), JSON.stringify(obj));
+        };
+        Config.decode = function (str) {
+            return atob(str);
+        };
+        Config.encode = function (str) {
+            return btoa(str);
+        };
+        return Config;
+    }());
+
+    var Runtime = (function () {
+        function Runtime() {
+        }
+        Object.defineProperty(Runtime, "url", {
+            get: function () {
+                return window.location.href;
             },
             enumerable: false,
             configurable: true
         });
-        Toast.createToastContainer = function () {
-            if (!document.querySelector(".toast-card-container")) {
-                document.body.insertAdjacentHTML("beforeend", "<transition-group class=\"toast-card-container\" name=\"toast-card-container\" tag=\"div\">\n                    <toast-card v-for=\"card of cards\" :data-key=\"card.key\" :key=\"card.key\" :card=\"card\"></toast-card>\n                </transition-group>");
-                document.body.insertAdjacentHTML("afterend", "<style>.toast-card-container{--card-min-width:240px;--card-min-width-negative:-240px;position:fixed;left:0;bottom:0;display:flex;flex-direction:column-reverse;align-items:start;padding-left:16px;z-index:100001;pointer-events:none;overflow:hidden;width:100%;height:100%;transition:.2s ease-out}.toast-card-container *{pointer-events:initial;transition:.2s ease-out}.toast-card.toast-card-container-enter,.toast-card.toast-card-container-leave-to{opacity:0;transform:translateX(var(--card-min-width-negative))}.toast-card{background:#fff;min-width:var(--card-min-width);max-width:60vw;min-height:96px;margin:8px 0;box-shadow:rgba(0,0,0,.2) 0 4px 8px 0;transform-origin:left;overflow:hidden;display:flex;flex-direction:column;border-left-style:solid;transition:.3s cubic-bezier(.18,.89,.32,1.28);position:relative;border-left-width:0;padding-left:var(--corner-radius);border-radius:var(--corner-radius)}.toast-card.toast-card-container-leave-active{position:absolute;transition:.3s cubic-bezier(.6,-.28,.74,.05)}.toast-card-header{display:flex;align-items:center}.toast-card-title{font-size:18px;color:#000;opacity:.5;margin:16px;font-weight:700;flex:1 1 auto}.toast-card-dismiss{height:24px;width:24px;flex:0 0 auto;padding:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:.2s ease-out;transform-origin:center;opacity:.5;box-sizing:content-box}.toast-card-dismiss:hover{transform:scale(1.2)}.toast-card-dismiss:active{transform:scale(1.1)}.toast-card-message{color:#000;font-size:14px;margin:0 16px 16px;white-space:pre-wrap;display:flex;align-items:center;line-height:1.5;flex-wrap:wrap;word-break:break-all;max-height:200px;overflow:auto}.toast-card.toast-default{border-left-color:#444}.toast-card.toast-error{border-left-color:#f44336}.toast-card.toast-info{border-left-color:#2196f3}.toast-card.toast-success{border-left-color:#8bc34a}.toast-card .toast-card-border{position:absolute;height:100%;width:4px;border-radius:var(--corner-radius);height:calc(100% - 10px);width:var(--corner-radius);top:5px;left:0}.toast-card.toast-default .toast-card-border{background-color:#444}.toast-card.toast-error .toast-card-border{background-color:#f44336}.toast-card.toast-info .toast-card-border{background-color:#2196f3}.toast-card.toast-success .toast-card-border{background-color:#8bc34a}.toast-card .link,.toast-card span{display:inline-block;padding:4px 6px;margin:0 2px;background-color:#8882;text-decoration:none;color:#000;transition:.2s ease-out;border-radius:var(--corner-radius)}.toast-card .link:hover{background-color:#8883}.toast-card .link:active{background-color:#8884}.toast-card .download-link{color:inherit!important;text-decoration:underline;word-break:break-all}@keyframes loading{0%,100%{top:0;left:50%}25%{top:50%;left:100%}50%{top:100%;left:50%}75%{top:50%;left:0}}.toast-card .loading{width:14px;height:14px;display:inline-block;margin-right:14px;position:relative}.toast-card .loading::after{content:\"\";width:10px;height:10px;background-color:#8884;border-radius:50%;display:block;transform:translateX(-50%) translateY(-50%);position:absolute;top:0;left:50%;animation:1s cubic-bezier(.22,.61,.36,1) infinite loading}</style>");
-                this.element = new Vue({
-                    el: ".toast-card-container",
-                    components: {
-                        "toast-card": {
-                            props: ["card"],
-                            template: "<div class=\"toast-card icons-enabled visible\" :class=\"'toast-' + card.type\">\n                            <div class=\"toast-card-border\"></div>\n                            <div class=\"toast-card-header\">\n                                <h1 class=\"toast-card-title\">{{card.title}}</h1>\n                                <div class=\"toast-card-dismiss\" @click=\"card.dismiss()\">\n                                    <svg style=\"width:22px;height:22px\" viewBox=\"0 0 24 24\">\n                                        <path d=\"M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z\" />\n                                    </svg>\n                                </div>\n                            </div>\n                        <div class=\"toast-card-message\" v-html=\"card.message\"></div>\n                        </div>"
-                        }
-                    },
-                    data: {
-                        cards: []
-                    }
-                });
-            }
-        };
-        Toast.internalShow = function (msg, title, time, e) {
-            var n = new Toast(msg, title, e);
-            n.duration = time;
-            n.show();
-            return n;
-        };
-        Toast.show = function (msg, title, time) {
-            if (time === void 0) { time = -1; }
-            return this.internalShow(msg, title, time, ToastType.Default);
-        };
-        Toast.info = function (msg, title, time) {
-            if (time === void 0) { time = -1; }
-            return this.internalShow(msg, title, time, ToastType.Info);
-        };
-        Toast.success = function (msg, title, time) {
-            if (time === void 0) { time = -1; }
-            return this.internalShow(msg, title, time, ToastType.Success);
-        };
-        Toast.error = function (msg, title, time) {
-            if (time === void 0) { time = -1; }
-            return this.internalShow(msg, title, time, ToastType.Error);
-        };
-        return Toast;
+        return Runtime;
     }());
-    var ToastType;
-    (function (ToastType) {
-        ToastType["Default"] = "default";
-        ToastType["Info"] = "info";
-        ToastType["Success"] = "success";
-        ToastType["Error"] = "error";
-    })(ToastType || (ToastType = {}));
 
     var Core = (function () {
         function Core() {
@@ -278,6 +243,27 @@
         Core.prototype.currentUrl = function () {
             return window.location.href;
         };
+        Core.format = function (time, fmt) {
+            if (fmt === void 0) { fmt = 'yyyy-MM-dd hh:mm:ss'; }
+            var o = {
+                "M+": time.getMonth() + 1,
+                "d+": time.getDate(),
+                "h+": time.getHours(),
+                "m+": time.getMinutes(),
+                "s+": time.getSeconds(),
+                "q+": Math.floor((time.getMonth() + 3) / 3),
+                "S": time.getMilliseconds()
+            };
+            if (/(y+)/.test(fmt)) {
+                fmt = fmt.replace(RegExp.$1, (time.getFullYear() + "").substr(4 - RegExp.$1.length));
+            }
+            for (var k in o) {
+                if (new RegExp("(" + k + ")").test(fmt)) {
+                    fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
+                }
+            }
+            return fmt;
+        };
         Core.prototype.Msg = function (msg) {
             return layer.msg(msg, { icon: 5 });
         };
@@ -320,265 +306,6 @@
         Core.head = document.getElementsByTagName('head')[0];
         Core.top_url = top.window.location.href;
         return Core;
-    }());
-
-    var Common;
-    (function (Common) {
-        var Menu = (function () {
-            function Menu() {
-                this.core = new Core();
-                this.site = /tv.wandhi.com/i;
-                this.userAgent = navigator.userAgent;
-                this.menusClass = ['first', 'second', 'third', 'fourth', 'fifth'];
-                this.menuSelecter = "#Wandhi-nav";
-            }
-            Menu.prototype.loader = function () {
-                Core.appendCssContent(this.getCss());
-            };
-            Menu.prototype.getBody = function (option) {
-                return "<svg width=\"0\" height=\"0\"><defs><filter id=\"goo\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"10\" result=\"blur\"></feGaussianBlur><feColorMatrix in=\"blur\" mode=\"matrix\" values=\"1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9\" result=\"goo\"></feColorMatrix><feComposite in=\"SourceGraphic\" in2=\"goo\" operator=\"atop\"></feComposite></filter></defs></svg><div class=\"aside-nav bounceInUp animated\" id=\"Wandhi-nav\"><label for=\"\" class=\"aside-menu\" title=\"\u6309\u4F4F\u62D6\u52A8\">VIP</label>" + option + "</div>";
-            };
-            Menu.prototype.getCss = function () {
-                return "html .aside-nav{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased;font-size:62.5%}body .aside-nav{font-family:\"Helvetica Neue\",Helvetica,\"Microsoft YaHei\",Arial,sans-serif;margin:0;font-size:1.6rem;color:#4e546b}.aside-nav{position:fixed;top:350px;width:260px;height:260px;-webkit-filter:url(#goo);filter:url(#goo);-ms-user-select:none;-moz-user-select:none;-webkit-user-select:none;user-select:none;opacity:.75;z-index:20180817}.aside-nav.no-filter{-webkit-filter:none;filter:none}.aside-nav .aside-menu{position:absolute;width:70px;height:70px;-webkit-border-radius:50%;border-radius:50%;background:#f34444;left:0;top:0;right:0;bottom:0;margin:auto;text-align:center;line-height:70px;color:#fff;font-size:20px;z-index:1;cursor:move}.aside-nav .menu-item{position:absolute;width:60px;height:60px;background-color:#ff7676;left:0;top:0;right:0;bottom:0;margin:auto;line-height:60px;text-align:center;-webkit-border-radius:50%;border-radius:50%;text-decoration:none;color:#fff;-webkit-transition:background .5s,-webkit-transform .6s;transition:background .5s,-webkit-transform .6s;-moz-transition:transform .6s,background .5s,-moz-transform .6s;transition:transform .6s,background .5s;transition:transform .6s,background .5s,-webkit-transform .6s,-moz-transform .6s;font-size:14px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}.aside-nav .menu-item:hover{background:#a9c734}.aside-nav .menu-line{line-height:20px;padding-top:10px}.aside-nav:hover{opacity:1}.aside-nav:hover .aside-menu{-webkit-animation:jello 1s;-moz-animation:jello 1s;animation:jello 1s}.aside-nav:hover .menu-first{-webkit-transform:translate3d(0,-135%,0);-moz-transform:translate3d(0,-135%,0);transform:translate3d(0,-135%,0)}.aside-nav:hover .menu-second{-webkit-transform:translate3d(120%,-70%,0);-moz-transform:translate3d(120%,-70%,0);transform:translate3d(120%,-70%,0)}.aside-nav:hover .menu-third{-webkit-transform:translate3d(120%,70%,0);-moz-transform:translate3d(120%,70%,0);transform:translate3d(120%,70%,0)}.aside-nav:hover .menu-fourth{-webkit-transform:translate3d(0,135%,0);-moz-transform:translate3d(0,135%,0);transform:translate3d(0,135%,0)}@-webkit-keyframes jello{from,11.1%,to{-webkit-transform:none;transform:none}22.2%{-webkit-transform:skewX(-12.5deg) skewY(-12.5deg);transform:skewX(-12.5deg) skewY(-12.5deg)}33.3%{-webkit-transform:skewX(6.25deg) skewY(6.25deg);transform:skewX(6.25deg) skewY(6.25deg)}44.4%{-webkit-transform:skewX(-3.125deg) skewY(-3.125deg);transform:skewX(-3.125deg) skewY(-3.125deg)}55.5%{-webkit-transform:skewX(1.5625deg) skewY(1.5625deg);transform:skewX(1.5625deg) skewY(1.5625deg)}66.6%{-webkit-transform:skewX(-.78125deg) skewY(-.78125deg);transform:skewX(-.78125deg) skewY(-.78125deg)}77.7%{-webkit-transform:skewX(0.390625deg) skewY(0.390625deg);transform:skewX(0.390625deg) skewY(0.390625deg)}88.8%{-webkit-transform:skewX(-.1953125deg) skewY(-.1953125deg);transform:skewX(-.1953125deg) skewY(-.1953125deg)}}@-moz-keyframes jello{from,11.1%,to{-moz-transform:none;transform:none}22.2%{-moz-transform:skewX(-12.5deg) skewY(-12.5deg);transform:skewX(-12.5deg) skewY(-12.5deg)}33.3%{-moz-transform:skewX(6.25deg) skewY(6.25deg);transform:skewX(6.25deg) skewY(6.25deg)}44.4%{-moz-transform:skewX(-3.125deg) skewY(-3.125deg);transform:skewX(-3.125deg) skewY(-3.125deg)}55.5%{-moz-transform:skewX(1.5625deg) skewY(1.5625deg);transform:skewX(1.5625deg) skewY(1.5625deg)}66.6%{-moz-transform:skewX(-.78125deg) skewY(-.78125deg);transform:skewX(-.78125deg) skewY(-.78125deg)}77.7%{-moz-transform:skewX(0.390625deg) skewY(0.390625deg);transform:skewX(0.390625deg) skewY(0.390625deg)}88.8%{-moz-transform:skewX(-.1953125deg) skewY(-.1953125deg);transform:skewX(-.1953125deg) skewY(-.1953125deg)}}@keyframes jello{from,11.1%,to{-webkit-transform:none;-moz-transform:none;transform:none}22.2%{-webkit-transform:skewX(-12.5deg) skewY(-12.5deg);-moz-transform:skewX(-12.5deg) skewY(-12.5deg);transform:skewX(-12.5deg) skewY(-12.5deg)}33.3%{-webkit-transform:skewX(6.25deg) skewY(6.25deg);-moz-transform:skewX(6.25deg) skewY(6.25deg);transform:skewX(6.25deg) skewY(6.25deg)}44.4%{-webkit-transform:skewX(-3.125deg) skewY(-3.125deg);-moz-transform:skewX(-3.125deg) skewY(-3.125deg);transform:skewX(-3.125deg) skewY(-3.125deg)}55.5%{-webkit-transform:skewX(1.5625deg) skewY(1.5625deg);-moz-transform:skewX(1.5625deg) skewY(1.5625deg);transform:skewX(1.5625deg) skewY(1.5625deg)}66.6%{-webkit-transform:skewX(-.78125deg) skewY(-.78125deg);-moz-transform:skewX(-.78125deg) skewY(-.78125deg);transform:skewX(-.78125deg) skewY(-.78125deg)}77.7%{-webkit-transform:skewX(0.390625deg) skewY(0.390625deg);-moz-transform:skewX(0.390625deg) skewY(0.390625deg);transform:skewX(0.390625deg) skewY(0.390625deg)}88.8%{-webkit-transform:skewX(-.1953125deg) skewY(-.1953125deg);-moz-transform:skewX(-.1953125deg) skewY(-.1953125deg);transform:skewX(-.1953125deg) skewY(-.1953125deg)}}.animated{-webkit-animation-duration:1s;-moz-animation-duration:1s;animation-duration:1s;-webkit-animation-fill-mode:both;-moz-animation-fill-mode:both;animation-fill-mode:both}\n@-webkit-keyframes bounceInUp{from,60%,75%,90%,to{-webkit-animation-timing-function:cubic-bezier(0.215,.61,.355,1);animation-timing-function:cubic-bezier(0.215,.61,.355,1)}from{opacity:0;-webkit-transform:translate3d(0,800px,0);transform:translate3d(0,800px,0)}60%{opacity:1;-webkit-transform:translate3d(0,-20px,0);transform:translate3d(0,-20px,0)}75%{-webkit-transform:translate3d(0,10px,0);transform:translate3d(0,10px,0)}90%{-webkit-transform:translate3d(0,-5px,0);transform:translate3d(0,-5px,0)}to{-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}}@-moz-keyframes bounceInUp{from,60%,75%,90%,to{-moz-animation-timing-function:cubic-bezier(0.215,.61,.355,1);animation-timing-function:cubic-bezier(0.215,.61,.355,1)}from{opacity:0;-moz-transform:translate3d(0,800px,0);transform:translate3d(0,800px,0)}60%{opacity:1;-moz-transform:translate3d(0,-20px,0);transform:translate3d(0,-20px,0)}75%{-moz-transform:translate3d(0,10px,0);transform:translate3d(0,10px,0)}90%{-moz-transform:translate3d(0,-5px,0);transform:translate3d(0,-5px,0)}to{-moz-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}}@keyframes bounceInUp{from,60%,75%,90%,to{-webkit-animation-timing-function:cubic-bezier(0.215,.61,.355,1);-moz-animation-timing-function:cubic-bezier(0.215,.61,.355,1);animation-timing-function:cubic-bezier(0.215,.61,.355,1)}from{opacity:0;-webkit-transform:translate3d(0,800px,0);-moz-transform:translate3d(0,800px,0);transform:translate3d(0,800px,0)}60%{opacity:1;-webkit-transform:translate3d(0,-20px,0);-moz-transform:translate3d(0,-20px,0);transform:translate3d(0,-20px,0)}75%{-webkit-transform:translate3d(0,10px,0);-moz-transform:translate3d(0,10px,0);transform:translate3d(0,10px,0)}90%{-webkit-transform:translate3d(0,-5px,0);-moz-transform:translate3d(0,-5px,0);transform:translate3d(0,-5px,0)}to{-webkit-transform:translate3d(0,0,0);-moz-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}}.bounceInUp{-webkit-animation-name:bounceInUp;-moz-animation-name:bounceInUp;animation-name:bounceInUp;-webkit-animation-delay:1s;-moz-animation-delay:1s;animation-delay:1s}@media screen and (max-width:640px){}@media screen and (min-width:641px) and (max-width:1367px){.aside-nav{top:50px}}";
-            };
-            Menu.prototype.Init = function (menus, callback) {
-                var _this = this;
-                if (this.site.test(this.core.topUrl)) {
-                    return;
-                }
-                this.loader();
-                var str = "";
-                menus.forEach(function (element, index) {
-                    str += "<a href=\"javascript:void(0)\" title=\"" + element.title + "\" data-cat=\"" + element.type + "\" class=\"menu-item menu-line menu-" + _this.menusClass[index] + "\">" + element.show + "</a>";
-                });
-                Core.bodyAppend(this.getBody(str));
-                /Safari|iPhone/i.test(this.userAgent) && /chrome/i.test(this.userAgent) && $("#Wandhi-nav").addClass("no-filter");
-                var drags = { down: !1, x: 0, y: 0, winWid: 0, winHei: 0, clientX: 0, clientY: 0 };
-                var asideNav = $(this.menuSelecter)[0];
-                $("body").on("mousedown", "#Wandhi-nav", function (a) {
-                    var getCss = function (a, e) {
-                        return a.currentStyle ? a.currentStyle[e] : document.defaultView.getComputedStyle(a, !1)[e];
-                    };
-                    drags.down = !0,
-                        drags.clientX = a.clientX,
-                        drags.clientY = a.clientY,
-                        drags.x = parseInt(getCss(this, "left")),
-                        drags.y = parseInt(getCss(this, "top")),
-                        drags.winHei = $(window).height(),
-                        drags.winWid = $(window).width(),
-                        $(document).on("mousemove", function (a) {
-                            var e = a.clientX - drags.clientX, t = a.clientY - drags.clientY;
-                            asideNav = asideNav || $("#Wandhi-nav")[0];
-                            asideNav.style.top = drags.y + t + "px";
-                            asideNav.style.left = drags.x + e + "px";
-                        });
-                }).on("mouseup", "#Wandhi-nav", function () {
-                    drags.down = !1, $(document).off("mousemove");
-                });
-                callback.call(this);
-            };
-            return Menu;
-        }());
-        Common.Menu = Menu;
-    })(Common || (Common = {}));
-
-    var container = new Map();
-    var Container = (function () {
-        function Container() {
-        }
-        Container.Registe = function (type, args) {
-            var className = this.processName(type.name);
-            container.set(className, window.Reflect.construct(type, this.buildParams(args)));
-            return container.get(className);
-        };
-        Container.buildParams = function (args) {
-            var para = [];
-            args === null || args === void 0 ? void 0 : args.map(function (item) {
-                para.push(item);
-            });
-            return para;
-        };
-        Container.processName = function (name) {
-            return name.toLowerCase();
-        };
-        Container.Require = function (type) {
-            var _this = this;
-            var name = this.processName(type.name);
-            if (container.has(name)) {
-                return container.get(name);
-            }
-            var classParams = Reflect.getMetadata(METADATA_PARAMS, type);
-            var args;
-            if (classParams === null || classParams === void 0 ? void 0 : classParams.length) {
-                args = classParams.map(function (item) {
-                    return _this.Require(item);
-                });
-            }
-            return this.Registe(type, args);
-        };
-        Container.define = function (target, key) {
-            var _a;
-            var classType = Reflect.getMetadata(METADATA_TYPE, target, key);
-            var desc = (_a = Object.getOwnPropertyDescriptor(target, key)) !== null && _a !== void 0 ? _a : { writable: true, configurable: true };
-            desc.value = this.Require(classType);
-            Object.defineProperty(target, key, desc);
-        };
-        return Container;
-    }());
-    var METADATA_TYPE = "design:type";
-    var METADATA_PARAMS = "design:paramtypes";
-    function WandhiAuto(target, key) {
-        Container.define(target, key);
-    }
-
-    var PluginBase = (function () {
-        function PluginBase() {
-            var _this = this;
-            this._unique = true;
-            this.Process = function () {
-                _this.loader();
-                _this.run();
-            };
-        }
-        PluginBase.prototype.unique = function () {
-            return this._unique;
-        };
-        PluginBase.prototype.linkTest = function (url) {
-            var _this = this;
-            if (!url) {
-                url = this.core.currentUrl();
-            }
-            var flag = false;
-            this.rules.forEach(function (v, k) {
-                if (v.test(url)) {
-                    flag = true;
-                    _this.site = k;
-                    return false;
-                }
-                return true;
-            });
-            return flag;
-        };
-        var _a, _b;
-        __decorate([
-            WandhiAuto,
-            __metadata("design:type", typeof (_a = typeof Core !== "undefined" && Core) === "function" ? _a : Object)
-        ], PluginBase.prototype, "core", void 0);
-        __decorate([
-            WandhiAuto,
-            __metadata("design:type", typeof (_b = typeof Common !== "undefined" && Common.Menu) === "function" ? _b : Object)
-        ], PluginBase.prototype, "menu", void 0);
-        return PluginBase;
-    }());
-
-    var SiteEnum;
-    (function (SiteEnum) {
-        SiteEnum["All"] = "All";
-        SiteEnum["TaoBao"] = "TaoBao";
-        SiteEnum["TMall"] = "TMall";
-        SiteEnum["JingDong"] = "JingDong";
-        SiteEnum["IQiYi"] = "IQiYi";
-        SiteEnum["YouKu"] = "YouKu";
-        SiteEnum["LeShi"] = "LeShi";
-        SiteEnum["TuDou"] = "TuDou";
-        SiteEnum["Tencent_V"] = "Tencent_V";
-        SiteEnum["MangGuo"] = "MangGuo";
-        SiteEnum["SoHu"] = "SoHu";
-        SiteEnum["Acfun"] = "Acfun";
-        SiteEnum["BiliBili"] = "BiliBili";
-        SiteEnum["M1905"] = "M1905";
-        SiteEnum["PPTV"] = "PPTV";
-        SiteEnum["YinYueTai"] = "YinYueTai";
-        SiteEnum["WangYi"] = "WangYi";
-        SiteEnum["Tencent_M"] = "Tencent_M";
-        SiteEnum["KuGou"] = "KuGou";
-        SiteEnum["KuWo"] = "KuWo";
-        SiteEnum["XiaMi"] = "XiaMi";
-        SiteEnum["TaiHe"] = "TaiHe";
-        SiteEnum["QingTing"] = "QingTing";
-        SiteEnum["LiZhi"] = "LiZhi";
-        SiteEnum["MiGu"] = "MiGu";
-        SiteEnum["XiMaLaYa"] = "XiMaLaYa";
-        SiteEnum["SXB"] = "SXB";
-        SiteEnum["BDY"] = "BDY";
-        SiteEnum["BDY1"] = "BDY1";
-        SiteEnum["LZY"] = "LZY";
-    })(SiteEnum || (SiteEnum = {}));
-
-    var UpdateService = (function (_super) {
-        __extends(UpdateService, _super);
-        function UpdateService() {
-            var _this = _super.call(this) || this;
-            _this.rules = new Map([
-                [SiteEnum.All, /(.*)/i]
-            ]);
-            _this._unique = false;
-            return _this;
-        }
-        UpdateService.prototype.loader = function () {
-        };
-        UpdateService.prototype.run = function () {
-            Toast.show("\u68C0\u67E5\u66F4\u65B0\u6765\u5566", "\u81EA\u52A8\u66F4\u65B0");
-        };
-        return UpdateService;
-    }(PluginBase));
-
-    var LinesOption = (function () {
-        function LinesOption() {
-        }
-        return LinesOption;
-    }());
-
-    var Config = (function () {
-        function Config() {
-        }
-        Object.defineProperty(Config, "env", {
-            get: function () {
-                return GM_info;
-            },
-            enumerable: false,
-            configurable: true
-        });
-        Config.get = function (key, de) {
-            if (de === void 0) { de = ""; }
-            var objStr = GM_getValue(this.encode(key), de);
-            if (objStr) {
-                var obj = JSON.parse(objStr);
-                if (obj.exp == -1 || obj.exp > new Date().getTime()) {
-                    return obj.value;
-                }
-            }
-            return de;
-        };
-        Config.set = function (key, v, exp) {
-            if (exp === void 0) { exp = -1; }
-            var obj = {
-                key: key,
-                value: v,
-                exp: exp == -1 ? exp : new Date().getTime() + exp
-            };
-            GM_setValue(this.encode(key), JSON.stringify(obj));
-        };
-        Config.decode = function (str) {
-            return atob(str);
-        };
-        Config.encode = function (str) {
-            return btoa(str);
-        };
-        return Config;
-    }());
-
-    var Runtime = (function () {
-        function Runtime() {
-        }
-        Object.defineProperty(Runtime, "url", {
-            get: function () {
-                return window.location.href;
-            },
-            enumerable: false,
-            configurable: true
-        });
-        return Runtime;
     }());
 
     var HttpRequest = (function () {
@@ -739,7 +466,7 @@
                 onload: function (res) {
                     var _a, _b;
                     try {
-                        (_a = option.onSuccess) === null || _a === void 0 ? void 0 : _a.call(option, JSON.parse(res.responseText));
+                        (_a = option.onSuccess) === null || _a === void 0 ? void 0 : _a.call(option, option.methodType == "POST" ? JSON.parse(res.responseText) : res.responseText);
                     }
                     catch (error) {
                         Alert.confim("", "                                        \n                        <h1>\u8BF7\u6C42\u5931\u8D25\uFF0C\u8BF7\u590D\u5236\u4E0B\u5217\u4FE1\u606F\u5411\u5F00\u53D1\u8005\u53CD\u9988\u95EE\u9898</h1><br>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u65E5\u5FD7\uFF1A</span><br>\n                        <p>" + error + "</p>\n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u9519\u8BEF\u8BE6\u60C5\uFF1A</span><br>\n                        <p>" + escape(res.responseText) + "</p>                        \n                        <span style=\"color:red;font-weight: bold;font-size: large;\">\u73AF\u5883\u4FE1\u606F\uFF1A</span><br>\n                        <p>\u6CB9\u7334\u7248\u672C\uFF1A" + Config.env.version + "</p>\n                        <p>\u811A\u672C\u7248\u672C\uFF1A" + Config.env.script.version + "</p>\n                        <p>Url\uFF1A" + Runtime.url + "</p>\n                    ", ['去反馈', "\u5173\u95ED"], function () { Core.open("https://gitee.com/ixysy/OneKeyVip/issues"); });
@@ -775,6 +502,9 @@
                 }));
             });
             return p;
+        };
+        Http.get_text = function (url) {
+            return this.get(url, new Map());
         };
         return Http;
     }());
@@ -845,6 +575,10 @@
         Route.queryCoupons = function (itemId, callback) {
             this.baseApi(this.coupons, new Map([['id', itemId]]), callback);
         };
+        Route.update_api = "https://cdn.jsdelivr.net/gh/maxzhang666/OneKeyVip/OneKeyVip.user.js";
+        Route.home_url = "https://wiki.wandhi.com";
+        Route.install_url_one = "https://greasyfork.org/zh-CN/scripts/384538";
+        Route.install_url_two = "https://tools.wandhi.com/scripts";
         Route.sxb_anhao = "http://www.lelunwen.com/e/action/ListInfo/?classid=45";
         Route.sxb_key = "sxb_anhao";
         Route.config = "/config/query";
@@ -852,6 +586,495 @@
         Route.bili = "/tools/bili";
         Route.coupons = "/tb/infos/";
         return Route;
+    }());
+
+    var Toast = (function () {
+        function Toast(msg, title, type) {
+            this.creationTime = new Date;
+            this.message = msg;
+            this.type = type;
+            this.title = title;
+            this.duration = 3e3;
+            this.randomKey = Math.floor(Math.random() * (Number.MAX_SAFE_INTEGER + 1));
+        }
+        Toast.prototype.show = function () {
+            var _this = this;
+            Toast.containerVM.cards.splice(0, 0, this);
+            if (this.duration !== undefined && this.duration != -1) {
+                setTimeout(function () { return _this.dismiss(); }, this.duration);
+            }
+        };
+        Toast.prototype.dismiss = function () {
+            if (Toast.containerVM.cards.includes(this)) {
+                Toast.containerVM.cards.splice(Toast.containerVM.cards.indexOf(this), 1);
+            }
+        };
+        Object.defineProperty(Toast.prototype, "element", {
+            get: function () {
+                return $(".toast-card[data-key='" + this.key + "']");
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(Toast.prototype, "key", {
+            get: function () {
+                return this.creationTime.toISOString() + ("[" + this.randomKey + "]");
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Object.defineProperty(Toast, "containerVM", {
+            get: function () {
+                if (!this.element) {
+                    Toast.createToastContainer();
+                }
+                return this.element;
+            },
+            enumerable: false,
+            configurable: true
+        });
+        Toast.createToastContainer = function () {
+            if (!document.querySelector(".toast-card-container")) {
+                document.body.insertAdjacentHTML("beforeend", "<transition-group class=\"toast-card-container\" name=\"toast-card-container\" tag=\"div\">\n                    <toast-card v-for=\"card of cards\" :data-key=\"card.key\" :key=\"card.key\" :card=\"card\"></toast-card>\n                </transition-group>");
+                document.body.insertAdjacentHTML("afterend", "<style>.toast-card-container{--card-min-width:240px;--card-min-width-negative:-240px;position:fixed;left:0;bottom:0;display:flex;flex-direction:column-reverse;align-items:start;padding-left:16px;z-index:100001;pointer-events:none;overflow:hidden;width:100%;height:100%;transition:.2s ease-out}.toast-card-container *{pointer-events:initial;transition:.2s ease-out}.toast-card.toast-card-container-enter,.toast-card.toast-card-container-leave-to{opacity:0;transform:translateX(var(--card-min-width-negative))}.toast-card{background:#fff;min-width:var(--card-min-width);max-width:60vw;min-height:96px;margin:8px 0;box-shadow:rgba(0,0,0,.2) 0 4px 8px 0;transform-origin:left;overflow:hidden;display:flex;flex-direction:column;border-left-style:solid;transition:.3s cubic-bezier(.18,.89,.32,1.28);position:relative;border-left-width:0;padding-left:var(--corner-radius);border-radius:var(--corner-radius)}.toast-card.toast-card-container-leave-active{position:absolute;transition:.3s cubic-bezier(.6,-.28,.74,.05)}.toast-card-header{display:flex;align-items:center}.toast-card-title{font-size:18px;color:#000;opacity:.5;margin:16px;font-weight:700;flex:1 1 auto}.toast-card-dismiss{height:24px;width:24px;flex:0 0 auto;padding:16px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:.2s ease-out;transform-origin:center;opacity:.5;box-sizing:content-box}.toast-card-dismiss:hover{transform:scale(1.2)}.toast-card-dismiss:active{transform:scale(1.1)}.toast-card-message{color:#000;font-size:14px;margin:0 16px 16px;white-space:pre-wrap;display:flex;align-items:center;line-height:1.5;flex-wrap:wrap;word-break:break-all;max-height:200px;overflow:auto}.toast-card.toast-default{border-left-color:#444}.toast-card.toast-error{border-left-color:#f44336}.toast-card.toast-info{border-left-color:#2196f3}.toast-card.toast-success{border-left-color:#8bc34a}.toast-card .toast-card-border{position:absolute;height:100%;width:4px;border-radius:var(--corner-radius);height:calc(100% - 10px);width:var(--corner-radius);top:5px;left:0}.toast-card.toast-default .toast-card-border{background-color:#444}.toast-card.toast-error .toast-card-border{background-color:#f44336}.toast-card.toast-info .toast-card-border{background-color:#2196f3}.toast-card.toast-success .toast-card-border{background-color:#8bc34a}.toast-card .link,.toast-card span{display:inline-block;padding:4px 6px;margin:0 2px;background-color:#8882;text-decoration:none;color:#000;transition:.2s ease-out;border-radius:var(--corner-radius)}.toast-card .link:hover{background-color:#8883}.toast-card .link:active{background-color:#8884}.toast-card .download-link{color:inherit!important;text-decoration:underline;word-break:break-all}@keyframes loading{0%,100%{top:0;left:50%}25%{top:50%;left:100%}50%{top:100%;left:50%}75%{top:50%;left:0}}.toast-card .loading{width:14px;height:14px;display:inline-block;margin-right:14px;position:relative}.toast-card .loading::after{content:\"\";width:10px;height:10px;background-color:#8884;border-radius:50%;display:block;transform:translateX(-50%) translateY(-50%);position:absolute;top:0;left:50%;animation:1s cubic-bezier(.22,.61,.36,1) infinite loading}</style>");
+                this.element = new Vue({
+                    el: ".toast-card-container",
+                    components: {
+                        "toast-card": {
+                            props: ["card"],
+                            template: "<div class=\"toast-card icons-enabled visible\" :class=\"'toast-' + card.type\">\n                            <div class=\"toast-card-border\"></div>\n                            <div class=\"toast-card-header\">\n                                <h1 class=\"toast-card-title\">{{card.title}}</h1>\n                                <div class=\"toast-card-dismiss\" @click=\"card.dismiss()\">\n                                    <svg style=\"width:22px;height:22px\" viewBox=\"0 0 24 24\">\n                                        <path d=\"M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z\" />\n                                    </svg>\n                                </div>\n                            </div>\n                        <div class=\"toast-card-message\" v-html=\"card.message\"></div>\n                        </div>"
+                        }
+                    },
+                    data: {
+                        cards: []
+                    }
+                });
+            }
+        };
+        Toast.internalShow = function (msg, title, time, e) {
+            var n = new Toast(msg, title, e);
+            n.duration = time;
+            n.show();
+            return n;
+        };
+        Toast.show = function (msg, title, time) {
+            if (time === void 0) { time = -1; }
+            return this.internalShow(msg, title, time, ToastType.Default);
+        };
+        Toast.info = function (msg, title, time) {
+            if (time === void 0) { time = -1; }
+            return this.internalShow(msg, title, time, ToastType.Info);
+        };
+        Toast.success = function (msg, title, time) {
+            if (time === void 0) { time = -1; }
+            return this.internalShow(msg, title, time, ToastType.Success);
+        };
+        Toast.error = function (msg, title, time) {
+            if (time === void 0) { time = -1; }
+            return this.internalShow(msg, title, time, ToastType.Error);
+        };
+        return Toast;
+    }());
+    var ToastType;
+    (function (ToastType) {
+        ToastType["Default"] = "default";
+        ToastType["Info"] = "info";
+        ToastType["Success"] = "success";
+        ToastType["Error"] = "error";
+    })(ToastType || (ToastType = {}));
+
+    var Common;
+    (function (Common) {
+        var Menu = (function () {
+            function Menu() {
+                this.core = new Core();
+                this.site = /tv.wandhi.com/i;
+                this.userAgent = navigator.userAgent;
+                this.menusClass = ['first', 'second', 'third', 'fourth', 'fifth'];
+                this.menuSelecter = "#Wandhi-nav";
+            }
+            Menu.prototype.loader = function () {
+                Core.appendCssContent(this.getCss());
+            };
+            Menu.prototype.getBody = function (option) {
+                return "<svg width=\"0\" height=\"0\"><defs><filter id=\"goo\"><feGaussianBlur in=\"SourceGraphic\" stdDeviation=\"10\" result=\"blur\"></feGaussianBlur><feColorMatrix in=\"blur\" mode=\"matrix\" values=\"1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9\" result=\"goo\"></feColorMatrix><feComposite in=\"SourceGraphic\" in2=\"goo\" operator=\"atop\"></feComposite></filter></defs></svg><div class=\"aside-nav bounceInUp animated\" id=\"Wandhi-nav\"><label for=\"\" class=\"aside-menu\" title=\"\u6309\u4F4F\u62D6\u52A8\">VIP</label>" + option + "</div>";
+            };
+            Menu.prototype.getCss = function () {
+                return "html .aside-nav{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased;font-size:62.5%}body .aside-nav{font-family:\"Helvetica Neue\",Helvetica,\"Microsoft YaHei\",Arial,sans-serif;margin:0;font-size:1.6rem;color:#4e546b}.aside-nav{position:fixed;top:350px;width:260px;height:260px;-webkit-filter:url(#goo);filter:url(#goo);-ms-user-select:none;-moz-user-select:none;-webkit-user-select:none;user-select:none;opacity:.75;z-index:20180817}.aside-nav.no-filter{-webkit-filter:none;filter:none}.aside-nav .aside-menu{position:absolute;width:70px;height:70px;-webkit-border-radius:50%;border-radius:50%;background:#f34444;left:0;top:0;right:0;bottom:0;margin:auto;text-align:center;line-height:70px;color:#fff;font-size:20px;z-index:1;cursor:move}.aside-nav .menu-item{position:absolute;width:60px;height:60px;background-color:#ff7676;left:0;top:0;right:0;bottom:0;margin:auto;line-height:60px;text-align:center;-webkit-border-radius:50%;border-radius:50%;text-decoration:none;color:#fff;-webkit-transition:background .5s,-webkit-transform .6s;transition:background .5s,-webkit-transform .6s;-moz-transition:transform .6s,background .5s,-moz-transform .6s;transition:transform .6s,background .5s;transition:transform .6s,background .5s,-webkit-transform .6s,-moz-transform .6s;font-size:14px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}.aside-nav .menu-item:hover{background:#a9c734}.aside-nav .menu-line{line-height:20px;padding-top:10px}.aside-nav:hover{opacity:1}.aside-nav:hover .aside-menu{-webkit-animation:jello 1s;-moz-animation:jello 1s;animation:jello 1s}.aside-nav:hover .menu-first{-webkit-transform:translate3d(0,-135%,0);-moz-transform:translate3d(0,-135%,0);transform:translate3d(0,-135%,0)}.aside-nav:hover .menu-second{-webkit-transform:translate3d(120%,-70%,0);-moz-transform:translate3d(120%,-70%,0);transform:translate3d(120%,-70%,0)}.aside-nav:hover .menu-third{-webkit-transform:translate3d(120%,70%,0);-moz-transform:translate3d(120%,70%,0);transform:translate3d(120%,70%,0)}.aside-nav:hover .menu-fourth{-webkit-transform:translate3d(0,135%,0);-moz-transform:translate3d(0,135%,0);transform:translate3d(0,135%,0)}@-webkit-keyframes jello{from,11.1%,to{-webkit-transform:none;transform:none}22.2%{-webkit-transform:skewX(-12.5deg) skewY(-12.5deg);transform:skewX(-12.5deg) skewY(-12.5deg)}33.3%{-webkit-transform:skewX(6.25deg) skewY(6.25deg);transform:skewX(6.25deg) skewY(6.25deg)}44.4%{-webkit-transform:skewX(-3.125deg) skewY(-3.125deg);transform:skewX(-3.125deg) skewY(-3.125deg)}55.5%{-webkit-transform:skewX(1.5625deg) skewY(1.5625deg);transform:skewX(1.5625deg) skewY(1.5625deg)}66.6%{-webkit-transform:skewX(-.78125deg) skewY(-.78125deg);transform:skewX(-.78125deg) skewY(-.78125deg)}77.7%{-webkit-transform:skewX(0.390625deg) skewY(0.390625deg);transform:skewX(0.390625deg) skewY(0.390625deg)}88.8%{-webkit-transform:skewX(-.1953125deg) skewY(-.1953125deg);transform:skewX(-.1953125deg) skewY(-.1953125deg)}}@-moz-keyframes jello{from,11.1%,to{-moz-transform:none;transform:none}22.2%{-moz-transform:skewX(-12.5deg) skewY(-12.5deg);transform:skewX(-12.5deg) skewY(-12.5deg)}33.3%{-moz-transform:skewX(6.25deg) skewY(6.25deg);transform:skewX(6.25deg) skewY(6.25deg)}44.4%{-moz-transform:skewX(-3.125deg) skewY(-3.125deg);transform:skewX(-3.125deg) skewY(-3.125deg)}55.5%{-moz-transform:skewX(1.5625deg) skewY(1.5625deg);transform:skewX(1.5625deg) skewY(1.5625deg)}66.6%{-moz-transform:skewX(-.78125deg) skewY(-.78125deg);transform:skewX(-.78125deg) skewY(-.78125deg)}77.7%{-moz-transform:skewX(0.390625deg) skewY(0.390625deg);transform:skewX(0.390625deg) skewY(0.390625deg)}88.8%{-moz-transform:skewX(-.1953125deg) skewY(-.1953125deg);transform:skewX(-.1953125deg) skewY(-.1953125deg)}}@keyframes jello{from,11.1%,to{-webkit-transform:none;-moz-transform:none;transform:none}22.2%{-webkit-transform:skewX(-12.5deg) skewY(-12.5deg);-moz-transform:skewX(-12.5deg) skewY(-12.5deg);transform:skewX(-12.5deg) skewY(-12.5deg)}33.3%{-webkit-transform:skewX(6.25deg) skewY(6.25deg);-moz-transform:skewX(6.25deg) skewY(6.25deg);transform:skewX(6.25deg) skewY(6.25deg)}44.4%{-webkit-transform:skewX(-3.125deg) skewY(-3.125deg);-moz-transform:skewX(-3.125deg) skewY(-3.125deg);transform:skewX(-3.125deg) skewY(-3.125deg)}55.5%{-webkit-transform:skewX(1.5625deg) skewY(1.5625deg);-moz-transform:skewX(1.5625deg) skewY(1.5625deg);transform:skewX(1.5625deg) skewY(1.5625deg)}66.6%{-webkit-transform:skewX(-.78125deg) skewY(-.78125deg);-moz-transform:skewX(-.78125deg) skewY(-.78125deg);transform:skewX(-.78125deg) skewY(-.78125deg)}77.7%{-webkit-transform:skewX(0.390625deg) skewY(0.390625deg);-moz-transform:skewX(0.390625deg) skewY(0.390625deg);transform:skewX(0.390625deg) skewY(0.390625deg)}88.8%{-webkit-transform:skewX(-.1953125deg) skewY(-.1953125deg);-moz-transform:skewX(-.1953125deg) skewY(-.1953125deg);transform:skewX(-.1953125deg) skewY(-.1953125deg)}}.animated{-webkit-animation-duration:1s;-moz-animation-duration:1s;animation-duration:1s;-webkit-animation-fill-mode:both;-moz-animation-fill-mode:both;animation-fill-mode:both}\n@-webkit-keyframes bounceInUp{from,60%,75%,90%,to{-webkit-animation-timing-function:cubic-bezier(0.215,.61,.355,1);animation-timing-function:cubic-bezier(0.215,.61,.355,1)}from{opacity:0;-webkit-transform:translate3d(0,800px,0);transform:translate3d(0,800px,0)}60%{opacity:1;-webkit-transform:translate3d(0,-20px,0);transform:translate3d(0,-20px,0)}75%{-webkit-transform:translate3d(0,10px,0);transform:translate3d(0,10px,0)}90%{-webkit-transform:translate3d(0,-5px,0);transform:translate3d(0,-5px,0)}to{-webkit-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}}@-moz-keyframes bounceInUp{from,60%,75%,90%,to{-moz-animation-timing-function:cubic-bezier(0.215,.61,.355,1);animation-timing-function:cubic-bezier(0.215,.61,.355,1)}from{opacity:0;-moz-transform:translate3d(0,800px,0);transform:translate3d(0,800px,0)}60%{opacity:1;-moz-transform:translate3d(0,-20px,0);transform:translate3d(0,-20px,0)}75%{-moz-transform:translate3d(0,10px,0);transform:translate3d(0,10px,0)}90%{-moz-transform:translate3d(0,-5px,0);transform:translate3d(0,-5px,0)}to{-moz-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}}@keyframes bounceInUp{from,60%,75%,90%,to{-webkit-animation-timing-function:cubic-bezier(0.215,.61,.355,1);-moz-animation-timing-function:cubic-bezier(0.215,.61,.355,1);animation-timing-function:cubic-bezier(0.215,.61,.355,1)}from{opacity:0;-webkit-transform:translate3d(0,800px,0);-moz-transform:translate3d(0,800px,0);transform:translate3d(0,800px,0)}60%{opacity:1;-webkit-transform:translate3d(0,-20px,0);-moz-transform:translate3d(0,-20px,0);transform:translate3d(0,-20px,0)}75%{-webkit-transform:translate3d(0,10px,0);-moz-transform:translate3d(0,10px,0);transform:translate3d(0,10px,0)}90%{-webkit-transform:translate3d(0,-5px,0);-moz-transform:translate3d(0,-5px,0);transform:translate3d(0,-5px,0)}to{-webkit-transform:translate3d(0,0,0);-moz-transform:translate3d(0,0,0);transform:translate3d(0,0,0)}}.bounceInUp{-webkit-animation-name:bounceInUp;-moz-animation-name:bounceInUp;animation-name:bounceInUp;-webkit-animation-delay:1s;-moz-animation-delay:1s;animation-delay:1s}@media screen and (max-width:640px){}@media screen and (min-width:641px) and (max-width:1367px){.aside-nav{top:50px}}";
+            };
+            Menu.prototype.Init = function (menus, callback) {
+                var _this = this;
+                if (this.site.test(this.core.topUrl)) {
+                    return;
+                }
+                this.loader();
+                var str = "";
+                menus.forEach(function (element, index) {
+                    str += "<a href=\"javascript:void(0)\" title=\"" + element.title + "\" data-cat=\"" + element.type + "\" class=\"menu-item menu-line menu-" + _this.menusClass[index] + "\">" + element.show + "</a>";
+                });
+                Core.bodyAppend(this.getBody(str));
+                /Safari|iPhone/i.test(this.userAgent) && /chrome/i.test(this.userAgent) && $("#Wandhi-nav").addClass("no-filter");
+                var drags = { down: !1, x: 0, y: 0, winWid: 0, winHei: 0, clientX: 0, clientY: 0 };
+                var asideNav = $(this.menuSelecter)[0];
+                $("body").on("mousedown", "#Wandhi-nav", function (a) {
+                    var getCss = function (a, e) {
+                        var _a, _b;
+                        return (_a = a.currentStyle[e]) !== null && _a !== void 0 ? _a : (_b = document.defaultView) === null || _b === void 0 ? void 0 : _b.getComputedStyle(a, null)[e];
+                    };
+                    drags.down = !0,
+                        drags.clientX = a.clientX,
+                        drags.clientY = a.clientY,
+                        drags.x = parseInt(getCss(this, "left")),
+                        drags.y = parseInt(getCss(this, "top")),
+                        drags.winHei = $(window).height(),
+                        drags.winWid = $(window).width(),
+                        $(document).on("mousemove", function (a) {
+                            var e = a.clientX - drags.clientX, t = a.clientY - drags.clientY;
+                            asideNav = asideNav || $("#Wandhi-nav")[0];
+                            asideNav.style.top = drags.y + t + "px";
+                            asideNav.style.left = drags.x + e + "px";
+                        });
+                }).on("mouseup", "#Wandhi-nav", function () {
+                    drags.down = !1, $(document).off("mousemove");
+                });
+                callback.call(this);
+            };
+            return Menu;
+        }());
+        Common.Menu = Menu;
+    })(Common || (Common = {}));
+
+    var container = new Map();
+    var Container = (function () {
+        function Container() {
+        }
+        Container.Registe = function (type, args) {
+            var className = this.processName(type.name);
+            container.set(className, window.Reflect.construct(type, this.buildParams(args)));
+            return container.get(className);
+        };
+        Container.buildParams = function (args) {
+            var para = [];
+            args === null || args === void 0 ? void 0 : args.map(function (item) {
+                para.push(item);
+            });
+            return para;
+        };
+        Container.processName = function (name) {
+            return name.toLowerCase();
+        };
+        Container.Require = function (type) {
+            var _this = this;
+            var name = this.processName(type.name);
+            if (container.has(name)) {
+                return container.get(name);
+            }
+            var classParams = Reflect.getMetadata(METADATA_PARAMS, type);
+            var args;
+            if (classParams === null || classParams === void 0 ? void 0 : classParams.length) {
+                args = classParams.map(function (item) {
+                    return _this.Require(item);
+                });
+            }
+            return this.Registe(type, args);
+        };
+        Container.define = function (target, key) {
+            var _a;
+            var classType = Reflect.getMetadata(METADATA_TYPE, target, key);
+            var desc = (_a = Object.getOwnPropertyDescriptor(target, key)) !== null && _a !== void 0 ? _a : { writable: true, configurable: true };
+            desc.value = this.Require(classType);
+            Object.defineProperty(target, key, desc);
+        };
+        return Container;
+    }());
+    var METADATA_TYPE = "design:type";
+    var METADATA_PARAMS = "design:paramtypes";
+    function WandhiAuto(target, key) {
+        Container.define(target, key);
+    }
+
+    var PluginBase = (function () {
+        function PluginBase() {
+            var _this = this;
+            this._unique = true;
+            this.Process = function () {
+                _this.loader();
+                _this.run();
+            };
+        }
+        PluginBase.prototype.unique = function () {
+            return this._unique;
+        };
+        PluginBase.prototype.linkTest = function (url) {
+            var _this = this;
+            if (!url) {
+                url = this.core.currentUrl();
+            }
+            var flag = false;
+            this.rules.forEach(function (v, k) {
+                if (v.test(url)) {
+                    flag = true;
+                    _this.site = k;
+                    return false;
+                }
+                return true;
+            });
+            return flag;
+        };
+        var _a, _b;
+        __decorate([
+            WandhiAuto,
+            __metadata("design:type", typeof (_a = typeof Core !== "undefined" && Core) === "function" ? _a : Object)
+        ], PluginBase.prototype, "core", void 0);
+        __decorate([
+            WandhiAuto,
+            __metadata("design:type", typeof (_b = typeof Common !== "undefined" && Common.Menu) === "function" ? _b : Object)
+        ], PluginBase.prototype, "menu", void 0);
+        return PluginBase;
+    }());
+
+    var SiteEnum;
+    (function (SiteEnum) {
+        SiteEnum["All"] = "All";
+        SiteEnum["TaoBao"] = "TaoBao";
+        SiteEnum["TMall"] = "TMall";
+        SiteEnum["JingDong"] = "JingDong";
+        SiteEnum["IQiYi"] = "IQiYi";
+        SiteEnum["YouKu"] = "YouKu";
+        SiteEnum["LeShi"] = "LeShi";
+        SiteEnum["TuDou"] = "TuDou";
+        SiteEnum["Tencent_V"] = "Tencent_V";
+        SiteEnum["MangGuo"] = "MangGuo";
+        SiteEnum["SoHu"] = "SoHu";
+        SiteEnum["Acfun"] = "Acfun";
+        SiteEnum["BiliBili"] = "BiliBili";
+        SiteEnum["M1905"] = "M1905";
+        SiteEnum["PPTV"] = "PPTV";
+        SiteEnum["YinYueTai"] = "YinYueTai";
+        SiteEnum["WangYi"] = "WangYi";
+        SiteEnum["Tencent_M"] = "Tencent_M";
+        SiteEnum["KuGou"] = "KuGou";
+        SiteEnum["KuWo"] = "KuWo";
+        SiteEnum["XiaMi"] = "XiaMi";
+        SiteEnum["TaiHe"] = "TaiHe";
+        SiteEnum["QingTing"] = "QingTing";
+        SiteEnum["LiZhi"] = "LiZhi";
+        SiteEnum["MiGu"] = "MiGu";
+        SiteEnum["XiMaLaYa"] = "XiMaLaYa";
+        SiteEnum["SXB"] = "SXB";
+        SiteEnum["BDY"] = "BDY";
+        SiteEnum["BDY1"] = "BDY1";
+        SiteEnum["LZY"] = "LZY";
+    })(SiteEnum || (SiteEnum = {}));
+
+    var UpdateService = (function (_super) {
+        __extends(UpdateService, _super);
+        function UpdateService() {
+            var _this = _super.call(this) || this;
+            _this.rules = new Map([
+                [SiteEnum.All, /(.*)/i]
+            ]);
+            _this._unique = false;
+            return _this;
+        }
+        UpdateService.prototype.loader = function () {
+        };
+        UpdateService.prototype.run = function () {
+            if (!Config.get(update_key, false)) {
+                var current_1 = new VersionCompar(Config.env.script.version);
+                Http.get_text(Route.update_api).then(function (res) {
+                    var version = new VersionCompar(res.match(/@version[ ]*([\d\.]+)/)[1]);
+                    if (version.compareTo(current_1) === VersionResult.greater) {
+                        var msg = "\u65B0\u7248\u672C<span>" + version.versionString + "</span>\u5DF2\u53D1\u5E03.<a id=\"new-version-link\" class=\"link\" href=\"" + Route.install_url_one + "\">\u5B89\u88C5(\u7EBF\u8DEF\u4E00)</a><a id=\"new-version-link\" class=\"link\" href=\"" + Route.install_url_two + "\">\u5B89\u88C5(\u7EBF\u8DEF\u4E8C)</a><a class=\"link\" target=\"_blank\"   href=\"" + Route.home_url + "\">\u67E5\u770B</a>";
+                        Toast.info(msg, "\u68C0\u67E5\u66F4\u65B0");
+                        Config.set(update_key, true, Day);
+                    }
+                });
+            }
+        };
+        return UpdateService;
+    }(PluginBase));
+    var VersionCompar = (function () {
+        function VersionCompar(e) {
+            if (!/^[\d\.]+$/.test(e)) {
+                throw new Error("Invalid version string");
+            }
+            this.parts = e.split(".").map(function (e) { return parseInt(e); });
+            this.versionString = e;
+        }
+        VersionCompar.prototype.compareTo = function (e) {
+            for (var t = 0; t < this.parts.length; ++t) {
+                if (e.parts.length === t) {
+                    return VersionResult.greater;
+                }
+                if (this.parts[t] === e.parts[t]) {
+                    continue;
+                }
+                if (this.parts[t] > e.parts[t]) {
+                    return VersionResult.greater;
+                }
+                return VersionResult.less;
+            }
+            if (this.parts.length !== e.parts.length) {
+                return VersionResult.less;
+            }
+            return VersionResult.equal;
+        };
+        VersionCompar.prototype.greaterThan = function (e) {
+            return this.compareTo(e) === VersionResult.greater;
+        };
+        VersionCompar.prototype.lessThan = function (e) {
+            return this.compareTo(e) === VersionResult.less;
+        };
+        VersionCompar.prototype.equals = function (e) {
+            return this.compareTo(e) === VersionResult.equal;
+        };
+        return VersionCompar;
+    }());
+    var VersionResult;
+    (function (VersionResult) {
+        VersionResult[VersionResult["less"] = -1] = "less";
+        VersionResult[VersionResult["equal"] = 0] = "equal";
+        VersionResult[VersionResult["greater"] = 1] = "greater";
+        VersionResult[VersionResult["incomparable"] = NaN] = "incomparable";
+    })(VersionResult || (VersionResult = {}));
+
+    var EventHelper = (function () {
+        function EventHelper() {
+        }
+        EventHelper.bind_click = function (query, act) {
+            var _a;
+            (_a = document.querySelector(query)) === null || _a === void 0 ? void 0 : _a.addEventListener("click", function (e) {
+                act();
+            });
+        };
+        return EventHelper;
+    }());
+
+    var BaseCoupon = (function () {
+        function BaseCoupon() {
+        }
+        BaseCoupon.prototype.init_qrcode = function (url) {
+            return new Promise(function (resolve) {
+                var opts = {
+                    errorCorrectionLevel: 'H',
+                    type: 'image/jpeg',
+                    quality: 0.3,
+                    margin: 1,
+                    width: 150,
+                };
+                QRCode.toCanvas(document.getElementById("vip-plugin-outside-coupons-qrcode-img"), url, opts, function (err) {
+                    if (!err) {
+                        resolve(true);
+                    }
+                });
+            });
+        };
+        BaseCoupon.prototype.init_coupon_info = function (after, price, time, q_url) {
+            if (q_url === void 0) { q_url = ''; }
+            var coup_info = "<p>\u79FB\u52A8\u7AEF<span>\u5FEB\u6377</span>\u8D2D\u4E70</p>";
+            var act = "<a class=\"vip-plugin-outside-coupons-button quan-none\">\u6253\u5F00\u624B\u673A\u626B\u4E00\u626B</a>";
+            var url = Runtime.url;
+            if (q_url) {
+                var now = new Date();
+                coup_info = "<p>\u5238\u540E\u4EF7 <span>" + after + "</span> \u5143</p><p class=\"vip-plugin-outside-coupons-date\">\uFF08" + Core.format(now, 'yyyy-MM-dd') + " ~ " + time + "\uFF09</p>";
+                act = "<a class=\"vip-plugin-outside-coupons-button quan-exits\">\u626B\u7801\u9886" + price + "\u5143\u4F18\u60E0\u5238</a>";
+                url = q_url;
+            }
+            new Promise(function (resolve) {
+                $(".vip-plugin-outside-coupons-title").html(coup_info);
+                $(".vip-plugin-outside-coupons-action").html(act);
+                resolve();
+            }).then(function () {
+                if (q_url) {
+                    EventHelper.bind_click(".vip-plugin-outside-coupons-button", function () {
+                        Core.open(url);
+                    });
+                }
+            });
+        };
+        return BaseCoupon;
+    }());
+
+    var JdCoupon = (function (_super) {
+        __extends(JdCoupon, _super);
+        function JdCoupon() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        JdCoupon.prototype.init_html = function (html) {
+            var _this = this;
+            return new Promise(function (resolve) {
+                if ($(".product-intro").length) {
+                    Core.appendTo(".product-intro", html);
+                    resolve(true);
+                }
+                else {
+                    setTimeout(_this.init_html, 2000);
+                }
+            });
+        };
+        JdCoupon.prototype.init_coupons = function () {
+            var _this = this;
+            this.init_qrcode(Runtime.url).then(function (res) { _this.init_coupon_info(0, 0, ''); });
+        };
+        return JdCoupon;
+    }(BaseCoupon));
+
+    var TaoCoupon = (function (_super) {
+        __extends(TaoCoupon, _super);
+        function TaoCoupon() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        TaoCoupon.prototype.init_html = function (html) {
+            return new Promise(function (resolve) {
+                if ($("#J_DetailMeta").length) {
+                    Core.appendTo("#J_DetailMeta", html);
+                }
+                else {
+                    Core.appendTo("#detail", html + "<br/>");
+                }
+                resolve(true);
+            });
+        };
+        TaoCoupon.prototype.init_coupons = function () {
+            var _this = this;
+            Route.queryCoupons(this.core.getPar('id'), function (data) {
+                if (data.code) {
+                    var q = data.data[0];
+                    var exp = new Date(q.quan_time);
+                    _this.init_qrcode(decodeURIComponent(q.quan_link)).then(function (res) {
+                        _this.init_coupon_info(q.after_price, q.quan_price, "" + Core.format(exp, 'yyyy-MM-dd'), decodeURIComponent(q.quan_link));
+                    });
+                }
+                else {
+                    _this.init_qrcode(Runtime.url).then(function (res) { _this.init_coupon_info(0, 0, ''); });
+                }
+            });
+        };
+        var _a;
+        __decorate([
+            WandhiAuto,
+            __metadata("design:type", typeof (_a = typeof Core !== "undefined" && Core) === "function" ? _a : Object)
+        ], TaoCoupon.prototype, "core", void 0);
+        return TaoCoupon;
+    }(BaseCoupon));
+
+    var DefCoupon = (function (_super) {
+        __extends(DefCoupon, _super);
+        function DefCoupon() {
+            return _super !== null && _super.apply(this, arguments) || this;
+        }
+        DefCoupon.prototype.init_html = function (html) {
+            return new Promise(function (resolve) { resolve(false); });
+        };
+        DefCoupon.prototype.init_coupons = function () { };
+        return DefCoupon;
+    }(BaseCoupon));
+
+    var LinesOption = (function () {
+        function LinesOption() {
+        }
+        return LinesOption;
     }());
 
     var HistoryService = (function (_super) {
@@ -863,6 +1086,7 @@
                 [SiteEnum.TaoBao, /item.taobao.com/i],
                 [SiteEnum.JingDong, /item.jd.com\/[0-9]*.html/i],
             ]);
+            _this.factory = new DefCoupon();
             return _this;
         }
         HistoryService.prototype.loader = function () {
@@ -872,33 +1096,20 @@
             this.injectHistory();
         };
         HistoryService.prototype.injectHistory = function () {
+            var _this = this;
             switch (this.site) {
                 case SiteEnum.TaoBao:
                 case SiteEnum.TMall:
-                    this.initHistoryTao();
+                    this.factory = new TaoCoupon();
                     break;
                 case SiteEnum.JingDong:
-                    this.initHistoryJd();
+                    this.factory = new JdCoupon();
                     break;
             }
-        };
-        HistoryService.prototype.initHistoryTao = function () {
-            if ($("#J_DetailMeta").length) {
-                Core.appendTo("#J_DetailMeta", this.getHistoryHtml());
-            }
-            else {
-                Core.appendTo("#detail", this.getHistoryHtml() + "<br/>");
-            }
-            this.InitPriceHistory();
-        };
-        HistoryService.prototype.initHistoryJd = function () {
-            if ($(".product-intro").length) {
-                Core.appendTo(".product-intro", this.getHistoryHtml());
-                this.InitPriceHistory();
-            }
-            else {
-                setTimeout(this.initHistoryJd, 2000);
-            }
+            this.factory.init_html(this.getHistoryHtml()).then(function (res) {
+                res && _this.InitPriceHistory();
+                _this.factory.init_coupons && _this.factory.init_coupons();
+            });
         };
         HistoryService.prototype.InitPriceHistory = function () {
             var _this = this;
@@ -918,10 +1129,10 @@
             });
         };
         HistoryService.prototype.getHistoryHtml = function () {
-            return "<div id=\"vip-plugin-outside\">\n                    <div id=\"vip-plugin-outside-history\" class=\"vip-plugin-outside-history\">\n                        <div class=\"vip-plugin-outside-chart-container\"></div>\n                        <p class=\"vip-plugin-outside-history-tip\"></p>\n                    </div>    \n                </div>";
+            return "<div id=\"vip-plugin-outside\">\n                    <div class=\"vip-plugin-outside-coupons\">\n                        <div class=\"vip-plugin-outside-coupons-qrcode\"><canvas id=\"vip-plugin-outside-coupons-qrcode-img\"></canvas></div>\n                        <div class=\"vip-plugin-outside-coupons-title\"></div>\n                        <div class=\"vip-plugin-outside-coupons-action\"></div>\n                    </div>\n                    <div id=\"vip-plugin-outside-history\" class=\"vip-plugin-outside-history\">\n                        <div class=\"vip-plugin-outside-chart-container\"></div>\n                        <p class=\"vip-plugin-outside-history-tip\"></p>\n                    </div>    \n                </div>";
         };
         HistoryService.prototype.getHistoryCss = function () {
-            return "\n        #vip-plugin-outside {\n            border: 1px solid #eee;\n            margin: 0 auto;\n            position: relative;\n            clear: both;\n            display: none\n        }\n        #vip-plugin-outside .vip-plugin-outside-history .vip-plugin-outside-history-tip {\n            position: absolute;\n            margin: 0;\n            top: 50%;\n            left: 50%;\n            letter-spacing: 1px;\n            font-size: 15px;\n            transform: translateX(-50%) translateY(-50%)\n        }\n        #vip-plugin-outside .vip-plugin-outside-history ,#vip-plugin-outside-chart-body{\n            height: 300px;\n            overflow: hidden;\n            position: relative\n        }    \n        #vip-plugin-outside .vip-plugin-outside-history .vip-plugin-outside-chart-container,\n        #vip-plugin-outside-chart-container-line {\n            width: 100%;\n            height: 100%\n        }";
+            return "\n        #vip-plugin-outside {\n            border: 1px solid #eee;\n            margin: 0 auto;\n            position: relative;\n            clear: both;\n            display: none\n        }\n        #vip-plugin-outside .vip-plugin-outside-coupons {\n            width: 240px;\n            float: left\n        }\n        #vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode {\n            text-align: center;\n            min-height: 150px;\n            margin-top: 30px\n        }        \n        #vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode canvas,\n        #vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode img {\n            margin: 0 auto\n        }        \n        #vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-title {\n            margin-top: 20px;\n            color: #000;\n            font-size: 14px;\n            font-weight: 700;\n            text-align: center\n        }        \n        #vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-title span {\n            color: #ff0036;\n            font-weight: 700\n        }        \n        #vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action {\n            margin-top: 10px;\n            text-align: center\n        }\n        \n        #vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action a {\n            text-decoration: none\n        }        \n        #vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action .vip-plugin-outside-coupons-button {\n            min-width: 135px;\n            padding: 0 8px;\n            line-height: 35px;\n            color: #fff;\n            background: #ff0036;\n            font-size: 13px;\n            font-weight: 700;\n            letter-spacing: 1.5px;\n            margin: 0 auto;\n            text-align: center;\n            border-radius: 15px;\n            display: inline-block;\n            cursor: pointer\n        }        \n        #vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action .vip-plugin-outside-coupons-button.quan-none {\n            color: #000;\n            background: #bec5c5\n        }\n        .vip-plugin-outside-coupons-date {\n            color: #233b3d;\n            font-weight: normal;\n            font-size: 12px;\n        }\n\n        #vip-plugin-outside .vip-plugin-outside-history .vip-plugin-outside-history-tip {\n            position: absolute;\n            margin: 0;\n            top: 50%;\n            left: 50%;\n            letter-spacing: 1px;\n            font-size: 15px;\n            transform: translateX(-50%) translateY(-50%)\n        }\n        #vip-plugin-outside .vip-plugin-outside-history ,#vip-plugin-outside-chart-body{\n            height: 300px;\n            overflow: hidden;\n            position: relative\n        }    \n        #vip-plugin-outside .vip-plugin-outside-history .vip-plugin-outside-chart-container,\n        #vip-plugin-outside-chart-container-line {\n            width: 100%;\n            height: 100%\n        }";
         };
         HistoryService.prototype.chartMsg = function (msg) {
             $(".vip-plugin-outside-history-tip").html(msg);
