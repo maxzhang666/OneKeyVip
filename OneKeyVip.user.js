@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-06-20 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.2.5
+// @version      4.2.6
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、上学吧答案查询(接口偶尔抽风)；5、商品历史价格展示(一次性告别虚假降价)；6、优惠券查询
@@ -407,11 +407,16 @@
         }, Http.get = function(t, e) {
             return void 0 === e && (e = new Map), new Promise((function(n) {
                 Http.ajax(new d(t, "GET", e, (function(t) {
-                    n(JSON.parse(t));
+                    var e, o = null !== (e = JSON.parse(t)) && void 0 !== e ? e : t;
+                    n(o);
                 })));
             }));
         }, Http.get_text = function(t) {
-            return this.get(t, new Map);
+            return new Promise((function(e) {
+                Http.ajax(new d(t, "GET", new Map, (function(t) {
+                    e(t);
+                })));
+            }));
         }, Http;
     }(), m = function() {
         function Result() {}
@@ -1199,7 +1204,7 @@
             $("#wandhi_table tbody").append(e);
         }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== j && j) ? e : Object) ], TaoBaoService.prototype, "historyService", void 0), 
         TaoBaoService;
-    }(_), D = function(t) {
+    }(_), H = function(t) {
         function BiliImgService() {
             var e = null !== t && t.apply(this, arguments) || this;
             return e.rules = new Map([ [ x.JingDong, /bilibili.com\/video\/[av|bv]*/i ] ]), 
@@ -1221,7 +1226,7 @@
             }), 1e3);
         }, BiliImgService.btn = '\n    <span id="findimg" style="\n    background-color: #fb7199;\n    color: white;\n    font-size: 1rem;\n    text-align: center;\n    margin-left: 1rem;\n    padding:0.5rem;\n    cursor: pointer;\n    border-radius: 1rem;\n    ">\n        \u83b7\u53d6\u5c01\u9762\n    </span>', 
         BiliImgService;
-    }(_), H = function(t) {
+    }(_), D = function(t) {
         function MovieService() {
             var e = t.call(this) || this;
             return e.rules = new Map([ [ x.YouKu, /youku/i ], [ x.IQiYi, /iqiyi/i ], [ x.LeShi, /le.com/i ], [ x.Tencent_V, /v.qq/i ], [ x.TuDou, /tudou/i ], [ x.MangGuo, /mgtv/i ], [ x.SoHu, /sohu/i ], [ x.Acfun, /acfun/i ], [ x.BiliBili, /bilibili/i ], [ x.M1905, /1905/i ], [ x.PPTV, /pptv/i ], [ x.YinYueTai, /yinyuetai/ ] ]), 
@@ -1388,7 +1393,7 @@
         }, StuService;
     }(_), E = function() {
         function WandhiInjection() {
-            this.plugins = new Array, this.plugins = [ b.Require(C), b.Require(D), b.Require(H), b.Require(I), b.Require(X), b.Require(L), b.Require(P) ], 
+            this.plugins = new Array, this.plugins = [ b.Require(C), b.Require(H), b.Require(D), b.Require(I), b.Require(X), b.Require(L), b.Require(P) ], 
             a.info("container loaded");
         }
         return WandhiInjection.prototype.Init = function() {
