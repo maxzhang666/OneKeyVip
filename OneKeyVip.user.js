@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-06-29 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,上学吧答案获取等众多功能聚合 2020-07-07 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.2.8
+// @version      4.2.9
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、上学吧答案查询(接口偶尔抽风)；5、商品历史价格展示(一次性告别虚假降价)；6、优惠券查询
@@ -79,6 +79,7 @@
 // @connect      api.wandhi.com
 // @connect      cdn.jsdelivr.net
 // @connect      tool.manmanbuy.com
+// @connect      xbeibeix.com
 // @grant        unsafeWindow
 // @grant        GM_xmlhttpRequest
 // @grant        GM_info
@@ -128,6 +129,14 @@
         }
         return Core.appendTo = function(t, e) {
             $(t).append(e);
+        }, Core.lazyload = function(t, e) {
+            void 0 === e && (e = 5), setTimeout((function() {
+                t();
+            }), 1e3 * e);
+        }, Core.aotulazyload = function(t, e, n) {
+            void 0 === n && (n = 5), t() ? e() : setTimeout((function() {
+                Core.aotulazyload(t, e, n);
+            }), 1e3 * n);
         }, Core.addUrl = function(t, e) {
             GM_setValue(t, e);
         }, Core.openUrl = function(t) {
@@ -330,8 +339,9 @@
                 icon: 5,
                 time: 2e3
             });
-        }, Alert.confim = function(t, e, n, o) {
-            return layer.open({
+        }, Alert.confim = function(t, e, n, o, i) {
+            void 0 === i && (i = !1);
+            var a = layer.open({
                 type: 1,
                 title: t || !1,
                 closeBtn: !0,
@@ -343,9 +353,12 @@
                 moveType: 1,
                 content: '<div style="padding: 20px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">' + e + "</div>",
                 yes: function(t) {
-                    o(t);
+                    o(t), i && r.lazyload((function() {
+                        layer.close(a);
+                    }));
                 }
             });
+            return a;
         }, Alert.prompt = function(t, e, n, o, i) {
             void 0 === i && (i = 0), layer.prompt({
                 title: t,
@@ -493,6 +506,10 @@
             }));
         }, Route.queryBiliImg = function(t) {
             this.baseApi(this.bili, new Map([ [ "url", d.url ] ]), t);
+        }, Route.queryBiliDown = function(t, e, n) {
+            s.debug([ t, e ]), m.get(this.bilidown + "?cid=" + e + "&aid=" + t).then((function(t) {
+                s.debug(t), n(t);
+            }));
         }, Route.queryCoupons = function(t, e) {
             this.baseApi(this.coupons, new Map([ [ "id", t ] ]), e);
         }, Route.queryJdCoupons = function(t, e) {
@@ -501,8 +518,8 @@
         Route.home_url = "https://wiki.wandhi.com", Route.install_url_one = "https://greasyfork.org/zh-CN/scripts/384538", 
         Route.install_url_two = "https://tools.wandhi.com/scripts", Route.sxb_anhao = "http://www.lelunwen.com/e/action/ListInfo/?classid=45", 
         Route.sxb_key = "sxb_anhao", Route.config = "/config/query", Route.history = "/history/", 
-        Route.historyv1 = "/history/v1/", Route.bili = "/tools/bili", Route.coupons = "/tb/infos/", 
-        Route.jd_coupons = "/jd/info", Route;
+        Route.historyv1 = "/history/v1/", Route.bili = "/tools/bili", Route.bilidown = "https://www.xbeibeix.com/api/bilibiliapi.php", 
+        Route.coupons = "/tb/infos/", Route.jd_coupons = "/jd/info", Route;
     }(), v = function() {
         function Toast(t, e, n) {
             this.creationTime = new Date, this.message = t, this.type = n, this.title = e, this.duration = 3e3, 
@@ -723,7 +740,7 @@
                 e();
             }));
         }, EventHelper;
-    }(), q = function() {
+    }(), z = function() {
         function BaseCoupon() {}
         return BaseCoupon.prototype.init_qrcode = function(t) {
             return new Promise((function(e) {
@@ -755,7 +772,7 @@
                 }));
             }));
         }, BaseCoupon;
-    }(), z = function(t) {
+    }(), q = function(t) {
         function JdCoupon() {
             return null !== t && t.apply(this, arguments) || this;
         }
@@ -780,7 +797,7 @@
                 e.init_coupon_info(0, 0, "");
             }));
         }, JdCoupon;
-    }(q), Y = function(t) {
+    }(z), Y = function(t) {
         function TaoCoupon() {
             return null !== t && t.apply(this, arguments) || this;
         }
@@ -804,7 +821,7 @@
             }));
         }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== r && r) ? e : Object) ], TaoCoupon.prototype, "core", void 0), 
         TaoCoupon;
-    }(q), A = function(t) {
+    }(z), A = function(t) {
         function DefCoupon() {
             return null !== t && t.apply(this, arguments) || this;
         }
@@ -813,7 +830,7 @@
                 t(!1);
             }));
         }, DefCoupon.prototype.init_coupons = function() {}, DefCoupon;
-    }(q), j = function j() {}, H = function(t) {
+    }(z), I = function I() {}, j = function(t) {
         function HistoryService() {
             var e = null !== t && t.apply(this, arguments) || this;
             return e.rules = new Map([ [ _.TMall, /detail.tmall.com\/item.htm/i ], [ _.TaoBao, /item.taobao.com/i ], [ _.JingDong, /item.jd.(com|hk)\/[0-9]*.html/i ], [ _.SuNing, /product.suning.com/i ] ]), 
@@ -832,7 +849,7 @@
                 break;
 
               case _.JingDong:
-                this.factory = new z;
+                this.factory = new q;
                 break;
 
               default:
@@ -857,7 +874,7 @@
         }, HistoryService.prototype.chartMsg = function(t) {
             $(".vip-plugin-outside-history-tip").html(t);
         }, HistoryService.prototype.getChartOption = function(t) {
-            var e, n, o = "\u5386\u53f2\u4f4e\u4ef7\uff1a{red|\uffe5" + t.min + "} ( {red|" + t.date + "} ) \u5206\u6790\uff1a" + t.mark, i = new j;
+            var e, n, o = "\u5386\u53f2\u4f4e\u4ef7\uff1a{red|\uffe5" + t.min + "} ( {red|" + t.date + "} ) \u5206\u6790\uff1a" + t.mark, i = new I;
             (i = {
                 title: {
                     left: "center",
@@ -1195,7 +1212,7 @@
                 }
             };
         }, HistoryService;
-    }(S), I = function(t) {
+    }(S), H = function(t) {
         function TaoBaoService() {
             var e = null !== t && t.apply(this, arguments) || this;
             return e.rules = new Map([ [ _.TaoBao, /taobao.com/i ], [ _.TMall, /tmall/i ] ]), 
@@ -1222,9 +1239,9 @@
                 e += "<tr><td>" + t.quan_context + "</td><td>" + t.after_price + "</td><td>" + t.quan_time + "</td><td><b onclick=window.open(decodeURIComponent('" + t.quan_link + "')) style='cursor:pointer'>\u9886\u53d6</b></td></tr>";
             })) : e = "<tr><td colspan='4'>\u8fd9\u4e2a\u5546\u54c1\u6ca1\u6709\u8d85\u503c\u4f18\u60e0\u5238</td></tr>", 
             $("#wandhi_table tbody").append(e);
-        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== H && H) ? e : Object) ], TaoBaoService.prototype, "historyService", void 0), 
+        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== j && j) ? e : Object) ], TaoBaoService.prototype, "historyService", void 0), 
         TaoBaoService;
-    }(S), X = function(t) {
+    }(S), B = function(t) {
         function BiliImgService() {
             var e = null !== t && t.apply(this, arguments) || this;
             return e.rules = new Map([ [ _.JingDong, /bilibili.com\/video\/[av|bv]*/i ] ]), 
@@ -1233,20 +1250,37 @@
         return __extends(BiliImgService, t), BiliImgService.prototype.loader = function() {
             r.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
         }, BiliImgService.prototype.run = function() {
-            this.addBtn();
-        }, BiliImgService.prototype.addBtn = function() {
-            var t = this;
-            setTimeout((function() {
-                $(".video-data").length && ($(".bilibili-player-video-info-people-number") && "--" !== $(".coin").text().trim() ? ($(".video-data").last().append(BiliImgService.btn), 
-                $("body").on("click", "#findimg", (function() {
-                    y.queryBiliImg((function(t) {
-                        t.code ? f.open("\u5c01\u9762\u9171", '<img src="' + t.data + '" style="width: 705px;height: 400px;">', [ "725px", "400px" ]) : f.error("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f");
+            this.init();
+        }, BiliImgService.prototype.init = function() {
+            r.aotulazyload((function() {
+                return !(!$(".video-data").length || !$(".bilibili-player-video-info-people-number") || "--" === $(".coin").text().trim());
+            }), (function() {
+                BiliImgService.add_img_btn(), BiliImgService.add_down_btn();
+            }));
+        }, BiliImgService.add_img_btn = function() {
+            $(".video-data").last().append(BiliImgService.btn), $("body").on("click", "#findimg", (function() {
+                y.queryBiliImg((function(t) {
+                    t.code ? f.open("\u5c01\u9762\u9171", '<img src="' + t.data + '" style="width: 705px;height: 400px;">', [ "725px", "400px" ]) : f.error("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f");
+                }));
+            }));
+        }, BiliImgService.add_down_btn = function() {
+            $(".video-data").last().append(BiliImgService.down), $("body").on("click", "#downvideo", (function() {
+                var t = unsafeWindow.__INITIAL_STATE__.videoData.aid, e = unsafeWindow.__INITIAL_STATE__.videoData.cid, n = t.toString() + e.toString();
+                if (t && e) {
+                    var o = l.get(n + "M");
+                    o ? f.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + o.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(t) {
+                        r.openUrl(n);
+                    }), !0) : y.queryBiliDown(t, e, (function(t) {
+                        "" != t.url && (r.addUrl(n, t.url), l.set(n + "M", t), f.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + t.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(t) {
+                            r.openUrl(n);
+                        }), !0));
                     }));
-                }))) : t.addBtn());
-            }), 1e3);
+                } else f.error("\u6682\u4e0d\u652f\u6301\u5f53\u524d\u89c6\u9891\uff0c\u5982\u6709\u7591\u95ee\u8bf7\u5e26\u4e0a\u94fe\u63a5\u8be2\u95ee\u4f5c\u8005");
+            }));
         }, BiliImgService.btn = '\n    <span id="findimg" style="\n    background-color: #fb7199;\n    color: white;\n    font-size: 1rem;\n    text-align: center;\n    margin-left: 1rem;\n    padding:0.5rem;\n    cursor: pointer;\n    border-radius: 1rem;\n    ">\n        \u83b7\u53d6\u5c01\u9762\n    </span>', 
+        BiliImgService.down = '\n    <span id="downvideo" style="\n    background-color: #fb7199;\n    color: white;\n    font-size: 1rem;\n    text-align: center;\n    margin-left: 1rem;\n    padding:0.5rem;\n    cursor: pointer;\n    border-radius: 1rem;\n    ">\n        \u4e0b\u8f7d\u89c6\u9891\n    </span>', 
         BiliImgService;
-    }(S), L = function(t) {
+    }(S), X = function(t) {
         function MovieService() {
             var e = t.call(this) || this;
             return e.rules = new Map([ [ _.YouKu, /youku/i ], [ _.IQiYi, /iqiyi/i ], [ _.LeShi, /le.com/i ], [ _.Tencent_V, /v.qq/i ], [ _.TuDou, /tudou/i ], [ _.MangGuo, /mgtv/i ], [ _.SoHu, /sohu/i ], [ _.Acfun, /acfun/i ], [ _.BiliBili, /bilibili/i ], [ _.M1905, /1905/i ], [ _.PPTV, /pptv/i ], [ _.YinYueTai, /yinyuetai/ ] ]), 
@@ -1283,7 +1317,7 @@
                 r.open("https://t.cn/A6LoYnHT");
             }));
         }, MovieService;
-    }(S), P = function(t) {
+    }(S), L = function(t) {
         function JdService() {
             var e = t.call(this) || this;
             return e.rules = new Map([ [ _.JingDong, /item.jd/i ] ]), e;
@@ -1297,9 +1331,9 @@
             $(".btn-yhj").on("click", (function() {
                 r.open("http://jd.huizhek.com/?ah=total&kw=" + encodeURIComponent(t));
             }));
-        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== H && H) ? e : Object) ], JdService.prototype, "historyService", void 0), 
+        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== j && j) ? e : Object) ], JdService.prototype, "historyService", void 0), 
         JdService;
-    }(S), B = function() {
+    }(S), P = function() {
         function UrlHelper() {}
         return UrlHelper.Bind = function(t, e, n) {
             $(t).click((function() {
@@ -1353,7 +1387,7 @@
                         anim: 2,
                         content: t
                     });
-                } else /taihe.com/i.test(d.url) ? r.open("http://music.wandhi.com/?url=" + B.urlEncode(d.url.replace("taihe", "baidu"))) : r.open("http://music.wandhi.com/?url=" + B.urlEncode(d.url));
+                } else /taihe.com/i.test(d.url) ? r.open("http://music.wandhi.com/?url=" + P.urlEncode(d.url.replace("taihe", "baidu"))) : r.open("http://music.wandhi.com/?url=" + P.urlEncode(d.url));
             })), $("body").on("click", "[data-cat=search]", (function() {
                 r.open("http://tv.wandhi.com/");
             })), $("body").on("click", "[data-cat=tb]", (function() {
@@ -1413,7 +1447,7 @@
         }, StuService;
     }(S), E = function() {
         function WandhiInjection() {
-            this.plugins = new Array, this.plugins = [ w.Require(T), w.Require(X), w.Require(L), w.Require(I), w.Require(P), w.Require(D), w.Require(O) ], 
+            this.plugins = new Array, this.plugins = [ w.Require(T), w.Require(B), w.Require(X), w.Require(H), w.Require(L), w.Require(D), w.Require(O) ], 
             s.info("container loaded");
         }
         return WandhiInjection.prototype.Init = function() {
