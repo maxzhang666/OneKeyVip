@@ -344,7 +344,7 @@
             var a = layer.open({
                 type: 1,
                 title: t || !1,
-                closeBtn: !0,
+                closeBtn: 1,
                 shade: .8,
                 id: "LAY_layuipro",
                 resize: !1,
@@ -1256,7 +1256,7 @@
                 return !(!$(".video-data").length || !$(".bilibili-player-video-info-people-number") || "--" === $(".coin").text().trim());
             }), (function() {
                 BiliImgService.add_img_btn(), BiliImgService.add_down_btn();
-            }));
+            }), 1);
         }, BiliImgService.add_img_btn = function() {
             $(".video-data").last().append(BiliImgService.btn), $("body").on("click", "#findimg", (function() {
                 y.queryBiliImg((function(t) {
@@ -1265,14 +1265,14 @@
             }));
         }, BiliImgService.add_down_btn = function() {
             $(".video-data").last().append(BiliImgService.down), $("body").on("click", "#downvideo", (function() {
-                var t = unsafeWindow.__INITIAL_STATE__.videoData.aid, e = unsafeWindow.__INITIAL_STATE__.videoData.cid, n = t.toString() + e.toString();
+                var t = unsafeWindow.__INITIAL_STATE__.videoData.aid, e = unsafeWindow.__INITIAL_STATE__.videoData.cid, n = t.toString() + e.toString() + "MD";
                 if (t && e) {
-                    var o = l.get(n + "M");
-                    o ? f.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + o.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(t) {
-                        r.openUrl(n);
+                    var o = l.get(n, !1);
+                    s.debug(o), o ? f.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + o.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(t) {
+                        r.open(o.url);
                     }), !0) : y.queryBiliDown(t, e, (function(t) {
-                        "" != t.url && (r.addUrl(n, t.url), l.set(n + "M", t, 6e4), f.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + t.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(t) {
-                            r.openUrl(n);
+                        "" != t.url && (l.set(n, t, 6e4), f.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + t.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(e) {
+                            r.open(t.url);
                         }), !0));
                     }));
                 } else f.error("\u6682\u4e0d\u652f\u6301\u5f53\u524d\u89c6\u9891\uff0c\u5982\u6709\u7591\u95ee\u8bf7\u5e26\u4e0a\u94fe\u63a5\u8be2\u95ee\u4f5c\u8005");
