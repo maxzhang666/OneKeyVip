@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2020-07-14 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2020-07-15 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.2.10
+// @version      4.2.11
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
-// @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、上学吧答案查询(接口偶尔抽风)；5、商品历史价格展示(一次性告别虚假降价)；6、优惠券查询
+// @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(接口偶尔抽风)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
 // @author       MaxZhang
 // @icon         http://www.wandhi.com//favicon.ico
 // @include      *://m.youku.com/v*
@@ -253,9 +253,9 @@
             var n = GM_getValue(this.encode(t), e);
             if (n) {
                 var o = JSON.parse(n);
-                if (-1 == o.exp || o.exp > (new Date).getTime()) return o.value;
+                if (-1 == o.exp || o.exp > (new Date).getTime()) return s.info("cache true"), o.value;
             }
-            return e;
+            return s.info("cache false"), e;
         }, Config.set = function(t, e, n) {
             void 0 === n && (n = -1);
             var o = {
@@ -426,7 +426,9 @@
                 return f.close(n);
             }));
         }, Http.get = function(t, e) {
-            return void 0 === e && (e = new Map), new Promise((function(n, o) {
+            void 0 === e && (e = new Map);
+            var n = f.loading();
+            return new Promise((function(n, o) {
                 Http.ajax(new p(t, "GET", e, (function(t) {
                     var e;
                     try {
@@ -436,6 +438,8 @@
                         s.debug(t), o();
                     }
                 })));
+            })).finally((function() {
+                return f.close(n);
             }));
         }, Http.get_text = function(t) {
             return new Promise((function(e) {
@@ -507,7 +511,7 @@
         }, Route.queryBiliImg = function(t) {
             this.baseApi(this.bili, new Map([ [ "url", d.url ] ]), t);
         }, Route.queryBiliDown = function(t, e, n) {
-            s.debug([ t, e ]), m.get(this.bilidown + "?cid=" + e + "&aid=" + t).then((function(t) {
+            m.get(this.bilidown + "?cid=" + e + "&aid=" + t).then((function(t) {
                 s.debug(t), n(t);
             }));
         }, Route.queryCoupons = function(t, e) {
@@ -797,7 +801,7 @@
                 e.init_coupon_info(0, 0, "");
             }));
         }, JdCoupon;
-    }(z), Y = function(t) {
+    }(z), A = function(t) {
         function TaoCoupon() {
             return null !== t && t.apply(this, arguments) || this;
         }
@@ -821,7 +825,7 @@
             }));
         }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== r && r) ? e : Object) ], TaoCoupon.prototype, "core", void 0), 
         TaoCoupon;
-    }(z), A = function(t) {
+    }(z), Y = function(t) {
         function DefCoupon() {
             return null !== t && t.apply(this, arguments) || this;
         }
@@ -834,7 +838,7 @@
         function HistoryService() {
             var e = null !== t && t.apply(this, arguments) || this;
             return e.rules = new Map([ [ _.TMall, /detail.tmall.com\/item.htm/i ], [ _.TaoBao, /item.taobao.com/i ], [ _.JingDong, /item.jd.(com|hk)\/[0-9]*.html/i ], [ _.SuNing, /product.suning.com/i ] ]), 
-            e.factory = new A, e;
+            e.factory = new Y, e;
         }
         return __extends(HistoryService, t), HistoryService.prototype.loader = function() {
             r.appendCssContent(this.getHistoryCss());
@@ -845,7 +849,7 @@
             switch (this.site) {
               case _.TaoBao:
               case _.TMall:
-                this.factory = new Y;
+                this.factory = new A;
                 break;
 
               case _.JingDong:
@@ -853,7 +857,7 @@
                 break;
 
               default:
-                this.factory = new A;
+                this.factory = new Y;
             }
             this.factory.init_html(this.getHistoryHtml()).then((function(e) {
                 e && t.InitPriceHistory(), t.factory.init_coupons && t.factory.init_coupons();
@@ -1265,13 +1269,13 @@
             }));
         }, BiliImgService.add_down_btn = function() {
             $(".video-data").last().append(BiliImgService.down), $("body").on("click", "#downvideo", (function() {
-                var t = unsafeWindow.__INITIAL_STATE__.videoData.aid, e = unsafeWindow.__INITIAL_STATE__.videoData.cid, n = t.toString() + e.toString() + "MD";
-                if (t && e) {
-                    var o = l.get(n, !1);
-                    s.debug(o), o ? f.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + o.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(t) {
-                        r.open(o.url);
-                    }), !0) : y.queryBiliDown(t, e, (function(t) {
-                        "" != t.url && (l.set(n, t, 6e4), f.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + t.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(e) {
+                var t, e, n = unsafeWindow.__INITIAL_STATE__.videoData.aid, o = null !== (e = null === (t = unsafeWindow.__INITIAL_STATE__.cidMap[n]) || void 0 === t ? void 0 : t.cid) && void 0 !== e ? e : unsafeWindow.__INITIAL_STATE__.videoData.cid, i = n.toString() + o.toString() + "MD";
+                if (s.debug([ n, o ]), n && o) {
+                    var a = l.get(i, !1);
+                    a ? f.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + a.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(t) {
+                        r.open(a.url);
+                    }), !0) : y.queryBiliDown(n, o, (function(t) {
+                        "" != t.url && (l.set(i, t, 6e4), f.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + t.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(e) {
                             r.open(t.url);
                         }), !0));
                     }));
@@ -1280,7 +1284,7 @@
         }, BiliImgService.btn = '\n    <span id="findimg" style="\n    background-color: #fb7199;\n    color: white;\n    font-size: 1rem;\n    text-align: center;\n    margin-left: 1rem;\n    padding:0.5rem;\n    cursor: pointer;\n    border-radius: 1rem;\n    ">\n        \u83b7\u53d6\u5c01\u9762\n    </span>', 
         BiliImgService.down = '\n    <span id="downvideo" style="\n    background-color: #fb7199;\n    color: white;\n    font-size: 1rem;\n    text-align: center;\n    margin-left: 1rem;\n    padding:0.5rem;\n    cursor: pointer;\n    border-radius: 1rem;\n    ">\n        \u4e0b\u8f7d\u89c6\u9891\n    </span>', 
         BiliImgService;
-    }(S), X = function(t) {
+    }(S), L = function(t) {
         function MovieService() {
             var e = t.call(this) || this;
             return e.rules = new Map([ [ _.YouKu, /youku/i ], [ _.IQiYi, /iqiyi/i ], [ _.LeShi, /le.com/i ], [ _.Tencent_V, /v.qq/i ], [ _.TuDou, /tudou/i ], [ _.MangGuo, /mgtv/i ], [ _.SoHu, /sohu/i ], [ _.Acfun, /acfun/i ], [ _.BiliBili, /bilibili/i ], [ _.M1905, /1905/i ], [ _.PPTV, /pptv/i ], [ _.YinYueTai, /yinyuetai/ ] ]), 
@@ -1317,7 +1321,7 @@
                 r.open("https://t.cn/A6LoYnHT");
             }));
         }, MovieService;
-    }(S), L = function(t) {
+    }(S), X = function(t) {
         function JdService() {
             var e = t.call(this) || this;
             return e.rules = new Map([ [ _.JingDong, /item.jd/i ] ]), e;
@@ -1447,7 +1451,7 @@
         }, StuService;
     }(S), E = function() {
         function WandhiInjection() {
-            this.plugins = new Array, this.plugins = [ w.Require(T), w.Require(B), w.Require(X), w.Require(H), w.Require(L), w.Require(D), w.Require(O) ], 
+            this.plugins = new Array, this.plugins = [ w.Require(T), w.Require(B), w.Require(L), w.Require(H), w.Require(X), w.Require(D), w.Require(O) ], 
             s.info("container loaded");
         }
         return WandhiInjection.prototype.Init = function() {
