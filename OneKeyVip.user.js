@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2020-07-15 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2020-07-16 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
 // @version      4.2.11
 // @homepage     https://tools.wandhi.com/scripts
@@ -1269,13 +1269,13 @@
             }));
         }, BiliImgService.add_down_btn = function() {
             $(".video-data").last().append(BiliImgService.down), $("body").on("click", "#downvideo", (function() {
-                var t, e, n = unsafeWindow.__INITIAL_STATE__.videoData.aid, o = null !== (e = null === (t = unsafeWindow.__INITIAL_STATE__.cidMap[n]) || void 0 === t ? void 0 : t.cid) && void 0 !== e ? e : unsafeWindow.__INITIAL_STATE__.videoData.cid, i = n.toString() + o.toString() + "MD";
+                var t, e, n = unsafeWindow.__INITIAL_STATE__.videoData.aid, o = null !== (e = null === (t = unsafeWindow.__INITIAL_STATE__.cidMap[n]) || void 0 === t ? void 0 : t.cid) && void 0 !== e ? e : unsafeWindow.__INITIAL_STATE__.videoData.cid, i = n.toString() + o.toString() + "MDD";
                 if (s.debug([ n, o ]), n && o) {
                     var a = l.get(i, !1);
                     a ? f.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + a.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(t) {
                         r.open(a.url);
                     }), !0) : y.queryBiliDown(n, o, (function(t) {
-                        "" != t.url && (l.set(i, t, 6e4), f.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + t.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(e) {
+                        "" != t.url && (l.set(i, t, 60), f.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + t.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(e) {
                             r.open(t.url);
                         }), !0));
                     }));
