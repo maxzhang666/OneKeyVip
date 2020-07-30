@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2020-07-21 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2020-07-30 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
 // @version      4.2.12
 // @homepage     https://tools.wandhi.com/scripts
@@ -95,7 +95,7 @@
 // @grant        GM_unregisterMenuCommand
 // ==/UserScript==
 !function(t, e) {
-    "object" == typeof exports && "undefined" != typeof module ? e(require("reflect-metadata"), require("vue")) : "function" == typeof define && define.amd ? define([ "reflect-metadata", "vue" ], e) : e(null, (t = t || self).Vue);
+    "object" == typeof exports && "undefined" != typeof module ? e(require("reflect-metadata"), require("vue")) : "function" == typeof define && define.amd ? define([ "reflect-metadata", "vue" ], e) : e(null, (t = "undefined" != typeof globalThis ? globalThis : t || self).Vue);
 }(this, (function(t, e) {
     "use strict";
     e = e && Object.prototype.hasOwnProperty.call(e, "default") ? e.default : e;
@@ -1330,7 +1330,7 @@
             this.init();
         }, BiliImgService.prototype.init = function() {
             i.aotulazyload((function() {
-                return !(!$(".video-data").length || !$(".bilibili-player-video-info-people-number") || "--" === $(".coin").text().trim());
+                return !!($(".video-data").length && $(".bilibili-player-video-info-people-number").length && $.isNumeric($(".coin").text().trim()));
             }), (function() {
                 BiliImgService.add_img_btn(), BiliImgService.add_down_btn();
             }), 1);
@@ -1522,18 +1522,18 @@
                 i.open("https://t.cn/A6LoYnHT");
             }));
         }, StuService;
-    }(z), W = function() {
-        function WandhiInjection() {
+    }(z), J = function() {
+        function OneKeyVipInjection() {
             this.plugins = new Array, this.plugins = [ _.Require(B), _.Require(P), _.Require(D), _.Require(X), _.Require(O), _.Require(U), _.Require(V), _.Require(Y) ], 
             a.info("container loaded");
         }
-        return WandhiInjection.prototype.Init = function() {
+        return OneKeyVipInjection.prototype.Init = function() {
             this.plugins.every((function(t) {
                 return !t.linkTest() || (new Promise((function(t) {
                     t();
                 })).then(t.Process), a.debug("element unique:" + t.unique()), !t.unique());
             }));
-        }, WandhiInjection;
+        }, OneKeyVipInjection;
     }();
-    a.level = n.info, _.Require(W).Init();
+    a.level = n.info, _.Require(J).Init();
 }));
