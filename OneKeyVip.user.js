@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2020-07-30 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2020-08-03 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.2.13
+// @version      4.2.14
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(接口偶尔抽风)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
@@ -74,6 +74,7 @@
 // @require      https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js
 // @require      https://cdn.jsdelivr.net/npm/vuex@3.4.0/dist/vuex.min.js
 // @require      https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js
+// @require      https://cdn.jsdelivr.net/npm/crypto-js@4.0.0/crypto-js.js
 // @license      MIT
 // @grant        GM_setClipboard
 // @run-at       document-end
@@ -95,10 +96,10 @@
 // @grant        GM_unregisterMenuCommand
 // ==/UserScript==
 !function(t, e) {
-    "object" == typeof exports && "undefined" != typeof module ? e(require("reflect-metadata"), require("vue")) : "function" == typeof define && define.amd ? define([ "reflect-metadata", "vue" ], e) : e(null, (t = "undefined" != typeof globalThis ? globalThis : t || self).Vue);
-}(this, (function(t, e) {
+    "object" == typeof exports && "undefined" != typeof module ? e(require("reflect-metadata"), require("vue"), require("crypto-js")) : "function" == typeof define && define.amd ? define([ "reflect-metadata", "vue", "crypto-js" ], e) : e(null, (t = "undefined" != typeof globalThis ? globalThis : t || self).Vue, t.CryptoJS);
+}(this, (function(t, e, n) {
     "use strict";
-    e = e && Object.prototype.hasOwnProperty.call(e, "default") ? e.default : e;
+    e = e && Object.prototype.hasOwnProperty.call(e, "default") ? e.default : e, n = n && Object.prototype.hasOwnProperty.call(n, "default") ? n.default : n;
     var extendStatics = function(t, e) {
         return (extendStatics = Object.setPrototypeOf || {
             __proto__: []
@@ -123,7 +124,7 @@
     function __metadata(t, e) {
         if ("object" == typeof Reflect && "function" == typeof Reflect.metadata) return Reflect.metadata(t, e);
     }
-    var n, o = function() {
+    var o, i = function() {
         function EventHelper() {}
         return EventHelper.bind_click = function(t, e) {
             var n;
@@ -131,7 +132,7 @@
                 e();
             }));
         }, EventHelper;
-    }(), i = function() {
+    }(), r = function() {
         function Core() {
             this.topUrl = top.window.location.href, this.url = this.currentUrl();
         }
@@ -184,6 +185,10 @@
             for (var o in /(y+)/.test(e) && (e = e.replace(RegExp.$1, (t.getFullYear() + "").substr(4 - RegExp.$1.length))), 
             n) new RegExp("(" + o + ")").test(e) && (e = e.replace(RegExp.$1, 1 == RegExp.$1.length ? n[o] : ("00" + n[o]).substr(("" + n[o]).length)));
             return e;
+        }, Core.encode = function(t) {
+            return window.btoa(t);
+        }, Core.decode = function(t) {
+            return window.atob(t);
         }, Core.prototype.Msg = function(t) {
             return layer.msg(t, {
                 icon: 5
@@ -212,7 +217,7 @@
             return r.join("");
         }, Core.head = document.getElementsByTagName("head")[0], Core.top_url = top.window.location.href, 
         Core;
-    }(), r = function() {
+    }(), a = function() {
         function Runtime() {}
         return Object.defineProperty(Runtime, "url", {
             get: function() {
@@ -221,22 +226,22 @@
             enumerable: !1,
             configurable: !0
         }), Runtime;
-    }(), a = function() {
+    }(), s = function() {
         function Logger() {}
         return Logger.log = function(t, e) {}, Logger.debug = function(t) {
-            this.log(t, n.debug);
+            this.log(t, o.debug);
         }, Logger.info = function(t) {
-            this.log(t, n.info);
+            this.log(t, o.info);
         }, Logger.warn = function(t) {
-            this.log(t, n.warn);
+            this.log(t, o.warn);
         }, Logger.error = function(t) {
-            this.log(t, n.error);
+            this.log(t, o.error);
         }, Logger;
     }();
     !function(t) {
         t[t.debug = 0] = "debug", t[t.info = 1] = "info", t[t.warn = 2] = "warn", t[t.error = 3] = "error";
-    }(n || (n = {}));
-    var s = function() {
+    }(o || (o = {}));
+    var u = function() {
         function BaseCoupon() {}
         return BaseCoupon.prototype.init_qrcode = function(t) {
             return new Promise((function(e) {
@@ -250,53 +255,53 @@
                     t || e(!0);
                 }));
             }));
-        }, BaseCoupon.prototype.init_coupon_info = function(t, e, n, a) {
-            void 0 === a && (a = "");
-            var s = "<p>\u79fb\u52a8\u7aef<span>\u5feb\u6377</span>\u8d2d\u4e70</p>", u = '<a class="vip-plugin-outside-coupons-button quan-none" href="javascript:void(0)">\u6253\u5f00\u624b\u673a\u626b\u4e00\u626b</a>', c = r.url;
-            if (a) {
+        }, BaseCoupon.prototype.init_coupon_info = function(t, e, n, o) {
+            void 0 === o && (o = "");
+            var s = "<p>\u79fb\u52a8\u7aef<span>\u5feb\u6377</span>\u8d2d\u4e70</p>", u = '<a class="vip-plugin-outside-coupons-button quan-none" href="javascript:void(0)">\u6253\u5f00\u624b\u673a\u626b\u4e00\u626b</a>', c = a.url;
+            if (o) {
                 var l = new Date;
-                s = "<p>\u5238\u540e\u4ef7 <span>" + t + '</span> \u5143</p><p class="vip-plugin-outside-coupons-date">\uff08' + i.format(l, "yyyy-MM-dd") + " ~ " + n + "\uff09</p>", 
+                s = "<p>\u5238\u540e\u4ef7 <span>" + t + '</span> \u5143</p><p class="vip-plugin-outside-coupons-date">\uff08' + r.format(l, "yyyy-MM-dd") + " ~ " + n + "\uff09</p>", 
                 u = '<a class="vip-plugin-outside-coupons-button quan-exits">\u626b\u7801\u9886' + e + "\u5143\u4f18\u60e0\u5238</a>", 
-                c = a;
+                c = o;
             }
             new Promise((function(t) {
                 $(".vip-plugin-outside-coupons-title").html(s), $(".vip-plugin-outside-coupons-action").html(u), 
                 t();
             })).then((function() {
-                a && o.bind_click(".vip-plugin-outside-coupons-button", (function() {
-                    i.open(c);
+                o && i.bind_click(".vip-plugin-outside-coupons-button", (function() {
+                    r.open(c);
                 }));
             }));
         }, BaseCoupon.prototype.default = function(t) {
             var e = this;
-            void 0 === t && (t = ""), a.debug(t), this.init_qrcode("" == t ? r.url : t).then((function(t) {
+            void 0 === t && (t = ""), s.debug(t), this.init_qrcode("" == t ? a.url : t).then((function(t) {
                 e.init_coupon_info(0, 0, "");
             }));
         }, BaseCoupon;
-    }(), u = function u() {
+    }(), c = function c() {
         this.max = 0, this.price_detail = new Array;
-    }, c = function c() {}, l = function l() {}, d = function() {
+    }, l = function l() {}, d = function d() {}, p = function() {
         function Convert() {}
         return Convert.genterData = function(t) {
-            var e = new u;
-            if (e.date = i.format(new Date(Number.parseInt(t.lowerDate.match(/[0-9]{13}/)[0]) + 800), "yyyy-MM-dd"), 
+            var e = new c;
+            if (e.date = r.format(new Date(Number.parseInt(t.lowerDate.match(/[0-9]{13}/)[0]) + 800), "yyyy-MM-dd"), 
             e.min = t.lowerPrice, e.max = e.min, e.max_date = e.date, e.current = t.currentPrice.toString(), 
             e.mark = "" == t.changPriceRemark ? "\u6682\u65e0" : t.changPriceRemark, 0 == t.listPrice.length || !t.listPrice) {
                 var n = [];
                 t.datePrice.split("],[").forEach((function(t, e) {
-                    var o = new l, i = (t = t.replace(/\[|"|\]/g, "")).split(",");
+                    var o = new d, i = (t = t.replace(/\[|"|\]/g, "")).split(",");
                     o.pr = Number.parseInt(i[1]), o.yh = 3 == i.length ? i[2] : t.substring(t.indexOf(i[2]), t.length), 
                     o.dt = i[0], n.push(o);
                 })), t.listPrice = n;
             }
             return t.listPrice.forEach((function(t, n) {
-                var o = new c;
-                o.timestamp = Number.parseInt(t.dt.match(/[0-9]{13}/)[0]) + 800, o.time = i.format(new Date(o.timestamp), "yyyy-MM-dd"), 
+                var o = new l;
+                o.timestamp = Number.parseInt(t.dt.match(/[0-9]{13}/)[0]) + 800, o.time = r.format(new Date(o.timestamp), "yyyy-MM-dd"), 
                 o.price = t.pr, o.mark = t.yh, e.max < t.pr && (e.max = t.pr, e.max_date = o.time), 
                 e.price_detail.push(o);
             })), e;
         }, Convert;
-    }(), p = function() {
+    }(), f = function() {
         function Config() {}
         return Object.defineProperty(Config, "env", {
             get: function() {
@@ -309,9 +314,9 @@
             var n = GM_getValue(this.encode(t), e);
             if (n) {
                 var o = JSON.parse(n);
-                if (-1 == o.exp || o.exp > (new Date).getTime()) return a.info("cache true"), o.value;
+                if (-1 == o.exp || o.exp > (new Date).getTime()) return s.info("cache true"), o.value;
             }
-            return a.info("cache false"), e;
+            return s.info("cache false"), e;
         }, Config.set = function(t, e, n) {
             void 0 === n && (n = -1);
             var o = {
@@ -325,7 +330,7 @@
         }, Config.encode = function(t) {
             return btoa(t);
         }, Config;
-    }(), f = (function() {
+    }(), m = (function() {
         function HttpRequest(t) {
             this.headers = new Map, this.url = t.url, this.method = t.methodType, this.dataType = t.dataType, 
             this._option = t;
@@ -365,7 +370,7 @@
             for (var n in this.data) e.append(n, this.data[n]);
             return e;
         }, AjaxOption;
-    }()), m = function() {
+    }()), h = function() {
         function Alert() {}
         return Alert.open = function(t, e, n, o, i, r) {
             return void 0 === n && (n = [ "400px", "300px" ]), void 0 === o && (o = 0), void 0 === i && (i = "lb"), 
@@ -387,8 +392,8 @@
                 icon: 5,
                 time: 2e3
             });
-        }, Alert.confim = function(t, e, n, o, r) {
-            void 0 === r && (r = !1);
+        }, Alert.confim = function(t, e, n, o, i) {
+            void 0 === i && (i = !1);
             var a = layer.open({
                 type: 1,
                 title: t || !1,
@@ -401,7 +406,7 @@
                 moveType: 1,
                 content: '<div style="padding: 20px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">' + e + "</div>",
                 yes: function(t) {
-                    o(t), r && i.lazyload((function() {
+                    o(t), i && r.lazyload((function() {
                         layer.close(a);
                     }));
                 }
@@ -426,20 +431,20 @@
                 time: 1e3 * e
             });
         }, Alert;
-    }(), h = function() {
+    }(), g = function() {
         function Http() {}
         return Http.ajax = function(t) {
-            var e, n, o, a;
+            var e, n, o, i;
             t.headers.set("User-Agent", "Mozilla/4.0 (compatible) Greasemonkey"), t.headers.set("Accept", "application/atom+xml,application/xml,text/xml"), 
-            t.headers.set("version", p.env.script.version), t.headers.set("auth", null !== (e = p.env.script.author) && void 0 !== e ? e : ""), 
-            t.headers.set("namespace", null !== (n = p.env.script.namespace) && void 0 !== n ? n : ""), 
+            t.headers.set("version", f.env.script.version), t.headers.set("auth", null !== (e = f.env.script.author) && void 0 !== e ? e : ""), 
+            t.headers.set("namespace", null !== (n = f.env.script.namespace) && void 0 !== n ? n : ""), 
             GM_xmlhttpRequest({
                 url: t.url,
                 method: t.methodType,
                 headers: {
-                    version: p.env.script.version,
-                    auth: null !== (o = p.env.script.author) && void 0 !== o ? o : "",
-                    namespace: null !== (a = p.env.script.namespace) && void 0 !== a ? a : ""
+                    version: f.env.script.version,
+                    auth: null !== (o = f.env.script.author) && void 0 !== o ? o : "",
+                    namespace: null !== (i = f.env.script.namespace) && void 0 !== i ? i : ""
                 },
                 data: t.getData(),
                 timeout: 1e3 * t.timeOut,
@@ -448,15 +453,15 @@
                     try {
                         null === (n = t.onSuccess) || void 0 === n || n.call(t, "POST" == t.methodType ? JSON.parse(e.responseText) : e.responseText);
                     } catch (n) {
-                        m.confim("", '                                        \n                        <h1>\u54cd\u5e94\u5f02\u5e38\uff0c\u8bf7\u590d\u5236\u4e0b\u5217\u4fe1\u606f\u5411\u5f00\u53d1\u8005\u53cd\u9988\u95ee\u9898</h1><br>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u9519\u8bef\u65e5\u5fd7\uff1a</span><br>\n                        <p>' + n + "(" + e.status + ')</p>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u9519\u8bef\u8be6\u60c5\uff1a</span><br>\n                        <p>' + escape(e.responseText) + '</p>                        \n                        <span style="color:red;font-weight: bold;font-size: large;">\u73af\u5883\u4fe1\u606f\uff1a</span><br>\n                        <p>\u6cb9\u7334\u7248\u672c\uff1a' + p.env.version + "</p>\n                        <p>\u811a\u672c\u7248\u672c\uff1a" + p.env.script.version + "</p>\n                        <p>Url\uff1a" + r.url + "</p>\n                    ", [ "\u53bb\u53cd\u9988", "\u5173\u95ed" ], (function() {
-                            i.open("https://gitee.com/ixysy/OneKeyVip/issues");
+                        h.confim("", '                                        \n                        <h1>\u54cd\u5e94\u5f02\u5e38\uff0c\u8bf7\u590d\u5236\u4e0b\u5217\u4fe1\u606f\u5411\u5f00\u53d1\u8005\u53cd\u9988\u95ee\u9898</h1><br>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u9519\u8bef\u65e5\u5fd7\uff1a</span><br>\n                        <p>' + n + "(" + e.status + ')</p>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u9519\u8bef\u8be6\u60c5\uff1a</span><br>\n                        <p>' + escape(e.responseText) + '</p>                        \n                        <span style="color:red;font-weight: bold;font-size: large;">\u73af\u5883\u4fe1\u606f\uff1a</span><br>\n                        <p>\u6cb9\u7334\u7248\u672c\uff1a' + f.env.version + "</p>\n                        <p>\u811a\u672c\u7248\u672c\uff1a" + f.env.script.version + "</p>\n                        <p>Url\uff1a" + a.url + "</p>\n                    ", [ "\u53bb\u53cd\u9988", "\u5173\u95ed" ], (function() {
+                            r.open("https://gitee.com/ixysy/OneKeyVip/issues");
                         })), null === (o = t.onSuccess) || void 0 === o || o.call(t, null);
                     }
                 },
                 onerror: function(e) {
                     var n;
-                    m.confim("", '              \n                        <h1>\u8bf7\u6c42\u5931\u8d25\uff0c\u8bf7\u590d\u5236\u4e0b\u5217\u4fe1\u606f\u5411\u5f00\u53d1\u8005\u53cd\u9988\u95ee\u9898</h1><br>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u9519\u8bef\u8be6\u60c5\uff1a</span><br>\n                        <p>' + escape(e.responseText) + "(" + e.status + ')</p>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u73af\u5883\u4fe1\u606f\uff1a</span><br>\n                        <p>\u6cb9\u7334\u7248\u672c\uff1a' + p.env.version + "</p>\n                        <p>\u811a\u672c\u7248\u672c\uff1a" + p.env.script.version + "</p>\n                        <p>Url\uff1a" + r.url + "</p>           \n                    ", [ "\u53bb\u53cd\u9988", "\u5173\u95ed" ], (function() {
-                        i.open("https://gitee.com/ixysy/OneKeyVip/issues");
+                    h.confim("", '              \n                        <h1>\u8bf7\u6c42\u5931\u8d25\uff0c\u8bf7\u590d\u5236\u4e0b\u5217\u4fe1\u606f\u5411\u5f00\u53d1\u8005\u53cd\u9988\u95ee\u9898</h1><br>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u9519\u8bef\u8be6\u60c5\uff1a</span><br>\n                        <p>' + escape(e.responseText) + "(" + e.status + ')</p>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u73af\u5883\u4fe1\u606f\uff1a</span><br>\n                        <p>\u6cb9\u7334\u7248\u672c\uff1a' + f.env.version + "</p>\n                        <p>\u811a\u672c\u7248\u672c\uff1a" + f.env.script.version + "</p>\n                        <p>Url\uff1a" + a.url + "</p>           \n                    ", [ "\u53bb\u53cd\u9988", "\u5173\u95ed" ], (function() {
+                        r.open("https://gitee.com/ixysy/OneKeyVip/issues");
                     })), null === (n = t.onError) || void 0 === n || n.call(t, e);
                 }
             });
@@ -466,56 +471,56 @@
             }));
         }, Http.post = function(t, e, n) {
             void 0 === n && (n = 10);
-            var o = m.loading();
+            var o = h.loading();
             return new Promise((function(i) {
-                Http.ajax(new f(t, "POST", e, (function(t) {
-                    m.close(o), i(t);
+                Http.ajax(new m(t, "POST", e, (function(t) {
+                    h.close(o), i(t);
                 }), new Map, n));
             })).finally((function() {
-                return m.close(o);
+                return h.close(o);
             }));
         }, Http.get = function(t, e, n) {
             void 0 === e && (e = new Map), void 0 === n && (n = 10);
-            var o = m.loading();
+            var o = h.loading();
             return new Promise((function(o, i) {
-                Http.ajax(new f(t, "GET", e, (function(t) {
+                Http.ajax(new m(t, "GET", e, (function(t) {
                     var e;
                     try {
                         var n = null !== (e = JSON.parse(t)) && void 0 !== e ? e : t;
                         o(n);
                     } catch (t) {
-                        a.debug(t), i();
+                        s.debug(t), i();
                     }
                 }), new Map, n));
             })).finally((function() {
-                return m.close(o);
+                return h.close(o);
             }));
         }, Http.get_text = function(t) {
             return new Promise((function(e) {
-                Http.ajax(new f(t, "GET", new Map, (function(t) {
+                Http.ajax(new m(t, "GET", new Map, (function(t) {
                     e(t);
                 })));
             }));
         }, Http;
-    }(), g = function() {
+    }(), y = function() {
         function Result() {}
         return Result.prototype.constructorq = function() {}, Result;
-    }(), y = (function(t) {
+    }(), v = (function(t) {
         function StuResult() {
             return null !== t && t.apply(this, arguments) || this;
         }
         __extends(StuResult, t);
-    }(g), function(t) {
+    }(y), function(t) {
         function StrResult() {
             return null !== t && t.apply(this, arguments) || this;
         }
         __extends(StrResult, t);
-    }(g), function(t) {
+    }(y), function(t) {
         function HistoryResult() {
             return null !== t && t.apply(this, arguments) || this;
         }
         return __extends(HistoryResult, t), HistoryResult;
-    }(g)), v = function() {
+    }(y)), b = function b() {}, w = function() {
         function Route() {
             this.queryTao = "";
         }
@@ -526,22 +531,22 @@
             enumerable: !1,
             configurable: !0
         }), Route.baseApi = function(t, e, n, o) {
-            void 0 === o && (o = 10), h.post(Route.apiRoot + t, e, o).then((function(t) {
+            void 0 === o && (o = 10), g.post(Route.apiRoot + t, e, o).then((function(t) {
                 n(t);
             }));
         }, Route.querySbx = function(t, e) {
             var n = this;
-            "" !== p.get(this.sxb_key, "") ? this.query365(t, p.get(this.sxb_key), e) : this.queryValue("sxb_anhao", (function(o) {
+            "" !== f.get(this.sxb_key, "") ? this.query365(t, f.get(this.sxb_key), e) : this.queryValue("sxb_anhao", (function(o) {
                 n.query365(t, o.data, e);
             }));
         }, Route.sbxFeedback = function(t, e) {
-            this.baseApi("/tools/record", new Map([ [ "id", t ], [ "data", e ], [ "anhao", p.get(this.sxb_key) ] ]), (function() {}));
+            this.baseApi("/tools/record", new Map([ [ "id", t ], [ "data", e ], [ "anhao", f.get(this.sxb_key) ] ]), (function() {}));
         }, Route.query365 = function(t, e, n) {
-            var o = p.get("sxb_api");
-            o ? h.post(o, new Map([ [ "docinfo", "https://www.shangxueba.com/ask/" + t + ".html" ], [ "anhao", e ] ])).then((function(t) {
+            var o = f.get("sxb_api");
+            o ? g.post(o, new Map([ [ "docinfo", "https://www.shangxueba.com/ask/" + t + ".html" ], [ "anhao", e ] ])).then((function(t) {
                 n(t);
             })) : this.queryValue("sxb_api", (function(n) {
-                p.set("sxb_api", n.data, 864e5), h.post(n.data, new Map([ [ "docinfo", "https://www.shangxueba.com/ask/" + t + ".html" ], [ "anhao", e ] ]));
+                f.set("sxb_api", n.data, 864e5), g.post(n.data, new Map([ [ "docinfo", "https://www.shangxueba.com/ask/" + t + ".html" ], [ "anhao", e ] ]));
             }));
         }, Route.queryValue = function(t, e) {
             this.baseApi(Route.config, new Map([ [ "key", t ] ]), e);
@@ -550,18 +555,20 @@
         }, Route.queryHistoryv1 = function(t, e, n) {
             var o = this, i = this;
             this.baseApi(this.historyv1, new Map([ [ "url", t ] ]), (function(r) {
-                a.debug(r), r.code ? h.get(r.data).then((function(t) {
-                    var e = new y;
-                    e.code = 1, e.data = d.genterData(t), a.debug(e), n(e);
+                s.debug(r), r.code ? g.get(r.data).then((function(t) {
+                    var e = new v;
+                    e.code = 1, e.data = p.genterData(t), s.debug(e), n(e);
                 })).catch((function() {
                     i.queryHistory(t, e, n);
                 })) : o.queryHistory(t, e, n);
             }), 60);
         }, Route.queryBiliImg = function(t) {
-            this.baseApi(this.bili, new Map([ [ "url", r.url ] ]), t);
+            this.baseApi(this.bili, new Map([ [ "url", a.url ] ]), t);
         }, Route.queryBiliDown = function(t, e, n) {
-            h.get(this.bilidown + "?cid=" + e + "&aid=" + t).then((function(t) {
-                a.debug(t), n(t);
+            g.get(this.bilidown + "?cid=" + e + "&aid=" + t).then((function(t) {
+                s.debug(t), n(t);
+            })).catch((function() {
+                n(new b);
             }));
         }, Route.queryCoupons = function(t, e) {
             this.baseApi(this.coupons, new Map([ [ "id", t ] ]), e);
@@ -571,92 +578,93 @@
             Route.baseApi(Route.sn_coupons, new Map([ [ "url", t ] ]), e);
         }, Route.queryVpCoupons = function(t, e) {
             Route.baseApi(Route.vp_coupons, new Map([ [ "url", t ] ]), e);
-        }, Route.update_api = "https://cdn.jsdelivr.net/gh/maxzhang666/OneKeyVip/OneKeyVip.user.js?t=" + i.uuid(), 
+        }, Route.update_api = "https://cdn.jsdelivr.net/gh/maxzhang666/OneKeyVip/OneKeyVip.user.js?t=" + r.uuid(), 
         Route.home_url = "https://wiki.wandhi.com", Route.install_url_one = "https://greasyfork.org/zh-CN/scripts/384538", 
         Route.install_url_two = "https://tools.wandhi.com/scripts", Route.sxb_anhao = "http://www.lelunwen.com/e/action/ListInfo/?classid=45", 
         Route.sxb_key = "sxb_anhao", Route.config = "/config/query", Route.history = "/history/", 
         Route.historyv1 = "/history/v1/", Route.bili = "/tools/bili", Route.bilidown = "https://www.xbeibeix.com/api/bilibiliapi.php", 
-        Route.coupons = "/tb/infos/", Route.jd_coupons = "/jd/info", Route.sn_coupons = "/sn/info", 
-        Route.vp_coupons = "/vp/info", Route;
-    }(), b = function(t) {
+        Route.bilijx = "https://xbeibeix.com/api/bilibili/biliplayer/?url=", Route.coupons = "/tb/infos/", 
+        Route.jd_coupons = "/jd/info", Route.sn_coupons = "/sn/info", Route.vp_coupons = "/vp/info", 
+        Route;
+    }(), k = function(t) {
         function VpCoupon() {
             return null !== t && t.apply(this, arguments) || this;
         }
         return __extends(VpCoupon, t), VpCoupon.prototype.init_html = function(t) {
             var e = this;
             return new Promise((function(n) {
-                if ($(".FW-product.clearfix").length) i.appendTo(".FW-product.clearfix", t), n(!0); else {
+                if ($(".FW-product.clearfix").length) r.appendTo(".FW-product.clearfix", t), n(!0); else {
                     var o = e;
-                    i.lazyload((function() {
+                    r.lazyload((function() {
                         return o.init_html(t);
                     }), 1);
                 }
             }));
         }, VpCoupon.prototype.init_coupons = function() {
             var t = this;
-            v.queryVpCoupons(r.url, (function(e) {
-                if (a.debug(e), e.code) if (e.data.has_coupon) {
-                    var n = e.data, r = new Date(n.quan_time);
+            w.queryVpCoupons(a.url, (function(e) {
+                if (s.debug(e), e.code) if (e.data.has_coupon) {
+                    var n = e.data, o = new Date(n.quan_time);
                     t.init_qrcode(decodeURIComponent(n.quan_link)).then((function(e) {
-                        t.init_coupon_info(n.after_price, n.quan_price, "" + i.format(r, "yyyy-MM-dd"), decodeURIComponent(n.quan_link));
+                        t.init_coupon_info(n.after_price, n.quan_price, "" + r.format(o, "yyyy-MM-dd"), decodeURIComponent(n.quan_link));
                     }));
-                } else e.data.quan_link ? (t.default(e.data.quan_link), o.bind_click("#vip-plugin-outside-coupons-qrcode-img", (function() {
-                    i.open(e.data.quan_link);
+                } else e.data.quan_link ? (t.default(e.data.quan_link), i.bind_click("#vip-plugin-outside-coupons-qrcode-img", (function() {
+                    r.open(e.data.quan_link);
                 }))) : t.default(); else t.default();
             }));
         }, VpCoupon;
-    }(s), w = function(t) {
+    }(u), x = function(t) {
         function SuningCoupon() {
             return null !== t && t.apply(this, arguments) || this;
         }
         return __extends(SuningCoupon, t), SuningCoupon.prototype.init_html = function(t) {
             var e = this;
             return new Promise((function(n) {
-                if ($(".proinfo-container").length) i.appendTo(".proinfo-container", t), n(!0); else {
+                if ($(".proinfo-container").length) r.appendTo(".proinfo-container", t), n(!0); else {
                     var o = e;
-                    i.lazyload((function() {
+                    r.lazyload((function() {
                         return o.init_html(t);
                     }), 1);
                 }
             }));
         }, SuningCoupon.prototype.init_coupons = function() {
             var t = this;
-            v.querySnCoupons(r.url, (function(e) {
-                if (a.debug(e), e.code) if (e.data.has_coupon) {
-                    var n = e.data, r = new Date(n.quan_time);
+            w.querySnCoupons(a.url, (function(e) {
+                if (s.debug(e), e.code) if (e.data.has_coupon) {
+                    var n = e.data, o = new Date(n.quan_time);
                     t.init_qrcode(decodeURIComponent(n.quan_link)).then((function(e) {
-                        t.init_coupon_info(n.after_price, n.quan_price, "" + i.format(r, "yyyy-MM-dd"), decodeURIComponent(n.quan_link));
+                        t.init_coupon_info(n.after_price, n.quan_price, "" + r.format(o, "yyyy-MM-dd"), decodeURIComponent(n.quan_link));
                     }));
-                } else e.data.quan_link ? (t.default(e.data.quan_link), o.bind_click("#vip-plugin-outside-coupons-qrcode-img", (function() {
-                    i.open(e.data.quan_link);
+                } else e.data.quan_link ? (t.default(e.data.quan_link), i.bind_click("#vip-plugin-outside-coupons-qrcode-img", (function() {
+                    r.open(e.data.quan_link);
                 }))) : t.default(); else t.default();
             }));
         }, SuningCoupon;
-    }(s), k = function(t) {
+    }(u), _ = function(t) {
         function JdCoupon() {
             return null !== t && t.apply(this, arguments) || this;
         }
         return __extends(JdCoupon, t), JdCoupon.prototype.init_html = function(t) {
             var e = this;
             return new Promise((function(n) {
-                $(".product-intro").length ? (i.appendTo(".product-intro", t), n(!0)) : setTimeout(e.init_html, 2e3);
+                $(".product-intro").length ? (r.appendTo(".product-intro", t), n(!0)) : setTimeout(e.init_html, 2e3);
             }));
         }, JdCoupon.prototype.init_coupons = function() {
             var t, e, n = this, o = null === (e = null === (t = unsafeWindow.pageConfig) || void 0 === t ? void 0 : t.product) || void 0 === e ? void 0 : e.skuid;
-            o ? v.queryJdCoupons(o, (function(t) {
-                if (a.debug(t), t.code) if (t.data.has_coupon) {
+            o ? w.queryJdCoupons(o, (function(t) {
+                if (s.debug(t), t.code) if (t.data.has_coupon) {
                     var e = t.data, o = new Date(e.quan_time);
                     n.init_qrcode(decodeURIComponent(e.quan_link)).then((function(t) {
-                        n.init_coupon_info(e.after_price, e.quan_price, "" + i.format(o, "yyyy-MM-dd"), decodeURIComponent(e.quan_link));
+                        n.init_coupon_info(e.after_price, e.quan_price, "" + r.format(o, "yyyy-MM-dd"), decodeURIComponent(e.quan_link));
                     }));
                 } else t.data.quan_link ? n.default(t.data.quan_link) : n.default(); else n.default();
             })) : this.default();
         }, JdCoupon;
-    }(s), x = new Map, _ = function() {
+    }(u), S = new Map, C = function() {
         function Container() {}
         return Container.Registe = function(t, e) {
             var n = this.processName(t.name);
-            return x.set(n, window.Reflect.construct(t, this.buildParams(e))), x.get(n);
+            return S.set(n, window.Reflect.construct(t, this.buildParams(e))), S.get(n);
         }, Container.buildParams = function(t) {
             var e = [];
             return null == t || t.map((function(t) {
@@ -666,47 +674,47 @@
             return t.toLowerCase();
         }, Container.Require = function(t) {
             var e = this, n = this.processName(t.name);
-            if (x.has(n)) return x.get(n);
-            var o, i = Reflect.getMetadata(C, t);
+            if (S.has(n)) return S.get(n);
+            var o, i = Reflect.getMetadata(M, t);
             return (null == i ? void 0 : i.length) && (o = i.map((function(t) {
                 return e.Require(t);
             }))), this.Registe(t, o);
         }, Container.define = function(t, e) {
-            var n, o = Reflect.getMetadata(S, t, e), i = null !== (n = Object.getOwnPropertyDescriptor(t, e)) && void 0 !== n ? n : {
+            var n, o = Reflect.getMetadata(T, t, e), i = null !== (n = Object.getOwnPropertyDescriptor(t, e)) && void 0 !== n ? n : {
                 writable: !0,
                 configurable: !0
             };
             i.value = this.Require(o), Object.defineProperty(t, e, i);
         }, Container;
-    }(), S = "design:type", C = "design:paramtypes";
+    }(), T = "design:type", M = "design:paramtypes";
     function WandhiAuto(t, e) {
-        _.define(t, e);
+        C.define(t, e);
     }
-    var T, M = function(t) {
+    var q, R = function(t) {
         function TaoCoupon() {
             return null !== t && t.apply(this, arguments) || this;
         }
         var e;
         return __extends(TaoCoupon, t), TaoCoupon.prototype.init_html = function(t) {
             return new Promise((function(e) {
-                $("#J_DetailMeta").length ? i.appendTo("#J_DetailMeta", t) : i.appendTo("#detail", t + "<br/>"), 
+                $("#J_DetailMeta").length ? r.appendTo("#J_DetailMeta", t) : r.appendTo("#detail", t + "<br/>"), 
                 e(!0);
             }));
         }, TaoCoupon.prototype.init_coupons = function() {
             var t = this;
-            v.queryCoupons(this.core.getPar("id"), (function(e) {
+            w.queryCoupons(this.core.getPar("id"), (function(e) {
                 if (e.code) {
                     var n = e.data[0], o = new Date(n.quan_time);
                     t.init_qrcode(decodeURIComponent(n.quan_link)).then((function(e) {
-                        t.init_coupon_info(n.after_price, n.quan_price, "" + i.format(o, "yyyy-MM-dd"), decodeURIComponent(n.quan_link));
+                        t.init_coupon_info(n.after_price, n.quan_price, "" + r.format(o, "yyyy-MM-dd"), decodeURIComponent(n.quan_link));
                     }));
-                } else t.init_qrcode(r.url).then((function(e) {
+                } else t.init_qrcode(a.url).then((function(e) {
                     t.init_coupon_info(0, 0, "");
                 }));
             }));
-        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== i && i) ? e : Object) ], TaoCoupon.prototype, "core", void 0), 
+        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== r && r) ? e : Object) ], TaoCoupon.prototype, "core", void 0), 
         TaoCoupon;
-    }(s), q = function(t) {
+    }(u), z = function(t) {
         function DefCoupon() {
             return null !== t && t.apply(this, arguments) || this;
         }
@@ -715,15 +723,15 @@
                 t(!1);
             }));
         }, DefCoupon.prototype.init_coupons = function() {}, DefCoupon;
-    }(s);
+    }(u);
     !function(t) {
         var e = function() {
             function Menu() {
-                this.core = new i, this.site = /tv.wandhi.com/i, this.userAgent = navigator.userAgent, 
+                this.core = new r, this.site = /tv.wandhi.com/i, this.userAgent = navigator.userAgent, 
                 this.menusClass = [ "first", "second", "third", "fourth", "fifth" ], this.menuSelecter = "#Wandhi-nav";
             }
             return Menu.prototype.loader = function() {
-                i.appendCssContent(this.getCss());
+                r.appendCssContent(this.getCss());
             }, Menu.prototype.getBody = function(t) {
                 return '<svg width="0" height="0"><defs><filter id="goo"><feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"></feGaussianBlur><feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo"></feColorMatrix><feComposite in="SourceGraphic" in2="goo" operator="atop"></feComposite></filter></defs></svg><div class="aside-nav bounceInUp animated" id="Wandhi-nav"><label for="" class="aside-menu" title="\u6309\u4f4f\u62d6\u52a8">VIP</label>' + t + "</div>";
             }, Menu.prototype.getCss = function() {
@@ -735,8 +743,8 @@
                     var o = "";
                     t.forEach((function(t, e) {
                         o += '<a href="javascript:void(0)" title="' + t.title + '" data-cat="' + t.type + '" class="menu-item menu-line menu-' + n.menusClass[e] + '">' + t.show + "</a>";
-                    })), i.bodyAppend(this.getBody(o)), /Safari|iPhone/i.test(this.userAgent) && /chrome/i.test(this.userAgent) && $("#Wandhi-nav").addClass("no-filter");
-                    var r = {
+                    })), r.bodyAppend(this.getBody(o)), /Safari|iPhone/i.test(this.userAgent) && /chrome/i.test(this.userAgent) && $("#Wandhi-nav").addClass("no-filter");
+                    var i = {
                         down: !1,
                         x: 0,
                         y: 0,
@@ -750,21 +758,21 @@
                             var n, o, i;
                             return null !== (o = null === (n = document.defaultView) || void 0 === n ? void 0 : n.getComputedStyle(t, null)[e]) && void 0 !== o ? o : null !== (i = t.currentStyle) && void 0 !== i ? i : t.currentStyle[e];
                         };
-                        r.down = !0, r.clientX = t.clientX, r.clientY = t.clientY, r.x = parseInt(getCss(this, "left")), 
-                        r.y = parseInt(getCss(this, "top")), r.winHei = $(window).height(), r.winWid = $(window).width(), 
+                        i.down = !0, i.clientX = t.clientX, i.clientY = t.clientY, i.x = parseInt(getCss(this, "left")), 
+                        i.y = parseInt(getCss(this, "top")), i.winHei = $(window).height(), i.winWid = $(window).width(), 
                         $(document).on("mousemove", (function(t) {
-                            var e = t.clientX - r.clientX, n = t.clientY - r.clientY;
-                            (a = a || $("#Wandhi-nav")[0]).style.top = r.y + n + "px", a.style.left = r.x + e + "px";
+                            var e = t.clientX - i.clientX, n = t.clientY - i.clientY;
+                            (a = a || $("#Wandhi-nav")[0]).style.top = i.y + n + "px", a.style.left = i.x + e + "px";
                         }));
                     })).on("mouseup", "#Wandhi-nav", (function() {
-                        r.down = !1, $(document).off("mousemove");
+                        i.down = !1, $(document).off("mousemove");
                     })), e.call(this);
                 }
             }, Menu;
         }();
         t.Menu = e;
-    }(T || (T = {}));
-    var R, z = function() {
+    }(q || (q = {}));
+    var A, I = function() {
         function PluginBase() {
             var t = this;
             this._unique = !0, this.Process = function() {
@@ -781,10 +789,10 @@
             return this.rules.forEach((function(o, i) {
                 return !o.test(t) || (n = !0, e.site = i, !1);
             })), n;
-        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (t = void 0 !== i && i) ? t : Object) ], PluginBase.prototype, "core", void 0), 
-        __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== T && T.Menu) ? e : Object) ], PluginBase.prototype, "menu", void 0), 
+        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (t = void 0 !== r && r) ? t : Object) ], PluginBase.prototype, "core", void 0), 
+        __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== q && q.Menu) ? e : Object) ], PluginBase.prototype, "menu", void 0), 
         PluginBase;
-    }(), A = function A() {};
+    }(), Y = function Y() {};
     !function(t) {
         t.All = "All", t.TaoBao = "TaoBao", t.TMall = "TMall", t.JingDong = "JingDong", 
         t.IQiYi = "IQiYi", t.YouKu = "YouKu", t.LeShi = "LeShi", t.TuDou = "TuDou", t.Tencent_V = "Tencent_V", 
@@ -794,39 +802,39 @@
         t.TaiHe = "TaiHe", t.QingTing = "QingTing", t.LiZhi = "LiZhi", t.MiGu = "MiGu", 
         t.XiMaLaYa = "XiMaLaYa", t.SXB = "SXB", t.BDY = "BDY", t.BDY1 = "BDY1", t.LZY = "LZY", 
         t.SuNing = "SuNing", t.Vp = "Vp";
-    }(R || (R = {}));
-    var I, Y = function(t) {
+    }(A || (A = {}));
+    var j, B = function(t) {
         function HistoryService() {
             var e = null !== t && t.apply(this, arguments) || this;
-            return e.rules = new Map([ [ R.TMall, /detail.tmall.com\/item.htm/i ], [ R.TaoBao, /item.taobao.com/i ], [ R.JingDong, /item.jd.(com|hk)\/[0-9]*.html/i ], [ R.SuNing, /product.suning.com/i ], [ R.Vp, /detail.vip.com/i ] ]), 
-            e.factory = new q, e;
+            return e.rules = new Map([ [ A.TMall, /detail.tmall.com\/item.htm/i ], [ A.TaoBao, /item.taobao.com/i ], [ A.JingDong, /item.jd.(com|hk)\/[0-9]*.html/i ], [ A.SuNing, /product.suning.com/i ], [ A.Vp, /detail.vip.com/i ] ]), 
+            e.factory = new z, e;
         }
         return __extends(HistoryService, t), HistoryService.prototype.loader = function() {
-            i.appendCssContent(this.getHistoryCss());
+            r.appendCssContent(this.getHistoryCss());
         }, HistoryService.prototype.run = function() {
             this.injectHistory();
         }, HistoryService.prototype.injectHistory = function() {
             var t = this;
-            switch (a.debug(this.site), this.site) {
-              case R.TaoBao:
-              case R.TMall:
-                this.factory = new M;
+            switch (s.debug(this.site), this.site) {
+              case A.TaoBao:
+              case A.TMall:
+                this.factory = new R;
                 break;
 
-              case R.JingDong:
+              case A.JingDong:
+                this.factory = new _;
+                break;
+
+              case A.SuNing:
+                this.factory = new x;
+                break;
+
+              case A.Vp:
                 this.factory = new k;
                 break;
 
-              case R.SuNing:
-                this.factory = new w;
-                break;
-
-              case R.Vp:
-                this.factory = new b;
-                break;
-
               default:
-                this.factory = new q;
+                this.factory = new z;
             }
             this.factory.init_html(this.getHistoryHtml()).then((function(e) {
                 e && t.InitPriceHistory(), t.factory.init_coupons && t.factory.init_coupons();
@@ -834,7 +842,7 @@
         }, HistoryService.prototype.InitPriceHistory = function() {
             var t = this;
             $("#vip-plugin-outside").show(), this.theme(), this.chartMsg("\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u4e2d"), 
-            v.queryHistoryv1(r.url, this.site.toString(), (function(e) {
+            w.queryHistoryv1(a.url, this.site.toString(), (function(e) {
                 var n = "";
                 e.code ? ($(".vip-plugin-outside-chart-container").html('<div id="vip-plugin-outside-chart-container-line"></div>'), 
                 echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), t.theme()).setOption(t.getChartOption(e.data))) : n = "\u672a\u67e5\u5230\u5386\u53f2\u6570\u636e", 
@@ -847,7 +855,7 @@
         }, HistoryService.prototype.chartMsg = function(t) {
             $(".vip-plugin-outside-history-tip").html(t);
         }, HistoryService.prototype.getChartOption = function(t) {
-            var e, n, o = "\u5386\u53f2\u4f4e\u4ef7\uff1a{red|\uffe5" + t.min + "} ( {red|" + t.date + "} ) \u5206\u6790\uff1a" + t.mark, i = new A;
+            var e, n, o = "\u5386\u53f2\u4f4e\u4ef7\uff1a{red|\uffe5" + t.min + "} ( {red|" + t.date + "} ) \u5206\u6790\uff1a" + t.mark, i = new Y;
             (i = {
                 title: {
                     left: "center",
@@ -1185,7 +1193,7 @@
                 }
             };
         }, HistoryService;
-    }(z), j = function() {
+    }(I), H = function() {
         function Toast(t, e, n) {
             this.creationTime = new Date, this.message = t, this.type = n, this.title = e, this.duration = 3e3, 
             this.randomKey = Math.floor(Math.random() * (Number.MAX_SAFE_INTEGER + 1));
@@ -1234,37 +1242,37 @@
             var i = new Toast(t, e, o);
             return i.duration = n, i.show(), i;
         }, Toast.show = function(t, e, n) {
-            return void 0 === n && (n = -1), this.internalShow(t, e, n, I.Default);
+            return void 0 === n && (n = -1), this.internalShow(t, e, n, j.Default);
         }, Toast.info = function(t, e, n) {
-            return void 0 === n && (n = -1), this.internalShow(t, e, n, I.Info);
+            return void 0 === n && (n = -1), this.internalShow(t, e, n, j.Info);
         }, Toast.success = function(t, e, n) {
-            return void 0 === n && (n = -1), this.internalShow(t, e, n, I.Success);
+            return void 0 === n && (n = -1), this.internalShow(t, e, n, j.Success);
         }, Toast.error = function(t, e, n) {
-            return void 0 === n && (n = -1), this.internalShow(t, e, n, I.Error);
+            return void 0 === n && (n = -1), this.internalShow(t, e, n, j.Error);
         }, Toast;
     }();
     !function(t) {
         t.Default = "default", t.Info = "info", t.Success = "success", t.Error = "error";
-    }(I || (I = {}));
-    var H, B = function(t) {
+    }(j || (j = {}));
+    var L, P = function(t) {
         function UpdateService() {
             var e = t.call(this) || this;
-            return e.rules = new Map([ [ R.All, /(.*)/i ] ]), e._unique = !1, e;
+            return e.rules = new Map([ [ A.All, /(.*)/i ] ]), e._unique = !1, e;
         }
         return __extends(UpdateService, t), UpdateService.prototype.loader = function() {}, 
         UpdateService.prototype.run = function() {
-            if (!p.get("isUpdate", !1)) {
-                var t = new L(p.env.script.version);
-                h.get_text(v.update_api).then((function(e) {
-                    var n = new L(e.match(/@version[ ]*([\d\.]+)/)[1]);
-                    if (n.compareTo(t) === H.greater) {
-                        var o = "\u65b0\u7248\u672c<span>" + n.versionString + '</span>\u5df2\u53d1\u5e03.<a id="new-version-link" class="link" href="' + v.install_url_one + '">\u5b89\u88c5(\u7ebf\u8def\u4e00)</a><a id="new-version-link" class="link" href="' + v.install_url_two + '">\u5b89\u88c5(\u7ebf\u8def\u4e8c)</a><a class="link" target="_blank" href="' + v.home_url + '">\u67e5\u770b</a>';
-                        j.info(o, "\u68c0\u67e5\u66f4\u65b0"), p.set("isUpdate", !0, 36e5);
+            if (!f.get("isUpdate", !1)) {
+                var t = new X(f.env.script.version);
+                g.get_text(w.update_api).then((function(e) {
+                    var n = new X(e.match(/@version[ ]*([\d\.]+)/)[1]);
+                    if (n.compareTo(t) === L.greater) {
+                        var o = "\u65b0\u7248\u672c<span>" + n.versionString + '</span>\u5df2\u53d1\u5e03.<a id="new-version-link" class="link" href="' + w.install_url_one + '">\u5b89\u88c5(\u7ebf\u8def\u4e00)</a><a id="new-version-link" class="link" href="' + w.install_url_two + '">\u5b89\u88c5(\u7ebf\u8def\u4e8c)</a><a class="link" target="_blank" href="' + w.home_url + '">\u67e5\u770b</a>';
+                        H.info(o, "\u68c0\u67e5\u66f4\u65b0"), f.set("isUpdate", !0, 3600);
                     }
                 }));
             }
         }, UpdateService;
-    }(z), L = function() {
+    }(I), X = function() {
         function VersionCompar(t) {
             if (!/^[\d\.]+$/.test(t)) throw new Error("Invalid version string");
             this.parts = t.split(".").map((function(t) {
@@ -1273,40 +1281,40 @@
         }
         return VersionCompar.prototype.compareTo = function(t) {
             for (var e = 0; e < this.parts.length; ++e) {
-                if (t.parts.length === e) return H.greater;
-                if (this.parts[e] !== t.parts[e]) return this.parts[e] > t.parts[e] ? H.greater : H.less;
+                if (t.parts.length === e) return L.greater;
+                if (this.parts[e] !== t.parts[e]) return this.parts[e] > t.parts[e] ? L.greater : L.less;
             }
-            return this.parts.length !== t.parts.length ? H.less : H.equal;
+            return this.parts.length !== t.parts.length ? L.less : L.equal;
         }, VersionCompar.prototype.greaterThan = function(t) {
-            return this.compareTo(t) === H.greater;
+            return this.compareTo(t) === L.greater;
         }, VersionCompar.prototype.lessThan = function(t) {
-            return this.compareTo(t) === H.less;
+            return this.compareTo(t) === L.less;
         }, VersionCompar.prototype.equals = function(t) {
-            return this.compareTo(t) === H.equal;
+            return this.compareTo(t) === L.equal;
         }, VersionCompar;
     }();
     !function(t) {
         t[t.less = -1] = "less", t[t.equal = 0] = "equal", t[t.greater = 1] = "greater", 
         t[t.incomparable = NaN] = "incomparable";
-    }(H || (H = {}));
-    var X = function(t) {
+    }(L || (L = {}));
+    var D = function(t) {
         function TaoBaoService() {
             var e = null !== t && t.apply(this, arguments) || this;
-            return e.rules = new Map([ [ R.TaoBao, /taobao.com/i ], [ R.TMall, /tmall/i ] ]), 
+            return e.rules = new Map([ [ A.TaoBao, /taobao.com/i ], [ A.TMall, /tmall/i ] ]), 
             e.UrlTag = "Wandhi_qLink", e;
         }
         var e;
         return __extends(TaoBaoService, t), TaoBaoService.prototype.getRules = function() {
             throw new Error("Method not implemented.");
         }, TaoBaoService.prototype.loader = function() {
-            i.appendCss("//cdn.wandhi.com/style/extenstion/hui.style.css");
+            r.appendCss("//cdn.wandhi.com/style/extenstion/hui.style.css");
         }, TaoBaoService.prototype.run = function() {
             this.init(), this.historyService.linkTest() && this.historyService.Process();
         }, TaoBaoService.prototype.init = function() {
             var t, e = this, n = "<div id='wandhi_div'><table class='wandhi_tab' id='wandhi_table'><thead><tr><th><b style='cursor:pointer'>\u4f18\u60e0\u5238</b></th><th>\u5238\u540e</th><th>\u6709 \u6548 \u671f</th><th>\u64cd\u4f5c</th></tr></thead><tr><td colspan='4'>\u6b63\u5728\u67e5\u8be2\u4f18\u60e0\u4fe1\u606f\uff0c\u8bf7\u7a0d\u5019...</td></tr></table></div>";
             $("#J_LinkBasket").parent().parent().prepend(n), $(".J_LinkAdd").parent().parent().prepend(n), 
-            (null === (t = this.rules.get(R.TaoBao)) || void 0 === t ? void 0 : t.test(this.core.currentUrl())) ? $("#wandhi_table").addClass("wandhi_tab_taobao") : $("#wandhi_table").addClass("wandhi_tab_tmall"), 
-            v.queryCoupons(this.core.getPar("id"), (function(t) {
+            (null === (t = this.rules.get(A.TaoBao)) || void 0 === t ? void 0 : t.test(this.core.currentUrl())) ? $("#wandhi_table").addClass("wandhi_tab_taobao") : $("#wandhi_table").addClass("wandhi_tab_tmall"), 
+            w.queryCoupons(this.core.getPar("id"), (function(t) {
                 return e.initElement(t);
             }));
         }, TaoBaoService.prototype.initElement = function(t) {
@@ -1316,55 +1324,68 @@
                 e += "<tr><td>" + t.quan_context + "</td><td>" + t.after_price + "</td><td>" + t.quan_time + "</td><td><b onclick=window.open(decodeURIComponent('" + t.quan_link + "')) style='cursor:pointer'>\u9886\u53d6</b></td></tr>";
             })) : e = "<tr><td colspan='4'>\u8fd9\u4e2a\u5546\u54c1\u6ca1\u6709\u8d85\u503c\u4f18\u60e0\u5238</td></tr>", 
             $("#wandhi_table tbody").append(e);
-        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== Y && Y) ? e : Object) ], TaoBaoService.prototype, "historyService", void 0), 
+        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== B && B) ? e : Object) ], TaoBaoService.prototype, "historyService", void 0), 
         TaoBaoService;
-    }(z), P = function(t) {
+    }(I), O = function(t) {
         function BiliImgService() {
             var e = null !== t && t.apply(this, arguments) || this;
-            return e.rules = new Map([ [ R.JingDong, /bilibili.com\/video\/[av|bv]*/i ] ]), 
+            return e.rules = new Map([ [ A.BiliBili, /bilibili.com\/video\/[av|bv]*/i ] ]), 
             e;
         }
         return __extends(BiliImgService, t), BiliImgService.prototype.loader = function() {
-            i.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
+            r.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
         }, BiliImgService.prototype.run = function() {
             this.init();
         }, BiliImgService.prototype.init = function() {
-            i.aotulazyload((function() {
+            r.aotulazyload((function() {
                 return !!($(".video-data").length && $(".bilibili-player-video-info-people-number").length && $.isNumeric($(".coin").text().trim()));
             }), (function() {
                 BiliImgService.add_img_btn(), BiliImgService.add_down_btn();
             }), 1);
         }, BiliImgService.add_img_btn = function() {
             $(".video-data").last().append(BiliImgService.btn), $("body").on("click", "#findimg", (function() {
-                v.queryBiliImg((function(t) {
-                    t.code ? m.open("\u5c01\u9762\u9171", '<img src="' + t.data + '" style="width: 705px;height: 400px;">', [ "725px", "400px" ]) : m.error("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f");
+                w.queryBiliImg((function(t) {
+                    t.code ? h.open("\u5c01\u9762\u9171", '<img src="' + t.data + '" style="width: 705px;height: 400px;">', [ "725px", "400px" ]) : h.error("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f");
                 }));
             }));
         }, BiliImgService.add_down_btn = function() {
+            var t = this;
             $(".video-data").last().append(BiliImgService.down), $("body").on("click", "#downvideo", (function() {
-                var t, e, n = unsafeWindow.__INITIAL_STATE__.videoData.aid, o = null !== (e = null === (t = unsafeWindow.__INITIAL_STATE__.cidMap[n]) || void 0 === t ? void 0 : t.cid) && void 0 !== e ? e : unsafeWindow.__INITIAL_STATE__.videoData.cid, r = n.toString() + o.toString() + "MDD";
-                if (a.debug([ n, o ]), n && o) {
-                    var s = p.get(r, !1);
-                    s ? m.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + s.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(t) {
-                        i.open(s.url);
-                    }), !0) : v.queryBiliDown(n, o, (function(t) {
-                        "" != t.url && (p.set(r, t, 60), m.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + t.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(e) {
-                            i.open(t.url);
-                        }), !0));
+                var e, n, o = unsafeWindow.__INITIAL_STATE__.videoData.aid, i = null !== (n = null === (e = unsafeWindow.__INITIAL_STATE__.cidMap[o]) || void 0 === e ? void 0 : e.cid) && void 0 !== n ? n : unsafeWindow.__INITIAL_STATE__.videoData.cid, u = o.toString() + i.toString() + "MDD";
+                if (s.debug([ o, i ]), o && i) {
+                    var c = f.get(u, !1);
+                    c ? h.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + c.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(t) {
+                        r.open(c.url);
+                    }), !0) : w.queryBiliDown(o, i, (function(e) {
+                        if ("" != e.url && null != e.url) f.set(u, e, 60), h.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + e.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(t) {
+                            r.open(e.url);
+                        }), !0); else {
+                            var n = f.get(u + "TU", !1);
+                            n ? r.open(n) : g.get_text("" + w.bilijx + a.url).then((function(e) {
+                                e = e.match(/hahaha =[ ]*'(.*)'/)[1], e = t.decrypt(e), f.set(u + "TU", e, 60), 
+                                r.open(e);
+                            }));
+                        }
                     }));
-                } else m.error("\u6682\u4e0d\u652f\u6301\u5f53\u524d\u89c6\u9891\uff0c\u5982\u6709\u7591\u95ee\u8bf7\u5e26\u4e0a\u94fe\u63a5\u8be2\u95ee\u4f5c\u8005");
+                } else h.error("\u6682\u4e0d\u652f\u6301\u5f53\u524d\u89c6\u9891\uff0c\u5982\u6709\u7591\u95ee\u8bf7\u5e26\u4e0a\u94fe\u63a5\u8be2\u95ee\u4f5c\u8005");
             }));
+        }, BiliImgService.decrypt = function(t) {
+            return n.AES.decrypt(t, n.enc.Latin1.parse(r.decode("YmVpYmVpZG91eXUxMjM0NQ==")), {
+                iv: n.enc.Latin1.parse(r.decode("YmVpYmVpMTIzNDU2Nzg5MA==")),
+                mode: n.mode.CBC,
+                adding: n.pad.ZeroPadding
+            }).toString(n.enc.Utf8);
         }, BiliImgService.btn = '\n    <span id="findimg" style="\n    background-color: #fb7199;\n    color: white;\n    font-size: 1rem;\n    text-align: center;\n    margin-left: 1rem;\n    padding:0.5rem;\n    cursor: pointer;\n    border-radius: 1rem;\n    ">\n        \u83b7\u53d6\u5c01\u9762\n    </span>', 
         BiliImgService.down = '\n    <span id="downvideo" style="\n    background-color: #fb7199;\n    color: white;\n    font-size: 1rem;\n    text-align: center;\n    margin-left: 1rem;\n    padding:0.5rem;\n    cursor: pointer;\n    border-radius: 1rem;\n    ">\n        \u4e0b\u8f7d\u89c6\u9891\n    </span>', 
         BiliImgService;
-    }(z), D = function(t) {
+    }(I), U = function(t) {
         function MovieService() {
             var e = t.call(this) || this;
-            return e.rules = new Map([ [ R.YouKu, /youku/i ], [ R.IQiYi, /iqiyi/i ], [ R.LeShi, /le.com/i ], [ R.Tencent_V, /v.qq/i ], [ R.TuDou, /tudou/i ], [ R.MangGuo, /mgtv/i ], [ R.SoHu, /sohu/i ], [ R.Acfun, /acfun/i ], [ R.BiliBili, /bilibili/i ], [ R.M1905, /1905/i ], [ R.PPTV, /pptv/i ], [ R.YinYueTai, /yinyuetai/ ] ]), 
-            e.menu = new T.Menu, e;
+            return e.rules = new Map([ [ A.YouKu, /youku/i ], [ A.IQiYi, /iqiyi/i ], [ A.LeShi, /le.com/i ], [ A.Tencent_V, /v.qq/i ], [ A.TuDou, /tudou/i ], [ A.MangGuo, /mgtv/i ], [ A.SoHu, /sohu/i ], [ A.Acfun, /acfun/i ], [ A.BiliBili, /bilibili/i ], [ A.M1905, /1905/i ], [ A.PPTV, /pptv/i ], [ A.YinYueTai, /yinyuetai/ ] ]), 
+            e.menu = new q.Menu, e;
         }
         return __extends(MovieService, t), MovieService.prototype.loader = function() {
-            "undefined" == typeof $ && i.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js");
+            "undefined" == typeof $ && r.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js");
         }, MovieService.prototype.run = function() {
             this.menu.Init([ {
                 title: "\u7535\u5f71\u641c\u7d22",
@@ -1385,19 +1406,19 @@
             } ], this._onClick);
         }, MovieService.prototype._onClick = function() {
             $("body").on("click", "[data-cat=process]", (function() {
-                i.open("http://tv.wandhi.com/go.html?url=" + encodeURIComponent(window.location.href));
+                r.open("http://tv.wandhi.com/go.html?url=" + encodeURIComponent(window.location.href));
             })), $("body").on("click", "[data-cat=search]", (function() {
-                i.open("http://tv.wandhi.com/");
+                r.open("http://tv.wandhi.com/");
             })), $("body").on("click", "[data-cat=tb]", (function() {
-                i.open("https://t.cn/A6LoYknW");
+                r.open("https://t.cn/A6LoYknW");
             })), $("body").on("click", "[data-cat=jd]", (function() {
-                i.open("https://t.cn/A6LoYnHT");
+                r.open("https://t.cn/A6LoYnHT");
             }));
         }, MovieService;
-    }(z), O = function(t) {
+    }(I), V = function(t) {
         function JdService() {
             var e = t.call(this) || this;
-            return e.rules = new Map([ [ R.JingDong, /item.jd/i ] ]), e;
+            return e.rules = new Map([ [ A.JingDong, /item.jd/i ] ]), e;
         }
         var e;
         return __extends(JdService, t), JdService.prototype.loader = function() {
@@ -1406,29 +1427,29 @@
             var t = $(".sku-name").text().trim();
             $("#choose-btns").prepend('<a href="javascript:;" class="btn-special1 btn-lg btn-yhj"><span class="">\u67e5\u8be2\u4f18\u60e0\u5238</span></a>'), 
             $(".btn-yhj").on("click", (function() {
-                i.open("http://jd.huizhek.com/?ah=total&kw=" + encodeURIComponent(t));
+                r.open("http://jd.huizhek.com/?ah=total&kw=" + encodeURIComponent(t));
             }));
-        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== Y && Y) ? e : Object) ], JdService.prototype, "historyService", void 0), 
+        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== B && B) ? e : Object) ], JdService.prototype, "historyService", void 0), 
         JdService;
-    }(z), E = function() {
+    }(I), E = function() {
         function UrlHelper() {}
         return UrlHelper.Bind = function(t, e, n) {
             $(t).click((function() {
-                i.openUrl($(this).data("key"));
+                r.openUrl($(this).data("key"));
             }));
         }, UrlHelper.urlEncode = function(t) {
             return encodeURIComponent(t);
         }, UrlHelper.urlDecode = function(t) {
             return decodeURIComponent(t);
         }, UrlHelper;
-    }(), U = function(t) {
+    }(), N = function(t) {
         function MusicService() {
             var e = t.call(this) || this;
-            return e.rules = new Map([ [ R.WangYi, /163(.*)song/i ], [ R.Tencent_M, /y.QQ(.*)song/i ], [ R.KuGou, /kugou.com\/song\/*/i ], [ R.KuWo, /kuwo(.*)yinyue/i ], [ R.XiaMi, /xiami/i ], [ R.TaiHe, /taihe.com/i ], [ R.QingTing, /qingting/i ], [ R.LiZhi, /lizhi/i ], [ R.MiGu, /migu/i ], [ R.XiMaLaYa, /ximalaya/i ] ]), 
-            e.menu = new T.Menu, e;
+            return e.rules = new Map([ [ A.WangYi, /163(.*)song/i ], [ A.Tencent_M, /y.QQ(.*)song/i ], [ A.KuGou, /kugou.com\/song\/*/i ], [ A.KuWo, /kuwo(.*)yinyue/i ], [ A.XiaMi, /xiami/i ], [ A.TaiHe, /taihe.com/i ], [ A.QingTing, /qingting/i ], [ A.LiZhi, /lizhi/i ], [ A.MiGu, /migu/i ], [ A.XiMaLaYa, /ximalaya/i ] ]), 
+            e.menu = new q.Menu, e;
         }
         return __extends(MusicService, t), MusicService.prototype.loader = function() {
-            i.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
+            r.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
         }, MusicService.prototype.run = function() {
             this.menu.Init([ {
                 title: "\u7535\u5f71\u641c\u7d22",
@@ -1450,7 +1471,7 @@
         }, MusicService.prototype._OnClick = function() {
             this.rules;
             $("body").on("click", "[data-cat=process]", (function() {
-                if (/ximalaya/i.test(r.url)) if (__INITIAL_STATE__ && null != __INITIAL_STATE__.SoundDetailPage) i.open("http://music.wandhi.com/?id=" + __INITIAL_STATE__.SoundDetailPage.trackId + "&type=ximalaya"); else {
+                if (/ximalaya/i.test(a.url)) if (__INITIAL_STATE__ && null != __INITIAL_STATE__.SoundDetailPage) r.open("http://music.wandhi.com/?id=" + __INITIAL_STATE__.SoundDetailPage.trackId + "&type=ximalaya"); else {
                     layer.closeAll();
                     var t = '<div style="padding:0px 50px 0px 50px;"><ul class="sound-list dOi2">';
                     $.each(__INITIAL_STATE__.AlbumDetailTrackList.tracksInfo.tracks, (function(e, n) {
@@ -1464,23 +1485,23 @@
                         anim: 2,
                         content: t
                     });
-                } else /taihe.com/i.test(r.url) ? i.open("http://music.wandhi.com/?url=" + E.urlEncode(r.url.replace("taihe", "baidu"))) : i.open("http://music.wandhi.com/?url=" + E.urlEncode(r.url));
+                } else /taihe.com/i.test(a.url) ? r.open("http://music.wandhi.com/?url=" + E.urlEncode(a.url.replace("taihe", "baidu"))) : r.open("http://music.wandhi.com/?url=" + E.urlEncode(a.url));
             })), $("body").on("click", "[data-cat=search]", (function() {
-                i.open("http://tv.wandhi.com/");
+                r.open("http://tv.wandhi.com/");
             })), $("body").on("click", "[data-cat=tb]", (function() {
-                i.open("https://t.cn/A6LoYknW");
+                r.open("https://t.cn/A6LoYknW");
             })), $("body").on("click", "[data-cat=jd]", (function() {
-                i.open("https://t.cn/A6LoYnHT");
+                r.open("https://t.cn/A6LoYnHT");
             }));
         }, MusicService;
-    }(z), V = function(t) {
+    }(I), J = function(t) {
         function StuService() {
             var e = t.call(this) || this;
-            return e.rules = new Map([ [ R.SXB, /shangxueba.com\/ask\/.*html/i ] ]), e;
+            return e.rules = new Map([ [ A.SXB, /shangxueba.com\/ask\/.*html/i ] ]), e;
         }
         return __extends(StuService, t), StuService.prototype.loader = function() {
-            "undefined" == typeof $ && i.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js"), 
-            i.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
+            "undefined" == typeof $ && r.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js"), 
+            r.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
         }, StuService.prototype.run = function() {
             this.menu.Init([ {
                 title: "\u67e5\u770b\u7b54\u6848",
@@ -1509,31 +1530,31 @@
                     content: '<img src="https://i.loli.net/2019/05/14/5cda672add6f594934.jpg">'
                 });
             })), $("body").on("click", "[data-cat=search]", (function() {
-                v.querySbx($("#Hidd_id").val(), (function(t) {
-                    t.status ? (m.open("\u7b54\u6848", t.msg), v.sbxFeedback(dataid, t.msg)) : "wronganhao" == t.msg ? (m.prompt("\u53e3\u4ee4\u9519\u8bef\uff0c\u8bf7\u5c06\u5f39\u51fa\u7684\u9875\u9762\u4e2d\u7684\u53e3\u4ee4\u586b\u5165\u540e\u91cd\u8bd5\uff01", p.get("sxb_anhao", ""), (function(t) {
-                        p.set("sxb_anhao", t), m.info("\u8bf7\u518d\u6b21\u70b9\u51fb\u67e5\u770b\u7b54\u6848\u6309\u94ae");
-                    }), 4), i.open("http://www.lelunwen.com/e/action/ListInfo/?classid=45")) : m.confim("\u6ca1\u67e5\u5230\u7b54\u6848", "\u8981\u4e0d\u8981\u8df3\u8f6c\u5230\u67e5\u8be2\u9875\u770b\u770b\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function() {
-                        i.open(r.url.replace("shangxueba", "shangxueba365"));
+                w.querySbx($("#Hidd_id").val(), (function(t) {
+                    t.status ? (h.open("\u7b54\u6848", t.msg), w.sbxFeedback(dataid, t.msg)) : "wronganhao" == t.msg ? (h.prompt("\u53e3\u4ee4\u9519\u8bef\uff0c\u8bf7\u5c06\u5f39\u51fa\u7684\u9875\u9762\u4e2d\u7684\u53e3\u4ee4\u586b\u5165\u540e\u91cd\u8bd5\uff01", f.get("sxb_anhao", ""), (function(t) {
+                        f.set("sxb_anhao", t), h.info("\u8bf7\u518d\u6b21\u70b9\u51fb\u67e5\u770b\u7b54\u6848\u6309\u94ae");
+                    }), 4), r.open("http://www.lelunwen.com/e/action/ListInfo/?classid=45")) : h.confim("\u6ca1\u67e5\u5230\u7b54\u6848", "\u8981\u4e0d\u8981\u8df3\u8f6c\u5230\u67e5\u8be2\u9875\u770b\u770b\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function() {
+                        r.open(a.url.replace("shangxueba", "shangxueba365"));
                     }));
                 }));
             })), $("body").on("click", "[data-cat=tb]", (function() {
-                i.open("https://t.cn/A6LoYknW");
+                r.open("https://t.cn/A6LoYknW");
             })), $("body").on("click", "[data-cat=jd]", (function() {
-                i.open("https://t.cn/A6LoYnHT");
+                r.open("https://t.cn/A6LoYnHT");
             }));
         }, StuService;
-    }(z), J = function() {
+    }(I), W = function() {
         function OneKeyVipInjection() {
-            this.plugins = new Array, this.plugins = [ _.Require(B), _.Require(P), _.Require(D), _.Require(X), _.Require(O), _.Require(U), _.Require(V), _.Require(Y) ], 
-            a.info("container loaded");
+            this.plugins = new Array, this.plugins = [ C.Require(P), C.Require(O), C.Require(U), C.Require(D), C.Require(V), C.Require(N), C.Require(J), C.Require(B) ], 
+            s.info("container loaded");
         }
         return OneKeyVipInjection.prototype.Init = function() {
             this.plugins.every((function(t) {
                 return !t.linkTest() || (new Promise((function(t) {
                     t();
-                })).then(t.Process), a.debug("element unique:" + t.unique()), !t.unique());
+                })).then(t.Process), s.debug("element unique:" + t.unique()), !t.unique());
             }));
         }, OneKeyVipInjection;
     }();
-    a.level = n.info, _.Require(J).Init();
+    s.level = o.info, C.Require(W).Init();
 }));
