@@ -483,7 +483,7 @@
             }));
         }, Http.get = function(t, e, n) {
             void 0 === e && (e = new Map), void 0 === n && (n = 10);
-            var o = y.loading();
+            y.loading();
             return new Promise((function(o, i) {
                 Http.ajax(new g(t, "GET", e, (function(t) {
                     var e;
@@ -494,8 +494,6 @@
                         c.debug(t), i();
                     }
                 }), new Map, n));
-            })).finally((function() {
-                return y.close(o);
             }));
         }, Http.get_text = function(t) {
             return new Promise((function(e) {
