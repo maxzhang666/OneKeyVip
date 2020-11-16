@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2020-10-16 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2020-11-16 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.2.17
+// @version      4.2.18
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(接口偶尔抽风)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
@@ -283,7 +283,7 @@
             }));
         }, BaseCoupon;
     }(), d = function d() {
-        this.max = 0, this.price_detail = new Array;
+        this.max = 0, this.price_detail = [];
     }, p = function p() {}, f = function f() {}, m = function() {
         function Convert() {}
         return Convert.genterData = function(t) {
@@ -299,6 +299,25 @@
                 })), t.listPrice = n;
             }
             return t.listPrice.forEach((function(t, n) {
+                var o = new p;
+                o.timestamp = Number.parseInt(t.dt.match(/[0-9]{13}/)[0]) + 800, o.time = s.format(new Date(o.timestamp), "yyyy-MM-dd"), 
+                o.price = t.pr, o.mark = t.yh, e.max < t.pr && (e.max = t.pr, e.max_date = o.time), 
+                e.price_detail.push(o);
+            })), e;
+        }, Convert.genterDataV2 = function(t) {
+            var e = new d;
+            e.date = s.format(new Date(t.lowerDate), "yyyy-MM-dd"), e.min = t.lowerPrice, e.max = e.min, 
+            e.max_date = e.date, e.current = t.currentPrice.toString(), e.mark = "" == t.changPriceRemark ? "\u6682\u65e0" : t.changPriceRemark;
+            var n = [];
+            if (0 != t.datePrice.length) {
+                var o = [];
+                t.datePrice.split("],[").forEach((function(t, e) {
+                    var n = new f, i = (t = t.replace(/\[|"|\]/g, "")).split(",");
+                    n.pr = Number.parseInt(i[1]), n.yh = 3 == i.length ? i[2] : t.substring(t.indexOf(i[2]), t.length), 
+                    n.dt = i[0], o.push(n);
+                })), n = o;
+            }
+            return n.forEach((function(t, n) {
                 var o = new p;
                 o.timestamp = Number.parseInt(t.dt.match(/[0-9]{13}/)[0]) + 800, o.time = s.format(new Date(o.timestamp), "yyyy-MM-dd"), 
                 o.price = t.pr, o.mark = t.yh, e.max < t.pr && (e.max = t.pr, e.max_date = o.time), 
@@ -438,18 +457,16 @@
     }(), v = function() {
         function Http() {}
         return Http.ajax = function(t) {
-            var e, n, o, i;
-            t.headers.set("User-Agent", "Mozilla/4.0 (compatible) Greasemonkey"), t.headers.set("Accept", "application/atom+xml,application/xml,text/xml"), 
-            t.headers.set("version", h.env.script.version), t.headers.set("auth", null !== (e = h.env.script.author) && void 0 !== e ? e : ""), 
-            t.headers.set("namespace", null !== (n = h.env.script.namespace) && void 0 !== n ? n : ""), 
-            GM_xmlhttpRequest({
+            var e, n;
+            t.headers.set("User-Agent", "Mozilla/4.0 (compatible) Greasemonkey"), t.headers.set("Accept", "application/atom+xml,application/xml,text/xml");
+            var o = new b;
+            o.version = h.env.script.version, o.auth = null !== (e = h.env.script.author) && void 0 !== e ? e : "", 
+            o.namespace = null !== (n = h.env.script.namespace) && void 0 !== n ? n : "", t.headers.forEach((function(t, e) {
+                o[e] = t;
+            })), GM_xmlhttpRequest({
                 url: t.url,
                 method: t.methodType,
-                headers: {
-                    version: h.env.script.version,
-                    auth: null !== (o = h.env.script.author) && void 0 !== o ? o : "",
-                    namespace: null !== (i = h.env.script.namespace) && void 0 !== i ? i : ""
-                },
+                headers: o,
                 data: t.getData(),
                 timeout: 1e3 * t.timeOut,
                 onload: function(e) {
@@ -495,6 +512,20 @@
                     }
                 }), new Map, n));
             }));
+        }, Http.getWithHead = function(t, e, n, o) {
+            void 0 === e && (e = new Map), void 0 === n && (n = new Map), void 0 === o && (o = 10);
+            y.loading();
+            return new Promise((function(i, r) {
+                Http.ajax(new g(t, "GET", e, (function(t) {
+                    var e;
+                    try {
+                        var n = null !== (e = JSON.parse(t)) && void 0 !== e ? e : t;
+                        i(n);
+                    } catch (t) {
+                        c.debug(t), r();
+                    }
+                }), n, o));
+            }));
         }, Http.get_text = function(t) {
             return new Promise((function(e) {
                 Http.ajax(new g(t, "GET", new Map, (function(t) {
@@ -502,25 +533,40 @@
                 })));
             }));
         }, Http;
-    }(), b = function() {
+    }(), b = function b() {}, w = function() {
         function Result() {}
         return Result.prototype.constructorq = function() {}, Result;
-    }(), w = (function(t) {
+    }(), k = (function(t) {
         function StuResult() {
             return null !== t && t.apply(this, arguments) || this;
         }
         __extends(StuResult, t);
-    }(b), function(t) {
+    }(w), function(t) {
         function StrResult() {
             return null !== t && t.apply(this, arguments) || this;
         }
         __extends(StrResult, t);
-    }(b), function(t) {
+    }(w), function(t) {
         function HistoryResult() {
             return null !== t && t.apply(this, arguments) || this;
         }
         return __extends(HistoryResult, t), HistoryResult;
-    }(b)), k = function k() {}, x = function() {
+    }(w)), x = (function(t) {
+        function HistoryQueryResult() {
+            return null !== t && t.apply(this, arguments) || this;
+        }
+        __extends(HistoryQueryResult, t);
+    }(w), function(t) {
+        function HistoryV1Result() {
+            return null !== t && t.apply(this, arguments) || this;
+        }
+        __extends(HistoryV1Result, t);
+    }(w), function(t) {
+        function HistoryV2Result() {
+            return null !== t && t.apply(this, arguments) || this;
+        }
+        __extends(HistoryV2Result, t);
+    }(w), function x() {}), _ = function() {
         function Route() {
             this.queryTao = "";
         }
@@ -556,8 +602,19 @@
             var o = this, i = this;
             this.baseApi(this.historyv1, new Map([ [ "url", t ] ]), (function(r) {
                 c.debug(r), r.code ? v.get(r.data).then((function(t) {
-                    var e = new w;
+                    var e = new k;
                     e.code = 1, e.data = m.genterData(t), c.debug(e), n(e);
+                })).catch((function() {
+                    i.queryHistory(t, e, n);
+                })) : o.queryHistory(t, e, n);
+            }), 60);
+        }, Route.queryHistoryv2 = function(t, e, n) {
+            var o = this, i = this;
+            this.baseApi(this.historyv2, new Map([ [ "url", t ] ]), (function(r) {
+                c.debug(r), r.code ? v.getWithHead(r.data.url, new Map, new Map([ [ "Authorization", r.data.auth ] ])).then((function(t) {
+                    var e = new k;
+                    0 == t.code ? e.code = 1 : e.code = -1, e.code = 1, e.data = m.genterDataV2(t.data), 
+                    c.debug(e), n(e);
                 })).catch((function() {
                     i.queryHistory(t, e, n);
                 })) : o.queryHistory(t, e, n);
@@ -568,10 +625,12 @@
             v.get(this.bilidown + "?cid=" + e + "&aid=" + t).then((function(t) {
                 c.debug(t), n(t);
             })).catch((function() {
-                n(new k);
+                n(new x);
             }));
         }, Route.queryCoupons = function(t, e) {
             this.baseApi(this.coupons, new Map([ [ "id", t ] ]), e);
+        }, Route.queryLike = function(t, e) {
+            this.baseApi(this.like, new Map([ [ "id", t ] ]), e);
         }, Route.queryJdCoupons = function(t, e) {
             Route.baseApi(Route.jd_coupons, new Map([ [ "item_id", t ] ]), e);
         }, Route.querySnCoupons = function(t, e) {
@@ -582,11 +641,11 @@
         Route.home_url = "https://wiki.wandhi.com", Route.install_url_one = "https://greasyfork.org/zh-CN/scripts/384538", 
         Route.install_url_two = "https://tools.wandhi.com/scripts", Route.sxb_anhao = "http://www.lelunwen.com/e/action/ListInfo/?classid=45", 
         Route.sxb_key = "sxb_anhao", Route.config = "/config/query", Route.history = "/history/", 
-        Route.historyv1 = "/history/v1/", Route.bili = "/tools/bili", Route.bilidown = "https://www.xbeibeix.com/api/bilibiliapi.php", 
-        Route.bilijx = "https://xbeibeix.com/api/bilibili/biliplayer/?url=", Route.coupons = "/tb/infos/", 
-        Route.jd_coupons = "/jd/info", Route.sn_coupons = "/sn/info", Route.vp_coupons = "/vp/info", 
-        Route;
-    }(), _ = function(t) {
+        Route.historyv1 = "/history/v1", Route.historyv2 = "/history/v2", Route.bili = "/tools/bili", 
+        Route.bilidown = "https://www.xbeibeix.com/api/bilibiliapi.php", Route.bilijx = "https://xbeibeix.com/api/bilibili/biliplayer/?url=", 
+        Route.coupons = "/tb/infos/", Route.like = "/tb/guesslike", Route.jd_coupons = "/jd/info", 
+        Route.sn_coupons = "/sn/info", Route.vp_coupons = "/vp/info", Route;
+    }(), S = function(t) {
         function VpCoupon() {
             return null !== t && t.apply(this, arguments) || this;
         }
@@ -602,7 +661,7 @@
             }));
         }, VpCoupon.prototype.init_coupons = function() {
             var t = this;
-            x.queryVpCoupons(u.url, (function(e) {
+            _.queryVpCoupons(u.url, (function(e) {
                 if (c.debug(e), e.code) if (e.data.has_coupon) {
                     var n = e.data, o = new Date(n.quan_time);
                     t.init_qrcode(decodeURIComponent(n.quan_link)).then((function(e) {
@@ -613,7 +672,7 @@
                 }))) : t.default(); else t.default();
             }));
         }, VpCoupon;
-    }(l), S = function(t) {
+    }(l), C = function(t) {
         function SuningCoupon() {
             return null !== t && t.apply(this, arguments) || this;
         }
@@ -629,7 +688,7 @@
             }));
         }, SuningCoupon.prototype.init_coupons = function() {
             var t = this;
-            x.querySnCoupons(u.url, (function(e) {
+            _.querySnCoupons(u.url, (function(e) {
                 if (c.debug(e), e.code) if (e.data.has_coupon) {
                     var n = e.data, o = new Date(n.quan_time);
                     t.init_qrcode(decodeURIComponent(n.quan_link)).then((function(e) {
@@ -640,7 +699,7 @@
                 }))) : t.default(); else t.default();
             }));
         }, SuningCoupon;
-    }(l), C = function(t) {
+    }(l), T = function(t) {
         function JdCoupon() {
             return null !== t && t.apply(this, arguments) || this;
         }
@@ -651,7 +710,7 @@
             }));
         }, JdCoupon.prototype.init_coupons = function() {
             var t, e, n = this, o = null === (e = null === (t = unsafeWindow.pageConfig) || void 0 === t ? void 0 : t.product) || void 0 === e ? void 0 : e.skuid;
-            o ? x.queryJdCoupons(o, (function(t) {
+            o ? _.queryJdCoupons(o, (function(t) {
                 if (c.debug(t), t.code) if (t.data.has_coupon) {
                     var e = t.data, o = new Date(e.quan_time);
                     n.init_qrcode(decodeURIComponent(e.quan_link)).then((function(t) {
@@ -660,11 +719,11 @@
                 } else t.data.quan_link ? n.default(t.data.quan_link) : n.default(); else n.default();
             })) : this.default();
         }, JdCoupon;
-    }(l), T = new Map, M = function() {
+    }(l), M = new Map, q = function() {
         function Container() {}
         return Container.Registe = function(t, e) {
             var n = this.processName(t.name);
-            return T.set(n, window.Reflect.construct(t, this.buildParams(e))), T.get(n);
+            return M.set(n, window.Reflect.construct(t, this.buildParams(e))), M.get(n);
         }, Container.buildParams = function(t) {
             var e = [];
             return null == t || t.map((function(t) {
@@ -674,23 +733,23 @@
             return t.toLowerCase();
         }, Container.Require = function(t) {
             var e = this, n = this.processName(t.name);
-            if (T.has(n)) return T.get(n);
-            var o, i = Reflect.getMetadata(R, t);
+            if (M.has(n)) return M.get(n);
+            var o, i = Reflect.getMetadata(z, t);
             return (null == i ? void 0 : i.length) && (o = i.map((function(t) {
                 return e.Require(t);
             }))), this.Registe(t, o);
         }, Container.define = function(t, e) {
-            var n, o = Reflect.getMetadata(q, t, e), i = null !== (n = Object.getOwnPropertyDescriptor(t, e)) && void 0 !== n ? n : {
+            var n, o = Reflect.getMetadata(R, t, e), i = null !== (n = Object.getOwnPropertyDescriptor(t, e)) && void 0 !== n ? n : {
                 writable: !0,
                 configurable: !0
             };
             i.value = this.Require(o), Object.defineProperty(t, e, i);
         }, Container;
-    }(), q = "design:type", R = "design:paramtypes";
+    }(), R = "design:type", z = "design:paramtypes";
     function WandhiAuto(t, e) {
-        M.define(t, e);
+        q.define(t, e);
     }
-    var z, A = function(t) {
+    var A, I = function(t) {
         function TaoCoupon() {
             return null !== t && t.apply(this, arguments) || this;
         }
@@ -702,7 +761,7 @@
             }));
         }, TaoCoupon.prototype.init_coupons = function() {
             var t = this;
-            x.queryCoupons(this.core.getPar("id"), (function(e) {
+            _.queryCoupons(this.core.getPar("id"), (function(e) {
                 if (e.code) {
                     var n = e.data[0], o = new Date(n.quan_time);
                     t.init_qrcode(decodeURIComponent(n.quan_link)).then((function(e) {
@@ -714,7 +773,7 @@
             }));
         }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== s && s) ? e : Object) ], TaoCoupon.prototype, "core", void 0), 
         TaoCoupon;
-    }(l), I = function(t) {
+    }(l), Y = function(t) {
         function DefCoupon() {
             return null !== t && t.apply(this, arguments) || this;
         }
@@ -771,8 +830,8 @@
             }, Menu;
         }();
         t.Menu = e;
-    }(z || (z = {}));
-    var Y, j = function() {
+    }(A || (A = {}));
+    var H, j = function() {
         function PluginBase() {
             var t = this;
             this._unique = !0, this.Process = function() {
@@ -790,7 +849,7 @@
                 return !o.test(t) || (n = !0, e.site = i, !1);
             })), n;
         }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (t = void 0 !== s && s) ? t : Object) ], PluginBase.prototype, "core", void 0), 
-        __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== z && z.Menu) ? e : Object) ], PluginBase.prototype, "menu", void 0), 
+        __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== A && A.Menu) ? e : Object) ], PluginBase.prototype, "menu", void 0), 
         PluginBase;
     }(), B = function B() {};
     !function(t) {
@@ -802,12 +861,12 @@
         t.TaiHe = "TaiHe", t.QingTing = "QingTing", t.LiZhi = "LiZhi", t.MiGu = "MiGu", 
         t.XiMaLaYa = "XiMaLaYa", t.SXB = "SXB", t.BDY = "BDY", t.BDY1 = "BDY1", t.LZY = "LZY", 
         t.SuNing = "SuNing", t.Vp = "Vp";
-    }(Y || (Y = {}));
-    var H, L = function(t) {
+    }(H || (H = {}));
+    var L, P = function(t) {
         function HistoryService() {
             var e = null !== t && t.apply(this, arguments) || this;
-            return e.rules = new Map([ [ Y.TMall, /detail.tmall.com\/item.htm/i ], [ Y.TaoBao, /item.taobao.com/i ], [ Y.JingDong, /item.jd.(com|hk)\/[0-9]*.html/i ], [ Y.SuNing, /product.suning.com/i ], [ Y.Vp, /detail.vip.com/i ] ]), 
-            e.factory = new I, e;
+            return e.rules = new Map([ [ H.TMall, /detail.tmall.com\/item.htm/i ], [ H.TaoBao, /item.taobao.com/i ], [ H.JingDong, /item.jd.(com|hk)\/[0-9]*.html/i ], [ H.SuNing, /product.suning.com/i ], [ H.Vp, /detail.vip.com/i ] ]), 
+            e.factory = new Y, e;
         }
         return __extends(HistoryService, t), HistoryService.prototype.loader = function() {
             s.appendCssContent(this.getHistoryCss());
@@ -816,25 +875,25 @@
         }, HistoryService.prototype.injectHistory = function() {
             var t = this;
             switch (c.debug(this.site), this.site) {
-              case Y.TaoBao:
-              case Y.TMall:
-                this.factory = new A;
+              case H.TaoBao:
+              case H.TMall:
+                this.factory = new I;
                 break;
 
-              case Y.JingDong:
+              case H.JingDong:
+                this.factory = new T;
+                break;
+
+              case H.SuNing:
                 this.factory = new C;
                 break;
 
-              case Y.SuNing:
+              case H.Vp:
                 this.factory = new S;
                 break;
 
-              case Y.Vp:
-                this.factory = new _;
-                break;
-
               default:
-                this.factory = new I;
+                this.factory = new Y;
             }
             this.factory.init_html(this.getHistoryHtml()).then((function(e) {
                 e && t.InitPriceHistory(), t.factory.init_coupons && t.factory.init_coupons();
@@ -842,7 +901,7 @@
         }, HistoryService.prototype.InitPriceHistory = function() {
             var t = this;
             $("#vip-plugin-outside").show(), this.theme(), this.chartMsg("\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u4e2d"), 
-            x.queryHistoryv1(u.url, this.site.toString(), (function(e) {
+            _.queryHistoryv2(u.url, this.site.toString(), (function(e) {
                 var n = "";
                 e.code ? ($(".vip-plugin-outside-chart-container").html('<div id="vip-plugin-outside-chart-container-line"></div>'), 
                 echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), t.theme()).setOption(t.getChartOption(e.data))) : n = "\u672a\u67e5\u5230\u5386\u53f2\u6570\u636e", 
@@ -1193,7 +1252,7 @@
                 }
             };
         }, HistoryService;
-    }(j), X = function() {
+    }(j), D = function() {
         function Toast(t, e, n) {
             this.creationTime = new Date, this.message = t, this.type = n, this.title = e, this.duration = 3e3, 
             this.randomKey = Math.floor(Math.random() * (Number.MAX_SAFE_INTEGER + 1));
@@ -1242,32 +1301,32 @@
             var i = new Toast(t, e, o);
             return i.duration = n, i.show(), i;
         }, Toast.show = function(t, e, n) {
-            return void 0 === n && (n = -1), this.internalShow(t, e, n, H.Default);
+            return void 0 === n && (n = -1), this.internalShow(t, e, n, L.Default);
         }, Toast.info = function(t, e, n) {
-            return void 0 === n && (n = -1), this.internalShow(t, e, n, H.Info);
+            return void 0 === n && (n = -1), this.internalShow(t, e, n, L.Info);
         }, Toast.success = function(t, e, n) {
-            return void 0 === n && (n = -1), this.internalShow(t, e, n, H.Success);
+            return void 0 === n && (n = -1), this.internalShow(t, e, n, L.Success);
         }, Toast.error = function(t, e, n) {
-            return void 0 === n && (n = -1), this.internalShow(t, e, n, H.Error);
+            return void 0 === n && (n = -1), this.internalShow(t, e, n, L.Error);
         }, Toast;
     }();
     !function(t) {
         t.Default = "default", t.Info = "info", t.Success = "success", t.Error = "error";
-    }(H || (H = {}));
-    var P, D = function(t) {
+    }(L || (L = {}));
+    var X, V = function(t) {
         function UpdateService() {
             var e = t.call(this) || this;
-            return e.rules = new Map([ [ Y.All, /(.*)/i ] ]), e._unique = !1, e;
+            return e.rules = new Map([ [ H.All, /(.*)/i ] ]), e._unique = !1, e;
         }
         return __extends(UpdateService, t), UpdateService.prototype.loader = function() {}, 
         UpdateService.prototype.run = function() {
             if (!h.get("isUpdate", !1)) {
                 var t = new O(h.env.script.version);
-                v.get_text(x.update_api).then((function(e) {
+                v.get_text(_.update_api).then((function(e) {
                     var n = new O(e.match(/@version[ ]*([\d\.]+)/)[1]);
-                    if (n.compareTo(t) === P.greater) {
-                        var o = "\u65b0\u7248\u672c<span>" + n.versionString + '</span>\u5df2\u53d1\u5e03.<a id="new-version-link" class="link" href="' + x.install_url_one + '">\u5b89\u88c5(\u7ebf\u8def\u4e00)</a><a id="new-version-link" class="link" href="' + x.install_url_two + '">\u5b89\u88c5(\u7ebf\u8def\u4e8c)</a><a class="link" target="_blank" href="' + x.home_url + '">\u67e5\u770b</a>';
-                        X.info(o, "\u68c0\u67e5\u66f4\u65b0"), h.set("isUpdate", !0, 3600);
+                    if (n.compareTo(t) === X.greater) {
+                        var o = "\u65b0\u7248\u672c<span>" + n.versionString + '</span>\u5df2\u53d1\u5e03.<a id="new-version-link" class="link" href="' + _.install_url_one + '">\u5b89\u88c5(\u7ebf\u8def\u4e00)</a><a id="new-version-link" class="link" href="' + _.install_url_two + '">\u5b89\u88c5(\u7ebf\u8def\u4e8c)</a><a class="link" target="_blank" href="' + _.home_url + '">\u67e5\u770b</a>';
+                        D.info(o, "\u68c0\u67e5\u66f4\u65b0"), h.set("isUpdate", !0, 3600);
                     }
                 }));
             }
@@ -1281,26 +1340,26 @@
         }
         return VersionCompar.prototype.compareTo = function(t) {
             for (var e = 0; e < this.parts.length; ++e) {
-                if (t.parts.length === e) return P.greater;
-                if (this.parts[e] !== t.parts[e]) return this.parts[e] > t.parts[e] ? P.greater : P.less;
+                if (t.parts.length === e) return X.greater;
+                if (this.parts[e] !== t.parts[e]) return this.parts[e] > t.parts[e] ? X.greater : X.less;
             }
-            return this.parts.length !== t.parts.length ? P.less : P.equal;
+            return this.parts.length !== t.parts.length ? X.less : X.equal;
         }, VersionCompar.prototype.greaterThan = function(t) {
-            return this.compareTo(t) === P.greater;
+            return this.compareTo(t) === X.greater;
         }, VersionCompar.prototype.lessThan = function(t) {
-            return this.compareTo(t) === P.less;
+            return this.compareTo(t) === X.less;
         }, VersionCompar.prototype.equals = function(t) {
-            return this.compareTo(t) === P.equal;
+            return this.compareTo(t) === X.equal;
         }, VersionCompar;
     }();
     !function(t) {
         t[t.less = -1] = "less", t[t.equal = 0] = "equal", t[t.greater = 1] = "greater", 
         t[t.incomparable = NaN] = "incomparable";
-    }(P || (P = {}));
-    var U = function(t) {
+    }(X || (X = {}));
+    var E = function(t) {
         function TaoBaoService() {
             var e = null !== t && t.apply(this, arguments) || this;
-            return e.rules = new Map([ [ Y.TaoBao, /taobao.com/i ], [ Y.TMall, /tmall/i ] ]), 
+            return e.rules = new Map([ [ H.TaoBao, /taobao.com/i ], [ H.TMall, /tmall/i ] ]), 
             e.UrlTag = "Wandhi_qLink", e;
         }
         var e;
@@ -1313,8 +1372,8 @@
         }, TaoBaoService.prototype.init = function() {
             var t, e = this, n = "<div id='wandhi_div'><table class='wandhi_tab' id='wandhi_table'><thead><tr><th><b style='cursor:pointer'>\u4f18\u60e0\u5238</b></th><th>\u5238\u540e</th><th>\u6709 \u6548 \u671f</th><th>\u64cd\u4f5c</th></tr></thead><tr><td colspan='4'>\u6b63\u5728\u67e5\u8be2\u4f18\u60e0\u4fe1\u606f\uff0c\u8bf7\u7a0d\u5019...</td></tr></table></div>";
             $("#J_LinkBasket").parent().parent().prepend(n), $(".J_LinkAdd").parent().parent().prepend(n), 
-            (null === (t = this.rules.get(Y.TaoBao)) || void 0 === t ? void 0 : t.test(this.core.currentUrl())) ? $("#wandhi_table").addClass("wandhi_tab_taobao") : $("#wandhi_table").addClass("wandhi_tab_tmall"), 
-            x.queryCoupons(this.core.getPar("id"), (function(t) {
+            (null === (t = this.rules.get(H.TaoBao)) || void 0 === t ? void 0 : t.test(this.core.currentUrl())) ? $("#wandhi_table").addClass("wandhi_tab_taobao") : $("#wandhi_table").addClass("wandhi_tab_tmall"), 
+            _.queryCoupons(this.core.getPar("id"), (function(t) {
                 return e.initElement(t);
             }));
         }, TaoBaoService.prototype.initElement = function(t) {
@@ -1324,12 +1383,12 @@
                 e += "<tr><td>" + t.quan_context + "</td><td>" + t.after_price + "</td><td>" + t.quan_time + "</td><td><b onclick=window.open(decodeURIComponent('" + t.quan_link + "')) style='cursor:pointer'>\u9886\u53d6</b></td></tr>";
             })) : e = "<tr><td colspan='4'>\u8fd9\u4e2a\u5546\u54c1\u6ca1\u6709\u8d85\u503c\u4f18\u60e0\u5238</td></tr>", 
             $("#wandhi_table tbody").append(e);
-        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== L && L) ? e : Object) ], TaoBaoService.prototype, "historyService", void 0), 
+        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== P && P) ? e : Object) ], TaoBaoService.prototype, "historyService", void 0), 
         TaoBaoService;
-    }(j), V = function(t) {
+    }(j), U = function(t) {
         function BiliImgService() {
             var e = null !== t && t.apply(this, arguments) || this;
-            return e.rules = new Map([ [ Y.BiliBili, /bilibili.com\/video\/[av|bv]*/i ] ]), 
+            return e.rules = new Map([ [ H.BiliBili, /bilibili.com\/video\/[av|bv]*/i ] ]), 
             e;
         }
         return __extends(BiliImgService, t), BiliImgService.prototype.loader = function() {
@@ -1344,7 +1403,7 @@
             }), 1);
         }, BiliImgService.add_img_btn = function() {
             $(".video-data").last().append(BiliImgService.btn), $("body").on("click", "#findimg", (function() {
-                x.queryBiliImg((function(t) {
+                _.queryBiliImg((function(t) {
                     t.code ? y.open("\u5c01\u9762\u9171", '<img src="' + t.data + '" style="width: 705px;height: 400px;">', [ "725px", "400px" ]) : y.error("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f");
                 }));
             }));
@@ -1356,12 +1415,12 @@
                     var a = h.get(r, !1);
                     a ? y.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + a.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(t) {
                         s.open(a.url);
-                    }), !0) : x.queryBiliDown(o, i, (function(e) {
+                    }), !0) : _.queryBiliDown(o, i, (function(e) {
                         if ("" != e.url && null != e.url) h.set(r, e, 60), y.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + e.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(t) {
                             s.open(e.url);
                         }), !0); else {
                             var n = h.get(r + "TU", !1);
-                            n ? s.open(n) : v.get_text("" + x.bilijx + u.url).then((function(e) {
+                            n ? s.open(n) : v.get_text("" + _.bilijx + u.url).then((function(e) {
                                 e = e.match(/hahaha =[ ]*'(.*)'/)[1], e = t.decrypt(e), h.set(r + "TU", e, 60), 
                                 s.open(e);
                             }));
@@ -1378,11 +1437,11 @@
         }, BiliImgService.btn = '\n    <span id="findimg" style="\n    background-color: #fb7199;\n    color: white;\n    font-size: 1rem;\n    text-align: center;\n    margin-left: 1rem;\n    padding:0.5rem;\n    cursor: pointer;\n    border-radius: 1rem;\n    ">\n        \u83b7\u53d6\u5c01\u9762\n    </span>', 
         BiliImgService.down = '\n    <span id="downvideo" style="\n    background-color: #fb7199;\n    color: white;\n    font-size: 1rem;\n    text-align: center;\n    margin-left: 1rem;\n    padding:0.5rem;\n    cursor: pointer;\n    border-radius: 1rem;\n    ">\n        \u4e0b\u8f7d\u89c6\u9891\n    </span>', 
         BiliImgService;
-    }(j), E = function(t) {
+    }(j), N = function(t) {
         function MovieService() {
             var e = t.call(this) || this;
-            return e.rules = new Map([ [ Y.YouKu, /youku/i ], [ Y.IQiYi, /iqiyi/i ], [ Y.LeShi, /le.com/i ], [ Y.Tencent_V, /v.qq/i ], [ Y.TuDou, /tudou/i ], [ Y.MangGuo, /mgtv/i ], [ Y.SoHu, /sohu/i ], [ Y.Acfun, /acfun/i ], [ Y.BiliBili, /bilibili/i ], [ Y.M1905, /1905.com/i ], [ Y.PPTV, /pptv.com/i ], [ Y.YinYueTai, /yinyuetai/ ] ]), 
-            e.menu = new z.Menu, e;
+            return e.rules = new Map([ [ H.YouKu, /youku/i ], [ H.IQiYi, /iqiyi/i ], [ H.LeShi, /le.com/i ], [ H.Tencent_V, /v.qq/i ], [ H.TuDou, /tudou/i ], [ H.MangGuo, /mgtv/i ], [ H.SoHu, /sohu/i ], [ H.Acfun, /acfun/i ], [ H.BiliBili, /bilibili/i ], [ H.M1905, /1905.com/i ], [ H.PPTV, /pptv.com/i ], [ H.YinYueTai, /yinyuetai/ ] ]), 
+            e.menu = new A.Menu, e;
         }
         return __extends(MovieService, t), MovieService.prototype.loader = function() {
             "undefined" == typeof $ && s.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js");
@@ -1415,10 +1474,10 @@
                 s.open("https://t.cn/A6LoYnHT");
             }));
         }, MovieService;
-    }(j), N = function(t) {
+    }(j), W = function(t) {
         function JdService() {
             var e = t.call(this) || this;
-            return e.rules = new Map([ [ Y.JingDong, /item.jd/i ] ]), e;
+            return e.rules = new Map([ [ H.JingDong, /item.jd/i ] ]), e;
         }
         var e;
         return __extends(JdService, t), JdService.prototype.loader = function() {
@@ -1429,7 +1488,7 @@
             $(".btn-yhj").on("click", (function() {
                 s.open("http://jd.huizhek.com/?ah=total&kw=" + encodeURIComponent(t));
             }));
-        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== L && L) ? e : Object) ], JdService.prototype, "historyService", void 0), 
+        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== P && P) ? e : Object) ], JdService.prototype, "historyService", void 0), 
         JdService;
     }(j), J = function() {
         function UrlHelper() {}
@@ -1442,11 +1501,11 @@
         }, UrlHelper.urlDecode = function(t) {
             return decodeURIComponent(t);
         }, UrlHelper;
-    }(), W = function(t) {
+    }(), G = function(t) {
         function MusicService() {
             var e = t.call(this) || this;
-            return e.rules = new Map([ [ Y.WangYi, /163(.*)song/i ], [ Y.Tencent_M, /y.QQ(.*)song/i ], [ Y.KuGou, /kugou.com\/song\/*/i ], [ Y.KuWo, /kuwo(.*)yinyue/i ], [ Y.XiaMi, /xiami/i ], [ Y.TaiHe, /taihe.com/i ], [ Y.QingTing, /qingting/i ], [ Y.LiZhi, /lizhi/i ], [ Y.MiGu, /migu/i ], [ Y.XiMaLaYa, /ximalaya/i ] ]), 
-            e.menu = new z.Menu, e;
+            return e.rules = new Map([ [ H.WangYi, /163(.*)song/i ], [ H.Tencent_M, /y.QQ(.*)song/i ], [ H.KuGou, /kugou.com\/song\/*/i ], [ H.KuWo, /kuwo(.*)yinyue/i ], [ H.XiaMi, /xiami/i ], [ H.TaiHe, /taihe.com/i ], [ H.QingTing, /qingting/i ], [ H.LiZhi, /lizhi/i ], [ H.MiGu, /migu/i ], [ H.XiMaLaYa, /ximalaya/i ] ]), 
+            e.menu = new A.Menu, e;
         }
         return __extends(MusicService, t), MusicService.prototype.loader = function() {
             s.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
@@ -1494,10 +1553,10 @@
                 s.open("https://t.cn/A6LoYnHT");
             }));
         }, MusicService;
-    }(j), G = function(t) {
+    }(j), K = function(t) {
         function StuService() {
             var e = t.call(this) || this;
-            return e.rules = new Map([ [ Y.SXB, /shangxueba.com\/ask\/.*html/i ] ]), e;
+            return e.rules = new Map([ [ H.SXB, /shangxueba.com\/ask\/.*html/i ] ]), e;
         }
         return __extends(StuService, t), StuService.prototype.loader = function() {
             "undefined" == typeof $ && s.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js"), 
@@ -1530,8 +1589,8 @@
                     content: '<img src="https://i.loli.net/2019/05/14/5cda672add6f594934.jpg">'
                 });
             })), $("body").on("click", "[data-cat=search]", (function() {
-                x.querySbx($("#Hidd_id").val(), (function(t) {
-                    t.status ? (y.open("\u7b54\u6848", t.msg), x.sbxFeedback(dataid, t.msg)) : "wronganhao" == t.msg ? (y.prompt("\u53e3\u4ee4\u9519\u8bef\uff0c\u8bf7\u5c06\u5f39\u51fa\u7684\u9875\u9762\u4e2d\u7684\u53e3\u4ee4\u586b\u5165\u540e\u91cd\u8bd5\uff01", h.get("sxb_anhao", ""), (function(t) {
+                _.querySbx($("#Hidd_id").val(), (function(t) {
+                    t.status ? (y.open("\u7b54\u6848", t.msg), _.sbxFeedback(dataid, t.msg)) : "wronganhao" == t.msg ? (y.prompt("\u53e3\u4ee4\u9519\u8bef\uff0c\u8bf7\u5c06\u5f39\u51fa\u7684\u9875\u9762\u4e2d\u7684\u53e3\u4ee4\u586b\u5165\u540e\u91cd\u8bd5\uff01", h.get("sxb_anhao", ""), (function(t) {
                         h.set("sxb_anhao", t), y.info("\u8bf7\u518d\u6b21\u70b9\u51fb\u67e5\u770b\u7b54\u6848\u6309\u94ae");
                     }), 4), s.open("http://www.lelunwen.com/e/action/ListInfo/?classid=45")) : y.confim("\u6ca1\u67e5\u5230\u7b54\u6848", "\u8981\u4e0d\u8981\u8df3\u8f6c\u5230\u67e5\u8be2\u9875\u770b\u770b\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function() {
                         s.open(u.url.replace("shangxueba", "shangxueba365"));
@@ -1543,9 +1602,9 @@
                 s.open("https://t.cn/A6LoYnHT");
             }));
         }, StuService;
-    }(j), K = function() {
+    }(j), F = function() {
         function OneKeyVipInjection() {
-            this.plugins = new Array, this.plugins = [ M.Require(D), M.Require(V), M.Require(E), M.Require(U), M.Require(N), M.Require(W), M.Require(G), M.Require(L) ], 
+            this.plugins = new Array, this.plugins = [ q.Require(V), q.Require(U), q.Require(N), q.Require(E), q.Require(W), q.Require(G), q.Require(K), q.Require(P) ], 
             c.info("container loaded");
         }
         return OneKeyVipInjection.prototype.Init = function() {
@@ -1556,5 +1615,5 @@
             }));
         }, OneKeyVipInjection;
     }();
-    c.level = r.info, M.Require(K).Init();
+    c.level = r.info, q.Require(F).Init();
 }));
