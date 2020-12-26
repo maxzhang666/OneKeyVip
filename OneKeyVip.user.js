@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2020-11-16 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2020-12-26 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.2.18
+// @version      4.2.19
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(接口偶尔抽风)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
@@ -127,6 +127,111 @@
     }
     function __metadata(t, e) {
         if ("object" == typeof Reflect && "function" == typeof Reflect.metadata) return Reflect.metadata(t, e);
+    }
+    function __awaiter(t, e, n, o) {
+        return new (n || (n = Promise))((function(i, r) {
+            function fulfilled(t) {
+                try {
+                    step(o.next(t));
+                } catch (t) {
+                    r(t);
+                }
+            }
+            function rejected(t) {
+                try {
+                    step(o.throw(t));
+                } catch (t) {
+                    r(t);
+                }
+            }
+            function step(t) {
+                t.done ? i(t.value) : function adopt(t) {
+                    return t instanceof n ? t : new n((function(e) {
+                        e(t);
+                    }));
+                }(t.value).then(fulfilled, rejected);
+            }
+            step((o = o.apply(t, e || [])).next());
+        }));
+    }
+    function __generator(t, e) {
+        var n, o, i, r, a = {
+            label: 0,
+            sent: function() {
+                if (1 & i[0]) throw i[1];
+                return i[1];
+            },
+            trys: [],
+            ops: []
+        };
+        return r = {
+            next: verb(0),
+            throw: verb(1),
+            return: verb(2)
+        }, "function" == typeof Symbol && (r[Symbol.iterator] = function() {
+            return this;
+        }), r;
+        function verb(r) {
+            return function(s) {
+                return function step(r) {
+                    if (n) throw new TypeError("Generator is already executing.");
+                    for (;a; ) try {
+                        if (n = 1, o && (i = 2 & r[0] ? o.return : r[0] ? o.throw || ((i = o.return) && i.call(o), 
+                        0) : o.next) && !(i = i.call(o, r[1])).done) return i;
+                        switch (o = 0, i && (r = [ 2 & r[0], i.value ]), r[0]) {
+                          case 0:
+                          case 1:
+                            i = r;
+                            break;
+
+                          case 4:
+                            return a.label++, {
+                                value: r[1],
+                                done: !1
+                            };
+
+                          case 5:
+                            a.label++, o = r[1], r = [ 0 ];
+                            continue;
+
+                          case 7:
+                            r = a.ops.pop(), a.trys.pop();
+                            continue;
+
+                          default:
+                            if (!(i = a.trys, (i = i.length > 0 && i[i.length - 1]) || 6 !== r[0] && 2 !== r[0])) {
+                                a = 0;
+                                continue;
+                            }
+                            if (3 === r[0] && (!i || r[1] > i[0] && r[1] < i[3])) {
+                                a.label = r[1];
+                                break;
+                            }
+                            if (6 === r[0] && a.label < i[1]) {
+                                a.label = i[1], i = r;
+                                break;
+                            }
+                            if (i && a.label < i[2]) {
+                                a.label = i[2], a.ops.push(r);
+                                break;
+                            }
+                            i[2] && a.ops.pop(), a.trys.pop();
+                            continue;
+                        }
+                        r = e.call(t, a);
+                    } catch (t) {
+                        r = [ 6, t ], o = 0;
+                    } finally {
+                        n = i = 0;
+                    }
+                    if (5 & r[0]) throw r[1];
+                    return {
+                        value: r[0] ? r[1] : void 0,
+                        done: !0
+                    };
+                }([ r, s ]);
+            };
+        }
     }
     var r, a = function() {
         function EventHelper() {}
@@ -282,49 +387,7 @@
                 e.init_coupon_info(0, 0, "");
             }));
         }, BaseCoupon;
-    }(), d = function d() {
-        this.max = 0, this.price_detail = [];
-    }, p = function p() {}, f = function f() {}, m = function() {
-        function Convert() {}
-        return Convert.genterData = function(t) {
-            var e = new d;
-            if (e.date = s.format(new Date(Number.parseInt(t.lowerDate.match(/[0-9]{13}/)[0]) + 800), "yyyy-MM-dd"), 
-            e.min = t.lowerPrice, e.max = e.min, e.max_date = e.date, e.current = t.currentPrice.toString(), 
-            e.mark = "" == t.changPriceRemark ? "\u6682\u65e0" : t.changPriceRemark, 0 == t.listPrice.length || !t.listPrice) {
-                var n = [];
-                t.datePrice.split("],[").forEach((function(t, e) {
-                    var o = new f, i = (t = t.replace(/\[|"|\]/g, "")).split(",");
-                    o.pr = Number.parseInt(i[1]), o.yh = 3 == i.length ? i[2] : t.substring(t.indexOf(i[2]), t.length), 
-                    o.dt = i[0], n.push(o);
-                })), t.listPrice = n;
-            }
-            return t.listPrice.forEach((function(t, n) {
-                var o = new p;
-                o.timestamp = Number.parseInt(t.dt.match(/[0-9]{13}/)[0]) + 800, o.time = s.format(new Date(o.timestamp), "yyyy-MM-dd"), 
-                o.price = t.pr, o.mark = t.yh, e.max < t.pr && (e.max = t.pr, e.max_date = o.time), 
-                e.price_detail.push(o);
-            })), e;
-        }, Convert.genterDataV2 = function(t) {
-            var e = new d;
-            e.date = s.format(new Date(t.lowerDate), "yyyy-MM-dd"), e.min = t.lowerPrice, e.max = e.min, 
-            e.max_date = e.date, e.current = t.currentPrice.toString(), e.mark = "" == t.changPriceRemark ? "\u6682\u65e0" : t.changPriceRemark;
-            var n = [];
-            if (0 != t.datePrice.length) {
-                var o = [];
-                t.datePrice.split("],[").forEach((function(t, e) {
-                    var n = new f, i = (t = t.replace(/\[|"|\]/g, "")).split(",");
-                    n.pr = Number.parseInt(i[1]), n.yh = 3 == i.length ? i[2] : t.substring(t.indexOf(i[2]), t.length), 
-                    n.dt = i[0], o.push(n);
-                })), n = o;
-            }
-            return n.forEach((function(t, n) {
-                var o = new p;
-                o.timestamp = Number.parseInt(t.dt.match(/[0-9]{13}/)[0]) + 800, o.time = s.format(new Date(o.timestamp), "yyyy-MM-dd"), 
-                o.price = t.pr, o.mark = t.yh, e.max < t.pr && (e.max = t.pr, e.max_date = o.time), 
-                e.price_detail.push(o);
-            })), e;
-        }, Convert;
-    }(), h = function() {
+    }(), d = function() {
         function Config() {}
         return Object.defineProperty(Config, "env", {
             get: function() {
@@ -348,12 +411,16 @@
                 exp: -1 == n ? n : (new Date).getTime() + 1e3 * n
             };
             GM_setValue(this.encode(t), JSON.stringify(o));
+        }, Config.clear = function(t) {
+            this.set(t, null, -10);
         }, Config.decode = function(t) {
             return atob(t);
         }, Config.encode = function(t) {
             return btoa(t);
         }, Config;
-    }(), g = (function() {
+    }(), p = function p() {
+        this.max = 0, this.price_detail = [];
+    }, f = function f() {}, h = function h() {}, m = (function() {
         function HttpRequest(t) {
             this.headers = new Map, this.url = t.url, this.method = t.methodType, this.dataType = t.dataType, 
             this._option = t;
@@ -393,7 +460,7 @@
             for (var n in this.data) e.append(n, this.data[n]);
             return e;
         }, AjaxOption;
-    }()), y = function() {
+    }()), g = function() {
         function Alert() {}
         return Alert.open = function(t, e, n, o, i, r) {
             return void 0 === n && (n = [ "400px", "300px" ]), void 0 === o && (o = 0), void 0 === i && (i = "lb"), 
@@ -454,14 +521,14 @@
                 time: 1e3 * e
             });
         }, Alert;
-    }(), v = function() {
+    }(), y = function() {
         function Http() {}
         return Http.ajax = function(t) {
             var e, n;
             t.headers.set("User-Agent", "Mozilla/4.0 (compatible) Greasemonkey"), t.headers.set("Accept", "application/atom+xml,application/xml,text/xml");
-            var o = new b;
-            o.version = h.env.script.version, o.auth = null !== (e = h.env.script.author) && void 0 !== e ? e : "", 
-            o.namespace = null !== (n = h.env.script.namespace) && void 0 !== n ? n : "", t.headers.forEach((function(t, e) {
+            var o = new v;
+            o.version = d.env.script.version, o.auth = null !== (e = d.env.script.author) && void 0 !== e ? e : "", 
+            o.namespace = null !== (n = d.env.script.namespace) && void 0 !== n ? n : "", t.headers.forEach((function(t, e) {
                 o[e] = t;
             })), GM_xmlhttpRequest({
                 url: t.url,
@@ -474,14 +541,14 @@
                     try {
                         null === (n = t.onSuccess) || void 0 === n || n.call(t, "POST" == t.methodType ? JSON.parse(e.responseText) : e.responseText);
                     } catch (n) {
-                        y.confim("", '                                        \n                        <h1>\u54cd\u5e94\u5f02\u5e38\uff0c\u8bf7\u590d\u5236\u4e0b\u5217\u4fe1\u606f\u5411\u5f00\u53d1\u8005\u53cd\u9988\u95ee\u9898</h1><br>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u9519\u8bef\u65e5\u5fd7\uff1a</span><br>\n                        <p>' + n + "(" + e.status + ')</p>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u9519\u8bef\u8be6\u60c5\uff1a</span><br>\n                        <p>' + escape(e.responseText) + '</p>                        \n                        <span style="color:red;font-weight: bold;font-size: large;">\u73af\u5883\u4fe1\u606f\uff1a</span><br>\n                        <p>\u6cb9\u7334\u7248\u672c\uff1a' + h.env.version + "</p>\n                        <p>\u811a\u672c\u7248\u672c\uff1a" + h.env.script.version + "</p>\n                        <p>Url\uff1a" + u.url + "</p>\n                    ", [ "\u53bb\u53cd\u9988", "\u5173\u95ed" ], (function() {
+                        g.confim("", '                                        \n                        <h1>\u54cd\u5e94\u5f02\u5e38\uff0c\u8bf7\u590d\u5236\u4e0b\u5217\u4fe1\u606f\u5411\u5f00\u53d1\u8005\u53cd\u9988\u95ee\u9898</h1><br>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u9519\u8bef\u65e5\u5fd7\uff1a</span><br>\n                        <p>' + n + "(" + e.status + ')</p>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u9519\u8bef\u8be6\u60c5\uff1a</span><br>\n                        <p>' + escape(e.responseText) + '</p>                        \n                        <span style="color:red;font-weight: bold;font-size: large;">\u73af\u5883\u4fe1\u606f\uff1a</span><br>\n                        <p>\u6cb9\u7334\u7248\u672c\uff1a' + d.env.version + "</p>\n                        <p>\u811a\u672c\u7248\u672c\uff1a" + d.env.script.version + "</p>\n                        <p>Url\uff1a" + u.url + "</p>\n                    ", [ "\u53bb\u53cd\u9988", "\u5173\u95ed" ], (function() {
                             s.open("https://gitee.com/ixysy/OneKeyVip/issues");
                         })), null === (o = t.onSuccess) || void 0 === o || o.call(t, null);
                     }
                 },
                 onerror: function(e) {
                     var n;
-                    y.confim("", '              \n                        <h1>\u8bf7\u6c42\u5931\u8d25\uff0c\u8bf7\u590d\u5236\u4e0b\u5217\u4fe1\u606f\u5411\u5f00\u53d1\u8005\u53cd\u9988\u95ee\u9898</h1><br>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u9519\u8bef\u8be6\u60c5\uff1a</span><br>\n                        <p>' + escape(e.responseText) + "(" + e.status + ')</p>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u73af\u5883\u4fe1\u606f\uff1a</span><br>\n                        <p>\u6cb9\u7334\u7248\u672c\uff1a' + h.env.version + "</p>\n                        <p>\u811a\u672c\u7248\u672c\uff1a" + h.env.script.version + "</p>\n                        <p>Url\uff1a" + u.url + "</p>           \n                    ", [ "\u53bb\u53cd\u9988", "\u5173\u95ed" ], (function() {
+                    g.confim("", '              \n                        <h1>\u8bf7\u6c42\u5931\u8d25\uff0c\u8bf7\u590d\u5236\u4e0b\u5217\u4fe1\u606f\u5411\u5f00\u53d1\u8005\u53cd\u9988\u95ee\u9898</h1><br>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u9519\u8bef\u8be6\u60c5\uff1a</span><br>\n                        <p>' + escape(e.responseText) + "(" + e.status + ')</p>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u73af\u5883\u4fe1\u606f\uff1a</span><br>\n                        <p>\u6cb9\u7334\u7248\u672c\uff1a' + d.env.version + "</p>\n                        <p>\u811a\u672c\u7248\u672c\uff1a" + d.env.script.version + "</p>\n                        <p>Url\uff1a" + u.url + "</p>           \n                    ", [ "\u53bb\u53cd\u9988", "\u5173\u95ed" ], (function() {
                         s.open("https://gitee.com/ixysy/OneKeyVip/issues");
                     })), null === (n = t.onError) || void 0 === n || n.call(t, e);
                 }
@@ -492,17 +559,17 @@
             }));
         }, Http.post = function(t, e, n) {
             void 0 === n && (n = 10);
-            var o = y.loading();
+            var o = g.loading();
             return new Promise((function(i) {
-                Http.ajax(new g(t, "POST", e, (function(t) {
-                    y.close(o), i(t);
+                Http.ajax(new m(t, "POST", e, (function(t) {
+                    g.close(o), i(t);
                 }), new Map, n));
             }));
         }, Http.get = function(t, e, n) {
             void 0 === e && (e = new Map), void 0 === n && (n = 10);
-            y.loading();
+            g.loading();
             return new Promise((function(o, i) {
-                Http.ajax(new g(t, "GET", e, (function(t) {
+                Http.ajax(new m(t, "GET", e, (function(t) {
                     var e;
                     try {
                         var n = null !== (e = JSON.parse(t)) && void 0 !== e ? e : t;
@@ -514,9 +581,9 @@
             }));
         }, Http.getWithHead = function(t, e, n, o) {
             void 0 === e && (e = new Map), void 0 === n && (n = new Map), void 0 === o && (o = 10);
-            y.loading();
+            g.loading();
             return new Promise((function(i, r) {
-                Http.ajax(new g(t, "GET", e, (function(t) {
+                Http.ajax(new m(t, "GET", e, (function(t) {
                     var e;
                     try {
                         var n = null !== (e = JSON.parse(t)) && void 0 !== e ? e : t;
@@ -526,14 +593,89 @@
                     }
                 }), n, o));
             }));
+        }, Http.postWithHead = function(t, e, n, o) {
+            void 0 === e && (e = new Map), void 0 === n && (n = new Map), void 0 === o && (o = 10);
+            g.loading();
+            return new Promise((function(i, r) {
+                Http.ajax(new m(t, "POST", e, (function(e) {
+                    try {
+                        i(e);
+                    } catch (e) {
+                        c.debug([ t, e ]), r();
+                    }
+                }), n, o));
+            }));
         }, Http.get_text = function(t) {
             return new Promise((function(e) {
-                Http.ajax(new g(t, "GET", new Map, (function(t) {
+                Http.ajax(new m(t, "GET", new Map, (function(t) {
                     e(t);
                 })));
             }));
         }, Http;
-    }(), b = function b() {}, w = function() {
+    }(), v = function v() {}, b = function() {
+        function Convert() {}
+        return Convert.genterData = function(t) {
+            var e = new p;
+            if (e.date = s.format(new Date(Number.parseInt(t.lowerDate.match(/[0-9]{13}/)[0]) + 800), "yyyy-MM-dd"), 
+            e.min = t.lowerPrice, e.max = e.min, e.max_date = e.date, e.current = t.currentPrice.toString(), 
+            e.mark = "" == t.changPriceRemark ? "\u6682\u65e0" : t.changPriceRemark, 0 == t.listPrice.length || !t.listPrice) {
+                var n = [];
+                t.datePrice.split("],[").forEach((function(t, e) {
+                    var o = new h, i = (t = t.replace(/\[|"|\]/g, "")).split(",");
+                    o.pr = Number.parseInt(i[1]), o.yh = 3 == i.length ? i[2] : t.substring(t.indexOf(i[2]), t.length), 
+                    o.dt = i[0], n.push(o);
+                })), t.listPrice = n;
+            }
+            return t.listPrice.forEach((function(t, n) {
+                var o = new f;
+                o.timestamp = Number.parseInt(t.dt.match(/[0-9]{13}/)[0]) + 800, o.time = s.format(new Date(o.timestamp), "yyyy-MM-dd"), 
+                o.price = t.pr, o.mark = t.yh, e.max < t.pr && (e.max = t.pr, e.max_date = o.time), 
+                e.price_detail.push(o);
+            })), e;
+        }, Convert.genterDataV2 = function(t) {
+            var e = new p;
+            e.date = s.format(new Date(t.lowerDate), "yyyy-MM-dd"), e.min = t.lowerPrice, e.max = e.min, 
+            e.max_date = e.date, e.current = t.currentPrice.toString(), e.mark = "" == t.changPriceRemark ? "\u6682\u65e0" : t.changPriceRemark;
+            var n = [];
+            if (0 != t.datePrice.length) {
+                var o = [];
+                t.datePrice.split("],[").forEach((function(t, e) {
+                    var n = new h, i = (t = t.replace(/\[|"|\]/g, "")).split(",");
+                    n.pr = Number.parseInt(i[1]), n.yh = 3 == i.length ? i[2] : t.substring(t.indexOf(i[2]), t.length), 
+                    n.dt = i[0], o.push(n);
+                })), n = o;
+            }
+            return n.forEach((function(t, n) {
+                var o = new f;
+                o.timestamp = Number.parseInt(t.dt.match(/[0-9]{13}/)[0]) + 800, o.time = s.format(new Date(o.timestamp), "yyyy-MM-dd"), 
+                o.price = t.pr, o.mark = t.yh, e.max < t.pr && (e.max = t.pr, e.max_date = o.time), 
+                e.price_detail.push(o);
+            })), e;
+        }, Convert.genterAuth = function() {
+            return __awaiter(this, void 0, Promise, (function() {
+                var t;
+                return __generator(this, (function(e) {
+                    switch (e.label) {
+                      case 0:
+                        return (t = d.get("baseauth", "")) ? [ 4, t ] : [ 3, 2 ];
+
+                      case 1:
+                        return [ 2, e.sent() ];
+
+                      case 2:
+                        return [ 4, y.get_text(this.authApi).then((function(e) {
+                            var n = e.match(/id=\"ticket\" value=\"(.*)\"/i);
+                            return (t = null != n ? "" + n[1] : "").length > 4 && (t = "BasicAuth " + (t = t.substr(t.length - 4, 4) + t.substring(0, t.length - 4))), 
+                            d.set("baseauth", t, 60), t;
+                        })) ];
+
+                      case 3:
+                        return [ 2, t = e.sent() ];
+                    }
+                }));
+            }));
+        }, Convert.authApi = "https://tool.manmanbuy.com/HistoryLowest.aspx", Convert;
+    }(), w = function() {
         function Result() {}
         return Result.prototype.constructorq = function() {}, Result;
     }(), k = (function(t) {
@@ -577,22 +719,22 @@
             enumerable: !1,
             configurable: !0
         }), Route.baseApi = function(t, e, n, o) {
-            void 0 === o && (o = 10), v.post(Route.apiRoot + t, e, o).then((function(t) {
+            void 0 === o && (o = 10), y.post(Route.apiRoot + t, e, o).then((function(t) {
                 n(t);
             }));
         }, Route.querySbx = function(t, e) {
             var n = this;
-            "" !== h.get(this.sxb_key, "") ? this.query365(t, h.get(this.sxb_key), e) : this.queryValue("sxb_anhao", (function(o) {
+            "" !== d.get(this.sxb_key, "") ? this.query365(t, d.get(this.sxb_key), e) : this.queryValue("sxb_anhao", (function(o) {
                 n.query365(t, o.data, e);
             }));
         }, Route.sbxFeedback = function(t, e) {
-            this.baseApi("/tools/record", new Map([ [ "id", t ], [ "data", e ], [ "anhao", h.get(this.sxb_key) ] ]), (function() {}));
+            this.baseApi("/tools/record", new Map([ [ "id", t ], [ "data", e ], [ "anhao", d.get(this.sxb_key) ] ]), (function() {}));
         }, Route.query365 = function(t, e, n) {
-            var o = h.get("sxb_api");
-            o ? v.post(o, new Map([ [ "docinfo", "https://www.shangxueba.com/ask/" + t + ".html" ], [ "anhao", e ] ])).then((function(t) {
+            var o = d.get("sxb_api");
+            o ? y.post(o, new Map([ [ "docinfo", "https://www.shangxueba.com/ask/" + t + ".html" ], [ "anhao", e ] ])).then((function(t) {
                 n(t);
             })) : this.queryValue("sxb_api", (function(n) {
-                h.set("sxb_api", n.data, 864e5), v.post(n.data, new Map([ [ "docinfo", "https://www.shangxueba.com/ask/" + t + ".html" ], [ "anhao", e ] ]));
+                d.set("sxb_api", n.data, 864e5), y.post(n.data, new Map([ [ "docinfo", "https://www.shangxueba.com/ask/" + t + ".html" ], [ "anhao", e ] ]));
             }));
         }, Route.queryValue = function(t, e) {
             this.baseApi(Route.config, new Map([ [ "key", t ] ]), e);
@@ -601,9 +743,9 @@
         }, Route.queryHistoryv1 = function(t, e, n) {
             var o = this, i = this;
             this.baseApi(this.historyv1, new Map([ [ "url", t ] ]), (function(r) {
-                c.debug(r), r.code ? v.get(r.data).then((function(t) {
+                c.debug(r), r.code ? y.get(r.data).then((function(t) {
                     var e = new k;
-                    e.code = 1, e.data = m.genterData(t), c.debug(e), n(e);
+                    e.code = 1, e.data = b.genterData(t), c.debug(e), n(e);
                 })).catch((function() {
                     i.queryHistory(t, e, n);
                 })) : o.queryHistory(t, e, n);
@@ -611,18 +753,31 @@
         }, Route.queryHistoryv2 = function(t, e, n) {
             var o = this, i = this;
             this.baseApi(this.historyv2, new Map([ [ "url", t ] ]), (function(r) {
-                c.debug(r), r.code ? v.getWithHead(r.data.url, new Map, new Map([ [ "Authorization", r.data.auth ] ])).then((function(t) {
+                c.debug(r), r.code ? y.getWithHead(r.data.url, new Map, new Map([ [ "Authorization", r.data.auth ] ])).then((function(t) {
                     var e = new k;
-                    0 == t.code ? e.code = 1 : e.code = -1, e.code = 1, e.data = m.genterDataV2(t.data), 
+                    0 == t.code ? e.code = 1 : e.code = -1, e.code = 1, e.data = b.genterDataV2(t.data), 
                     c.debug(e), n(e);
                 })).catch((function() {
                     i.queryHistory(t, e, n);
                 })) : o.queryHistory(t, e, n);
             }), 60);
+        }, Route.queryHistoryv3 = function(t, e, n) {
+            var o = this, i = this;
+            this.baseApi(this.historyv3, new Map([ [ "url", t ] ]), (function(r) {
+                c.debug(r), r.code ? b.genterAuth().then((function(a) {
+                    y.postWithHead(r.data.url, new Map([ [ "token", r.data.token ], [ "t", r.data.t ], [ "key", r.data.key ], [ "method", r.data.method ] ]), new Map([ [ "Authorization", null != a ? a : r.data.auth ] ])).then((function(i) {
+                        var r = new k;
+                        0 == i.code ? r.code = 1 : 2 == i.code ? (d.clear("baseauth"), o.queryHistoryv3(t, e, n)) : r.code = -1, 
+                        r.code = 1, r.data = b.genterDataV2(i.data), c.debug(r), n(r);
+                    })).catch((function() {
+                        i.queryHistory(t, e, n);
+                    }));
+                })) : o.queryHistory(t, e, n);
+            }), 60);
         }, Route.queryBiliImg = function(t) {
             this.baseApi(this.bili, new Map([ [ "url", u.url ] ]), t);
         }, Route.queryBiliDown = function(t, e, n) {
-            v.get(this.bilidown + "?cid=" + e + "&aid=" + t).then((function(t) {
+            y.get(this.bilidown + "?cid=" + e + "&aid=" + t).then((function(t) {
                 c.debug(t), n(t);
             })).catch((function() {
                 n(new x);
@@ -641,10 +796,11 @@
         Route.home_url = "https://wiki.wandhi.com", Route.install_url_one = "https://greasyfork.org/zh-CN/scripts/384538", 
         Route.install_url_two = "https://tools.wandhi.com/scripts", Route.sxb_anhao = "http://www.lelunwen.com/e/action/ListInfo/?classid=45", 
         Route.sxb_key = "sxb_anhao", Route.config = "/config/query", Route.history = "/history/", 
-        Route.historyv1 = "/history/v1", Route.historyv2 = "/history/v2", Route.bili = "/tools/bili", 
-        Route.bilidown = "https://www.xbeibeix.com/api/bilibiliapi.php", Route.bilijx = "https://xbeibeix.com/api/bilibili/biliplayer/?url=", 
-        Route.coupons = "/tb/infos/", Route.like = "/tb/guesslike", Route.jd_coupons = "/jd/info", 
-        Route.sn_coupons = "/sn/info", Route.vp_coupons = "/vp/info", Route;
+        Route.historyv1 = "/history/v1", Route.historyv2 = "/history/v2", Route.historyv3 = "/history/v3", 
+        Route.bili = "/tools/bili", Route.bilidown = "https://www.xbeibeix.com/api/bilibiliapi.php", 
+        Route.bilijx = "https://xbeibeix.com/api/bilibili/biliplayer/?url=", Route.coupons = "/tb/infos/", 
+        Route.like = "/tb/guesslike", Route.jd_coupons = "/jd/info", Route.sn_coupons = "/sn/info", 
+        Route.vp_coupons = "/vp/info", Route;
     }(), S = function(t) {
         function VpCoupon() {
             return null !== t && t.apply(this, arguments) || this;
@@ -699,7 +855,7 @@
                 }))) : t.default(); else t.default();
             }));
         }, SuningCoupon;
-    }(l), T = function(t) {
+    }(l), M = function(t) {
         function JdCoupon() {
             return null !== t && t.apply(this, arguments) || this;
         }
@@ -719,11 +875,11 @@
                 } else t.data.quan_link ? n.default(t.data.quan_link) : n.default(); else n.default();
             })) : this.default();
         }, JdCoupon;
-    }(l), M = new Map, q = function() {
+    }(l), T = new Map, q = function() {
         function Container() {}
         return Container.Registe = function(t, e) {
             var n = this.processName(t.name);
-            return M.set(n, window.Reflect.construct(t, this.buildParams(e))), M.get(n);
+            return T.set(n, window.Reflect.construct(t, this.buildParams(e))), T.get(n);
         }, Container.buildParams = function(t) {
             var e = [];
             return null == t || t.map((function(t) {
@@ -733,8 +889,8 @@
             return t.toLowerCase();
         }, Container.Require = function(t) {
             var e = this, n = this.processName(t.name);
-            if (M.has(n)) return M.get(n);
-            var o, i = Reflect.getMetadata(z, t);
+            if (T.has(n)) return T.get(n);
+            var o, i = Reflect.getMetadata(A, t);
             return (null == i ? void 0 : i.length) && (o = i.map((function(t) {
                 return e.Require(t);
             }))), this.Registe(t, o);
@@ -745,11 +901,11 @@
             };
             i.value = this.Require(o), Object.defineProperty(t, e, i);
         }, Container;
-    }(), R = "design:type", z = "design:paramtypes";
+    }(), R = "design:type", A = "design:paramtypes";
     function WandhiAuto(t, e) {
         q.define(t, e);
     }
-    var A, I = function(t) {
+    var z, I = function(t) {
         function TaoCoupon() {
             return null !== t && t.apply(this, arguments) || this;
         }
@@ -773,7 +929,7 @@
             }));
         }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== s && s) ? e : Object) ], TaoCoupon.prototype, "core", void 0), 
         TaoCoupon;
-    }(l), Y = function(t) {
+    }(l), H = function(t) {
         function DefCoupon() {
             return null !== t && t.apply(this, arguments) || this;
         }
@@ -830,8 +986,8 @@
             }, Menu;
         }();
         t.Menu = e;
-    }(A || (A = {}));
-    var H, j = function() {
+    }(z || (z = {}));
+    var Y, j = function() {
         function PluginBase() {
             var t = this;
             this._unique = !0, this.Process = function() {
@@ -849,9 +1005,9 @@
                 return !o.test(t) || (n = !0, e.site = i, !1);
             })), n;
         }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (t = void 0 !== s && s) ? t : Object) ], PluginBase.prototype, "core", void 0), 
-        __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== A && A.Menu) ? e : Object) ], PluginBase.prototype, "menu", void 0), 
+        __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== z && z.Menu) ? e : Object) ], PluginBase.prototype, "menu", void 0), 
         PluginBase;
-    }(), B = function B() {};
+    }(), P = function P() {};
     !function(t) {
         t.All = "All", t.TaoBao = "TaoBao", t.TMall = "TMall", t.JingDong = "JingDong", 
         t.IQiYi = "IQiYi", t.YouKu = "YouKu", t.LeShi = "LeShi", t.TuDou = "TuDou", t.Tencent_V = "Tencent_V", 
@@ -861,12 +1017,12 @@
         t.TaiHe = "TaiHe", t.QingTing = "QingTing", t.LiZhi = "LiZhi", t.MiGu = "MiGu", 
         t.XiMaLaYa = "XiMaLaYa", t.SXB = "SXB", t.BDY = "BDY", t.BDY1 = "BDY1", t.LZY = "LZY", 
         t.SuNing = "SuNing", t.Vp = "Vp";
-    }(H || (H = {}));
-    var L, P = function(t) {
+    }(Y || (Y = {}));
+    var B, L = function(t) {
         function HistoryService() {
             var e = null !== t && t.apply(this, arguments) || this;
-            return e.rules = new Map([ [ H.TMall, /detail.tmall.com\/item.htm/i ], [ H.TaoBao, /item.taobao.com/i ], [ H.JingDong, /item.jd.(com|hk)\/[0-9]*.html/i ], [ H.SuNing, /product.suning.com/i ], [ H.Vp, /detail.vip.com/i ] ]), 
-            e.factory = new Y, e;
+            return e.rules = new Map([ [ Y.TMall, /detail.tmall.com\/item.htm/i ], [ Y.TaoBao, /item.taobao.com/i ], [ Y.JingDong, /item.jd.(com|hk)\/[0-9]*.html/i ], [ Y.SuNing, /product.suning.com/i ], [ Y.Vp, /detail.vip.com/i ] ]), 
+            e.factory = new H, e;
         }
         return __extends(HistoryService, t), HistoryService.prototype.loader = function() {
             s.appendCssContent(this.getHistoryCss());
@@ -875,25 +1031,25 @@
         }, HistoryService.prototype.injectHistory = function() {
             var t = this;
             switch (c.debug(this.site), this.site) {
-              case H.TaoBao:
-              case H.TMall:
+              case Y.TaoBao:
+              case Y.TMall:
                 this.factory = new I;
                 break;
 
-              case H.JingDong:
-                this.factory = new T;
+              case Y.JingDong:
+                this.factory = new M;
                 break;
 
-              case H.SuNing:
+              case Y.SuNing:
                 this.factory = new C;
                 break;
 
-              case H.Vp:
+              case Y.Vp:
                 this.factory = new S;
                 break;
 
               default:
-                this.factory = new Y;
+                this.factory = new H;
             }
             this.factory.init_html(this.getHistoryHtml()).then((function(e) {
                 e && t.InitPriceHistory(), t.factory.init_coupons && t.factory.init_coupons();
@@ -901,7 +1057,7 @@
         }, HistoryService.prototype.InitPriceHistory = function() {
             var t = this;
             $("#vip-plugin-outside").show(), this.theme(), this.chartMsg("\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u4e2d"), 
-            _.queryHistoryv2(u.url, this.site.toString(), (function(e) {
+            _.queryHistoryv3(u.url, this.site.toString(), (function(e) {
                 var n = "";
                 e.code ? ($(".vip-plugin-outside-chart-container").html('<div id="vip-plugin-outside-chart-container-line"></div>'), 
                 echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), t.theme()).setOption(t.getChartOption(e.data))) : n = "\u672a\u67e5\u5230\u5386\u53f2\u6570\u636e", 
@@ -914,7 +1070,7 @@
         }, HistoryService.prototype.chartMsg = function(t) {
             $(".vip-plugin-outside-history-tip").html(t);
         }, HistoryService.prototype.getChartOption = function(t) {
-            var e, n, o = "\u5386\u53f2\u4f4e\u4ef7\uff1a{red|\uffe5" + t.min + "} ( {red|" + t.date + "} ) \u5206\u6790\uff1a" + t.mark, i = new B;
+            var e, n, o = "\u5386\u53f2\u4f4e\u4ef7\uff1a{red|\uffe5" + t.min + "} ( {red|" + t.date + "} ) \u5206\u6790\uff1a" + t.mark, i = new P;
             (i = {
                 title: {
                     left: "center",
@@ -1301,32 +1457,32 @@
             var i = new Toast(t, e, o);
             return i.duration = n, i.show(), i;
         }, Toast.show = function(t, e, n) {
-            return void 0 === n && (n = -1), this.internalShow(t, e, n, L.Default);
+            return void 0 === n && (n = -1), this.internalShow(t, e, n, B.Default);
         }, Toast.info = function(t, e, n) {
-            return void 0 === n && (n = -1), this.internalShow(t, e, n, L.Info);
+            return void 0 === n && (n = -1), this.internalShow(t, e, n, B.Info);
         }, Toast.success = function(t, e, n) {
-            return void 0 === n && (n = -1), this.internalShow(t, e, n, L.Success);
+            return void 0 === n && (n = -1), this.internalShow(t, e, n, B.Success);
         }, Toast.error = function(t, e, n) {
-            return void 0 === n && (n = -1), this.internalShow(t, e, n, L.Error);
+            return void 0 === n && (n = -1), this.internalShow(t, e, n, B.Error);
         }, Toast;
     }();
     !function(t) {
         t.Default = "default", t.Info = "info", t.Success = "success", t.Error = "error";
-    }(L || (L = {}));
+    }(B || (B = {}));
     var X, V = function(t) {
         function UpdateService() {
             var e = t.call(this) || this;
-            return e.rules = new Map([ [ H.All, /(.*)/i ] ]), e._unique = !1, e;
+            return e.rules = new Map([ [ Y.All, /(.*)/i ] ]), e._unique = !1, e;
         }
         return __extends(UpdateService, t), UpdateService.prototype.loader = function() {}, 
         UpdateService.prototype.run = function() {
-            if (!h.get("isUpdate", !1)) {
-                var t = new O(h.env.script.version);
-                v.get_text(_.update_api).then((function(e) {
+            if (!d.get("isUpdate", !1)) {
+                var t = new O(d.env.script.version);
+                y.get_text(_.update_api).then((function(e) {
                     var n = new O(e.match(/@version[ ]*([\d\.]+)/)[1]);
                     if (n.compareTo(t) === X.greater) {
                         var o = "\u65b0\u7248\u672c<span>" + n.versionString + '</span>\u5df2\u53d1\u5e03.<a id="new-version-link" class="link" href="' + _.install_url_one + '">\u5b89\u88c5(\u7ebf\u8def\u4e00)</a><a id="new-version-link" class="link" href="' + _.install_url_two + '">\u5b89\u88c5(\u7ebf\u8def\u4e8c)</a><a class="link" target="_blank" href="' + _.home_url + '">\u67e5\u770b</a>';
-                        D.info(o, "\u68c0\u67e5\u66f4\u65b0"), h.set("isUpdate", !0, 3600);
+                        D.info(o, "\u68c0\u67e5\u66f4\u65b0"), d.set("isUpdate", !0, 3600);
                     }
                 }));
             }
@@ -1359,7 +1515,7 @@
     var E = function(t) {
         function TaoBaoService() {
             var e = null !== t && t.apply(this, arguments) || this;
-            return e.rules = new Map([ [ H.TaoBao, /taobao.com/i ], [ H.TMall, /tmall/i ] ]), 
+            return e.rules = new Map([ [ Y.TaoBao, /taobao.com/i ], [ Y.TMall, /tmall/i ] ]), 
             e.UrlTag = "Wandhi_qLink", e;
         }
         var e;
@@ -1372,7 +1528,7 @@
         }, TaoBaoService.prototype.init = function() {
             var t, e = this, n = "<div id='wandhi_div'><table class='wandhi_tab' id='wandhi_table'><thead><tr><th><b style='cursor:pointer'>\u4f18\u60e0\u5238</b></th><th>\u5238\u540e</th><th>\u6709 \u6548 \u671f</th><th>\u64cd\u4f5c</th></tr></thead><tr><td colspan='4'>\u6b63\u5728\u67e5\u8be2\u4f18\u60e0\u4fe1\u606f\uff0c\u8bf7\u7a0d\u5019...</td></tr></table></div>";
             $("#J_LinkBasket").parent().parent().prepend(n), $(".J_LinkAdd").parent().parent().prepend(n), 
-            (null === (t = this.rules.get(H.TaoBao)) || void 0 === t ? void 0 : t.test(this.core.currentUrl())) ? $("#wandhi_table").addClass("wandhi_tab_taobao") : $("#wandhi_table").addClass("wandhi_tab_tmall"), 
+            (null === (t = this.rules.get(Y.TaoBao)) || void 0 === t ? void 0 : t.test(this.core.currentUrl())) ? $("#wandhi_table").addClass("wandhi_tab_taobao") : $("#wandhi_table").addClass("wandhi_tab_tmall"), 
             _.queryCoupons(this.core.getPar("id"), (function(t) {
                 return e.initElement(t);
             }));
@@ -1383,12 +1539,12 @@
                 e += "<tr><td>" + t.quan_context + "</td><td>" + t.after_price + "</td><td>" + t.quan_time + "</td><td><b onclick=window.open(decodeURIComponent('" + t.quan_link + "')) style='cursor:pointer'>\u9886\u53d6</b></td></tr>";
             })) : e = "<tr><td colspan='4'>\u8fd9\u4e2a\u5546\u54c1\u6ca1\u6709\u8d85\u503c\u4f18\u60e0\u5238</td></tr>", 
             $("#wandhi_table tbody").append(e);
-        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== P && P) ? e : Object) ], TaoBaoService.prototype, "historyService", void 0), 
+        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== L && L) ? e : Object) ], TaoBaoService.prototype, "historyService", void 0), 
         TaoBaoService;
     }(j), U = function(t) {
         function BiliImgService() {
             var e = null !== t && t.apply(this, arguments) || this;
-            return e.rules = new Map([ [ H.BiliBili, /bilibili.com\/video\/[av|bv]*/i ] ]), 
+            return e.rules = new Map([ [ Y.BiliBili, /bilibili.com\/video\/[av|bv]*/i ] ]), 
             e;
         }
         return __extends(BiliImgService, t), BiliImgService.prototype.loader = function() {
@@ -1404,7 +1560,7 @@
         }, BiliImgService.add_img_btn = function() {
             $(".video-data").last().append(BiliImgService.btn), $("body").on("click", "#findimg", (function() {
                 _.queryBiliImg((function(t) {
-                    t.code ? y.open("\u5c01\u9762\u9171", '<img src="' + t.data + '" style="width: 705px;height: 400px;">', [ "725px", "400px" ]) : y.error("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f");
+                    t.code ? g.open("\u5c01\u9762\u9171", '<img src="' + t.data + '" style="width: 705px;height: 400px;">', [ "725px", "400px" ]) : g.error("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f");
                 }));
             }));
         }, BiliImgService.add_down_btn = function() {
@@ -1412,21 +1568,21 @@
             $(".video-data").last().append(BiliImgService.down), $("body").on("click", "#downvideo", (function() {
                 var e, n, o = unsafeWindow.__INITIAL_STATE__.videoData.aid, i = null !== (n = null === (e = unsafeWindow.__INITIAL_STATE__.cidMap[o]) || void 0 === e ? void 0 : e.cid) && void 0 !== n ? n : unsafeWindow.__INITIAL_STATE__.videoData.cid, r = o.toString() + i.toString() + "MDD";
                 if (c.debug([ o, i ]), o && i) {
-                    var a = h.get(r, !1);
-                    a ? y.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + a.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(t) {
+                    var a = d.get(r, !1);
+                    a ? g.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + a.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(t) {
                         s.open(a.url);
                     }), !0) : _.queryBiliDown(o, i, (function(e) {
-                        if ("" != e.url && null != e.url) h.set(r, e, 60), y.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + e.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(t) {
+                        if ("" != e.url && null != e.url) d.set(r, e, 60), g.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + e.hd + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(t) {
                             s.open(e.url);
                         }), !0); else {
-                            var n = h.get(r + "TU", !1);
-                            n ? s.open(n) : v.get_text("" + _.bilijx + u.url).then((function(e) {
-                                e = e.match(/hahaha =[ ]*'(.*)'/)[1], e = t.decrypt(e), h.set(r + "TU", e, 60), 
+                            var n = d.get(r + "TU", !1);
+                            n ? s.open(n) : y.get_text("" + _.bilijx + u.url).then((function(e) {
+                                e = e.match(/hahaha =[ ]*'(.*)'/)[1], e = t.decrypt(e), d.set(r + "TU", e, 60), 
                                 s.open(e);
                             }));
                         }
                     }));
-                } else y.error("\u6682\u4e0d\u652f\u6301\u5f53\u524d\u89c6\u9891\uff0c\u5982\u6709\u7591\u95ee\u8bf7\u5e26\u4e0a\u94fe\u63a5\u8be2\u95ee\u4f5c\u8005");
+                } else g.error("\u6682\u4e0d\u652f\u6301\u5f53\u524d\u89c6\u9891\uff0c\u5982\u6709\u7591\u95ee\u8bf7\u5e26\u4e0a\u94fe\u63a5\u8be2\u95ee\u4f5c\u8005");
             }));
         }, BiliImgService.decrypt = function(t) {
             return i.default.AES.decrypt(t, i.default.enc.Latin1.parse(s.decode("YmVpYmVpZG91eXUxMjM0NQ==")), {
@@ -1440,8 +1596,8 @@
     }(j), N = function(t) {
         function MovieService() {
             var e = t.call(this) || this;
-            return e.rules = new Map([ [ H.YouKu, /youku/i ], [ H.IQiYi, /iqiyi/i ], [ H.LeShi, /le.com/i ], [ H.Tencent_V, /v.qq/i ], [ H.TuDou, /tudou/i ], [ H.MangGuo, /mgtv/i ], [ H.SoHu, /sohu/i ], [ H.Acfun, /acfun/i ], [ H.BiliBili, /bilibili/i ], [ H.M1905, /1905.com/i ], [ H.PPTV, /pptv.com/i ], [ H.YinYueTai, /yinyuetai/ ] ]), 
-            e.menu = new A.Menu, e;
+            return e.rules = new Map([ [ Y.YouKu, /youku/i ], [ Y.IQiYi, /iqiyi/i ], [ Y.LeShi, /le.com/i ], [ Y.Tencent_V, /v.qq/i ], [ Y.TuDou, /tudou/i ], [ Y.MangGuo, /mgtv/i ], [ Y.SoHu, /sohu/i ], [ Y.Acfun, /acfun/i ], [ Y.BiliBili, /bilibili/i ], [ Y.M1905, /1905.com/i ], [ Y.PPTV, /pptv.com/i ], [ Y.YinYueTai, /yinyuetai/ ] ]), 
+            e.menu = new z.Menu, e;
         }
         return __extends(MovieService, t), MovieService.prototype.loader = function() {
             "undefined" == typeof $ && s.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js");
@@ -1477,7 +1633,7 @@
     }(j), W = function(t) {
         function JdService() {
             var e = t.call(this) || this;
-            return e.rules = new Map([ [ H.JingDong, /item.jd/i ] ]), e;
+            return e.rules = new Map([ [ Y.JingDong, /item.jd/i ] ]), e;
         }
         var e;
         return __extends(JdService, t), JdService.prototype.loader = function() {
@@ -1488,7 +1644,7 @@
             $(".btn-yhj").on("click", (function() {
                 s.open("http://jd.huizhek.com/?ah=total&kw=" + encodeURIComponent(t));
             }));
-        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== P && P) ? e : Object) ], JdService.prototype, "historyService", void 0), 
+        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== L && L) ? e : Object) ], JdService.prototype, "historyService", void 0), 
         JdService;
     }(j), J = function() {
         function UrlHelper() {}
@@ -1504,8 +1660,8 @@
     }(), G = function(t) {
         function MusicService() {
             var e = t.call(this) || this;
-            return e.rules = new Map([ [ H.WangYi, /163(.*)song/i ], [ H.Tencent_M, /y.QQ(.*)song/i ], [ H.KuGou, /kugou.com\/song\/*/i ], [ H.KuWo, /kuwo(.*)yinyue/i ], [ H.XiaMi, /xiami/i ], [ H.TaiHe, /taihe.com/i ], [ H.QingTing, /qingting/i ], [ H.LiZhi, /lizhi/i ], [ H.MiGu, /migu/i ], [ H.XiMaLaYa, /ximalaya/i ] ]), 
-            e.menu = new A.Menu, e;
+            return e.rules = new Map([ [ Y.WangYi, /163(.*)song/i ], [ Y.Tencent_M, /y.QQ(.*)song/i ], [ Y.KuGou, /kugou.com\/song\/*/i ], [ Y.KuWo, /kuwo(.*)yinyue/i ], [ Y.XiaMi, /xiami/i ], [ Y.TaiHe, /taihe.com/i ], [ Y.QingTing, /qingting/i ], [ Y.LiZhi, /lizhi/i ], [ Y.MiGu, /migu/i ], [ Y.XiMaLaYa, /ximalaya/i ] ]), 
+            e.menu = new z.Menu, e;
         }
         return __extends(MusicService, t), MusicService.prototype.loader = function() {
             s.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
@@ -1556,7 +1712,7 @@
     }(j), K = function(t) {
         function StuService() {
             var e = t.call(this) || this;
-            return e.rules = new Map([ [ H.SXB, /shangxueba.com\/ask\/.*html/i ] ]), e;
+            return e.rules = new Map([ [ Y.SXB, /shangxueba.com\/ask\/.*html/i ] ]), e;
         }
         return __extends(StuService, t), StuService.prototype.loader = function() {
             "undefined" == typeof $ && s.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js"), 
@@ -1590,9 +1746,9 @@
                 });
             })), $("body").on("click", "[data-cat=search]", (function() {
                 _.querySbx($("#Hidd_id").val(), (function(t) {
-                    t.status ? (y.open("\u7b54\u6848", t.msg), _.sbxFeedback(dataid, t.msg)) : "wronganhao" == t.msg ? (y.prompt("\u53e3\u4ee4\u9519\u8bef\uff0c\u8bf7\u5c06\u5f39\u51fa\u7684\u9875\u9762\u4e2d\u7684\u53e3\u4ee4\u586b\u5165\u540e\u91cd\u8bd5\uff01", h.get("sxb_anhao", ""), (function(t) {
-                        h.set("sxb_anhao", t), y.info("\u8bf7\u518d\u6b21\u70b9\u51fb\u67e5\u770b\u7b54\u6848\u6309\u94ae");
-                    }), 4), s.open("http://www.lelunwen.com/e/action/ListInfo/?classid=45")) : y.confim("\u6ca1\u67e5\u5230\u7b54\u6848", "\u8981\u4e0d\u8981\u8df3\u8f6c\u5230\u67e5\u8be2\u9875\u770b\u770b\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function() {
+                    t.status ? (g.open("\u7b54\u6848", t.msg), _.sbxFeedback(dataid, t.msg)) : "wronganhao" == t.msg ? (g.prompt("\u53e3\u4ee4\u9519\u8bef\uff0c\u8bf7\u5c06\u5f39\u51fa\u7684\u9875\u9762\u4e2d\u7684\u53e3\u4ee4\u586b\u5165\u540e\u91cd\u8bd5\uff01", d.get("sxb_anhao", ""), (function(t) {
+                        d.set("sxb_anhao", t), g.info("\u8bf7\u518d\u6b21\u70b9\u51fb\u67e5\u770b\u7b54\u6848\u6309\u94ae");
+                    }), 4), s.open("http://www.lelunwen.com/e/action/ListInfo/?classid=45")) : g.confim("\u6ca1\u67e5\u5230\u7b54\u6848", "\u8981\u4e0d\u8981\u8df3\u8f6c\u5230\u67e5\u8be2\u9875\u770b\u770b\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function() {
                         s.open(u.url.replace("shangxueba", "shangxueba365"));
                     }));
                 }));
@@ -1604,13 +1760,13 @@
         }, StuService;
     }(j), F = function() {
         function OneKeyVipInjection() {
-            this.plugins = new Array, this.plugins = [ q.Require(V), q.Require(U), q.Require(N), q.Require(E), q.Require(W), q.Require(G), q.Require(K), q.Require(P) ], 
+            this.plugins = new Array, this.plugins = [ q.Require(V), q.Require(U), q.Require(N), q.Require(E), q.Require(W), q.Require(G), q.Require(K), q.Require(L) ], 
             c.info("container loaded");
         }
         return OneKeyVipInjection.prototype.Init = function() {
             this.plugins.every((function(t) {
                 return !t.linkTest() || (new Promise((function(t) {
-                    t();
+                    t(1);
                 })).then(t.Process), c.debug("element unique:" + t.unique()), !t.unique());
             }));
         }, OneKeyVipInjection;
