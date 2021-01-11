@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2021-01-09 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2021-01-11 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
 // @version      4.2.20
 // @homepage     https://tools.wandhi.com/scripts
@@ -94,6 +94,7 @@
 // @grant        GM_deleteValue
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
+// @antifeature  referral-link
 // ==/UserScript==
 !function(t, e) {
     "object" == typeof exports && "undefined" != typeof module ? e(require("reflect-metadata"), require("vue"), require("crypto-js")) : "function" == typeof define && define.amd ? define([ "reflect-metadata", "vue", "crypto-js" ], e) : e(null, (t = "undefined" != typeof globalThis ? globalThis : t || self).Vue, t.CryptoJS);
