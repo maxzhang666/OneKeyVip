@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2021-01-11 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2021-03-05 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.2.20
+// @version      4.2.21
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(接口偶尔抽风)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
@@ -421,7 +421,8 @@
         }, Config;
     }(), p = function p() {
         this.max = 0, this.price_detail = [];
-    }, f = function f() {}, h = function h() {}, m = (function() {
+    }, f = function f() {}, h = function h() {};
+    !function() {
         function HttpRequest(t) {
             this.headers = new Map, this.url = t.url, this.method = t.methodType, this.dataType = t.dataType, 
             this._option = t;
@@ -443,7 +444,8 @@
             enumerable: !1,
             configurable: !0
         });
-    }(), function() {
+    }();
+    var m = function() {
         function AjaxOption(t, e, n, o, i, r) {
             void 0 === e && (e = "GET"), void 0 === i && (i = new Map), void 0 === r && (r = 10), 
             this.url = t, this.methodType = e, this.onSuccess = o, this.onError = o, this.data = n, 
@@ -461,7 +463,7 @@
             for (var n in this.data) e.append(n, this.data[n]);
             return e;
         }, AjaxOption;
-    }()), g = function() {
+    }(), g = function() {
         function Alert() {}
         return Alert.open = function(t, e, n, o, i, r) {
             return void 0 === n && (n = [ "400px", "300px" ]), void 0 === o && (o = 0), void 0 === i && (i = "lb"), 
@@ -567,9 +569,7 @@
                 }), new Map, n));
             }));
         }, Http.get = function(t, e, n) {
-            void 0 === e && (e = new Map), void 0 === n && (n = 10);
-            g.loading();
-            return new Promise((function(o, i) {
+            return void 0 === e && (e = new Map), void 0 === n && (n = 10), g.loading(), new Promise((function(o, i) {
                 Http.ajax(new m(t, "GET", e, (function(t) {
                     var e;
                     try {
@@ -581,9 +581,8 @@
                 }), new Map, n));
             }));
         }, Http.getWithHead = function(t, e, n, o) {
-            void 0 === e && (e = new Map), void 0 === n && (n = new Map), void 0 === o && (o = 10);
-            g.loading();
-            return new Promise((function(i, r) {
+            return void 0 === e && (e = new Map), void 0 === n && (n = new Map), void 0 === o && (o = 10), 
+            g.loading(), new Promise((function(i, r) {
                 Http.ajax(new m(t, "GET", e, (function(t) {
                     var e;
                     try {
@@ -595,9 +594,8 @@
                 }), n, o));
             }));
         }, Http.postWithHead = function(t, e, n, o) {
-            void 0 === e && (e = new Map), void 0 === n && (n = new Map), void 0 === o && (o = 10);
-            g.loading();
-            return new Promise((function(i, r) {
+            return void 0 === e && (e = new Map), void 0 === n && (n = new Map), void 0 === o && (o = 10), 
+            g.loading(), new Promise((function(i, r) {
                 Http.ajax(new m(t, "POST", e, (function(e) {
                     try {
                         i(e);
@@ -679,7 +677,8 @@
     }(), w = function() {
         function Result() {}
         return Result.prototype.constructorq = function() {}, Result;
-    }(), k = (function(t) {
+    }();
+    !function(t) {
         function StuResult() {
             return null !== t && t.apply(this, arguments) || this;
         }
@@ -689,12 +688,14 @@
             return null !== t && t.apply(this, arguments) || this;
         }
         __extends(StrResult, t);
-    }(w), function(t) {
+    }(w);
+    var k = function(t) {
         function HistoryResult() {
             return null !== t && t.apply(this, arguments) || this;
         }
         return __extends(HistoryResult, t), HistoryResult;
-    }(w)), _ = (function(t) {
+    }(w);
+    !function(t) {
         function HistoryQueryResult() {
             return null !== t && t.apply(this, arguments) || this;
         }
@@ -709,7 +710,8 @@
             return null !== t && t.apply(this, arguments) || this;
         }
         __extends(HistoryV2Result, t);
-    }(w), function() {
+    }(w);
+    var _ = function() {
         function Route() {
             this.queryTao = "";
         }
@@ -796,7 +798,7 @@
         Route.bilidown = "https://api.bilibili.com/x/player/playurl", Route.coupons = "/tb/infos/", 
         Route.like = "/tb/guesslike", Route.jd_coupons = "/jd/info", Route.sn_coupons = "/sn/info", 
         Route.vp_coupons = "/vp/info", Route;
-    }()), x = function(t) {
+    }(), x = function(t) {
         function VpCoupon() {
             return null !== t && t.apply(this, arguments) || this;
         }
@@ -1528,12 +1530,13 @@
                 return e.initElement(t);
             }));
         }, TaoBaoService.prototype.initElement = function(t) {
+            var e;
             $("#wandhi_table tbody tr").remove();
-            var e = "";
-            t.code ? t.data.forEach((function(t) {
-                e += "<tr><td>" + t.quan_context + "</td><td>" + t.after_price + "</td><td>" + t.quan_time + "</td><td><b onclick=window.open(decodeURIComponent('" + t.quan_link + "')) style='cursor:pointer'>\u9886\u53d6</b></td></tr>";
-            })) : e = "<tr><td colspan='4'>\u8fd9\u4e2a\u5546\u54c1\u6ca1\u6709\u8d85\u503c\u4f18\u60e0\u5238</td></tr>", 
-            $("#wandhi_table tbody").append(e);
+            var n = "";
+            t.code && (null === (e = t.data) || void 0 === e ? void 0 : e.length) > 0 ? t.data.forEach((function(t) {
+                n += "<tr><td>" + t.quan_context + "</td><td>" + t.after_price + "</td><td>" + t.quan_time + "</td><td><b onclick=window.open(decodeURIComponent('" + t.quan_link + "')) style='cursor:pointer'>\u9886\u53d6</b></td></tr>";
+            })) : n = "<tr><td colspan='4'>\u8fd9\u4e2a\u5546\u54c1\u6ca1\u6709\u8d85\u503c\u4f18\u60e0\u5238</td></tr>", 
+            $("#wandhi_table tbody").append(n);
         }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (e = void 0 !== B && B) ? e : Object) ], TaoBaoService.prototype, "historyService", void 0), 
         TaoBaoService;
     }(Y), O = function(t) {
@@ -1675,8 +1678,7 @@
                 type: "jd"
             } ], this._OnClick);
         }, MusicService.prototype._OnClick = function() {
-            this.rules;
-            $("body").on("click", "[data-cat=process]", (function() {
+            this.rules, $("body").on("click", "[data-cat=process]", (function() {
                 if (/ximalaya/i.test(u.url)) if (__INITIAL_STATE__ && null != __INITIAL_STATE__.SoundDetailPage) s.open("http://music.wandhi.com/?id=" + __INITIAL_STATE__.SoundDetailPage.trackId + "&type=ximalaya"); else {
                     layer.closeAll();
                     var t = '<div style="padding:0px 50px 0px 50px;"><ul class="sound-list dOi2">';
