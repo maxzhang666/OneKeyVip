@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2021-03-05 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2021-03-14 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.2.21
+// @version      4.2.22
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(接口偶尔抽风)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
@@ -915,10 +915,11 @@
         }, TaoCoupon.prototype.init_coupons = function() {
             var t = this;
             _.queryCoupons(this.core.getPar("id"), (function(e) {
-                if (e.code) {
-                    var n = e.data[0], o = new Date(n.quan_time);
-                    t.init_qrcode(decodeURIComponent(n.quan_link)).then((function(e) {
-                        t.init_coupon_info(n.after_price, n.quan_price, "" + s.format(o, "yyyy-MM-dd"), decodeURIComponent(n.quan_link));
+                var n;
+                if (e.code && (null === (n = e.data) || void 0 === n ? void 0 : n.length) > 0) {
+                    var o = e.data[0], i = new Date(o.quan_time);
+                    t.init_qrcode(decodeURIComponent(o.quan_link)).then((function(e) {
+                        t.init_coupon_info(o.after_price, o.quan_price, "" + s.format(i, "yyyy-MM-dd"), decodeURIComponent(o.quan_link));
                     }));
                 } else t.init_qrcode(u.url).then((function(e) {
                     t.init_coupon_info(0, 0, "");
