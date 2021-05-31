@@ -30,6 +30,9 @@
 如果你有好的建议或想法，欢迎提供
 
 **感谢支持**
+### [Github:https://github.com/maxzhang666/OneKeyVip](https://github.com/maxzhang666/OneKeyVip)
+
+### [Gitee:https://gitee.com/ixysy/OneKeyVip](https://gitee.com/ixysy/OneKeyVip)
 
 ## 📜 反馈说明
 
