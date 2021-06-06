@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2021-06-03 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2021-06-06 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
 // @version      4.2.24
 // @homepage     https://tools.wandhi.com/scripts
@@ -95,8 +95,9 @@
 // @grant        GM_deleteValue
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
-// @antifeature  referral-link
+// @antifeature  referral-link 此提示为GreasyFork代码规范要求含有查券功能的脚本必须添加，实际使用无任何强制跳转，代码可查，请知悉。
 // ==/UserScript==
+
 !function(e, t) {
     "object" == typeof exports && "undefined" != typeof module ? t(require("vue"), require("crypto-js")) : "function" == typeof define && define.amd ? define([ "vue", "crypto-js" ], t) : t((e = "undefined" != typeof globalThis ? globalThis : e || self).Vue, e.CryptoJS);
 }(this, (function(e, t) {
