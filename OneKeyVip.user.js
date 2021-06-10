@@ -1045,7 +1045,7 @@
         };
         Route.update_api = "https://cdn.jsdelivr.net/gh/maxzhang666/OneKeyVip/OneKeyVip.user.js?t=" + Core.uuid();
         Route.home_url = "https://wiki.wandhi.com";
-        Route.install_url_one = "https://greasyfork.org/zh-CN/scripts/384538";
+        Route.install_url_one = "https://greasyfork.org/zh-CN/scripts/427735";
         Route.install_url_two = "https://tools.wandhi.com/scripts";
         Route.sxb_anhao = "http://www.lelunwen.com/e/action/ListInfo/?classid=45";
         Route.sxb_key = "sxb_anhao";
