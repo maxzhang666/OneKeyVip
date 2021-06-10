@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2021-06-10 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.2.24
+// @version      4.2.25
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(接口偶尔抽风)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
@@ -1022,7 +1022,7 @@
             }, 60);
         };
         Route.queryHistoryV4 = function (url, siteType, callback) {
-            var root = "https://browser.gwdang.com/extension/price_towards?url=" + encodeURIComponent(url) + "&ver=1&format=json";
+            var root = "https://browser.gwdang.com/extension/price_towards?url=" + encodeURIComponent(url) + "&ver=1&format=json&fp=378437f5078442c878e99f78720278c4";
             Http.JqGet(root, callback);
         };
         Route.queryBiliImg = function (aid, callback) {
@@ -2408,6 +2408,448 @@
         return PromoInfo;
     }());
 
+    var HistoryService = (function (_super) {
+        __extends(HistoryService, _super);
+        function HistoryService() {
+            var _this = _super !== null && _super.apply(this, arguments) || this;
+            _this.rules = new Map([
+                [SiteEnum.TMall, /detail.tmall.com\/item.htm/i],
+                [SiteEnum.TaoBao, /item.taobao.com/i],
+                [SiteEnum.JingDong, /item.jd.(com|hk)\/[0-9]*.html/i],
+                [SiteEnum.SuNing, /product.suning.com/i],
+                [SiteEnum.Vp, /detail.vip.com/i]
+            ]);
+            _this.factory = new DefCoupon();
+            return _this;
+        }
+        HistoryService.prototype.loader = function () {
+        };
+        HistoryService.prototype.run = function () {
+            this.injectHistory();
+        };
+        HistoryService.prototype.injectHistory = function () {
+            var _this = this;
+            Logger.debug(this.site);
+            switch (this.site) {
+                case SiteEnum.TaoBao:
+                case SiteEnum.TMall:
+                    this.factory = new TaoCoupon();
+                    break;
+                case SiteEnum.JingDong:
+                    this.factory = new JdCoupon();
+                    break;
+                case SiteEnum.SuNing:
+                    this.factory = new SuningCoupon();
+                    break;
+                case SiteEnum.Vp:
+                    this.factory = new VpCoupon();
+                    break;
+                default:
+                    this.factory = new DefCoupon();
+                    break;
+            }
+            this.factory.init_html(this.getHistoryHtml()).then(function (res) {
+                res && _this.InitPriceHistory();
+                _this.factory.init_coupons && _this.factory.init_coupons();
+            });
+        };
+        HistoryService.prototype.InitPriceHistory = function () {
+            var _this = this;
+            $("#vip-plugin-outside").show();
+            this.theme();
+            this.chartMsg("\u5386\u53F2\u4EF7\u683C\u67E5\u8BE2\u4E2D");
+            Route.queryHistoryv3(Runtime.url, this.site.toString(), function (data) {
+                var msg = "";
+                if (data.code) {
+                    $(".vip-plugin-outside-chart-container").html("<div id=\"vip-plugin-outside-chart-container-line\"></div>");
+                    echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), _this.theme()).setOption(_this.getChartOption(data.data));
+                }
+                else {
+                    msg = "\u672A\u67E5\u5230\u5386\u53F2\u6570\u636E";
+                }
+                _this.chartMsg(msg);
+            });
+        };
+        HistoryService.prototype.getHistoryHtml = function () {
+            return "<div id=\"vip-plugin-outside\">\n                    <div class=\"vip-plugin-outside-coupons\">\n                        <div class=\"vip-plugin-outside-coupons-qrcode\"><canvas id=\"vip-plugin-outside-coupons-qrcode-img\"></canvas></div>\n                        <div class=\"vip-plugin-outside-coupons-title\"></div>\n                        <div class=\"vip-plugin-outside-coupons-action\"></div>\n                    </div>\n                    <div id=\"vip-plugin-outside-history\" class=\"vip-plugin-outside-history\">\n                        <div class=\"vip-plugin-outside-chart-container\"></div>\n                        <p class=\"vip-plugin-outside-history-tip\"></p>\n                    </div>    \n                </div>";
+        };
+        HistoryService.prototype.chartMsg = function (msg) {
+            $(".vip-plugin-outside-history-tip").html(msg);
+        };
+        HistoryService.prototype.getChartOption = function (data) {
+            var _a, _b;
+            var text = "\u5386\u53F2\u4F4E\u4EF7\uFF1A{red|\uFFE5" + data.min + "} ( {red|" + data.date + "} ) \u5206\u6790\uFF1A" + data.mark;
+            var chartOption = new LinesOption();
+            var datas = function (data) {
+                var l = [];
+                data.price_detail.forEach(function (v) {
+                    var p = {
+                        name: v.time,
+                        value: [
+                            v.timestamp, v.price, v.mark
+                        ]
+                    };
+                    l.push(p);
+                });
+                return l;
+            };
+            chartOption = {
+                title: {
+                    left: "center",
+                    subtext: text,
+                    subtextStyle: {
+                        color: "#000",
+                        rich: {
+                            red: {
+                                color: "red"
+                            }
+                        }
+                    }
+                },
+                tooltip: {
+                    trigger: "axis",
+                    axisPointer: {
+                        type: "cross"
+                    },
+                    formatter: function (params) {
+                        params = params[0];
+                        var date = new Date(params.name);
+                        var year = date.getFullYear();
+                        var month = date.getMonth() + 1;
+                        var day = date.getDate();
+                        var monthStr = month.toString();
+                        var dayStr = day.toString();
+                        if (month < 10) {
+                            monthStr = "0" + month;
+                        }
+                        if (day < 10) {
+                            dayStr = "0" + day;
+                        }
+                        return "\u65E5\u671F\uFF1A" + year + "-" + monthStr + "-" + dayStr + "<br/>\u4EF7\u683C\uFF1A\uFFE5" + params.value[1].toFixed(2) + (params.value[2] == "" ? "" : "<br/>" + params.value[2]);
+                    }
+                },
+                grid: {
+                    left: 0,
+                    right: 20,
+                    top: 50,
+                    bottom: 10,
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'time'
+                },
+                yAxis: {
+                    type: "value"
+                },
+                series: [
+                    {
+                        type: "line",
+                        step: "end",
+                        data: datas(data),
+                        showSymbol: false,
+                        symbolSize: 3,
+                        lineStyle: {
+                            width: 1.5,
+                            color: "#ff0036"
+                        }
+                    }
+                ]
+            };
+            var step = 10;
+            chartOption.yAxis = {
+                min: Math.floor(data.min * 0.9 / step) * step,
+                max: Math.ceil(data.max * 1.1 / step) * step
+            };
+            var line = (_a = chartOption.series) === null || _a === void 0 ? void 0 : _a.pop();
+            line.markPoint = {
+                data: [
+                    {
+                        value: data.min,
+                        coord: [data.date, data.min],
+                        name: "最小值",
+                        itemStyle: {
+                            color: "green"
+                        }
+                    },
+                    {
+                        value: data.max,
+                        coord: [data.max_date, data.max],
+                        name: "最大值",
+                        itemStyle: {
+                            color: "red"
+                        }
+                    }
+                ]
+            };
+            (_b = chartOption.series) === null || _b === void 0 ? void 0 : _b.push(line);
+            chartOption.dataZoom = [
+                {
+                    type: "inside",
+                    start: 0,
+                    end: 100
+                }
+            ];
+            return chartOption;
+        };
+        HistoryService.prototype.theme = function () {
+            var theme = {
+                color: [
+                    '#2ec7c9', '#b6a2de', '#5ab1ef', '#ffb980', '#d87a80',
+                    '#8d98b3', '#e5cf0d', '#97b552', '#95706d', '#dc69aa',
+                    '#07a2a4', '#9a7fd1', '#588dd5', '#f5994e', '#c05050',
+                    '#59678c', '#c9ab00', '#7eb00a', '#6f5553', '#c14089'
+                ],
+                title: {
+                    itemGap: 8,
+                    textStyle: {
+                        fontWeight: 'normal',
+                        color: '#008acd'
+                    }
+                },
+                legend: {
+                    itemGap: 8
+                },
+                dataRange: {
+                    itemWidth: 15,
+                    color: ['#2ec7c9', '#b6a2de']
+                },
+                toolbox: {
+                    color: ['#1e90ff', '#1e90ff', '#1e90ff', '#1e90ff'],
+                    effectiveColor: '#ff4500',
+                    itemGap: 8
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(50,50,50,0.5)',
+                    axisPointer: {
+                        type: 'line',
+                        lineStyle: {
+                            color: '#008acd'
+                        },
+                        crossStyle: {
+                            color: '#008acd'
+                        },
+                        shadowStyle: {
+                            color: 'rgba(200,200,200,0.2)'
+                        }
+                    }
+                },
+                dataZoom: {
+                    dataBackgroundColor: '#efefff',
+                    fillerColor: 'rgba(182,162,222,0.2)',
+                    handleColor: '#008acd'
+                },
+                grid: {
+                    borderColor: '#eee'
+                },
+                categoryAxis: {
+                    axisLine: {
+                        lineStyle: {
+                            color: '#008acd'
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: ['#eee']
+                        }
+                    }
+                },
+                valueAxis: {
+                    axisLine: {
+                        lineStyle: {
+                            color: '#008acd'
+                        }
+                    },
+                    splitArea: {
+                        show: true,
+                        areaStyle: {
+                            color: ['rgba(250,250,250,0.1)', 'rgba(200,200,200,0.1)']
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: ['#eee']
+                        }
+                    }
+                },
+                polar: {
+                    axisLine: {
+                        lineStyle: {
+                            color: '#ddd'
+                        }
+                    },
+                    splitArea: {
+                        show: true,
+                        areaStyle: {
+                            color: ['rgba(250,250,250,0.2)', 'rgba(200,200,200,0.2)']
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: '#ddd'
+                        }
+                    }
+                },
+                timeline: {
+                    lineStyle: {
+                        color: '#008acd'
+                    },
+                    controlStyle: {
+                        normal: { color: '#008acd' },
+                        emphasis: { color: '#008acd' }
+                    },
+                    symbol: 'emptyCircle',
+                    symbolSize: 3
+                },
+                bar: {
+                    itemStyle: {
+                        normal: {
+                            borderRadius: 5
+                        },
+                        emphasis: {
+                            borderRadius: 5
+                        }
+                    }
+                },
+                line: {
+                    smooth: true,
+                    symbol: 'emptyCircle',
+                    symbolSize: 3
+                },
+                k: {
+                    itemStyle: {
+                        normal: {
+                            color: '#d87a80',
+                            color0: '#2ec7c9',
+                            lineStyle: {
+                                width: 1,
+                                color: '#d87a80',
+                                color0: '#2ec7c9'
+                            }
+                        }
+                    }
+                },
+                scatter: {
+                    symbol: 'circle',
+                    symbolSize: 4
+                },
+                radar: {
+                    symbol: 'emptyCircle',
+                    symbolSize: 3
+                },
+                map: {
+                    itemStyle: {
+                        normal: {
+                            areaStyle: {
+                                color: '#ddd'
+                            },
+                            label: {
+                                textStyle: {
+                                    color: '#d87a80'
+                                }
+                            }
+                        },
+                        emphasis: {
+                            areaStyle: {
+                                color: '#fe994e'
+                            },
+                            label: {
+                                textStyle: {
+                                    color: 'rgb(100,0,0)'
+                                }
+                            }
+                        }
+                    }
+                },
+                force: {
+                    itemStyle: {
+                        normal: {
+                            linkStyle: {
+                                strokeColor: '#1e90ff'
+                            }
+                        }
+                    }
+                },
+                chord: {
+                    padding: 4,
+                    itemStyle: {
+                        normal: {
+                            lineStyle: {
+                                width: 1,
+                                color: 'rgba(128, 128, 128, 0.5)'
+                            },
+                            chordStyle: {
+                                lineStyle: {
+                                    width: 1,
+                                    color: 'rgba(128, 128, 128, 0.5)'
+                                }
+                            }
+                        },
+                        emphasis: {
+                            lineStyle: {
+                                width: 1,
+                                color: 'rgba(128, 128, 128, 0.5)'
+                            },
+                            chordStyle: {
+                                lineStyle: {
+                                    width: 1,
+                                    color: 'rgba(128, 128, 128, 0.5)'
+                                }
+                            }
+                        }
+                    }
+                },
+                gauge: {
+                    startAngle: 225,
+                    endAngle: -45,
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            color: [[0.2, '#2ec7c9'], [0.8, '#5ab1ef'], [1, '#d87a80']],
+                            width: 10
+                        }
+                    },
+                    axisTick: {
+                        splitNumber: 10,
+                        length: 15,
+                        lineStyle: {
+                            color: 'auto'
+                        }
+                    },
+                    axisLabel: {
+                        textStyle: {
+                            color: 'auto'
+                        }
+                    },
+                    splitLine: {
+                        length: 22,
+                        lineStyle: {
+                            color: 'auto'
+                        }
+                    },
+                    pointer: {
+                        width: 5,
+                        color: 'auto'
+                    },
+                    title: {
+                        textStyle: {
+                            color: '#333'
+                        }
+                    },
+                    detail: {
+                        textStyle: {
+                            color: 'auto'
+                        }
+                    }
+                },
+                textStyle: {
+                    fontFamily: '微软雅黑, Arial, Verdana, sans-serif'
+                }
+            };
+            return theme;
+        };
+        return HistoryService;
+    }(PluginBase));
+
     var GwdService = (function (_super) {
         __extends(GwdService, _super);
         function GwdService() {
@@ -2459,8 +2901,8 @@
             $("#vip-plugin-outside").show();
             this.theme();
             this.chartMsg("\u5386\u53F2\u4EF7\u683C\u67E5\u8BE2\u4E2D");
+            var that = this;
             Route.queryHistoryV4(Runtime.url, this.site.toString(), function (data) {
-                var msg = "";
                 Logger.debug(data);
                 if ('price_status' in data) {
                     $(".vip-plugin-outside-chart-container").html("<div id=\"vip-plugin-outside-chart-container-line\"></div>");
@@ -2468,9 +2910,8 @@
                         .setOption(_this.getChartOption(data));
                 }
                 else {
-                    msg = "\u672A\u67E5\u5230\u5386\u53F2\u6570\u636E";
+                    that.historyService.Process();
                 }
-                _this.chartMsg(msg);
             });
         };
         GwdService.prototype.getHistoryHtml = function () {
@@ -2911,6 +3352,11 @@
                 }
             };
         };
+        var _a;
+        __decorate([
+            WandhiAuto,
+            __metadata("design:type", typeof (_a = typeof HistoryService !== "undefined" && HistoryService) === "function" ? _a : Object)
+        ], GwdService.prototype, "historyService", void 0);
         return GwdService;
     }(PluginBase));
 
