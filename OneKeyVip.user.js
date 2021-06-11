@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2021-06-10 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2021-06-11 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
 // @version      4.2.25
 // @homepage     https://tools.wandhi.com/scripts
@@ -746,8 +746,8 @@
                     }));
                 })) : _this.queryHistory(url, siteType, callback);
             }), 60);
-        }, Route.queryHistoryV4 = function(url, siteType, callback) {
-            var root = "https://browser.gwdang.com/extension/price_towards?url=" + encodeURIComponent(url) + "&ver=1&format=json&fp=378437f5078442c878e99f78720278c4";
+        }, Route.queryHistoryV4 = function(url, siteType, fp, dfp, callback) {
+            var root = "https://browser.gwdang.com/extension/price_towards?url=" + encodeURIComponent(url) + "&ver=1&format=json&fp=" + fp + "&dfp=" + dfp;
             Http.JqGet(root, callback);
         }, Route.queryBiliImg = function(aid, callback) {
             Http.getData(this.biliInfo + "?aid=" + aid, callback);
@@ -2022,12 +2022,19 @@
         function GwdService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
             return _this.rules = new Map([ [ SiteEnum.TMall, /detail.tmall.com\/item.htm/i ], [ SiteEnum.TaoBao, /item.taobao.com/i ], [ SiteEnum.JingDong, /item.jd.(com|hk)\/[0-9]*.html/i ], [ SiteEnum.SuNing, /product.suning.com/i ], [ SiteEnum.Vp, /detail.vip.com/i ] ]), 
-            _this._appName = "GwdService", _this.factory = new DefCoupon, _this;
+            _this._appName = "GwdService", _this.factory = new DefCoupon, _this.dfp = "378437f5078442c878e99f78720278c4", 
+            _this.fp = "0H88kUZe0CP80DtM0C0VkUc20z88kUZM6UTM0UMikUc26z82kUPe0H88kUP80H88EV3+0UZi0DZ2", 
+            _this;
         }
         var _a;
         return __extends(GwdService, _super), GwdService.prototype.loader = function() {}, 
         GwdService.prototype.run = function() {
-            this.injectHistory();
+            var that = this;
+            Route.queryValue("sys_gwd_fp", (function(res) {
+                that.fp = res.data;
+            })), Route.queryValue("sys_gwd_dfp", (function(res) {
+                that.dfp = res.data;
+            })), this.injectHistory();
         }, GwdService.prototype.injectHistory = function() {
             var _this = this;
             switch (Logger.debug(this.site), this.site) {
@@ -2058,7 +2065,7 @@
             var _this = this;
             $("#vip-plugin-outside").show(), this.theme(), this.chartMsg("\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u4e2d");
             var that = this;
-            Route.queryHistoryV4(Runtime.url, this.site.toString(), (function(data) {
+            Route.queryHistoryV4(Runtime.url, this.site.toString(), that.fp, that.dfp, (function(data) {
                 Logger.debug(data), "price_status" in data ? ($(".vip-plugin-outside-chart-container").html('<div id="vip-plugin-outside-chart-container-line"></div>'), 
                 echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), _this.theme()).setOption(_this.getChartOption(data))) : that.historyService.Process();
             }));
