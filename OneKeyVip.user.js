@@ -3295,14 +3295,7 @@
                     step: "end",
                     data: function(data) {
                         var l = [];
-                        if (data.nopuzzle_promo.length > 0) data.nopuzzle_promo.forEach((function(v) {
-                            v.humanPrice = v.price / 100, v.price > maxData.price && (maxData = v), v.price < minData.price && (minData = v);
-                            var p = {
-                                name: 1e3 * v.time,
-                                value: [ 1e3 * v.time, v.humanPrice, v.msg ? v.msg.coupon ? v.msg.coupon : v.msg.promotion : "" ]
-                            };
-                            l.push(p);
-                        })); else if (data.store.length > 0) {
+                        if (data.store.length > 0) {
                             var storeData = data.store[0];
                             data.store.length > 1 && (storeData = data.store[1]);
                             var couponsMap_1 = {};
