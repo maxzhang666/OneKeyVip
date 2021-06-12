@@ -39,6 +39,7 @@
 // @include      *://music.taihe.com/song*
 // @include      *://item.taobao.com/*
 // @include      *://s.taobao.com/search*
+// @include      *://list.tmall.com/search_product.htm*
 // @include      *://detail.tmall.com/*
 // @include      *://chaoshi.detail.tmall.com/*                     
 // @include      *://detail.tmall.hk/*
@@ -900,7 +901,7 @@
                         clientX: 0,
                         clientY: 0
                     }, asideNav = $(this.menuSelecter)[0];
-                    $("body").on("mousedown", "#Wandhi-nav", (function(a) {
+                    $("body").on("mousedown", "#" + this.menuSelecter, (function(a) {
                         var getCss = function(a, e) {
                             var _a, _b, _c;
                             return null !== (_b = null === (_a = document.defaultView) || void 0 === _a ? void 0 : _a.getComputedStyle(a, null)[e]) && void 0 !== _b ? _b : null !== (_c = a.currentStyle) && void 0 !== _c ? _c : a.currentStyle[e];
@@ -911,11 +912,13 @@
                             var e = a.clientX - drags.clientX, t = a.clientY - drags.clientY;
                             (asideNav = asideNav || $("#Wandhi-nav")[0]).style.top = drags.y + t + "px", asideNav.style.left = drags.x + e + "px";
                         }));
-                    })).on("mouseup", "#Wandhi-nav", (function() {
+                    })).on("mouseup", "#" + this.menuSelecter, (function() {
                         drags.down = !1, $(document).off("mousemove");
                     })), callback.call(this);
                 }
-            }, Menu;
+            }, Menu.close = function() {
+                $("#" + Menu.mainId).hide();
+            }, Menu.mainId = "Wandhi-nav", Menu;
         }();
         Common.Menu = Menu;
     }(Common || (Common = {}));
@@ -3193,12 +3196,7 @@
         var _a;
         return __extends(GwdService, _super), GwdService.prototype.loader = function() {}, 
         GwdService.prototype.run = function() {
-            var that = this;
-            Route.queryValue("sys_gwd_fp", (function(res) {
-                that.fp = res.data;
-            })), Route.queryValue("sys_gwd_dfp", (function(res) {
-                that.dfp = res.data;
-            })), this.injectHistory();
+            this.injectHistory();
         }, GwdService.prototype.injectHistory = function() {
             var _this = this;
             switch (Logger.debug(this.site), this.site) {
@@ -3241,7 +3239,8 @@
                     confirmButtonText: "\u9a8c\u8bc1\u8d70\u8d77",
                     cancelButtonText: "\u8001\u5b50\u4e0d\u770b"
                 }).then((function(res) {
-                    res.isConfirmed && Core.open(data.action.to), sweetalert2_all.close(res);
+                    res.isConfirmed && Core.open("https://browser.gwdang.com/slider/verify.html?fromUrl=" + encodeURIComponent(Runtime.url)), 
+                    sweetalert2_all.close(res);
                 })), that.historyService.Process());
             }));
         }, GwdService.prototype.getHistoryHtml = function() {
@@ -3699,7 +3698,7 @@
         BiliImgService.down = '\n    <span id="downvideo" style="\n    background-color: #fb7199;\n    color: white;\n    font-size: 1rem;\n    text-align: center;\n    margin-left: 1rem;\n    padding:0.5rem;\n    cursor: pointer;\n    border-radius: 1rem;\n    ">\n        \u4e0b\u8f7d\u89c6\u9891\n    </span>', 
         BiliImgService.tripleClick = '\n    <span id="tripleClick" style="\n    background-color: #fb7199;\n    color: white;\n    font-size: 1rem;\n    text-align: center;\n    margin-left: 1rem;\n    padding:0.5rem;\n    cursor: pointer;\n    border-radius: 1rem;\n    ">\n        \u4e00\u952e\u4e09\u8fde\n    </span>', 
         BiliImgService;
-    }(PluginBase), MovieService = function(_super) {
+    }(PluginBase), Menu = Common.Menu, MovieService = function(_super) {
         function MovieService() {
             var _this = _super.call(this) || this;
             return _this.rules = new Map([ [ SiteEnum.YouKu, /youku/i ], [ SiteEnum.IQiYi, /iqiyi/i ], [ SiteEnum.LeShi, /le.com/i ], [ SiteEnum.Tencent_V, /v.qq/i ], [ SiteEnum.TuDou, /tudou/i ], [ SiteEnum.MangGuo, /mgtv/i ], [ SiteEnum.SoHu, /sohu/i ], [ SiteEnum.Acfun, /acfun/i ], [ SiteEnum.BiliBili, /bilibili/i ], [ SiteEnum.M1905, /1905.com/i ], [ SiteEnum.PPTV, /pptv.com/i ], [ SiteEnum.YinYueTai, /yinyuetai/ ] ]), 
@@ -3710,7 +3709,7 @@
         }, MovieService.prototype.run = function() {
             this.menu.Init([ {
                 title: "\u7535\u5f71\u641c\u7d22",
-                show: "\u7535\u5f71<br>\u641c\u7d22",
+                show: "\u672c\u6b21<br>\u5173\u95ed",
                 type: "search"
             }, {
                 title: "\u89c6\u9891\u89e3\u6790",
@@ -3729,11 +3728,11 @@
             $("body").on("click", "[data-cat=process]", (function() {
                 Core.open("http://tv.wandhi.com/go.html?url=" + encodeURIComponent(window.location.href));
             })), $("body").on("click", "[data-cat=search]", (function() {
-                Core.open("http://tv.wandhi.com/");
+                Menu.close();
             })), $("body").on("click", "[data-cat=tb]", (function() {
-                Core.open("https://t.cn/A6LoYknW");
+                Core.open("http://shop.huizhek.com");
             })), $("body").on("click", "[data-cat=jd]", (function() {
-                Core.open("https://t.cn/A6LoYnHT");
+                Core.open("http://jd.huizhek.com");
             }));
         }, MovieService;
     }(PluginBase), JdService = function(_super) {
@@ -3884,8 +3883,8 @@
         function ListService() {
             var _this = _super.call(this) || this;
             return _this.rules = new Map([ [ SiteEnum.TaoBao, /s.taobao.com\/search/i ], [ SiteEnum.TMall, /list.tmall.com\/search_product.htm/i ] ]), 
-            _this.selectorList = [], _this.selectora = [], _this.key = "list_service_", _this._appName = "TaoList", 
-            _this;
+            _this.selectorList = [], _this.selectora = [], _this.atrack = [], _this.key = "list_service_", 
+            _this._appName = "TaoList", _this;
         }
         return __extends(ListService, _super), ListService.prototype.loader = function() {}, 
         Object.defineProperty(ListService, "style", {
@@ -3897,12 +3896,13 @@
         }), ListService.prototype.run = function() {
             switch (this.site) {
               case SiteEnum.TaoBao:
-                this.selectorList.push(".items .item"), this.selectora.push("#J_Itemlist_PLink_", "#J_Itemlist_TLink_"), 
+                this.selectorList.push(".items .item"), this.atrack.push(".pic a", ".title a"), 
                 this.itemType = ItemType.TaoBao;
                 break;
 
               case SiteEnum.TMall:
-                this.selectorList.push(".product"), this.itemType = ItemType.TaoBao;
+                this.selectorList.push(".product"), this.atrack.push(".productImg-wrap a", ".productTitle a"), 
+                this.itemType = ItemType.TaoBao;
             }
             var that = this;
             this.initStyle(), Core.autoLazyload((function() {
@@ -3956,8 +3956,12 @@
                     var res = null !== (_f = /item.jd.com\/(.*?).html/i.exec(itemId)) && void 0 !== _f ? _f : [];
                     itemId = res.length > 0 ? res[1] : "";
                 }
-                Tao.isValidTaoId(itemId) && this.initBoxHtml($dom, itemId);
+                Tao.isValidTaoId(itemId) && (this.initBoxHtml($dom, itemId), this.initTagClass($dom, itemId));
             }
+        }, ListService.prototype.initTagClass = function(target, itemId) {
+            this.atrack.forEach((function(e) {
+                target.find(e).hasClass("onekeyvip-item-" + itemId) || target.find(e).addClass("onekeyvip-item-" + itemId);
+            }));
         }, ListService.prototype.initBoxHtml = function(target, itemId) {
             target.append('<div class="onekeyvip-' + this.itemType + '-box-area onekeyvip-box-wait" data-itemid="' + itemId + '"><a class="onekeyvip-box-info onekeyvip-' + this.itemType + '-box-info-default" title="\u70b9\u51fb\u67e5\u8be2">\u5f85\u67e5\u8be2</a></div>');
         }, ListService.prototype.initQuery = function() {
@@ -3993,16 +3997,14 @@
             }));
         }, ListService.prototype.initCouponInfo = function(itemId, couponInfo, target) {
             var _a, $this = $(target);
-            if ((null === (_a = couponInfo.coupons) || void 0 === _a ? void 0 : _a.length) > 0) {
+            if ((null === (_a = null == couponInfo ? void 0 : couponInfo.coupons) || void 0 === _a ? void 0 : _a.length) > 0) {
                 var coupon = couponInfo.coupons[0];
                 this.showQueryFind($this, coupon.coupon_price);
             } else this.showQueryEmpty($this);
             this.showItemUrl(itemId, couponInfo.item_url);
         }, ListService.prototype.showItemUrl = function(itemId, itemUrl) {
-            this.selectora.forEach((function(e) {
-                Core.click("" + e + itemId, (function() {
-                    return Core.open(itemUrl), !1;
-                }));
+            Core.click(".onekeyvip-item-" + itemId, (function() {
+                return Core.open(itemUrl), !1;
             }));
         }, ListService.prototype.showQueryFind = function(selector, couponMoney) {
             selector.html('<a target="_blank" class="onekeyvip-box-info onekeyvip-box-info-find" title="\u5207\u6362\u900f\u660e\u5ea6">' + couponMoney + "\u5143\u5238</a>");
