@@ -68,7 +68,7 @@
 // @include      *://yun.baidu.com/share/link*
 // @exclude      *://*.wandhi.com/*
 // @require      https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
-// @require      https://cdn.jsdelivr.net/npm/sweetalert2@9.14.0/dist/sweetalert2.min.js
+// @require      https://cdn.jsdelivr.net/npm/sweetalert2@11
 // @require      https://lib.baomitu.com/echarts/4.6.0/echarts.min.js
 // @require      https://lib.baomitu.com/layer/2.3/layer.js
 // @require      https://lib.baomitu.com/reflect-metadata/0.1.13/Reflect.min.js
