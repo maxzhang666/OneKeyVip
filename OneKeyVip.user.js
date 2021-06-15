@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2021-06-15 更新，报错请及时反馈
-// @namespace    http://www.wandhi.com/
+// @namespace    https://www.wandhi.com/
 // @version      4.2.29
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(接口偶尔抽风)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
 // @author       MaxZhang
-// @icon         http://www.wandhi.com//favicon.ico
+// @icon         https://www.wandhi.com//favicon.ico
 // @include      *://m.youku.com/v*
 // @include      *://m.youku.com/a*
 // @include      *://v.youku.com/v_*
@@ -3294,12 +3294,12 @@
                     type: "line",
                     step: "end",
                     data: function(data) {
-                        var l = [];
+                        var _a, l = [];
                         if (data.store.length > 0) {
                             var storeData = data.store[0];
                             data.store.length > 1 && (storeData = data.store[1]);
                             var couponsMap_1 = {};
-                            data.promo.length > 0 && data.promo.forEach((function(v) {
+                            (null === (_a = data.promo) || void 0 === _a ? void 0 : _a.length) > 0 && data.promo.forEach((function(v) {
                                 couponsMap_1.hasOwnProperty(1e3 * v.time) || (couponsMap_1[1e3 * v.time] = v);
                             }));
                             var now_1 = storeData.all_line_begin_time;
