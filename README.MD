@@ -51,16 +51,13 @@
 
 ## 💩 交流群
 
-### 一群[**
-340569308**](http://shang.qq.com/wpa/qunwpa?idkey=7fc3fef0db96421305e65c41cc081ffeca507fdc23cab93d731277be829985ec) [**
+### 一群[**340569308**](http://shang.qq.com/wpa/qunwpa?idkey=7fc3fef0db96421305e65c41cc081ffeca507fdc23cab93d731277be829985ec) [**
 一键加群**](http://shang.qq.com/wpa/qunwpa?idkey=7fc3fef0db96421305e65c41cc081ffeca507fdc23cab93d731277be829985ec)
 
-### 二群[**
-655341576**](https://shang.qq.com/wpa/qunwpa?idkey=dd0275fbf9149b71e4f2f4e44902b552c846e9a2234f68eaca35a442510f061b) [**
+### 二群[**655341576**](https://shang.qq.com/wpa/qunwpa?idkey=dd0275fbf9149b71e4f2f4e44902b552c846e9a2234f68eaca35a442510f061b) [**
 一键加群**](https://shang.qq.com/wpa/qunwpa?idkey=dd0275fbf9149b71e4f2f4e44902b552c846e9a2234f68eaca35a442510f061b)
 
-### 三群[**
-722457505**](//shang.qq.com/wpa/qunwpa?idkey=a12d43edc065daad3043ca272a0eb9332ecd878f2921683c51e9d4e02554c80f) 暗号：玩的嗨
+### 三群[**722457505**](//shang.qq.com/wpa/qunwpa?idkey=a12d43edc065daad3043ca272a0eb9332ecd878f2921683c51e9d4e02554c80f) 暗号：玩的嗨
 
 > 有问题可以加群反馈或在网站留言，修复更及时
 
