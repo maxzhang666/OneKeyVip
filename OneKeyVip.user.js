@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2021-06-12 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2021-06-15 更新，报错请及时反馈
 // @namespace    http://www.wandhi.com/
-// @version      4.2.28
+// @version      4.2.29
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(接口偶尔抽风)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
@@ -1457,7 +1457,7 @@
         SiteEnum.XiaMi = "XiaMi", SiteEnum.TaiHe = "TaiHe", SiteEnum.QingTing = "QingTing", 
         SiteEnum.LiZhi = "LiZhi", SiteEnum.MiGu = "MiGu", SiteEnum.XiMaLaYa = "XiMaLaYa", 
         SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", SiteEnum.BDY1 = "BDY1", SiteEnum.LZY = "LZY", 
-        SiteEnum.SuNing = "SuNing", SiteEnum.Vp = "Vp";
+        SiteEnum.SuNing = "SuNing", SiteEnum.Vp = "Vp", SiteEnum.CSDN = "CSDN";
     }(SiteEnum || (SiteEnum = {}));
     var VersionResult, UpdateService = function(_super) {
         function UpdateService() {
@@ -4004,9 +4004,29 @@
         }, ListService.prototype.showQueryEmpty = function(selector) {
             selector.addClass("onekeyvip-box-info-translucent"), selector.html('<a href="javascript:void(0);" class="onekeyvip-box-info onekeyvip-box-info-empty" title="\u5207\u6362\u900f\u660e\u5ea6">\u6682\u65e0\u4f18\u60e0</a>');
         }, ListService;
+    }(PluginBase), CsdnAdService = function(_super) {
+        function CsdnAdService() {
+            var _this = _super.call(this) || this;
+            return _this.rules = new Map([ [ SiteEnum.CSDN, /blog.csdn.net/i ] ]), _this._appName = "csdn", 
+            _this._unique = !1, _this;
+        }
+        return __extends(CsdnAdService, _super), CsdnAdService.prototype.loader = function() {}, 
+        CsdnAdService.prototype.run = function() {
+            this.core.background(this.removeAds, 3), this.commentClean();
+        }, CsdnAdService.prototype.removeAds = function() {
+            CsdnAdService.adSelectors.forEach((function(selector) {
+                $(selector).remove();
+            }));
+        }, CsdnAdService.prototype.commentClean = function() {
+            Core.lazyload((function() {
+                Logger.info("\u8bc4\u8bba\u533a\u6e05\u7406"), $(".comment-list-box").css("overflow", "").css("max-height", ""), 
+                $("#commentPage").removeClass("d-none"), $("#btnMoreComment").remove();
+            }), 3);
+        }, CsdnAdService.adSelectors = [ "#footerRightAds", ".side-question-box", "div[id^='dmp_ad']", "div[class^='ad_']", "div[id^='floor-ad_']", ".adsbygoogle" ], 
+        CsdnAdService;
     }(PluginBase), OneKeyVipInjection = function() {
         function OneKeyVipInjection() {
-            this.plugins = new Array, this.plugins = [ Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(StuService), Container.Require(GwdService) ], 
+            this.plugins = new Array, this.plugins = [ Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(StuService), Container.Require(GwdService), Container.Require(CsdnAdService) ], 
             Logger.info("container loaded");
         }
         return OneKeyVipInjection.prototype.Init = function() {
