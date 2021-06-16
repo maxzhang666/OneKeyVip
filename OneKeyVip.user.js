@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2021-06-15 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2021-06-16 更新，报错请及时反馈
 // @namespace    https://www.wandhi.com/
 // @version      4.2.29
 // @homepage     https://tools.wandhi.com/scripts
@@ -3994,7 +3994,7 @@
                 var coupon = couponInfo.coupons[0];
                 this.showQueryFind($this, coupon.coupon_price);
             } else this.showQueryEmpty($this);
-            this.showItemUrl(itemId, couponInfo.item_url);
+            this.showItemUrl(itemId, null == couponInfo ? void 0 : couponInfo.item_url);
         }, ListService.prototype.showItemUrl = function(itemId, itemUrl) {
             Core.click(".onekeyvip-item-" + itemId, (function() {
                 return Core.open(itemUrl), !1;
