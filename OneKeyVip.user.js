@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2021-06-17 更新，报错请及时反馈
+// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 2021-06-18 更新，报错请及时反馈
 // @namespace    https://www.wandhi.com/
-// @version      4.2.30
+// @version      4.2.31
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(接口偶尔抽风)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
@@ -14,6 +14,7 @@
 // @include      *://*.iqiyi.com/w_*
 // @include      *://*.iqiyi.com/a_*
 // @include      *://*.iqiyi.com/adv*
+// @include      *.iq.com/play/*
 // @include      *://*.le.com/ptv/vplay/*
 // @include      *v.qq.com/x/cover/*
 // @include      *v.qq.com/x/page/*
@@ -407,7 +408,7 @@
                 uuid[i] = chars[19 == i ? 3 & r | 8 : r]);
             } else for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
             return uuid.join("");
-        }, Core.getBrower = function() {
+        }, Core.getBrowser = function() {
             var browser = !1, userAgent = window.navigator.userAgent.toLowerCase();
             return null != userAgent.match(/firefox/) ? browser = BrowerType.Firefox : null != userAgent.match(/edge/) ? browser = BrowerType.Edge : null != userAgent.match(/edg/) ? browser = BrowerType.Edg : null != userAgent.match(/bidubrowser/) ? browser = BrowerType.Baidu : null != userAgent.match(/lbbrowser/) ? browser = BrowerType.Liebao : null != userAgent.match(/ubrowser/) ? browser = BrowerType.UC : null != userAgent.match(/qqbrowse/) ? browser = BrowerType.QQ : null != userAgent.match(/metasr/) ? browser = BrowerType.Sogou : null != userAgent.match(/opr/) ? browser = BrowerType.Opera : null != userAgent.match(/maxthon/) ? browser = BrowerType.Maxthon : null != userAgent.match(/2345explorer/) ? browser = BrowerType.Ie2345 : null != userAgent.match(/chrome/) ? browser = navigator.mimeTypes.length > 10 ? BrowerType.Se360 : BrowerType.Chrome : null != userAgent.match(/safari/) && (browser = BrowerType.Safiri), 
             browser;
@@ -1650,8 +1651,8 @@
                             res.isConfirmed && Core.open("https://browser.gwdang.com/slider/verify.html?fromUrl=" + encodeURIComponent(Runtime.url)), 
                             Swal__default.default.close(res);
                         }));
-                        var brower = Core.getBrower();
-                        if (Logger.debug(brower), brower == BrowerType.Edge || brower == BrowerType.Edg) {
+                        var browser = Core.getBrowser();
+                        if (Logger.debug(browser), browser == BrowerType.Edge || browser == BrowerType.Edg) {
                             "99999999999" != $(".swal2-container").css("z-index") && $(".swal2-container").css("z-index", "99999999999");
                         }
                     }
@@ -2109,7 +2110,7 @@
     }(PluginBase), Menu = Common.Menu, MovieService = function(_super) {
         function MovieService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.YouKu, /youku/i ], [ SiteEnum.IQiYi, /iqiyi/i ], [ SiteEnum.LeShi, /le.com/i ], [ SiteEnum.Tencent_V, /v.qq/i ], [ SiteEnum.TuDou, /tudou/i ], [ SiteEnum.MangGuo, /mgtv/i ], [ SiteEnum.SoHu, /sohu/i ], [ SiteEnum.Acfun, /acfun/i ], [ SiteEnum.BiliBili, /bilibili/i ], [ SiteEnum.M1905, /1905.com/i ], [ SiteEnum.PPTV, /pptv.com/i ], [ SiteEnum.YinYueTai, /yinyuetai/ ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.YouKu, /youku/i ], [ SiteEnum.IQiYi, /iqiyi|iq\.com/i ], [ SiteEnum.LeShi, /le.com/i ], [ SiteEnum.Tencent_V, /v.qq/i ], [ SiteEnum.TuDou, /tudou/i ], [ SiteEnum.MangGuo, /mgtv/i ], [ SiteEnum.SoHu, /sohu/i ], [ SiteEnum.Acfun, /acfun/i ], [ SiteEnum.BiliBili, /bilibili/i ], [ SiteEnum.M1905, /1905.com/i ], [ SiteEnum.PPTV, /pptv.com/i ], [ SiteEnum.YinYueTai, /yinyuetai/ ] ]), 
             _this.menu = new Common.Menu, _this._unique = !1, _this;
         }
         return __extends(MovieService, _super), MovieService.prototype.loader = function() {
