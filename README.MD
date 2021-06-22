@@ -119,7 +119,7 @@
 
 <details>
 <summary>展开</summary>
-<pre><code>
+
 * 4.2.31 增加新的匹配规则
 * 4.2.30 修复部分浏览器页面滚动条失效
 * 4.2.29 新增CSDN界面净化功能
@@ -175,7 +175,7 @@
 
 [**More**](https://github.com/maxzhang666/OneKeyVip/blob/master/CHANGELOG)
 
-</code></pre>
+
 </details>
 
 
