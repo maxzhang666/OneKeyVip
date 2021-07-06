@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 持续更新
+// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.2.33
+// @version      4.2.34
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(接口偶尔抽风)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
@@ -1586,7 +1586,7 @@
     }(PluginBase), GwdService = function(_super) {
         function GwdService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
-            return _this.rules = new Map([ [ SiteEnum.TMall, /detail.tmall.com\/item.htm/i ], [ SiteEnum.TaoBao, /item.taobao.com/i ], [ SiteEnum.JingDong, /item.jd.(com|hk)\/[0-9]*.html/i ], [ SiteEnum.SuNing, /product.suning.com/i ], [ SiteEnum.Vp, /detail.vip.com/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.TMall, /detail\.tmall\.com\/item\.htm/i ], [ SiteEnum.TaoBao, /item\.taobao\.com/i ], [ SiteEnum.JingDong, /item\.jd\.(com|hk)\/[0-9]*\.html/i ], [ SiteEnum.SuNing, /product\.suning\.com/i ], [ SiteEnum.Vp, /detail\.vip\.com/i ] ]), 
             _this._appName = "GwdService", _this.factory = new DefCoupon, _this.dfp = "0H88kUZe0CP80DtM0C0VkUc20z88kUZM6UTM0UMikUc26z82kUPe0H88kUP80H88EV3+0UZi0DZ2", 
             _this.fp = "378437f5078442c878e99f78720278c4", _this;
         }
@@ -2012,7 +2012,7 @@
     }(PluginBase), TaoBaoService = function(_super) {
         function TaoBaoService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
-            return _this.rules = new Map([ [ SiteEnum.TaoBao, /taobao.com/i ], [ SiteEnum.TMall, /tmall/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.TaoBao, /taobao\.com/i ], [ SiteEnum.TMall, /tmall\.com/i ] ]), 
             _this.UrlTag = "Wandhi_qLink", _this;
         }
         var _a;
@@ -2042,7 +2042,7 @@
     }(PluginBase), BiliImgService = function(_super) {
         function BiliImgService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.BiliBili, /bilibili.com\/video\/[av|bv]*/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.BiliBili, /bilibili\.com\/video\/[av|bv]*/i ] ]), 
             _this._appName = "bilibili", _this;
         }
         return __extends(BiliImgService, _super), BiliImgService.prototype.loader = function() {
@@ -2051,7 +2051,11 @@
             this.init();
         }, BiliImgService.prototype.init = function() {
             Core.autoLazyload((function() {
-                return !!($(".video-data").length && $(".bilibili-player-video-info-people-number").length && $.isNumeric($(".coin").text().replace("\u4e07", "").trim()));
+                if ($(".video-data").length && $(".bilibili-player-video-info-people-number").length) {
+                    var coin = $(".coin").text().replace("\u4e07", "").trim();
+                    if ($.isNumeric(coin) || "\u6295\u5e01" == coin) return !0;
+                }
+                return !1;
             }), (function() {
                 BiliImgService.add_img_btn(), BiliImgService.add_down_btn(), BiliImgService.add_triple_btn();
             }), 1);
@@ -2097,14 +2101,14 @@
     }(PluginBase), Menu = Common.Menu, MovieService = function(_super) {
         function MovieService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.YouKu, /youku/i ], [ SiteEnum.IQiYi, /iqiyi|iq\.com/i ], [ SiteEnum.LeShi, /le.com/i ], [ SiteEnum.Tencent_V, /v.qq/i ], [ SiteEnum.TuDou, /tudou/i ], [ SiteEnum.MangGuo, /mgtv/i ], [ SiteEnum.SoHu, /sohu/i ], [ SiteEnum.Acfun, /acfun/i ], [ SiteEnum.BiliBili, /bilibili/i ], [ SiteEnum.M1905, /1905.com/i ], [ SiteEnum.PPTV, /pptv.com/i ], [ SiteEnum.YinYueTai, /yinyuetai/ ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.YouKu, /youku\.com/i ], [ SiteEnum.IQiYi, /iqiyi|iq\.com/i ], [ SiteEnum.LeShi, /\.le\.com/i ], [ SiteEnum.Tencent_V, /v\.qq/i ], [ SiteEnum.TuDou, /tudou\.com/i ], [ SiteEnum.MangGuo, /mgtv\.com/i ], [ SiteEnum.SoHu, /sohu\.com/i ], [ SiteEnum.Acfun, /acfun\.com/i ], [ SiteEnum.BiliBili, /bilibili\.com/i ], [ SiteEnum.M1905, /1905\.com/i ], [ SiteEnum.PPTV, /pptv\.com/i ], [ SiteEnum.YinYueTai, /yinyuetai\.com/ ] ]), 
             _this.menu = new Common.Menu, _this._unique = !1, _this;
         }
         return __extends(MovieService, _super), MovieService.prototype.loader = function() {
             "undefined" == typeof $ && Core.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js");
         }, MovieService.prototype.run = function() {
             this.menu.Init([ {
-                title: "\u7535\u5f71\u641c\u7d22",
+                title: "\u672c\u6b21\u5173\u95ed",
                 show: "\u672c\u6b21<br>\u5173\u95ed",
                 type: "search"
             }, {
@@ -2134,7 +2138,7 @@
     }(PluginBase), JdService = function(_super) {
         function JdService() {
             var _this = _super.call(this) || this;
-            return _this._appName = "JdService", _this.rules = new Map([ [ SiteEnum.JingDong, /item.jd/i ] ]), 
+            return _this._appName = "JdService", _this.rules = new Map([ [ SiteEnum.JingDong, /item\.jd\.c/i ] ]), 
             _this;
         }
         var _a;
@@ -2162,7 +2166,7 @@
     }(), MusicService = function(_super) {
         function MusicService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.WangYi, /163(.*)song/i ], [ SiteEnum.Tencent_M, /y.QQ(.*)song/i ], [ SiteEnum.KuGou, /kugou.com\/song\/*/i ], [ SiteEnum.KuWo, /kuwo(.*)yinyue/i ], [ SiteEnum.XiaMi, /xiami/i ], [ SiteEnum.TaiHe, /taihe.com/i ], [ SiteEnum.QingTing, /qingting/i ], [ SiteEnum.LiZhi, /lizhi/i ], [ SiteEnum.MiGu, /migu/i ], [ SiteEnum.XiMaLaYa, /ximalaya/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.WangYi, /163(.*)song/i ], [ SiteEnum.Tencent_M, /y\.QQ(.*)song/i ], [ SiteEnum.KuGou, /kugou\.com\/song\/*/i ], [ SiteEnum.KuWo, /kuwo(.*)yinyue/i ], [ SiteEnum.XiaMi, /xiami/i ], [ SiteEnum.TaiHe, /taihe\.com/i ], [ SiteEnum.QingTing, /qingting\./i ], [ SiteEnum.LiZhi, /lizhi\./i ], [ SiteEnum.MiGu, /migu\./i ], [ SiteEnum.XiMaLaYa, /ximalaya\./i ] ]), 
             _this.menu = new Common.Menu, _this;
         }
         return __extends(MusicService, _super), MusicService.prototype.loader = function() {
@@ -2213,7 +2217,7 @@
     }(PluginBase), StuService = function(_super) {
         function StuService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.SXB, /shangxueba.com\/ask\/.*html/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.SXB, /shangxueba\.com\/ask\/\.*html/i ] ]), 
             _this;
         }
         return __extends(StuService, _super), StuService.prototype.loader = function() {
@@ -2244,7 +2248,7 @@
                     title: "\u8bf7\u6211\u559d\u4e00\u676f",
                     shadeClose: !0,
                     area: "800px",
-                    content: '<img src="https://i.loli.net/2019/05/14/5cda672add6f594934.jpg">'
+                    content: '<img src="https://i.loli.net/2019/05/14/5cda672add6f594934.jpg" alt="Buy me drink">'
                 });
             })), $("body").on("click", "[data-cat=search]", (function() {
                 Route.querySbx($("#Hidd_id").val(), (function(data) {
@@ -2255,9 +2259,9 @@
                     }));
                 }));
             })), $("body").on("click", "[data-cat=tb]", (function() {
-                Core.open("https://t.cn/A6LoYknW");
+                Core.open("http://shop.huizhek.com");
             })), $("body").on("click", "[data-cat=jd]", (function() {
-                Core.open("https://t.cn/A6LoYnHT");
+                Core.open("http://jd.huizhek.com");
             }));
         }, StuService;
     }(PluginBase);
@@ -2278,7 +2282,7 @@
     }(), ListService = function(_super) {
         function ListService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.TaoBao, /s.taobao.com\/search/i ], [ SiteEnum.TMall, /list.tmall.com\/search_product.htm/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.TaoBao, /s\.taobao\.com\/search/i ], [ SiteEnum.TMall, /list\.tmall\.com\/search_product\.htm/i ] ]), 
             _this.selectorList = [], _this.selectora = [], _this.atrack = [], _this.key = "list_service_", 
             _this._appName = "TaoList", _this;
         }
@@ -2410,7 +2414,7 @@
     }(PluginBase), CsdnAdService = function(_super) {
         function CsdnAdService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.CSDN, /blog.csdn.net/i ] ]), _this._appName = "csdn", 
+            return _this.rules = new Map([ [ SiteEnum.CSDN, /blog\.csdn\.net/i ] ]), _this._appName = "csdn", 
             _this._unique = !1, _this;
         }
         return __extends(CsdnAdService, _super), CsdnAdService.prototype.loader = function() {}, 
