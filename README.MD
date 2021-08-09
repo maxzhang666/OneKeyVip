@@ -120,6 +120,7 @@
 <details>
 <summary>展开</summary>
 <pre>
+小调整不在记录
 <ul>
 <li>4.2.33 修正bili部分页面不显示按钮</li>
 <li>4.2.32 修正历史价格弹窗不显示的问题</li>
