@@ -439,7 +439,7 @@
     var AjaxOption = function() {
         function AjaxOption(_url, _methodType, _data, _success, _header, timeOut) {
             void 0 === _methodType && (_methodType = "GET"), void 0 === _header && (_header = new Map), 
-            void 0 === timeOut && (timeOut = 30), this.url = _url, this.methodType = _methodType, 
+            void 0 === timeOut && (timeOut = 60), this.url = _url, this.methodType = _methodType, 
             this.onSuccess = _success, this.onError = _success, this.data = _data, this.headers = _header, 
             this.timeOut = timeOut;
         }
