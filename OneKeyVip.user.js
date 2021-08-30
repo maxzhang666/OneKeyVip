@@ -2011,7 +2011,7 @@
     }(PluginBase), TaoBaoService = function(_super) {
         function TaoBaoService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
-            return _this.rules = new Map([ [ SiteEnum.TaoBao, /taobao\.com/i ], [ SiteEnum.TMall, /tmall\.com/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.TaoBao, /taobao\.com/i ], [ SiteEnum.TMall, /tmall\.com|hk/i ] ]), 
             _this.UrlTag = "Wandhi_qLink", _this;
         }
         var _a;
