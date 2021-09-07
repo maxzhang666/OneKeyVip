@@ -1,7 +1,7 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 长期更新,放心使用
+// @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.2.38
+// @version      4.2.39
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(接口偶尔抽风)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
@@ -79,6 +79,7 @@
 // @require      https://cdn.jsdelivr.net/npm/vuex@3.4.0/dist/vuex.min.js
 // @require      https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js
 // @require      https://cdn.jsdelivr.net/npm/crypto-js@4.0.0/crypto-js.js
+// @require      https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js
 // @license      MIT
 // @grant        GM_setClipboard
 // @run-at       document-end
@@ -99,19 +100,20 @@
 // @grant        GM_deleteValue
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
+// @compatible   firefox chrome opera safari edge
 // @antifeature  referral-link 此提示为GreasyFork代码规范要求含有查券功能的脚本必须添加，实际使用无任何强制跳转，代码可查，请知悉。
 // ==/UserScript==
 
 !function(global, factory) {
-    "object" == typeof exports && "undefined" != typeof module ? factory(require("vue"), require("reflect-metadata"), require("sweetalert2"), require("crypto-js")) : "function" == typeof define && define.amd ? define([ "vue", "reflect-metadata", "sweetalert2", "crypto-js" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).Vue, null, global.Swal, global.CryptoJS);
-}(this, (function(Vue, reflectMetadata, Swal, CryptoJS) {
+    "object" == typeof exports && "undefined" != typeof module ? factory(require("sweetalert2"), require("vue"), require("reflect-metadata"), require("crypto-js")) : "function" == typeof define && define.amd ? define([ "sweetalert2", "vue", "reflect-metadata", "crypto-js" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).Swal, global.Vue, null, global.CryptoJS);
+}(this, (function(Swal, Vue, reflectMetadata, CryptoJS) {
     "use strict";
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
         };
     }
-    var Vue__default = _interopDefaultLegacy(Vue), Swal__default = _interopDefaultLegacy(Swal), CryptoJS__default = _interopDefaultLegacy(CryptoJS), extendStatics = function(d, b) {
+    var Swal__default = _interopDefaultLegacy(Swal), Vue__default = _interopDefaultLegacy(Vue), CryptoJS__default = _interopDefaultLegacy(CryptoJS), extendStatics = function(d, b) {
         return (extendStatics = Object.setPrototypeOf || {
             __proto__: []
         } instanceof Array && function(d, b) {
@@ -307,13 +309,62 @@
         return Core.appendTo = function(selecter, html) {
             $(selecter).append(html);
         }, Core.lazyload = function(callback, time) {
-            void 0 === time && (time = 5), setTimeout((function() {
-                callback();
-            }), 1e3 * time);
+            return void 0 === time && (time = 5), __awaiter(this, void 0, Promise, (function() {
+                var _this = this;
+                return __generator(this, (function(_a) {
+                    return [ 2, new Promise((function(resolve) {
+                        setTimeout((function() {
+                            return __awaiter(_this, void 0, void 0, (function() {
+                                return __generator(this, (function(_a) {
+                                    switch (_a.label) {
+                                      case 0:
+                                        return [ 4, callback() ];
+
+                                      case 1:
+                                        return _a.sent(), resolve(), [ 2 ];
+                                    }
+                                }));
+                            }));
+                        }), 1e3 * time);
+                    })) ];
+                }));
+            }));
         }, Core.autoLazyload = function(is_ok, callback, time) {
-            void 0 === time && (time = 5), is_ok() ? callback() : setTimeout((function() {
-                Core.autoLazyload(is_ok, callback, time);
-            }), 1e3 * time);
+            return void 0 === time && (time = 5), __awaiter(this, void 0, Promise, (function() {
+                var _this = this;
+                return __generator(this, (function(_a) {
+                    return [ 2, new Promise((function(resolve) {
+                        return __awaiter(_this, void 0, void 0, (function() {
+                            return __generator(this, (function(_a) {
+                                switch (_a.label) {
+                                  case 0:
+                                    return is_ok() ? [ 3, 1 ] : (setTimeout((function() {
+                                        Core.autoLazyload(is_ok, callback, time).then((function() {
+                                            return resolve();
+                                        }));
+                                    }), 1e3 * time), [ 3, 3 ]);
+
+                                  case 1:
+                                    return [ 4, callback() ];
+
+                                  case 2:
+                                    _a.sent(), Logger.debug("\u81ea\u52a8\u5ef6\u8fdf\u56de\u8c03\u6267\u884c\u5b8c\u6bd5,\u5ef6\u65f6\u65f6\u95f4:" + time), 
+                                    resolve(), _a.label = 3;
+
+                                  case 3:
+                                    return [ 2 ];
+                                }
+                            }));
+                        }));
+                    })) ];
+                }));
+            }));
+        }, Core.sleep = function(time) {
+            return new Promise((function(resolve) {
+                setTimeout((function() {
+                    resolve();
+                }), 1e3 * time);
+            }));
         }, Core.prototype.background = function(callback, time) {
             void 0 === time && (time = 5), setInterval((function() {
                 callback();
@@ -515,6 +566,16 @@
             layer.load(style, {
                 shade: _shade,
                 time: 1e3 * _time
+            });
+        }, Alert.loadingS = function(msg, time) {
+            void 0 === time && (time = -1), Swal__default.default.fire({
+                title: msg,
+                didOpen: function() {
+                    Swal__default.default.showLoading();
+                },
+                allowOutsideClick: !1,
+                allowEscapeKey: !1,
+                timer: -1 == time ? void 0 : 1e3 * time
             });
         }, Alert;
     }(), Http = function() {
@@ -991,8 +1052,8 @@
         SiteEnum.Tencent_M = "Tencent_M", SiteEnum.KuGou = "KuGou", SiteEnum.KuWo = "KuWo", 
         SiteEnum.XiaMi = "XiaMi", SiteEnum.TaiHe = "TaiHe", SiteEnum.QingTing = "QingTing", 
         SiteEnum.LiZhi = "LiZhi", SiteEnum.MiGu = "MiGu", SiteEnum.XiMaLaYa = "XiMaLaYa", 
-        SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", SiteEnum.BDY1 = "BDY1", SiteEnum.LZY = "LZY", 
-        SiteEnum.SuNing = "SuNing", SiteEnum.Vp = "Vp", SiteEnum.CSDN = "CSDN";
+        SiteEnum.WenKu = "WenKu", SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", SiteEnum.BDY1 = "BDY1", 
+        SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", SiteEnum.Vp = "Vp", SiteEnum.CSDN = "CSDN";
     }(SiteEnum || (SiteEnum = {}));
     var UpdateService = function(_super) {
         function UpdateService() {
@@ -2099,7 +2160,7 @@
         BiliImgService.down = '\n    <span id="downvideo" style="\n    background-color: #fb7199;\n    color: white;\n    font-size: 1rem;\n    text-align: center;\n    margin-left: 1rem;\n    padding:0.5rem;\n    cursor: pointer;\n    border-radius: 1rem;\n    ">\n        \u4e0b\u8f7d\u89c6\u9891\n    </span>', 
         BiliImgService.tripleClick = '\n    <span id="tripleClick" style="\n    background-color: #fb7199;\n    color: white;\n    font-size: 1rem;\n    text-align: center;\n    margin-left: 1rem;\n    padding:0.5rem;\n    cursor: pointer;\n    border-radius: 1rem;\n    ">\n        \u4e00\u952e\u4e09\u8fde\n    </span>', 
         BiliImgService;
-    }(PluginBase), Menu = Common.Menu, MovieService = function(_super) {
+    }(PluginBase), Menu$1 = Common.Menu, MovieService = function(_super) {
         function MovieService() {
             var _this = _super.call(this) || this;
             return _this.rules = new Map([ [ SiteEnum.YouKu, /youku\.com/i ], [ SiteEnum.IQiYi, /iqiyi|iq\.com/i ], [ SiteEnum.LeShi, /\.le\.com/i ], [ SiteEnum.Tencent_V, /v\.qq/i ], [ SiteEnum.TuDou, /tudou\.com/i ], [ SiteEnum.MangGuo, /mgtv\.com/i ], [ SiteEnum.SoHu, /sohu\.com/i ], [ SiteEnum.Acfun, /acfun\.com/i ], [ SiteEnum.BiliBili, /bilibili\.com/i ], [ SiteEnum.M1905, /1905\.com/i ], [ SiteEnum.PPTV, /pptv\.com/i ], [ SiteEnum.YinYueTai, /yinyuetai\.com/ ] ]), 
@@ -2129,7 +2190,7 @@
             $("body").on("click", "[data-cat=process]", (function() {
                 Core.open("http://tv.wandhi.com/go.html?url=" + encodeURIComponent(window.location.href));
             })), $("body").on("click", "[data-cat=search]", (function() {
-                Menu.close();
+                Menu$1.close();
             })), $("body").on("click", "[data-cat=tb]", (function() {
                 Core.open("http://shop.huizhek.com");
             })), $("body").on("click", "[data-cat=jd]", (function() {
@@ -2437,9 +2498,105 @@
             }), 3);
         }, CsdnAdService.adSelectors = [ "#footerRightAds", ".side-question-box", "div[id^='dmp_ad']", "div[class^='ad_']", "div[id^='floor-ad_']", ".adsbygoogle" ], 
         CsdnAdService;
+    }(PluginBase), Menu = Common.Menu, WenKuService = function(_super) {
+        function WenKuService() {
+            var _this = _super.call(this) || this;
+            return _this.rules = new Map([ [ SiteEnum.WenKu, /wenku\.baidu\.com\/view/i ] ]), 
+            _this._unique = !1, _this.menu = new Common.Menu, _this._appName = "WenKu", _this;
+        }
+        return __extends(WenKuService, _super), WenKuService.prototype.loader = function() {
+            "undefined" == typeof $ && Core.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js"), 
+            Core.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
+        }, WenKuService.prototype.run = function() {
+            this.menu.Init([ {
+                title: "\u672c\u6b21\u5173\u95ed",
+                show: "\u672c\u6b21<br>\u5173\u95ed",
+                type: "search"
+            }, {
+                title: "\u5bfc\u51fa\u6587\u6863",
+                show: "\u5bfc\u51fa<br>\u6587\u6863",
+                type: "process"
+            }, {
+                title: "\u7edd\u4e16\u597d\u5238",
+                show: "\u7edd\u4e16<br>\u597d\u5238",
+                type: "tb"
+            }, {
+                title: "\u4eac\u4e1c\u597d\u5238",
+                show: "\u4eac\u4e1c<br>\u597d\u5238",
+                type: "jd"
+            } ], this._onClick);
+        }, WenKuService.prototype._onClick = function() {
+            return __awaiter(this, void 0, void 0, (function() {
+                return __generator(this, (function(_a) {
+                    return "body", $("body").on("click", "[data-cat=process]", (function() {
+                        return __awaiter(this, void 0, void 0, (function() {
+                            return __generator(this, (function(_a) {
+                                switch (_a.label) {
+                                  case 0:
+                                    return Alert.loadingS("\u89e3\u6790\u4e2d\u8bf7\u7a0d\u540e"), [ 4, Core.lazyload((function() {
+                                        WenKuService.loadFullDoc().then((function() {
+                                            Logger.debug("\u8f7d\u5165\u6587\u5e93\u5185\u5bb9\u5b8c\u6210"), window.scrollTo(0, 0), 
+                                            WenKuService.exportDoc(), Swal__default.default.close();
+                                        }));
+                                    }), .5) ];
+
+                                  case 1:
+                                    return _a.sent(), [ 2 ];
+                                }
+                            }));
+                        }));
+                    })), $("body").on("click", "[data-cat=search]", (function() {
+                        Menu.close();
+                    })), $("body").on("click", "[data-cat=tb]", (function() {
+                        Core.open("http://shop.huizhek.com");
+                    })), $("body").on("click", "[data-cat=jd]", (function() {
+                        Core.open("http://jd.huizhek.com");
+                    })), [ 2 ];
+                }));
+            }));
+        }, WenKuService.exportDoc = function() {
+            var doc = $(".reader-word-layer"), _doc = $(doc).clone();
+            _doc.each((function(i, e) {
+                $(e).is(":hidden") && $(e).remove();
+            }));
+            var docContent = "Mime-Version: 1.0\nContent-Base: " + Runtime.url + '\nContent-Type: Multipart/related; boundary="NEXT.ITEM-BOUNDARY";type="text/html"\n\n--NEXT.ITEM-BOUNDARY\nContent-Type: text/html; charset="utf-8"\nContent-Location: ' + Runtime.url + '\n\n<!DOCTYPE html>\n<html>\n<head>\n<meta http-equiv="Content-Type" content="text/html; charset=utf-8">\n<style>\n\n</style>\n</head>\n<body>\n' + _doc.text().split("\n").map((function(t) {
+                return "<p>" + t + "</p>";
+            })).join("") + "\n</body>\n</html>\n--NEXT.ITEM-BOUNDARY--";
+            saveAs(new Blob([ docContent ], {
+                type: "application/msword;charset=utf-8"
+            }), unsafeWindow.pageData.viewBiz.docInfo.title + ".doc");
+        }, WenKuService.scrollToEnd = function() {
+            return Core.autoLazyload((function() {
+                var _a, docEle = unsafeWindow.document.documentElement, heightTotal = docEle.scrollHeight, scrollTop = null !== (_a = docEle.scrollTop) && void 0 !== _a ? _a : unsafeWindow.document.body.scrollTop, clientHeight = docEle.clientHeight;
+                return heightTotal - scrollTop <= 1.1 * clientHeight || (window.scroll(0, scrollTop + clientHeight / 4), 
+                !1);
+            }), (function() {
+                Logger.debug("\u6eda\u52a8\u7ed3\u675f");
+            }), .1);
+        }, WenKuService.loadFullDoc = function() {
+            var _this = this, funded = !1, that = this;
+            return Core.autoLazyload((function() {
+                var _a, btn = null !== (_a = unsafeWindow.document.querySelector(".goBtn")) && void 0 !== _a ? _a : unsafeWindow.document.querySelector(".read-all");
+                return funded = !0, null != btn || funded;
+            }), (function() {
+                return __awaiter(_this, void 0, void 0, (function() {
+                    var btn, _a;
+                    return __generator(this, (function(_b) {
+                        switch (_b.label) {
+                          case 0:
+                            return (btn = null !== (_a = unsafeWindow.document.querySelector(".goBtn")) && void 0 !== _a ? _a : unsafeWindow.document.querySelector(".read-all")) && $(btn).click(), 
+                            Logger.debug("\u8fdb\u5165\u6eda\u52a8"), [ 4, that.scrollToEnd() ];
+
+                          case 1:
+                            return _b.sent(), Logger.debug("\u7ed3\u675f\u6eda\u52a8"), [ 2 ];
+                        }
+                    }));
+                }));
+            }), 2);
+        }, WenKuService.loaded = !1, WenKuService;
     }(PluginBase), OneKeyVipInjection = function() {
         function OneKeyVipInjection() {
-            this.plugins = new Array, this.plugins = [ Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(StuService), Container.Require(GwdService), Container.Require(CsdnAdService) ], 
+            this.plugins = new Array, this.plugins = [ Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(StuService), Container.Require(GwdService), Container.Require(CsdnAdService), Container.Require(WenKuService) ], 
             Logger.info("container loaded");
         }
         return OneKeyVipInjection.prototype.Init = function() {
