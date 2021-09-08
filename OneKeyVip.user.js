@@ -100,7 +100,11 @@
 // @grant        GM_deleteValue
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
-// @compatible   firefox chrome opera safari edge
+// @compatible   firefox
+// @compatible   chrome 
+// @compatible   opera safari edge
+// @compatible   safari
+// @compatible   edge
 // @antifeature  referral-link 此提示为GreasyFork代码规范要求含有查券功能的脚本必须添加，实际使用无任何强制跳转，代码可查，请知悉。
 // ==/UserScript==
 
