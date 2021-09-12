@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.2.39
+// @version      4.2.40
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(接口偶尔抽风)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
@@ -69,6 +69,7 @@
 // @include      *://yun.baidu.com/s/*
 // @include      *://pan.baidu.com/share/link*
 // @include      *://yun.baidu.com/share/link*
+// @include      *://wenku.baidu.com/view/*
 // @exclude      *://*.wandhi.com/*
 // @require      https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
 // @require      https://cdn.jsdelivr.net/npm/sweetalert2@11
@@ -2285,56 +2286,6 @@
                 Core.open("https://t.cn/A6LoYnHT");
             }));
         }, MusicService;
-    }(PluginBase), StuService = function(_super) {
-        function StuService() {
-            var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.SXB, /shangxueba\.com\/ask\/\.*html/i ] ]), 
-            _this;
-        }
-        return __extends(StuService, _super), StuService.prototype.loader = function() {
-            "undefined" == typeof $ && Core.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js"), 
-            Core.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
-        }, StuService.prototype.run = function() {
-            this.menu.Init([ {
-                title: "\u67e5\u770b\u7b54\u6848",
-                show: "\u67e5\u770b<br>\u7b54\u6848",
-                type: "search"
-            }, {
-                title: "\u6253\u8d4f\u4f5c\u8005",
-                show: "\u6253\u8d4f<br>\u4f5c\u8005",
-                type: "process"
-            }, {
-                title: "\u7edd\u4e16\u597d\u5238",
-                show: "\u7edd\u4e16<br>\u597d\u5238",
-                type: "tb"
-            }, {
-                title: "\u4eac\u4e1c\u597d\u5238",
-                show: "\u4eac\u4e1c<br>\u597d\u5238",
-                type: "jd"
-            } ], this._onClick);
-        }, StuService.prototype._onClick = function() {
-            $("body").on("click", "[data-cat=process]", (function() {
-                layer.open({
-                    type: 1,
-                    title: "\u8bf7\u6211\u559d\u4e00\u676f",
-                    shadeClose: !0,
-                    area: "800px",
-                    content: '<img src="https://i.loli.net/2019/05/14/5cda672add6f594934.jpg" alt="Buy me drink">'
-                });
-            })), $("body").on("click", "[data-cat=search]", (function() {
-                Route.querySbx($("#Hidd_id").val(), (function(data) {
-                    data.status ? (Alert.open("\u7b54\u6848", data.msg), Route.sbxFeedback(dataid, data.msg)) : "wronganhao" == data.msg ? (Alert.prompt("\u53e3\u4ee4\u9519\u8bef\uff0c\u8bf7\u5c06\u5f39\u51fa\u7684\u9875\u9762\u4e2d\u7684\u53e3\u4ee4\u586b\u5165\u540e\u91cd\u8bd5\uff01", Config.get("sxb_anhao", ""), (function(v) {
-                        Config.set("sxb_anhao", v), Alert.info("\u8bf7\u518d\u6b21\u70b9\u51fb\u67e5\u770b\u7b54\u6848\u6309\u94ae");
-                    }), 4), Core.open("http://www.lelunwen.com/e/action/ListInfo/?classid=45")) : Alert.confim("\u6ca1\u67e5\u5230\u7b54\u6848", "\u8981\u4e0d\u8981\u8df3\u8f6c\u5230\u67e5\u8be2\u9875\u770b\u770b\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function() {
-                        Core.open(Runtime.url.replace("shangxueba", "shangxueba365"));
-                    }));
-                }));
-            })), $("body").on("click", "[data-cat=tb]", (function() {
-                Core.open("http://shop.huizhek.com");
-            })), $("body").on("click", "[data-cat=jd]", (function() {
-                Core.open("http://jd.huizhek.com");
-            }));
-        }, StuService;
     }(PluginBase), ItemType;
     !function(ItemType) {
         ItemType.TaoBao = "tb", ItemType.TMall = "tm", ItemType.JingDong = "jd", ItemType.JingDongChaoshi = "jdcs";
@@ -2600,7 +2551,7 @@
         }, WenKuService.loaded = !1, WenKuService;
     }(PluginBase), OneKeyVipInjection = function() {
         function OneKeyVipInjection() {
-            this.plugins = new Array, this.plugins = [ Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(StuService), Container.Require(GwdService), Container.Require(CsdnAdService), Container.Require(WenKuService) ], 
+            this.plugins = new Array, this.plugins = [ Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(GwdService), Container.Require(CsdnAdService), Container.Require(WenKuService) ], 
             Logger.info("container loaded");
         }
         return OneKeyVipInjection.prototype.Init = function() {
