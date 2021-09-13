@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.2.40
+// @version      4.2.41
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(接口偶尔抽风)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
@@ -370,6 +370,9 @@
                     resolve();
                 }), 1e3 * time);
             }));
+        }, Core.random = function(min, max) {
+            var range = max - min, rand = Math.random();
+            return min + Math.round(rand * range);
         }, Core.prototype.background = function(callback, time) {
             void 0 === time && (time = 5), setInterval((function() {
                 callback();
@@ -2387,9 +2390,11 @@
         }, ListService.prototype.initBoxHtml = function(target, itemId) {
             target.append('<div class="onekeyvip-' + this.itemType + '-box-area onekeyvip-box-wait" data-itemid="' + itemId + '"><a class="onekeyvip-box-info onekeyvip-' + this.itemType + '-box-info-default" title="\u70b9\u51fb\u67e5\u8be2">\u5f85\u67e5\u8be2</a></div>');
         }, ListService.prototype.initQuery = function() {
-            var _this = this;
+            var that = this;
             $(".onekeyvip-box-wait").each((function(index, ele) {
-                _this.queryInfo(ele);
+                Core.sleep(Core.random(10, 100) / 100).then((function() {
+                    that.queryInfo(ele);
+                }));
             }));
         }, ListService.prototype.queryInfo = function(target) {
             return __awaiter(this, void 0, Promise, (function() {
