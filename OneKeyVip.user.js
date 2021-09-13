@@ -1,13 +1,10 @@
-// ==UserScript==
-// @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 长期更新,放心使用
-// @namespace    https://www.wandhi.com/
+// ==UserScript== // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 长期更新,放心使用 // @namespace    https://www.wandhi.com/
 // @version      4.2.41
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(接口偶尔抽风)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
 // @author       MaxZhang
-// @icon         https://www.wandhi.com//favicon.ico
-// @include      *://m.youku.com/v*
+// @icon         https://www.wandhi.com//favicon.ico // @include      *://m.youku.com/v*
 // @include      *://m.youku.com/a*
 // @include      *://v.youku.com/v_*
 // @include      *://v.youku.com/pad_show*
@@ -70,6 +67,7 @@
 // @include      *://pan.baidu.com/share/link*
 // @include      *://yun.baidu.com/share/link*
 // @include      *://wenku.baidu.com/view/*
+// @include      *://blog.csdn.net/*
 // @exclude      *://*.wandhi.com/*
 // @require      https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
 // @require      https://cdn.jsdelivr.net/npm/sweetalert2@11
@@ -81,33 +79,8 @@
 // @require      https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js
 // @require      https://cdn.jsdelivr.net/npm/crypto-js@4.0.0/crypto-js.js
 // @require      https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js
-// @license      MIT
-// @grant        GM_setClipboard
-// @run-at       document-end
-// @connect      shangxueba365.com
-// @connect      api.wandhi.com
-// @connect      cdn.jsdelivr.net
-// @connect      tool.manmanbuy.com
-// @connect      xbeibeix.com
-// @connect      gwdang.com
-// @grant        unsafeWindow
-// @grant        GM_xmlhttpRequest
-// @grant        GM_info
-// @grant        GM.addStyle
-// @grant        GM_getValue
-// @grant        GM_setValue
-// @grant        GM_notification
-// @grant        GM_openInTab
-// @grant        GM_deleteValue
-// @grant        GM_registerMenuCommand
-// @grant        GM_unregisterMenuCommand
-// @compatible   firefox
-// @compatible   chrome 
-// @compatible   opera safari edge
-// @compatible   safari
-// @compatible   edge
-// @antifeature  referral-link 此提示为GreasyFork代码规范要求含有查券功能的脚本必须添加，实际使用无任何强制跳转，代码可查，请知悉。
-// ==/UserScript==
+// @license MIT // @grant GM_setClipboard // @run-at document-end // @connect shangxueba365.com // @connect api.wandhi.com // @connect cdn.jsdelivr.net // @connect tool.manmanbuy.com // @connect xbeibeix.com // @connect gwdang.com // @grant unsafeWindow // @grant GM_xmlhttpRequest // @grant GM_info // @grant GM.addStyle // @grant GM_getValue // @grant GM_setValue // @grant GM_notification // @grant GM_openInTab // @grant GM_deleteValue // @grant GM_registerMenuCommand // @grant
+GM_unregisterMenuCommand // @compatible firefox // @compatible chrome // @compatible opera safari edge // @compatible safari // @compatible edge // @antifeature referral-link 此提示为GreasyFork代码规范要求含有查券功能的脚本必须添加，实际使用无任何强制跳转，代码可查，请知悉。 // ==/UserScript==
 
 !function(global, factory) {
     "object" == typeof exports && "undefined" != typeof module ? factory(require("sweetalert2"), require("vue"), require("reflect-metadata"), require("crypto-js")) : "function" == typeof define && define.amd ? define([ "sweetalert2", "vue", "reflect-metadata", "crypto-js" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).Swal, global.Vue, null, global.CryptoJS);
@@ -2444,8 +2417,9 @@
             return _this.rules = new Map([ [ SiteEnum.CSDN, /blog\.csdn\.net/i ] ]), _this._appName = "csdn", 
             _this._unique = !1, _this;
         }
-        return __extends(CsdnAdService, _super), CsdnAdService.prototype.loader = function() {}, 
-        CsdnAdService.prototype.run = function() {
+        return __extends(CsdnAdService, _super), CsdnAdService.prototype.loader = function() {
+            Core.appendCssContent("\n        #content_views pre{\n            -webkit-touch-callout: auto !important;\n            -webkit-user-select: auto !important;\n            -khtml-user-select: auto !important;\n            -moz-user-select: auto !important;\n            -ms-user-select: auto !important; \n            user-select: auto !important; \n        }\n        #content_views pre code{\n            -webkit-touch-callout: auto !important;\n            -webkit-user-select: auto !important;\n            -khtml-user-select: auto !important;\n            -moz-user-select: auto !important;\n            -ms-user-select: auto !important; \n            user-select: auto !important; \n        }");
+        }, CsdnAdService.prototype.run = function() {
             this.core.background(this.removeAds, 3), this.commentClean();
         }, CsdnAdService.prototype.removeAds = function() {
             CsdnAdService.adSelectors.forEach((function(selector) {
