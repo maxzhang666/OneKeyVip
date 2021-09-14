@@ -1,4 +1,6 @@
-// ==UserScript== // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频解析,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用 // @namespace    https://www.wandhi.com/
+// ==UserScript== 
+// @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频解析,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用 
+// @namespace    https://www.wandhi.com/
 // @version      4.2.41
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
