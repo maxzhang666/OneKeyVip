@@ -81,8 +81,33 @@
 // @require      https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js
 // @require      https://cdn.jsdelivr.net/npm/crypto-js@4.0.0/crypto-js.js
 // @require      https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js
-// @license MIT // @grant GM_setClipboard // @run-at document-end // @connect shangxueba365.com // @connect api.wandhi.com // @connect cdn.jsdelivr.net // @connect tool.manmanbuy.com // @connect xbeibeix.com // @connect gwdang.com // @grant unsafeWindow // @grant GM_xmlhttpRequest // @grant GM_info // @grant GM.addStyle // @grant GM_getValue // @grant GM_setValue // @grant GM_notification // @grant GM_openInTab // @grant GM_deleteValue // @grant GM_registerMenuCommand // @grant
-GM_unregisterMenuCommand // @compatible firefox // @compatible chrome // @compatible opera safari edge // @compatible safari // @compatible edge // @antifeature referral-link 此提示为GreasyFork代码规范要求含有查券功能的脚本必须添加，实际使用无任何强制跳转，代码可查，请知悉。 // ==/UserScript==
+// @license      MIT
+// @grant        GM_setClipboard
+// @run-at       document-end
+// @connect      shangxueba365.com
+// @connect      api.wandhi.com
+// @connect      cdn.jsdelivr.net
+// @connect      tool.manmanbuy.com
+// @connect      xbeibeix.com
+// @connect      gwdang.com
+// @grant        unsafeWindow
+// @grant        GM_xmlhttpRequest
+// @grant        GM_info
+// @grant        GM.addStyle
+// @grant        GM_getValue
+// @grant        GM_setValue
+// @grant        GM_notification
+// @grant        GM_openInTab
+// @grant        GM_deleteValue
+// @grant        GM_registerMenuCommand
+// @grant        GM_unregisterMenuCommand
+// @compatible   firefox
+// @compatible   chrome
+// @compatible   opera safari edge
+// @compatible   safari
+// @compatible   edge
+// @antifeature  referral-link 此提示为GreasyFork代码规范要求含有查券功能的脚本必须添加，实际使用无任何强制跳转，代码可查，请知悉。
+// ==/UserScript==
 
 !function(global, factory) {
     "object" == typeof exports && "undefined" != typeof module ? factory(require("sweetalert2"), require("vue"), require("reflect-metadata"), require("crypto-js")) : "function" == typeof define && define.amd ? define([ "sweetalert2", "vue", "reflect-metadata", "crypto-js" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).Swal, global.Vue, null, global.CryptoJS);
