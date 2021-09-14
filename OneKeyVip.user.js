@@ -1,7 +1,7 @@
 // ==UserScript== 
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 长期更新,放心使用 
 // @namespace    https://www.wandhi.com/
-// @version      4.2.41
+// @version      4.2.42
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(接口偶尔抽风)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
@@ -2428,7 +2428,6 @@
                 var coupon = couponInfo.coupons[0];
                 this.showQueryFind($this, coupon.coupon_price);
             } else this.showQueryEmpty($this);
-            this.showItemUrl(itemId, null == couponInfo ? void 0 : couponInfo.item_url);
         }, ListService.prototype.showItemUrl = function(itemId, itemUrl) {
             Core.click(".onekeyvip-item-" + itemId, (function() {
                 return !itemUrl || (Core.open(itemUrl), !1);
