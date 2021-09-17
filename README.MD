@@ -58,6 +58,8 @@
 
 ### 三群[**722457505**](//shang.qq.com/wpa/qunwpa?idkey=a12d43edc065daad3043ca272a0eb9332ecd878f2921683c51e9d4e02554c80f) 暗号：玩的嗨
 
+### TG [猛击加入](//t.me/joinchat/fDZTZfGWE_9lYTFl)
+
 > 有问题可以加群反馈或在网站留言，修复更及时
 
 ## 📖 常见问题
