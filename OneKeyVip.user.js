@@ -1,7 +1,7 @@
 // ==UserScript== 
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频,上学吧答案获取等众多功能聚合 长期更新,放心使用 
 // @namespace    https://www.wandhi.com/
-// @version      4.2.42
+// @version      4.2.43
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(接口偶尔抽风)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
@@ -594,8 +594,8 @@
             option.headers.set("User-Agent", null !== (_a = unsafeWindow.navigator.userAgent) && void 0 !== _a ? _a : "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36"), 
             option.headers.set("Accept", "application/atom+xml,application/xml,text/xml");
             var head = new HttpHeaders;
-            head.version = Config.env.script.version, head.auth = null !== (_b = Config.env.script.author) && void 0 !== _b ? _b : "", 
-            head.namespace = null !== (_c = Config.env.script.namespace) && void 0 !== _c ? _c : "", 
+            option.url.indexOf("wandhi") > 0 && (head.version = Config.env.script.version, head.auth = null !== (_b = Config.env.script.author) && void 0 !== _b ? _b : "", 
+            head.namespace = null !== (_c = Config.env.script.namespace) && void 0 !== _c ? _c : ""), 
             option.headers.forEach((function(v, k) {
                 head[k] = v;
             })), GM_xmlhttpRequest({
@@ -851,7 +851,7 @@
                 })) : _this.queryHistory(url, siteType, callback);
             }), 60);
         }, Route.queryHistoryV4 = function(url, siteType, fp, dfp, callback) {
-            var root = "https://browser.gwdang.com/extension/price_towards?url=" + encodeURIComponent(url) + "&ver=1&format=json&fp=" + fp + "&dfp=" + dfp;
+            var root = "https://browser.gwdang.com/extension/price_towards?url=" + encodeURIComponent(url) + "&ver=1&format=json&fp=" + fp + "&dfp=" + dfp + "&union=union_gwdang&from_device=chrome&version=" + (new Date).getTime();
             Http.JqGet(root, callback);
         }, Route.queryBiliImg = function(aid, callback) {
             Http.getData(this.biliInfo + "?aid=" + aid, callback);
@@ -1062,7 +1062,8 @@
         SiteEnum.XiaMi = "XiaMi", SiteEnum.TaiHe = "TaiHe", SiteEnum.QingTing = "QingTing", 
         SiteEnum.LiZhi = "LiZhi", SiteEnum.MiGu = "MiGu", SiteEnum.XiMaLaYa = "XiMaLaYa", 
         SiteEnum.WenKu = "WenKu", SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", SiteEnum.BDY1 = "BDY1", 
-        SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", SiteEnum.Vp = "Vp", SiteEnum.CSDN = "CSDN";
+        SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", SiteEnum.Steam = "Steam", SiteEnum.Vp = "Vp", 
+        SiteEnum.CSDN = "CSDN";
     }(SiteEnum || (SiteEnum = {}));
     var UpdateService = function(_super) {
         function UpdateService() {
