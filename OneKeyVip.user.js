@@ -1,7 +1,7 @@
 // ==UserScript== 
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用 
 // @namespace    https://www.wandhi.com/
-// @version      4.2.45
+// @version      4.2.46
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(已下线)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
@@ -71,6 +71,9 @@
 // @include      *://yun.baidu.com/share/link*
 // @include      *://wenku.baidu.com/view/*
 // @include      *://blog.csdn.net/*
+// @include      *://link.csdn.net/*
+// @include      *://link.zhihu.com/*
+// @include      *www.jianshu.com/go-wild*
 // @exclude      *://*.wandhi.com/*
 // @require      https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
 // @require      https://cdn.jsdelivr.net/npm/sweetalert2@11
@@ -1063,7 +1066,7 @@
         SiteEnum.LiZhi = "LiZhi", SiteEnum.MiGu = "MiGu", SiteEnum.XiMaLaYa = "XiMaLaYa", 
         SiteEnum.WenKu = "WenKu", SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", SiteEnum.BDY1 = "BDY1", 
         SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", SiteEnum.Steam = "Steam", SiteEnum.Vp = "Vp", 
-        SiteEnum.CSDN = "CSDN";
+        SiteEnum.CSDN = "CSDN", SiteEnum.ZhiHu = "ZhiHu", SiteEnum.JianShu = "JianShu";
     }(SiteEnum || (SiteEnum = {}));
     var UpdateService = function(_super) {
         function UpdateService() {
@@ -2569,9 +2572,30 @@
                 }));
             }), 2);
         }, WenKuService.loaded = !1, WenKuService;
+    }(PluginBase), LinkJumpService = function(_super) {
+        function LinkJumpService() {
+            var _this = null !== _super && _super.apply(this, arguments) || this;
+            return _this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ] ]), 
+            _this._unique = !1, _this._appName = "LinkJump", _this.key = "", _this;
+        }
+        return __extends(LinkJumpService, _super), LinkJumpService.prototype.loader = function() {}, 
+        LinkJumpService.prototype.run = function() {
+            switch (this.site) {
+              case SiteEnum.CSDN:
+              case SiteEnum.ZhiHu:
+                this.key = "target";
+
+              case SiteEnum.JianShu:
+                this.key = "url";
+            }
+            if (this.key) {
+                var u = this.core.getPar(this.key);
+                u && (u = decodeURIComponent(u), Logger.debug(u), unsafeWindow.window.location.href = u);
+            }
+        }, LinkJumpService;
     }(PluginBase), OneKeyVipInjection = function() {
         function OneKeyVipInjection() {
-            this.plugins = new Array, this.plugins = [ Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(GwdService), Container.Require(CsdnAdService), Container.Require(WenKuService) ], 
+            this.plugins = new Array, this.plugins = [ Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(GwdService), Container.Require(CsdnAdService), Container.Require(WenKuService), Container.Require(LinkJumpService) ], 
             Logger.info("container loaded");
         }
         return OneKeyVipInjection.prototype.Init = function() {
