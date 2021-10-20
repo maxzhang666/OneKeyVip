@@ -1222,14 +1222,22 @@
             }));
         }, JdCoupon.prototype.init_coupons = function() {
             var _a, _b, _this = this, item_id = null === (_b = null === (_a = unsafeWindow.pageConfig) || void 0 === _a ? void 0 : _a.product) || void 0 === _b ? void 0 : _b.skuid;
-            item_id ? Route.queryJdCoupons(item_id, (function(res) {
-                if (Logger.debug(res), res.code) if (res.data.has_coupon) {
-                    var q = res.data, exp = new Date(q.quan_time);
-                    _this.init_qrcode(decodeURIComponent(q.quan_link)).then((function(res) {
-                        _this.init_coupon_info(q.after_price, q.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), decodeURIComponent(q.quan_link));
+            if (item_id) {
+                var key_1 = "jd_" + item_id, coupon = Config.get(key_1);
+                if (coupon) if (coupon.has_coupon) {
+                    var q_1 = coupon, exp_1 = new Date(q_1.quan_time);
+                    this.init_qrcode(decodeURIComponent(q_1.quan_link)).then((function(res) {
+                        _this.init_coupon_info(q_1.after_price, q_1.quan_price, "" + Core.format(exp_1, "yyyy-MM-dd"), decodeURIComponent(q_1.quan_link));
                     }));
-                } else res.data.quan_link ? _this.default(res.data.quan_link) : _this.default(); else _this.default();
-            })) : this.default();
+                } else coupon.quan_link ? this.default(coupon.quan_link) : this.default(); else Route.queryJdCoupons(item_id, (function(res) {
+                    if (Logger.debug(res), res.code) if (Config.set(key_1, res.data, 43200), res.data.has_coupon) {
+                        var q_2 = res.data, exp_2 = new Date(q_2.quan_time);
+                        _this.init_qrcode(decodeURIComponent(q_2.quan_link)).then((function(res) {
+                            _this.init_coupon_info(q_2.after_price, q_2.quan_price, "" + Core.format(exp_2, "yyyy-MM-dd"), decodeURIComponent(q_2.quan_link));
+                        }));
+                    } else res.data.quan_link ? _this.default(res.data.quan_link) : _this.default(); else _this.default();
+                }));
+            } else this.default();
         }, JdCoupon;
     }(BaseCoupon), TaoCoupon = function(_super) {
         function TaoCoupon() {
@@ -2086,7 +2094,7 @@
     }(PluginBase), TaoBaoService = function(_super) {
         function TaoBaoService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
-            return _this.rules = new Map([ [ SiteEnum.TaoBao, /taobao\.com/i ], [ SiteEnum.TMall, /tmall\.com|hk/i ] ]), 
+            return _this._appName = "TaoBaoService", _this.rules = new Map([ [ SiteEnum.TaoBao, /taobao\.com\//i ], [ SiteEnum.TMall, /tmall\.com\/|hk/i ] ]), 
             _this.UrlTag = "Wandhi_qLink", _this;
         }
         var _a;
@@ -2241,7 +2249,8 @@
         function MusicService() {
             var _this = _super.call(this) || this;
             return _this.rules = new Map([ [ SiteEnum.WangYi, /163(.*)song/i ], [ SiteEnum.Tencent_M, /y\.QQ(.*)song/i ], [ SiteEnum.KuGou, /kugou\.com\/song\/*/i ], [ SiteEnum.KuWo, /kuwo(.*)yinyue/i ], [ SiteEnum.XiaMi, /xiami/i ], [ SiteEnum.TaiHe, /taihe\.com/i ], [ SiteEnum.QingTing, /qingting\./i ], [ SiteEnum.LiZhi, /lizhi\./i ], [ SiteEnum.MiGu, /migu\./i ], [ SiteEnum.XiMaLaYa, /ximalaya\./i ] ]), 
-            _this.menu = new Common.Menu, _this;
+            _this.menu = new Common.Menu, _this._appName = "MusicService", _this._unique = !1, 
+            _this;
         }
         return __extends(MusicService, _super), MusicService.prototype.loader = function() {
             Core.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
@@ -2574,9 +2583,9 @@
         }, WenKuService.loaded = !1, WenKuService;
     }(PluginBase), LinkJumpService = function(_super) {
         function LinkJumpService() {
-            var _this = null !== _super && _super.apply(this, arguments) || this;
+            var _this = _super.call(this) || this;
             return _this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ] ]), 
-            _this._unique = !1, _this._appName = "LinkJump", _this.key = "", _this;
+            _this.key = "", _this._unique = !1, _this._appName = "LinkJump", _this;
         }
         return __extends(LinkJumpService, _super), LinkJumpService.prototype.loader = function() {}, 
         LinkJumpService.prototype.run = function() {
@@ -2584,9 +2593,14 @@
               case SiteEnum.CSDN:
               case SiteEnum.ZhiHu:
                 this.key = "target";
+                break;
 
               case SiteEnum.JianShu:
                 this.key = "url";
+                break;
+
+              default:
+                this.key = "";
             }
             if (this.key) {
                 var u = this.core.getPar(this.key);
