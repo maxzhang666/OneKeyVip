@@ -1,7 +1,7 @@
 // ==UserScript== 
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用 
 // @namespace    https://www.wandhi.com/
-// @version      4.2.48
+// @version      4.2.49
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(已下线)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
@@ -256,7 +256,7 @@
         return Logger.log = function(msg, level) {}, Logger.debug = function(msg) {
             this.log(msg, LogLevel.debug);
         }, Logger.info = function(msg) {
-            this.log(msg, LogLevel.info);
+            null === event || void 0 === event || event.srcElement, this.log(msg, LogLevel.info);
         }, Logger.warn = function(msg) {
             this.log(msg, LogLevel.warn);
         }, Logger.error = function(msg) {
@@ -1263,17 +1263,20 @@
                         _this.init_coupon_info(0, 0, "");
                     }));
                     Config.set(key, (null === (_b = data.data) || void 0 === _b ? void 0 : _b.length) > 0 ? data.data : [], 43200);
-                }
+                } else _this.init_qrcode(Runtime.url).then((function(res) {
+                    _this.init_coupon_info(0, 0, "");
+                }));
             }));
         }, TaoCoupon.prototype.render_coupon = function(quan) {
             var _this = this;
-            void 0 === quan && (quan = void 0), null == quan && this.init_qrcode(Runtime.url).then((function(res) {
+            if (void 0 === quan && (quan = void 0), null == quan) this.init_qrcode(Runtime.url).then((function(res) {
                 _this.init_coupon_info(0, 0, "");
-            }));
-            var q = quan, exp = new Date(q.quan_time);
-            this.init_qrcode(decodeURIComponent(q.quan_link)).then((function(res) {
-                _this.init_coupon_info(q.after_price, q.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), decodeURIComponent(q.quan_link));
-            }));
+            })); else {
+                var q_1 = quan, exp = new Date(q_1.quan_time);
+                this.init_qrcode(decodeURIComponent(q_1.quan_link)).then((function(res) {
+                    _this.init_coupon_info(q_1.after_price, q_1.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), decodeURIComponent(q_1.quan_link));
+                }));
+            }
         }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (_a = void 0 !== Core && Core) ? _a : Object) ], TaoCoupon.prototype, "core", void 0), 
         TaoCoupon;
     }(BaseCoupon), DefCoupon = function(_super) {
@@ -2119,9 +2122,10 @@
         }, TaoBaoService.prototype.init = function() {
             var _a, _this = this, init = "<div id='wandhi_div'><table class='wandhi_tab' id='wandhi_table'><thead><tr><th><b style='cursor:pointer'>\u4f18\u60e0\u5238</b></th><th>\u5238\u540e</th><th>\u6709 \u6548 \u671f</th><th>\u64cd\u4f5c</th></tr></thead><tr><td colspan='4'>\u6b63\u5728\u67e5\u8be2\u4f18\u60e0\u4fe1\u606f\uff0c\u8bf7\u7a0d\u5019...</td></tr></table></div>";
             $("#J_LinkBasket").parent().parent().prepend(init), $(".J_LinkAdd").parent().parent().prepend(init), 
-            (null === (_a = this.rules.get(SiteEnum.TaoBao)) || void 0 === _a ? void 0 : _a.test(this.core.currentUrl())) ? $("#wandhi_table").addClass("wandhi_tab_taobao") : $("#wandhi_table").addClass("wandhi_tab_tmall"), 
-            Route.queryCoupons(this.core.getPar("id"), (function(data) {
-                return _this.initElement(data);
+            (null === (_a = this.rules.get(SiteEnum.TaoBao)) || void 0 === _a ? void 0 : _a.test(this.core.currentUrl())) ? $("#wandhi_table").addClass("wandhi_tab_taobao") : $("#wandhi_table").addClass("wandhi_tab_tmall");
+            var itemId = this.core.getPar("id"), key = "td_s_" + itemId, d = Config.get(key, !1);
+            d ? this.initElement(d) : Route.queryCoupons(itemId, (function(data) {
+                Config.set(key, data, 43200), _this.initElement(data);
             }));
         }, TaoBaoService.prototype.initElement = function(data) {
             var _a;
