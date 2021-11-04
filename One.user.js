@@ -8,6 +8,7 @@
 // @author       MaxZhang
 // @icon         https://www.wandhi.com//favicon.ico
 // @include      *://*
+// @require      https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
 // @license      MIT
 // @grant        GM_setClipboard
 // @run-at       document-end
