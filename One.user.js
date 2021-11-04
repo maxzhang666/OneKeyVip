@@ -195,7 +195,7 @@
     var CsdnApp = function(_super) {
         function CsdnApp() {
             var _this = _super.call(this) || this;
-            return _this.appName = "Csdn", _this.rules = new Map([ [ SiteEnum.CSDN, /blog\.csdn\.net/i ] ]), 
+            return _this.appName = "Csdn", _this.rules = new Map([ [ SiteEnum.CSDN, [ /blog\.csdn\.net/i ] ] ]), 
             _this.adSelectors = [ "#footerRightAds", ".side-question-box", "div[id^='dmp_ad']", "div[class^='ad_']", "div[id^='floor-ad_']", ".adsbygoogle" ], 
             _this._unique = !1, _this;
         }
