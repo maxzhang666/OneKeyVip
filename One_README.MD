@@ -11,7 +11,7 @@
 </p>
 
 ## 🔧 [插件功能(点我查看详情)](https://wiki.wandhi.com/zh-cn/Feature.html)
-* 
+
 * ✅ CSDN页面清洁
 
 > 插件初期阶段,功能迭代完善中
