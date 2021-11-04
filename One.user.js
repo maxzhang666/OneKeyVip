@@ -90,7 +90,7 @@
         SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", SiteEnum.BDY1 = "BDY1", SiteEnum.BD_DETAIL_OLD = "BD_DETAIL_OLD", 
         SiteEnum.BD_DETAIL_NEW = "BD_DETAIL_NEW", SiteEnum.BD_DETAIL_Share = "BD_DETAIL_Share", 
         SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", SiteEnum.Vp = "Vp", SiteEnum.Gwd = "Gwd", 
-        SiteEnum.Xxqg = "Xxqg";
+        SiteEnum.Xxqg = "Xxqg", SiteEnum.CSDN = "CSDN";
     }(SiteEnum || (SiteEnum = {}));
     var __awaiter = function(thisArg, _arguments, P, generator) {
         return new (P || (P = Promise))((function(resolve, reject) {
@@ -149,6 +149,21 @@
         }
         static rnd(seed = Date.now()) {
             return (seed = (9301 * seed + 49297) % 233280) / 233280;
+        }
+        static background(callback, time = 5) {
+            setInterval(() => {
+                callback();
+            }, 1e3 * time);
+        }
+        static autoLazyload(isOk, callback, time = 5) {
+            isOk() ? callback() : setTimeout(() => {
+                Core.autoLazyload(isOk, callback, time);
+            }, 1e3 * time);
+        }
+        static lazyload(callback, time = 5) {
+            setTimeout(() => {
+                callback();
+            }, 1e3 * time);
         }
     }
     var LogLevel, Logger = function() {
