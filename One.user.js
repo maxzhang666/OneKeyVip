@@ -8,15 +8,6 @@
 // @author       MaxZhang
 // @icon         https://www.wandhi.com//favicon.ico
 // @include      *://*
-// @require      https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
-// @require      https://cdn.jsdelivr.net/npm/sweetalert2@11
-// @require      https://lib.baomitu.com/echarts/4.6.0/echarts.min.js
-// @require      https://lib.baomitu.com/layer/2.3/layer.js
-// @require      https://lib.baomitu.com/reflect-metadata/0.1.13/Reflect.min.js
-// @require      https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js
-// @require      https://cdn.jsdelivr.net/npm/vuex@3.4.0/dist/vuex.min.js
-// @require      https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js
-// @require      https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js
 // @license      MIT
 // @grant        GM_setClipboard
 // @run-at       document-end
@@ -39,7 +30,7 @@
 // @compatible   opera safari edge
 // @compatible   safari
 // @compatible   edge
-// @antifeature  referral-link 此提示为GreasyFork代码规范要求含有查券功能的脚本必须添加，实际使用无任何强制跳转，代码可查，请知悉。
+// @antifeature  referral-link 此提示为GreasyFork代码规范要求添加，实际使用无任何强制跳转，代码可查，请知悉。
 // ==/UserScript==
 
 !function(global, factory) {
