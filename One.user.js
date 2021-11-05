@@ -228,10 +228,13 @@
         }
         linkTest(url) {
             url || (url = Core.url);
-            let flag = !1;
-            return this.rules.forEach((v, k) => v.test(url) ? (Logger$1.debug(`app:${this.appName}_${SiteEnum[k]} test pass`), 
-            flag = !0, this.site = k, !1) : (Logger$1.warn(`app:${this.appName} test fail`), 
-            !0)), flag;
+            return this.rules.forEach((v, k) => {
+                let innerFlag = !1;
+                return v.forEach(r => {
+                    if (!innerFlag) return r.test(url) ? (Logger$1.debug(`app:${this.appName}_${SiteEnum[k]} test pass`), 
+                    innerFlag = !0, this.site = k, !1) : void 0;
+                }), Logger$1.warn(`app:${this.appName} test fail`), innerFlag;
+            }), !1;
         }
         getAppName() {
             return this.appName;

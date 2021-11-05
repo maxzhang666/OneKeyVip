@@ -1,7 +1,7 @@
 // ==UserScript== 
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用 
 // @namespace    https://www.wandhi.com/
-// @version      4.2.50
+// @version      4.2.51
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(已下线)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
@@ -1247,7 +1247,7 @@
             }));
         }, TaoCoupon.prototype.init_coupons = function() {
             var _this = this, key = "n_itemId_" + this.core.getPar("id"), coupon = Config.get(key, !1);
-            coupon ? (Logger.info(coupon), this.render_coupon((null == coupon ? void 0 : coupon.length) > 0 ? coupon[0] : void 0)) : Route.queryCoupons(this.core.getPar("id"), (function(data) {
+            coupon ? (Logger.info(coupon), this.render_coupon((null == coupon ? void 0 : coupon.length) > 0 && "string" != typeof coupon ? coupon[0] : void 0)) : Route.queryCoupons(this.core.getPar("id"), (function(data) {
                 var _a, _b;
                 if (data.code) {
                     if ((null === (_a = data.data) || void 0 === _a ? void 0 : _a.length) > 0) {
@@ -1845,8 +1845,10 @@
                     }
                 } ]
             }, null === (_b = chartOption.series) || void 0 === _b || _b.push(line), chartOption.dataZoom = [ {
-                type: "inside",
-                start: 0,
+                type: "slider",
+                show: !0,
+                realtime: !0,
+                start: 10,
                 end: 100
             } ], chartOption;
         }, GwdService.prototype.theme = function() {
@@ -2129,7 +2131,7 @@
             var _a;
             $("#wandhi_table tbody tr").remove();
             var row = "";
-            data.code && (null === (_a = data.data) || void 0 === _a ? void 0 : _a.length) > 0 ? data.data.forEach((function(e) {
+            data.code && (null === (_a = data.data) || void 0 === _a ? void 0 : _a.length) > 0 && "string" != typeof data.data ? data.data.forEach((function(e) {
                 row += "<tr><td>" + e.quan_context + "</td><td>" + e.after_price + "</td><td>" + e.quan_time + "</td><td><b onclick=window.open(decodeURIComponent('" + e.quan_link + "')) style='cursor:pointer'>\u9886\u53d6</b></td></tr>";
             })) : row = "<tr><td colspan='4'>\u8fd9\u4e2a\u5546\u54c1\u6ca1\u6709\u8d85\u503c\u4f18\u60e0\u5238</td></tr>", 
             $("#wandhi_table tbody").append(row);
@@ -2419,26 +2421,28 @@
         }, ListService.prototype.initQuery = function() {
             var that = this;
             $(".onekeyvip-box-wait").each((function(index, ele) {
-                Core.sleep(Core.random(10, 100) / 100).then((function() {
+                var s = Core.random(1, 5);
+                Core.sleep(s).then((function() {
                     that.queryInfo(ele);
                 }));
             }));
         }, ListService.prototype.queryInfo = function(target) {
             return __awaiter(this, void 0, Promise, (function() {
-                var that, $this, itemId, couponInfo;
+                var that, $this, itemId, k, render, couponInfo;
                 return __generator(this, (function(_a) {
                     switch (_a.label) {
                       case 0:
                         return that = this, ($this = $(target)).removeClass("onekeyvip-box-wait"), itemId = $this.data("itemid"), 
-                        (couponInfo = Config.get("" + that.key + itemId)) ? (that.initCouponInfo(itemId, couponInfo, target), 
-                        [ 3, 3 ]) : [ 3, 1 ];
+                        k = that.key + "_All_" + itemId, render = function(res) {
+                            if (0 != (null == res ? void 0 : res.code)) {
+                                var couponInfo_1 = res.data;
+                                that.initCouponInfo(itemId, couponInfo_1, target);
+                            } else that.showQueryEmpty($this);
+                        }, (couponInfo = Config.get(k)) ? (render(couponInfo), [ 3, 3 ]) : [ 3, 1 ];
 
                       case 1:
                         return [ 4, Route.couponQuery(itemId, that.itemType, (function(couponInfoResult) {
-                            if (0 != couponInfoResult.code) {
-                                var couponInfo_1 = couponInfoResult.data;
-                                Config.set("" + that.key + itemId, couponInfo_1, 14400), that.initCouponInfo(itemId, couponInfo_1, target);
-                            } else that.showQueryEmpty($this);
+                            render(couponInfoResult), Config.set(k, couponInfo, 43200);
                         })) ];
 
                       case 2:
