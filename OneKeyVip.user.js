@@ -45,6 +45,7 @@
 // @include      *://detail.tmall.com/*
 // @include      *://chaoshi.detail.tmall.com/*                     
 // @include      *://detail.tmall.hk/*
+// @include      *://item.yiyaojd.com/*
 // @include      *://item.jd.com/*
 // @include      *://item.jd.hk/*
 // @include      *://detail.vip.com/detail-*
@@ -1681,7 +1682,7 @@
     }(PluginBase), GwdService = function(_super) {
         function GwdService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
-            return _this.rules = new Map([ [ SiteEnum.TMall, /detail\.tmall\.com\/item\.htm/i ], [ SiteEnum.TaoBao, /item\.taobao\.com/i ], [ SiteEnum.JingDong, /item\.jd\.(com|hk)\/[0-9]*\.html/i ], [ SiteEnum.SuNing, /product\.suning\.com/i ], [ SiteEnum.Vp, /detail\.vip\.com/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.TMall, /detail\.tmall\.com\/item\.htm/i ], [ SiteEnum.TaoBao, /item\.taobao\.com/i ], [ SiteEnum.JingDong, /item\.(yiyaojd|jd)\.(com|hk)\/[0-9]*\.html/i ], [ SiteEnum.SuNing, /product\.suning\.com/i ], [ SiteEnum.Vp, /detail\.vip\.com/i ] ]), 
             _this._appName = "GwdService", _this.factory = new DefCoupon, _this.dfp = "0H88kUZe0CP80DtM0C0VkUc20z88kUZM6UTM0UMikUc26z82kUPe0H88kUP80H88EV3+0UZi0DZ2", 
             _this.fp = "378437f5078442c878e99f78720278c4", _this;
         }
@@ -2236,7 +2237,7 @@
     }(PluginBase), JdService = function(_super) {
         function JdService() {
             var _this = _super.call(this) || this;
-            return _this._appName = "JdService", _this.rules = new Map([ [ SiteEnum.JingDong, /item\.jd\.c/i ] ]), 
+            return _this._appName = "JdService", _this.rules = new Map([ [ SiteEnum.JingDong, /item\.(yiyaojd|jd)\.c/i ] ]), 
             _this;
         }
         var _a;
