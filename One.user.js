@@ -239,7 +239,7 @@
             style.type = "text/css", "top" === insertAt && head.firstChild ? head.insertBefore(style, head.firstChild) : head.appendChild(style), 
             style.styleSheet ? style.styleSheet.cssText = css : style.appendChild(document.createTextNode(css));
         }
-    }("#content_views pre {\n    -webkit-touch-callout: auto !important;\n    -webkit-user-select: auto !important;\n    -khtml-user-select: auto !important;\n    -moz-user-select: auto !important;\n    -ms-user-select: auto !important;\n    user-select: auto !important;\n}\n\n#content_views pre code {\n    -webkit-touch-callout: auto !important;\n    -webkit-user-select: auto !important;\n    -khtml-user-select: auto !important;\n    -moz-user-select: auto !important;\n    -ms-user-select: auto !important;\n    user-select: auto !important;\n}\n\n.passport-login-container {\n    display: none !important;\n}\n");
+    }("#content_views pre,#content_views pre code{-webkit-touch-callout:auto!important;-webkit-user-select:auto!important;-khtml-user-select:auto!important;-moz-user-select:auto!important;-ms-user-select:auto!important;user-select:auto!important}.passport-login-container{display:none!important}");
     var LogLevel, __awaiter = function(thisArg, _arguments, P, generator) {
         return new (P || (P = Promise))((function(resolve, reject) {
             function fulfilled(value) {
