@@ -379,6 +379,10 @@
         }, Core.random = function(min, max) {
             var range = max - min, rand = Math.random();
             return min + Math.round(rand * range);
+        }, Core.randStr = function(len) {
+            void 0 === len && (len = 4);
+            for (var $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", maxPos = $chars.length, pwd = "", i = 0; i < len; i++) pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+            return pwd;
         }, Core.prototype.background = function(callback, time) {
             void 0 === time && (time = 5), setInterval((function() {
                 callback();
@@ -630,8 +634,8 @@
             $.getJSON(url, (function(d) {
                 callback(d);
             }));
-        }, Http.JqGet = function(url, callback) {
-            Http.get(url, new Map).then((function(d) {
+        }, Http.JqGet = function(url, callback, head) {
+            void 0 === head && (head = new Map), Http.get(url, new Map, head).then((function(d) {
                 callback(d);
             }));
         }, Http.post = function(url, data, timeOut) {
@@ -642,9 +646,9 @@
                     Alert.close(index), resolve(data);
                 }), new Map, timeOut));
             }));
-        }, Http.get = function(url, data, time_out) {
-            return void 0 === data && (data = new Map), void 0 === time_out && (time_out = 10), 
-            Alert.loading(), new Promise((function(resolve, reject) {
+        }, Http.get = function(url, data, head, time_out) {
+            return void 0 === data && (data = new Map), void 0 === head && (head = new Map), 
+            void 0 === time_out && (time_out = 10), Alert.loading(), new Promise((function(resolve, reject) {
                 Http.ajax(new AjaxOption(url, "GET", data, (function(data) {
                     var _a;
                     try {
@@ -653,7 +657,7 @@
                     } catch (error) {
                         Logger.debug(error), reject();
                     }
-                }), new Map, time_out));
+                }), head, time_out));
             }));
         }, Http.getWithHead = function(url, data, head, time_out) {
             return void 0 === data && (data = new Map), void 0 === head && (head = new Map), 
@@ -857,7 +861,7 @@
             }), 60);
         }, Route.queryHistoryV4 = function(url, siteType, fp, dfp, callback) {
             var root = "https://browser.gwdang.com/extension/price_towards?url=" + encodeURIComponent(url) + "&ver=1&format=json&fp=" + fp + "&dfp=" + dfp + "&union=union_gwdang&from_device=chrome&version=" + (new Date).getTime();
-            Http.JqGet(root, callback);
+            Http.JqGet(root, callback, new Map([ [ "cookie", Core.decode("Z3dkYW5nX3Blcm1hbmVudF9pZA==") + "=" + Core.randStr(34) ] ]));
         }, Route.queryBiliImg = function(aid, callback) {
             Http.getData(this.biliInfo + "?aid=" + aid, callback);
         }, Route.queryBiliDown = function(aid, cid, callback) {

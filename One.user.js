@@ -214,6 +214,8 @@
             void 0 === time && (time = 5), setTimeout((function() {
                 callback();
             }), 1e3 * time);
+        }, Core.bodyAppend = function(html) {
+            unsafeWindow.document.body.append(html);
         }, Core;
     }(), Logger$1 = function() {
         function Logger() {}
@@ -391,6 +393,8 @@
             void 0 === time && (time = 5), setTimeout((function() {
                 callback();
             }), 1e3 * time);
+        }, Core.bodyAppend = function(html) {
+            unsafeWindow.document.body.append(html);
         }, Core;
     }();
     !function() {
@@ -458,9 +462,9 @@
             return this.rules.forEach((function(v, k) {
                 var innerFlag = !1;
                 return v.forEach((function(r) {
-                    if (!innerFlag) return r.test(url) ? (Logger.debug("app:" + _this.appName + "_" + SiteEnum[k] + " test pass"), 
+                    if (!innerFlag) return r.test(url) ? (Logger.debug("app:".concat(_this.appName, "_").concat(SiteEnum[k], " test pass")), 
                     innerFlag = !0, _this.site = k, !1) : void 0;
-                })), Logger.warn("app:" + _this.appName + " test fail"), innerFlag;
+                })), Logger.warn("app:".concat(_this.appName, " test fail")), innerFlag;
             })), !1;
         }, AppBase.prototype.getAppName = function() {
             return this.appName;
