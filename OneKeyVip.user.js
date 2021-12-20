@@ -76,6 +76,7 @@
 // @include      *://link.zhihu.com/*
 // @include      *://browser.gwdang.com/*
 // @include      *www.jianshu.com/go-wild*
+// @include      *://*gitee.com/link*
 // @exclude      *://*.wandhi.com/*
 // @require      https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
 // @require      https://cdn.jsdelivr.net/npm/sweetalert2@11
@@ -1068,7 +1069,8 @@
         SiteEnum.LiZhi = "LiZhi", SiteEnum.MiGu = "MiGu", SiteEnum.XiMaLaYa = "XiMaLaYa", 
         SiteEnum.WenKu = "WenKu", SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", SiteEnum.BDY1 = "BDY1", 
         SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", SiteEnum.Steam = "Steam", SiteEnum.Vp = "Vp", 
-        SiteEnum.CSDN = "CSDN", SiteEnum.ZhiHu = "ZhiHu", SiteEnum.JianShu = "JianShu";
+        SiteEnum.CSDN = "CSDN", SiteEnum.ZhiHu = "ZhiHu", SiteEnum.JianShu = "JianShu", 
+        SiteEnum.Gitee = "Gitee";
     }(SiteEnum || (SiteEnum = {}));
     var UpdateService = function(_super) {
         function UpdateService() {
@@ -2675,7 +2677,7 @@
     }(), LinkJumpService = function(_super) {
         function LinkJumpService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ], [ SiteEnum.Gitee, /gitee\.com\/link/i ] ]), 
             _this.key = "", _this._unique = !1, _this._appName = "LinkJump", _this;
         }
         return __extends(LinkJumpService, _super), LinkJumpService.prototype.loader = function() {}, 
@@ -2683,6 +2685,7 @@
             switch (this.site) {
               case SiteEnum.CSDN:
               case SiteEnum.ZhiHu:
+              case SiteEnum.Gitee:
                 this.key = "target";
                 break;
 
