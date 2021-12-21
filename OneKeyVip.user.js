@@ -1,7 +1,7 @@
 // ==UserScript== 
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用 
 // @namespace    https://www.wandhi.com/
-// @version      4.2.59
+// @version      4.2.60
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(已下线)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
@@ -625,10 +625,10 @@
                     }
                 },
                 onerror: function(res) {
-                    var _a, _b;
-                    (null === (_a = res.finalUrl) || void 0 === _a ? void 0 : _a.indexOf("adguard.org")) > 0 ? option.onError(null) : (Alert.confim("", '              \n                        <h1>\u8bf7\u6c42\u5931\u8d25\uff0c\u8bf7\u590d\u5236\u4e0b\u5217\u4fe1\u606f\u5411\u5f00\u53d1\u8005\u53cd\u9988\u95ee\u9898</h1><br>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u9519\u8bef\u8be6\u60c5\uff1a</span><br>\n                        <p>' + escape(res.responseText) + "(" + res.status + ')</p>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u73af\u5883\u4fe1\u606f\uff1a</span><br>\n                        <p>\u6cb9\u7334\u7248\u672c\uff1a' + Config.env.version + "</p>\n                        <p>\u811a\u672c\u7248\u672c\uff1a" + Config.env.script.version + "</p>\n                        <p>Url\uff1a" + Runtime.url + "</p>           \n                        <p>RUrl\uff1a" + option.url + "</p>           \n                    ", [ "\u53bb\u53cd\u9988", "\u5173\u95ed" ], (function() {
+                    var _a, _b, _c;
+                    (null === (_a = res.finalUrl) || void 0 === _a ? void 0 : _a.indexOf("adguard.org")) > 0 || (null === (_b = option.url) || void 0 === _b ? void 0 : _b.indexOf("jsdelivr")) > 0 ? option.onError(null) : (Alert.confim("", '              \n                        <h1>\u8bf7\u6c42\u5931\u8d25\uff0c\u8bf7\u590d\u5236\u4e0b\u5217\u4fe1\u606f\u5411\u5f00\u53d1\u8005\u53cd\u9988\u95ee\u9898</h1><br>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u9519\u8bef\u8be6\u60c5\uff1a</span><br>\n                        <p>' + escape(res.responseText) + "(" + res.status + ')</p>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u73af\u5883\u4fe1\u606f\uff1a</span><br>\n                        <p>\u6cb9\u7334\u7248\u672c\uff1a' + Config.env.version + "</p>\n                        <p>\u811a\u672c\u7248\u672c\uff1a" + Config.env.script.version + "</p>\n                        <p>Url\uff1a" + Runtime.url + "</p>           \n                        <p>RUrl\uff1a" + option.url + "</p>           \n                    ", [ "\u53bb\u53cd\u9988", "\u5173\u95ed" ], (function() {
                         Core.open("https://gitee.com/ixysy/OneKeyVip/issues");
-                    })), null === (_b = option.onError) || void 0 === _b || _b.call(option, res));
+                    })), null === (_c = option.onError) || void 0 === _c || _c.call(option, res));
                 }
             });
         }, Http.getData = function(url, callback) {
