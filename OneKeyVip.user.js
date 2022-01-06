@@ -1,7 +1,7 @@
 // ==UserScript== 
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用 
 // @namespace    https://www.wandhi.com/
-// @version      4.2.61
+// @version      4.2.62
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(已下线)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
@@ -77,6 +77,7 @@
 // @include      *://browser.gwdang.com/*
 // @include      *www.jianshu.com/go-wild*
 // @include      *://*gitee.com/link*
+// @include      *://*juejin.cn/?target*
 // @exclude      *://*.wandhi.com/*
 // @require      https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
 // @require      https://cdn.jsdelivr.net/npm/sweetalert2@11
@@ -1070,7 +1071,7 @@
         SiteEnum.WenKu = "WenKu", SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", SiteEnum.BDY1 = "BDY1", 
         SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", SiteEnum.Steam = "Steam", SiteEnum.Vp = "Vp", 
         SiteEnum.CSDN = "CSDN", SiteEnum.ZhiHu = "ZhiHu", SiteEnum.JianShu = "JianShu", 
-        SiteEnum.Gitee = "Gitee";
+        SiteEnum.JueJin = "JueJin", SiteEnum.Gitee = "Gitee";
     }(SiteEnum || (SiteEnum = {}));
     var UpdateService = function(_super) {
         function UpdateService() {
@@ -2677,7 +2678,7 @@
     }(), LinkJumpService = function(_super) {
         function LinkJumpService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ], [ SiteEnum.Gitee, /gitee\.com\/link/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ], [ SiteEnum.Gitee, /gitee\.com\/link/i ], [ SiteEnum.JueJin, /juejin\.cn\/\?target/i ] ]), 
             _this.key = "", _this._unique = !1, _this._appName = "LinkJump", _this;
         }
         return __extends(LinkJumpService, _super), LinkJumpService.prototype.loader = function() {}, 
@@ -2686,6 +2687,7 @@
               case SiteEnum.CSDN:
               case SiteEnum.ZhiHu:
               case SiteEnum.Gitee:
+              case SiteEnum.JueJin:
                 this.key = "target";
                 break;
 
