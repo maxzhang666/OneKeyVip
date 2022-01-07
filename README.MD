@@ -1,4 +1,4 @@
-<h1 align="center">一键Vip解析工具箱</h1> 
+<h1 align="center">一键Vip解析工具箱</h1>
 
 本脚本可安装于支持 Tampermonkey 或 暴力猴扩展的浏览器，包括但不限于Chrome，360，QQ，UC等。
 
@@ -53,7 +53,9 @@
 
 ## 💩 交流群
 
-### 一群[**340569308**](http://shang.qq.com/wpa/qunwpa?idkey=7fc3fef0db96421305e65c41cc081ffeca507fdc23cab93d731277be829985ec) [**一键加群**](http://shang.qq.com/wpa/qunwpa?idkey=7fc3fef0db96421305e65c41cc081ffeca507fdc23cab93d731277be829985ec)
+### [**QQ频道**](https://qun.qq.com/qqweb/qunpro/share?_wv=3&_wwv=128&inviteCode=1U23Gb&from=181074&biz=ka)**推荐**
+
+### 一群[**340569308**](http://shang.qq.com/wpa/qunwpa?idkey=7fc3fef0db96421305e65c41cc081ffeca507fdc23cab93d731277be829985ec)**已满** [**一键加群**](http://shang.qq.com/wpa/qunwpa?idkey=7fc3fef0db96421305e65c41cc081ffeca507fdc23cab93d731277be829985ec)
 
 ### 二群[**655341576**](https://shang.qq.com/wpa/qunwpa?idkey=dd0275fbf9149b71e4f2f4e44902b552c846e9a2234f68eaca35a442510f061b) [**一键加群**](https://shang.qq.com/wpa/qunwpa?idkey=dd0275fbf9149b71e4f2f4e44902b552c846e9a2234f68eaca35a442510f061b)
 
@@ -124,13 +126,11 @@
 
 ![WSRmnbLghyfHxEe](https://i.loli.net/2020/04/22/WSRmnbLghyfHxEe.png)
 
-
 ## 百度文库解析下载
 
 > 将文库内容以Word形式导出
 
 > 只要**能看**就能够导出,即只要没有**阅读限制**即可导出
-
 
 ## 🔔 更新历史
 
@@ -203,8 +203,6 @@
 <a href="https://github.com/maxzhang666/OneKeyVip/blob/master/CHANGELOG" >More</a>
 
 </details>
-
-
 
 ## 💕 友情捐助
 
