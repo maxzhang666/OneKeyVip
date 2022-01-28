@@ -1,7 +1,7 @@
 // ==UserScript== 
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用 
 // @namespace    https://www.wandhi.com/
-// @version      4.2.63
+// @version      4.2.64
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(已下线)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
@@ -254,6 +254,29 @@
                 }([ n, v ]);
             };
         }
+    }
+    function __read(o, n) {
+        var m = "function" == typeof Symbol && o[Symbol.iterator];
+        if (!m) return o;
+        var r, e, i = m.call(o), ar = [];
+        try {
+            for (;(void 0 === n || n-- > 0) && !(r = i.next()).done; ) ar.push(r.value);
+        } catch (error) {
+            e = {
+                error: error
+            };
+        } finally {
+            try {
+                r && !r.done && (m = i.return) && m.call(i);
+            } finally {
+                if (e) throw e.error;
+            }
+        }
+        return ar;
+    }
+    function __spread() {
+        for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]));
+        return ar;
     }
     var update_key = "isUpdate", Min = 60, Hour = 60 * Min, B1 = "YmVpYmVpZG91eXUxMjM0NQ==", B2 = "YmVpYmVpMTIzNDU2Nzg5MA==", Logger = function() {
         function Logger() {}
@@ -1063,10 +1086,10 @@
         SiteEnum.All = "All", SiteEnum.TaoBao = "TaoBao", SiteEnum.TMall = "TMall", SiteEnum.JingDong = "JingDong", 
         SiteEnum.IQiYi = "IQiYi", SiteEnum.YouKu = "YouKu", SiteEnum.LeShi = "LeShi", SiteEnum.TuDou = "TuDou", 
         SiteEnum.Tencent_V = "Tencent_V", SiteEnum.MangGuo = "MangGuo", SiteEnum.SoHu = "SoHu", 
-        SiteEnum.Acfun = "Acfun", SiteEnum.BiliBili = "BiliBili", SiteEnum.M1905 = "M1905", 
-        SiteEnum.PPTV = "PPTV", SiteEnum.YinYueTai = "YinYueTai", SiteEnum.WangYi = "WangYi", 
-        SiteEnum.Tencent_M = "Tencent_M", SiteEnum.KuGou = "KuGou", SiteEnum.KuWo = "KuWo", 
-        SiteEnum.XiaMi = "XiaMi", SiteEnum.TaiHe = "TaiHe", SiteEnum.QingTing = "QingTing", 
+        SiteEnum.Acfun = "Acfun", SiteEnum.BiliBili = "BiliBili", SiteEnum.BiliMobile = "BiliMobile", 
+        SiteEnum.M1905 = "M1905", SiteEnum.PPTV = "PPTV", SiteEnum.YinYueTai = "YinYueTai", 
+        SiteEnum.WangYi = "WangYi", SiteEnum.Tencent_M = "Tencent_M", SiteEnum.KuGou = "KuGou", 
+        SiteEnum.KuWo = "KuWo", SiteEnum.XiaMi = "XiaMi", SiteEnum.TaiHe = "TaiHe", SiteEnum.QingTing = "QingTing", 
         SiteEnum.LiZhi = "LiZhi", SiteEnum.MiGu = "MiGu", SiteEnum.XiMaLaYa = "XiMaLaYa", 
         SiteEnum.WenKu = "WenKu", SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", SiteEnum.BDY1 = "BDY1", 
         SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", SiteEnum.Steam = "Steam", SiteEnum.Vp = "Vp", 
@@ -2149,7 +2172,7 @@
     }(PluginBase), BiliImgService = function(_super) {
         function BiliImgService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.BiliBili, /bilibili\.com\/video\/[av|bv]*/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.BiliBili, /www\.bilibili\.com\/video\/[av|bv]*/i ] ]), 
             _this._appName = "bilibili", _this;
         }
         return __extends(BiliImgService, _super), BiliImgService.prototype.loader = function() {
@@ -2714,9 +2737,48 @@
         }
         return __extends(_GwdService, _super), _GwdService.prototype.loader = function() {}, 
         _GwdService.prototype.run = function() {}, _GwdService;
+    }(PluginBase), BIliTools = function() {
+        function BIliTools() {}
+        return BIliTools.av2Bv = function(avNo) {
+            var av = avNo.toString(), num = NaN;
+            if ("[object Number]" === Object.prototype.toString.call(av) ? num = avNo : "[object String]" === Object.prototype.toString.call(av) && (num = parseInt(av.replace(/[^0-9]/gu, ""))), 
+            isNaN(num) || num <= 0) return "";
+            num = (num ^ this.xor) + this.add;
+            for (var result = __spread("BV1  4 1 7  "), i = 0; i < 6; ) result[this.s[i]] = this.table[Math.floor(num / Math.pow(58, i)) % 58], 
+            i += 1;
+            return result.join("");
+        }, BIliTools.bv2Av = function(bv) {
+            var str = "";
+            if (12 === bv.length) str = bv; else if (10 === bv.length) str = "BV" + bv; else {
+                if (9 !== bv.length) return -1;
+                str = "BV1" + bv;
+            }
+            if (!str.match(/[Bb][Vv][fZodR9XQDSUm21yCkr6zBqiveYah8bt4xsWpHnJE7jL5VG3guMTKNPAwcF]{10}/gu)) return -1;
+            for (var result = 0, i = 0; i < 6; ) result += this.table.indexOf(str[this.s[i]]) * Math.pow(58, i), 
+            i += 1;
+            return parseInt("av" + (result - this.add ^ this.xor));
+        }, BIliTools.table = __spread("fZodR9XQDSUm21yCkr6zBqiveYah8bt4xsWpHnJE7jL5VG3guMTKNPAwcF"), 
+        BIliTools.s = [ 11, 10, 3, 8, 4, 6 ], BIliTools.xor = 177451812, BIliTools.add = 8728348608, 
+        BIliTools;
+    }(), BiliMobileService = function(_super) {
+        function BiliMobileService() {
+            var _this = null !== _super && _super.apply(this, arguments) || this;
+            return _this.rules = new Map([ [ SiteEnum.BiliMobile, /m\.bilibili\.com\/video\//i ] ]), 
+            _this._appName = "Bili\u624b\u673a", _this;
+        }
+        return __extends(BiliMobileService, _super), BiliMobileService.prototype.loader = function() {}, 
+        BiliMobileService.prototype.run = function() {
+            var cards = $(".launch-app-btn");
+            cards && $(cards).each((function(i, ele) {
+                var av = $(ele).attr("data-aid");
+                av && $(ele).on("click", (function() {
+                    unsafeWindow.window.location.href = "https://m.bilibili.com/video/" + BIliTools.av2Bv(parseInt(av));
+                })), $(ele).removeClass("launch-app-btn");
+            }));
+        }, BiliMobileService;
     }(PluginBase), OneKeyVipInjection = function() {
         function OneKeyVipInjection() {
-            this.plugins = new Array, this.plugins = [ Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(GwdService), Container.Require(CsdnAdService), Container.Require(WenKuService), Container.Require(LinkJumpService), Container.Require(_GwdService) ], 
+            this.plugins = new Array, this.plugins = [ Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(BiliMobileService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(GwdService), Container.Require(CsdnAdService), Container.Require(WenKuService), Container.Require(LinkJumpService), Container.Require(_GwdService) ], 
             Logger.info("container loaded");
         }
         return OneKeyVipInjection.prototype.Init = function() {
