@@ -1,7 +1,7 @@
 // ==UserScript== 
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用 
 // @namespace    https://www.wandhi.com/
-// @version      4.2.64
+// @version      4.2.65
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(已下线)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
@@ -280,14 +280,14 @@
     }
     var update_key = "isUpdate", Min = 60, Hour = 60 * Min, B1 = "YmVpYmVpZG91eXUxMjM0NQ==", B2 = "YmVpYmVpMTIzNDU2Nzg5MA==", Logger = function() {
         function Logger() {}
-        return Logger.log = function(msg, level) {}, Logger.debug = function(msg) {
-            this.log(msg, LogLevel.debug);
-        }, Logger.info = function(msg) {
-            null === event || void 0 === event || event.srcElement, this.log(msg, LogLevel.info);
-        }, Logger.warn = function(msg) {
-            this.log(msg, LogLevel.warn);
-        }, Logger.error = function(msg) {
-            this.log(msg, LogLevel.error);
+        return Logger.log = function(msg, group, level) {}, Logger.debug = function(msg, group) {
+            void 0 === group && (group = "debug"), this.log(msg, group, LogLevel.debug);
+        }, Logger.info = function(msg, group) {
+            void 0 === group && (group = "debug"), this.log(msg, group, LogLevel.info);
+        }, Logger.warn = function(msg, group) {
+            void 0 === group && (group = "debug"), this.log(msg, group, LogLevel.warn);
+        }, Logger.error = function(msg, group) {
+            void 0 === group && (group = "debug"), this.log(msg, group, LogLevel.error);
         }, Logger;
     }(), LogLevel;
     !function(LogLevel) {
@@ -1714,8 +1714,8 @@
         function GwdService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
             return _this.rules = new Map([ [ SiteEnum.TMall, /detail\.tmall\.com\/item\.htm/i ], [ SiteEnum.TaoBao, /item\.taobao\.com\//i ], [ SiteEnum.JingDong, /item\.(yiyaojd|jd)\.(com|hk)\/[0-9]*\.html/i ], [ SiteEnum.SuNing, /product\.suning\.com\//i ], [ SiteEnum.Vp, /detail\.vip\.com\//i ] ]), 
-            _this._appName = "GwdService", _this.factory = new DefCoupon, _this.dfp = "0H88kUZe0CP80DtM0C0VkUc20z88kUZM6UTM0UMikUc26z82kUPe0H88kUP80H88EV3+0UZi0DZ2", 
-            _this.fp = "378437f5078442c878e99f78720278c4", _this;
+            _this._appName = "GwdService", _this.factory = new DefCoupon, _this.dfp = Core.randStr(60), 
+            _this.fp = Core.randStr(30), _this;
         }
         var _a;
         return __extends(GwdService, _super), GwdService.prototype.loader = function() {}, 
@@ -2495,7 +2495,7 @@
             }));
         }, ListService.prototype.initCouponInfo = function(itemId, couponInfo, target) {
             var _a, $this = $(target);
-            if ((null === (_a = null == couponInfo ? void 0 : couponInfo.coupons) || void 0 === _a ? void 0 : _a.length) > 0) {
+            if ((null === (_a = null == couponInfo ? void 0 : couponInfo.coupons) || void 0 === _a ? void 0 : _a.length) > 0 && 0 != couponInfo.coupons[0].coupon_price) {
                 var coupon = couponInfo.coupons[0];
                 this.showQueryFind($this, coupon.coupon_price);
             } else this.showQueryEmpty($this);

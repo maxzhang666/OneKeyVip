@@ -219,14 +219,14 @@
         }, Core;
     }(), Logger$1 = function() {
         function Logger() {}
-        return Logger.log = function(msg, level) {}, Logger.debug = function(msg) {
-            this.log(msg, LogLevel$1.debug);
-        }, Logger.info = function(msg) {
-            null === event || void 0 === event || event.srcElement, this.log(msg, LogLevel$1.info);
-        }, Logger.warn = function(msg) {
-            this.log(msg, LogLevel$1.warn);
-        }, Logger.error = function(msg) {
-            this.log(msg, LogLevel$1.error);
+        return Logger.log = function(msg, group, level) {}, Logger.debug = function(msg, group) {
+            void 0 === group && (group = "debug"), this.log(msg, group, LogLevel$1.debug);
+        }, Logger.info = function(msg, group) {
+            void 0 === group && (group = "debug"), this.log(msg, group, LogLevel$1.info);
+        }, Logger.warn = function(msg, group) {
+            void 0 === group && (group = "debug"), this.log(msg, group, LogLevel$1.warn);
+        }, Logger.error = function(msg, group) {
+            void 0 === group && (group = "debug"), this.log(msg, group, LogLevel$1.error);
         }, Logger;
     }();
     !function(LogLevel) {
