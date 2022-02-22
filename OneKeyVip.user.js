@@ -43,7 +43,7 @@
 // @include      *://s.taobao.com/search*
 // @include      *://list.tmall.com/search_product.htm*
 // @include      *://detail.tmall.com/*
-// @include      *://chaoshi.detail.tmall.com/*                     
+// @include      *://chaoshi.detail.tmall.com/*
 // @include      *://detail.tmall.hk/*
 // @include      *://item.yiyaojd.com/*
 // @include      *://item.jd.com/*
@@ -78,6 +78,7 @@
 // @include      *www.jianshu.com/go-wild*
 // @include      *://*gitee.com/link*
 // @include      *://*juejin.cn/?target*
+// @include      *://www.aliyundrive.com/drive*
 // @exclude      *://*.wandhi.com/*
 // @require      https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
 // @require      https://cdn.jsdelivr.net/npm/sweetalert2@11
