@@ -1,7 +1,7 @@
 // ==UserScript== 
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用 
 // @namespace    https://www.wandhi.com/
-// @version      4.3.1
+// @version      4.3.2
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载；🎉 5、上学吧答案查询(已下线)；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站)
@@ -2663,8 +2663,9 @@
             _this.html = '\n    <li class=" ant-dropdown-menu-item-divider"></li>\n    <li class="ant-dropdown-menu-item ant-dropdown-menu-item-only-child" role="menuitem">\n        <div class="outer-menu--ihDUR">\n            <div class="item--2ReU2" id="onekeyvip-token">\n                <span data-role="icon" data-render-as="svg" data-icon-type="PDSMoreCircle" class="item-icon--1ydoa icon--d-ejA "><svg viewBox="0 0 1024 1024"><use xlink:href="#PDSMoreCircle"></use></svg></span>\n                \u83b7\u53d6Token\n            </div>\n        </div>\n    </li>\n    ', 
             _this._unique = !1, _this._appName = "aliyunpan-token", _this;
         }
-        return __extends(AliyunPanToken, _super), AliyunPanToken.prototype.loader = function() {}, 
-        AliyunPanToken.prototype.run = function() {
+        return __extends(AliyunPanToken, _super), AliyunPanToken.prototype.loader = function() {
+            GM_registerMenuCommand("\u83b7\u53d6Token", this.getToken);
+        }, AliyunPanToken.prototype.run = function() {
             var _this = this;
             Core.autoLazyload((function() {
                 var _a, _b, finded = null !== (_b = null === (_a = $(".ant-dropdown-menu")) || void 0 === _a ? void 0 : _a.length) && void 0 !== _b ? _b : -1;
@@ -2672,15 +2673,15 @@
             }), (function() {
                 $(".ant-dropdown-menu").append(_this.html), _this.initEvent();
             }), .5);
+        }, AliyunPanToken.prototype.getToken = function() {
+            var _a, tokenStr, tokenObj;
+            if ($(".ant-dropdown").addClass("ant-dropdown-hidden"), tokenStr = null !== (_a = unsafeWindow.localStorage.token) && void 0 !== _a ? _a : "") try {
+                tokenObj = JSON.parse(tokenStr), ToastAlert.msg("token\u4fe1\u606f", "<textarea>" + tokenObj.refresh_token + "</textarea>");
+            } catch (e) {
+                ToastAlert.info("Token\u5e8f\u5217\u5316\u9519\u8bef,\u8bf7\u5411\u4f5c\u8005\u53cd\u9988," + e.toString());
+            } else ToastAlert.info("\u672a\u80fd\u83b7\u53d6\u5230Token\u4fe1\u606f,\u8bf7\u91cd\u65b0\u767b\u5f55\u540e\u518d\u8bd5");
         }, AliyunPanToken.prototype.initEvent = function() {
-            $("#onekeyvip-token").on("click", (function() {
-                var _a, tokenStr, tokenObj;
-                if ($(".ant-dropdown").addClass("ant-dropdown-hidden"), tokenStr = null !== (_a = unsafeWindow.localStorage.token) && void 0 !== _a ? _a : "") try {
-                    tokenObj = JSON.parse(tokenStr), ToastAlert.msg("token\u4fe1\u606f", "<textarea>" + tokenObj.refresh_token + "</textarea>");
-                } catch (e) {
-                    ToastAlert.info("Token\u5e8f\u5217\u5316\u9519\u8bef,\u8bf7\u5411\u4f5c\u8005\u53cd\u9988," + e.toString());
-                } else ToastAlert.info("\u672a\u80fd\u83b7\u53d6\u5230Token\u4fe1\u606f,\u8bf7\u91cd\u65b0\u767b\u5f55\u540e\u518d\u8bd5");
-            }));
+            $("#onekeyvip-token").on("click", this.getToken);
         }, AliyunPanToken;
     }(PluginBase), OneKeyVipInjection = function() {
         function OneKeyVipInjection() {
