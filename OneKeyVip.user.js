@@ -119,7 +119,7 @@
     "object" == typeof exports && "undefined" != typeof module ? factory(require("sweetalert2"), require("vue")) : "function" == typeof define && define.amd ? define([ "sweetalert2", "vue" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).Swal, global.Vue);
 })(this, (function(Swal, Vue) {
     "use strict";
-    var Swal__default, Vue__default, extendStatics, update_key, Min, Hour, Logger, LogLevel, Config, History, PriceDetail, ListPriceItem, BrowerType, Core, Runtime, AjaxOption, Alert, Http, HttpHeaders, Convert, Result, HistoryResult, Route, Toast, ToastType, css_248z$5, Common, PluginBase, SiteEnum, UpdateService, VersionCompar, VersionResult, EventHelper, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$4, MsgInfo, PromoInfo, HistoryService, GwdService, css_248z$3, TaoBaoService, container, Container, BiliImgService, Menu$1, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$2, CsdnAdService, Menu, WenKuService, css_248z$1, ToastAlert, LinkJumpService, css_248z, _GwdService, AutoExpandService, BIliTools, BiliMobileService, OneKeyVipInjection;
+    var Swal__default, Vue__default, extendStatics, update_key, Min, Hour, Logger, LogLevel, Config, History, PriceDetail, ListPriceItem, BrowerType, Core, Runtime, AjaxOption, Alert, Http, HttpHeaders, Convert, Result, HistoryResult, Route, Toast, ToastType, css_248z$5, Common, PluginBase, SiteEnum, UpdateService, VersionCompar, VersionResult, EventHelper, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$4, MsgInfo, PromoInfo, HistoryService, GwdService, css_248z$3, TaoBaoService, container, Container, BiliImgService, Menu$1, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$2, CsdnAdService, Menu, WenKuService, css_248z$1, ToastAlert, LinkJumpService, css_248z, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, OneKeyVipInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
@@ -1005,9 +1005,9 @@
         SiteEnum.WangYi = "WangYi", SiteEnum.Tencent_M = "Tencent_M", SiteEnum.KuGou = "KuGou", 
         SiteEnum.KuWo = "KuWo", SiteEnum.XiaMi = "XiaMi", SiteEnum.TaiHe = "TaiHe", SiteEnum.QingTing = "QingTing", 
         SiteEnum.LiZhi = "LiZhi", SiteEnum.MiGu = "MiGu", SiteEnum.XiMaLaYa = "XiMaLaYa", 
-        SiteEnum.WenKu = "WenKu", SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", SiteEnum.BDY1 = "BDY1", 
-        SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", SiteEnum.Steam = "Steam", SiteEnum.Vp = "Vp", 
-        SiteEnum.CSDN = "CSDN", SiteEnum.ZhiHu = "ZhiHu", SiteEnum.JianShu = "JianShu", 
+        SiteEnum.WenKu = "WenKu", SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", SiteEnum.ALY = "ALY", 
+        SiteEnum.BDY1 = "BDY1", SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", SiteEnum.Steam = "Steam", 
+        SiteEnum.Vp = "Vp", SiteEnum.CSDN = "CSDN", SiteEnum.ZhiHu = "ZhiHu", SiteEnum.JianShu = "JianShu", 
         SiteEnum.JueJin = "JueJin", SiteEnum.Gitee = "Gitee";
     }(SiteEnum || (SiteEnum = {})), UpdateService = function(_super) {
         function UpdateService() {
@@ -2511,6 +2511,12 @@
                 timer: 1e3 * time,
                 customClass: this.customeCss
             });
+        }, ToastAlert.msg = function(title, html) {
+            return Swal__default.default.fire({
+                title: "<strong>" + title + "</strong>",
+                html: html,
+                showCloseButton: !0
+            });
         }, ToastAlert.html = function(title, html, cancel, cancelTxt, confirm, confirmTxt) {
             return void 0 === cancel && (cancel = !1), void 0 === cancelTxt && (cancelTxt = ""), 
             void 0 === confirm && (confirm = !1), void 0 === confirmTxt && (confirmTxt = ""), 
@@ -2649,9 +2655,35 @@
                 })), $(ele).removeClass("launch-app-btn");
             }));
         }, BiliMobileService;
+    }(PluginBase), AliyunPanToken = function(_super) {
+        function AliyunPanToken() {
+            var _this = _super.call(this) || this;
+            return _this.rules = new Map([ [ SiteEnum.ALY, /www\.aliyundrive\.com\/drive*/i ] ]), 
+            _this.html = '\n    <li class=" ant-dropdown-menu-item-divider"></li>\n    <li class="ant-dropdown-menu-item ant-dropdown-menu-item-only-child" role="menuitem">\n        <div class="outer-menu--ihDUR">\n            <div class="item--2ReU2" id="onekeyvip-token">\n                <span data-role="icon" data-render-as="svg" data-icon-type="PDSMoreCircle" class="item-icon--1ydoa icon--d-ejA "><svg viewBox="0 0 1024 1024"><use xlink:href="#PDSMoreCircle"></use></svg></span>\n                \u83b7\u53d6Token\n            </div>\n        </div>\n    </li>\n    ', 
+            _this._unique = !1, _this._appName = "aliyunpan-token", _this;
+        }
+        return __extends(AliyunPanToken, _super), AliyunPanToken.prototype.loader = function() {}, 
+        AliyunPanToken.prototype.run = function() {
+            var _this = this;
+            Core.autoLazyload((function() {
+                var _a, _b, finded = null !== (_b = null === (_a = $(".ant-dropdown-menu")) || void 0 === _a ? void 0 : _a.length) && void 0 !== _b ? _b : -1;
+                return Logger.debug("\u83dc\u5355\u67e5\u8be2\u60c5\u51b5:" + finded), finded > 0;
+            }), (function() {
+                $(".ant-dropdown-menu").append(_this.html), _this.initEvent();
+            }), .5);
+        }, AliyunPanToken.prototype.initEvent = function() {
+            $("#onekeyvip-token").on("click", (function() {
+                var _a, tokenStr, tokenObj;
+                if ($(".ant-dropdown").addClass("ant-dropdown-hidden"), tokenStr = null !== (_a = unsafeWindow.localStorage.token) && void 0 !== _a ? _a : "") try {
+                    tokenObj = JSON.parse(tokenStr), ToastAlert.msg("token\u4fe1\u606f", "<textarea>" + tokenObj.refresh_token + "</textarea>");
+                } catch (e) {
+                    ToastAlert.info("Token\u5e8f\u5217\u5316\u9519\u8bef,\u8bf7\u5411\u4f5c\u8005\u53cd\u9988," + e.toString());
+                } else ToastAlert.info("\u672a\u80fd\u83b7\u53d6\u5230Token\u4fe1\u606f,\u8bf7\u91cd\u65b0\u767b\u5f55\u540e\u518d\u8bd5");
+            }));
+        }, AliyunPanToken;
     }(PluginBase), OneKeyVipInjection = function() {
         function OneKeyVipInjection() {
-            this.plugins = new Array, this.plugins = [ Container.Require(AutoExpandService), Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(BiliMobileService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(GwdService), Container.Require(CsdnAdService), Container.Require(WenKuService), Container.Require(LinkJumpService), Container.Require(_GwdService) ], 
+            this.plugins = new Array, this.plugins = [ Container.Require(AutoExpandService), Container.Require(AliyunPanToken), Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(BiliMobileService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(GwdService), Container.Require(CsdnAdService), Container.Require(WenKuService), Container.Require(LinkJumpService), Container.Require(_GwdService) ], 
             Logger.info("container loaded");
         }
         return OneKeyVipInjection.prototype.Init = function() {
