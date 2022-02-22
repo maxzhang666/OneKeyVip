@@ -1,10 +1,10 @@
 // ==UserScript== 
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用 
 // @namespace    https://www.wandhi.com/
-// @version      4.2.65
+// @version      4.3.1
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
-// @description  🔥功能介绍🔥：1、Vip视频解析；2、一站式音乐搜索解决方案；3、bilibili视频封面获取；4、bilibili视频下载；5、上学吧答案查询(已下线)；6、商品历史价格展示(一次性告别虚假降价)；7、优惠券查询
+// @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载；🎉 5、上学吧答案查询(已下线)；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站)
 // @author       MaxZhang
 // @icon         https://www.wandhi.com//favicon.ico 
 // @include      *://m.youku.com/v*
@@ -83,11 +83,9 @@
 // @require      https://cdn.jsdelivr.net/npm/sweetalert2@11
 // @require      https://lib.baomitu.com/echarts/4.6.0/echarts.min.js
 // @require      https://lib.baomitu.com/layer/2.3/layer.js
-// @require      https://lib.baomitu.com/reflect-metadata/0.1.13/Reflect.min.js
 // @require      https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.min.js
 // @require      https://cdn.jsdelivr.net/npm/vuex@3.4.0/dist/vuex.min.js
 // @require      https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js
-// @require      https://cdn.jsdelivr.net/npm/crypto-js@4.0.0/crypto-js.js
 // @require      https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js
 // @license      MIT
 // @grant        GM_setClipboard
@@ -117,38 +115,22 @@
 // @antifeature  referral-link 此提示为GreasyFork代码规范要求含有查券功能的脚本必须添加，实际使用无任何强制跳转，代码可查，请知悉。
 // ==/UserScript==
 
-!function(global, factory) {
-    "object" == typeof exports && "undefined" != typeof module ? factory(require("sweetalert2"), require("vue"), require("reflect-metadata"), require("crypto-js")) : "function" == typeof define && define.amd ? define([ "sweetalert2", "vue", "reflect-metadata", "crypto-js" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).Swal, global.Vue, null, global.CryptoJS);
-}(this, (function(Swal, Vue, reflectMetadata, CryptoJS) {
+(function(global, factory) {
+    "object" == typeof exports && "undefined" != typeof module ? factory(require("sweetalert2"), require("vue")) : "function" == typeof define && define.amd ? define([ "sweetalert2", "vue" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).Swal, global.Vue);
+})(this, (function(Swal, Vue) {
     "use strict";
+    var Swal__default, Vue__default, extendStatics, update_key, Min, Hour, Logger, LogLevel, Config, History, PriceDetail, ListPriceItem, BrowerType, Core, Runtime, AjaxOption, Alert, Http, HttpHeaders, Convert, Result, HistoryResult, Route, Toast, ToastType, css_248z$5, Common, PluginBase, SiteEnum, UpdateService, VersionCompar, VersionResult, EventHelper, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$4, MsgInfo, PromoInfo, HistoryService, GwdService, css_248z$3, TaoBaoService, container, Container, BiliImgService, Menu$1, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$2, CsdnAdService, Menu, WenKuService, css_248z$1, ToastAlert, LinkJumpService, css_248z, _GwdService, AutoExpandService, BIliTools, BiliMobileService, OneKeyVipInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
         };
     }
-    var Swal__default = _interopDefaultLegacy(Swal), Vue__default = _interopDefaultLegacy(Vue), CryptoJS__default = _interopDefaultLegacy(CryptoJS), extendStatics = function(d, b) {
-        return (extendStatics = Object.setPrototypeOf || {
-            __proto__: []
-        } instanceof Array && function(d, b) {
-            d.__proto__ = b;
-        } || function(d, b) {
-            for (var p in b) b.hasOwnProperty(p) && (d[p] = b[p]);
-        })(d, b);
-    };
     function __extends(d, b) {
         function __() {
             this.constructor = d;
         }
         extendStatics(d, b), d.prototype = null === b ? Object.create(b) : (__.prototype = b.prototype, 
         new __);
-    }
-    function __decorate(decorators, target, key, desc) {
-        var d, c = arguments.length, r = c < 3 ? target : null === desc ? desc = Object.getOwnPropertyDescriptor(target, key) : desc;
-        if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) r = Reflect.decorate(decorators, target, key, desc); else for (var i = decorators.length - 1; i >= 0; i--) (d = decorators[i]) && (r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r);
-        return c > 3 && r && Object.defineProperty(target, key, r), r;
-    }
-    function __metadata(metadataKey, metadataValue) {
-        if ("object" == typeof Reflect && "function" == typeof Reflect.metadata) return Reflect.metadata(metadataKey, metadataValue);
     }
     function __awaiter(thisArg, _arguments, P, generator) {
         return new (P || (P = Promise))((function(resolve, reject) {
@@ -256,9 +238,9 @@
         }
     }
     function __read(o, n) {
-        var m = "function" == typeof Symbol && o[Symbol.iterator];
+        var i, r, ar, e, m = "function" == typeof Symbol && o[Symbol.iterator];
         if (!m) return o;
-        var r, e, i = m.call(o), ar = [];
+        i = m.call(o), ar = [];
         try {
             for (;(void 0 === n || n-- > 0) && !(r = i.next()).done; ) ar.push(r.value);
         } catch (error) {
@@ -278,7 +260,22 @@
         for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]));
         return ar;
     }
-    var update_key = "isUpdate", Min = 60, Hour = 60 * Min, B1 = "YmVpYmVpZG91eXUxMjM0NQ==", B2 = "YmVpYmVpMTIzNDU2Nzg5MA==", Logger = function() {
+    function styleInject(css, ref) {
+        var insertAt, head, style;
+        void 0 === ref && (ref = {}), insertAt = ref.insertAt, css && "undefined" != typeof document && (head = document.head || document.getElementsByTagName("head")[0], 
+        (style = document.createElement("style")).type = "text/css", "top" === insertAt && head.firstChild ? head.insertBefore(style, head.firstChild) : head.appendChild(style), 
+        style.styleSheet ? style.styleSheet.cssText = css : style.appendChild(document.createTextNode(css)));
+    }
+    Swal__default = _interopDefaultLegacy(Swal), Vue__default = _interopDefaultLegacy(Vue), 
+    extendStatics = function(d, b) {
+        return (extendStatics = Object.setPrototypeOf || {
+            __proto__: []
+        } instanceof Array && function(d, b) {
+            d.__proto__ = b;
+        } || function(d, b) {
+            for (var p in b) b.hasOwnProperty(p) && (d[p] = b[p]);
+        })(d, b);
+    }, update_key = "isUpdate", Min = 60, Hour = 60 * Min, Logger = function() {
         function Logger() {}
         return Logger.log = function(msg, group, level) {}, Logger.debug = function(msg, group) {
             void 0 === group && (group = "debug"), this.log(msg, group, LogLevel.debug);
@@ -289,12 +286,10 @@
         }, Logger.error = function(msg, group) {
             void 0 === group && (group = "debug"), this.log(msg, group, LogLevel.error);
         }, Logger;
-    }(), LogLevel;
-    !function(LogLevel) {
+    }(), function(LogLevel) {
         LogLevel[LogLevel.debug = 0] = "debug", LogLevel[LogLevel.info = 1] = "info", LogLevel[LogLevel.warn = 2] = "warn", 
         LogLevel[LogLevel.error = 3] = "error";
-    }(LogLevel || (LogLevel = {}));
-    var Config = function() {
+    }(LogLevel || (LogLevel = {})), Config = function() {
         function Config() {}
         return Object.defineProperty(Config, "env", {
             get: function() {
@@ -303,14 +298,9 @@
             enumerable: !1,
             configurable: !0
         }), Config.get = function(key, defaultValue) {
-            void 0 === defaultValue && (defaultValue = "");
-            var objStr = GM_getValue(this.encode(key), defaultValue);
-            if (objStr) {
-                var obj = JSON.parse(objStr);
-                if (-1 == obj.exp || obj.exp > (new Date).getTime()) return Logger.info("cache true"), 
-                obj.value;
-            }
-            return Logger.info("cache false"), defaultValue;
+            var objStr, obj;
+            return void 0 === defaultValue && (defaultValue = ""), (objStr = GM_getValue(this.encode(key), defaultValue)) && (-1 == (obj = JSON.parse(objStr)).exp || obj.exp > (new Date).getTime()) ? (Logger.info("cache true"), 
+            obj.value) : (Logger.info("cache false"), defaultValue);
         }, Config.set = function(key, v, exp) {
             void 0 === exp && (exp = -1);
             var obj = {
@@ -328,8 +318,8 @@
         }, Config;
     }(), History = function History() {
         this.max = 0, this.price_detail = [];
-    }, PriceDetail = function PriceDetail() {}, ListPriceItem = function ListPriceItem() {}, BrowerType;
-    !function(BrowerType) {
+    }, PriceDetail = function PriceDetail() {}, ListPriceItem = function ListPriceItem() {}, 
+    function(BrowerType) {
         BrowerType[BrowerType.Edge = 0] = "Edge", BrowerType[BrowerType.Edg = 1] = "Edg", 
         BrowerType[BrowerType.Chrome = 2] = "Chrome", BrowerType[BrowerType.Firefox = 3] = "Firefox", 
         BrowerType[BrowerType.Safiri = 4] = "Safiri", BrowerType[BrowerType.Se360 = 5] = "Se360", 
@@ -337,10 +327,9 @@
         BrowerType[BrowerType.Liebao = 8] = "Liebao", BrowerType[BrowerType.UC = 9] = "UC", 
         BrowerType[BrowerType.QQ = 10] = "QQ", BrowerType[BrowerType.Sogou = 11] = "Sogou", 
         BrowerType[BrowerType.Opera = 12] = "Opera", BrowerType[BrowerType.Maxthon = 13] = "Maxthon";
-    }(BrowerType || (BrowerType = {}));
-    var Core = function() {
+    }(BrowerType || (BrowerType = {})), Core = function() {
         function Core() {
-            this.url = this.currentUrl();
+            this.url = Core.currentUrl();
         }
         return Core.appendTo = function(selecter, html) {
             $(selecter).append(html);
@@ -405,10 +394,11 @@
             var range = max - min, rand = Math.random();
             return min + Math.round(rand * range);
         }, Core.randStr = function(len) {
-            void 0 === len && (len = 4);
-            for (var $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", maxPos = $chars.length, pwd = "", i = 0; i < len; i++) pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+            var $chars, maxPos, pwd, i;
+            for (void 0 === len && (len = 4), maxPos = ($chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789").length, 
+            pwd = "", i = 0; i < len; i++) pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
             return pwd;
-        }, Core.prototype.background = function(callback, time) {
+        }, Core.background = function(callback, time) {
             void 0 === time && (time = 5), setInterval((function() {
                 callback();
             }), 1e3 * time);
@@ -424,7 +414,7 @@
             GM_setValue(key, url);
         }, Core.openUrl = function(key) {
             this.open(GM_getValue(key));
-        }, Core.prototype.getPar = function(option, url) {
+        }, Core.getPar = function(option, url) {
             void 0 === url && (url = window.location.search);
             var v = url.match(new RegExp("[?&]" + option + "=([^&]+)", "i"));
             return null == v || v.length < 1 ? "" : v[1];
@@ -443,13 +433,13 @@
             linkScript.type = "text/javascript", linkScript.src = url, this.head.appendChild(linkScript);
         }, Core.prototype.bodyAppendJs = function(url) {
             $("body").append($('<script type="text/javascript" src="' + url + '"><\/script>'));
-        }, Core.prototype.currentUrl = function() {
+        }, Core.currentUrl = function() {
             return window.location.href;
         }, Core.inIframe = function() {
             return !(!self.frameElement || "IFRAME" != self.frameElement.tagName) || (window.frames.length != parent.frames.length || self != top);
         }, Core.format = function(time, fmt) {
-            void 0 === fmt && (fmt = "yyyy-MM-dd hh:mm:ss");
-            var o = {
+            var o, k;
+            for (k in void 0 === fmt && (fmt = "yyyy-MM-dd hh:mm:ss"), o = {
                 "M+": time.getMonth() + 1,
                 "d+": time.getDate(),
                 "h+": time.getHours(),
@@ -457,8 +447,7 @@
                 "s+": time.getSeconds(),
                 "q+": Math.floor((time.getMonth() + 3) / 3),
                 S: time.getMilliseconds()
-            };
-            for (var k in /(y+)/.test(fmt) && (fmt = fmt.replace(RegExp.$1, (time.getFullYear() + "").substr(4 - RegExp.$1.length))), 
+            }, /(y+)/.test(fmt) && (fmt = fmt.replace(RegExp.$1, (time.getFullYear() + "").substr(4 - RegExp.$1.length))), 
             o) new RegExp("(" + k + ")").test(fmt) && (fmt = fmt.replace(RegExp.$1, 1 == RegExp.$1.length ? o[k] : ("00" + o[k]).substr(("" + o[k]).length)));
             return fmt;
         }, Core.encode = function(str) {
@@ -485,13 +474,12 @@
         }, Core.click = function(selector, callback) {
             $(selector).on("click", callback);
         }, Core.uuid = function(len, split, radix) {
-            void 0 === len && (len = 10), void 0 === split && (split = !1), void 0 === radix && (radix = 0);
-            var i, chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split(""), uuid = [];
-            if (radix = 0 == radix ? radix || chars.length : radix, split) {
-                var r = void 0;
-                for (uuid[8] = uuid[13] = uuid[18] = uuid[23] = "-", uuid[14] = "4", i = 0; i < 36; i++) uuid[i] || (r = 0 | 16 * Math.random(), 
-                uuid[i] = chars[19 == i ? 3 & r | 8 : r]);
-            } else for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
+            var chars, uuid, i, r;
+            if (void 0 === len && (len = 10), void 0 === split && (split = !1), void 0 === radix && (radix = 0), 
+            chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split(""), 
+            uuid = [], radix = 0 == radix ? radix || chars.length : radix, split) for (r = void 0, 
+            uuid[8] = uuid[13] = uuid[18] = uuid[23] = "-", uuid[14] = "4", i = 0; i < 36; i++) uuid[i] || (r = 0 | 16 * Math.random(), 
+            uuid[i] = chars[19 == i ? 3 & r | 8 : r]); else for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
             return uuid.join("");
         }, Core.getBrowser = function() {
             var browser = !1, userAgent = window.navigator.userAgent.toLowerCase();
@@ -507,8 +495,7 @@
             enumerable: !1,
             configurable: !0
         }), Runtime;
-    }();
-    !function() {
+    }(), function() {
         function HttpRequest(option) {
             this.headers = new Map, this.url = option.url, this.method = option.methodType, 
             this.dataType = option.dataType, this._option = option;
@@ -518,9 +505,9 @@
         }, HttpRequest.prototype.onerror = function() {
             this.onerror();
         }, HttpRequest.prototype.setQueryData = function(datas) {
+            var fd, i;
             if (datas instanceof FormData) this.data = datas; else {
-                var fd = new FormData;
-                for (var i in datas) fd.append(i, datas[i]);
+                for (i in fd = new FormData, datas) fd.append(i, datas[i]);
                 this.data = fd;
             }
         }, Object.defineProperty(HttpRequest.prototype, "onLoad", {
@@ -530,8 +517,7 @@
             enumerable: !1,
             configurable: !0
         });
-    }();
-    var AjaxOption = function() {
+    }(), AjaxOption = function() {
         function AjaxOption(_url, _methodType, _data, _success, _header, timeOut) {
             void 0 === _methodType && (_methodType = "GET"), void 0 === _header && (_header = new Map), 
             void 0 === timeOut && (timeOut = 60), this.url = _url, this.methodType = _methodType, 
@@ -539,15 +525,12 @@
             this.timeOut = timeOut;
         }
         return AjaxOption.prototype.getData = function() {
+            var fd_1, fd, i;
             if (this.data instanceof FormData) return this.data;
-            if (this.data instanceof Map) {
-                var fd_1 = new FormData;
-                return this.data.forEach((function(v, k) {
-                    fd_1.append(k, v);
-                })), fd_1;
-            }
-            var fd = new FormData;
-            for (var i in this.data) fd.append(i, this.data[i]);
+            if (this.data instanceof Map) return fd_1 = new FormData, this.data.forEach((function(v, k) {
+                fd_1.append(k, v);
+            })), fd_1;
+            for (i in fd = new FormData, this.data) fd.append(i, this.data[i]);
             return fd;
         }, AjaxOption;
     }(), Alert = function() {
@@ -624,10 +607,9 @@
     }(), Http = function() {
         function Http() {}
         return Http.ajax = function(option) {
-            var _a, _b, _c;
+            var _a, _b, _c, head;
             option.headers.set("User-Agent", null !== (_a = unsafeWindow.navigator.userAgent) && void 0 !== _a ? _a : "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36"), 
-            option.headers.set("Accept", "application/atom+xml,application/xml,text/xml");
-            var head = new HttpHeaders;
+            option.headers.set("Accept", "application/atom+xml,application/xml,text/xml"), head = new HttpHeaders, 
             option.url.indexOf("wandhi") > 0 && (head.version = Config.env.script.version, head.auth = null !== (_b = Config.env.script.author) && void 0 !== _b ? _b : "", 
             head.namespace = null !== (_c = Config.env.script.namespace) && void 0 !== _c ? _c : ""), 
             option.headers.forEach((function(v, k) {
@@ -664,9 +646,8 @@
                 callback(d);
             }));
         }, Http.post = function(url, data, timeOut) {
-            void 0 === timeOut && (timeOut = 10);
-            var index = Alert.loading();
-            return new Promise((function(resolve) {
+            var index;
+            return void 0 === timeOut && (timeOut = 10), index = Alert.loading(), new Promise((function(resolve) {
                 Http.ajax(new AjaxOption(url, "POST", data, (function(data) {
                     Alert.close(index), resolve(data);
                 }), new Map, timeOut));
@@ -675,10 +656,9 @@
             return void 0 === data && (data = new Map), void 0 === head && (head = new Map), 
             void 0 === time_out && (time_out = 10), Alert.loading(), new Promise((function(resolve, reject) {
                 Http.ajax(new AjaxOption(url, "GET", data, (function(data) {
-                    var _a;
+                    var _a, res;
                     try {
-                        var res = null !== (_a = JSON.parse(data)) && void 0 !== _a ? _a : data;
-                        resolve(res);
+                        res = null !== (_a = JSON.parse(data)) && void 0 !== _a ? _a : data, resolve(res);
                     } catch (error) {
                         Logger.debug(error), reject();
                     }
@@ -688,10 +668,9 @@
             return void 0 === data && (data = new Map), void 0 === head && (head = new Map), 
             void 0 === time_out && (time_out = 10), Alert.loading(), new Promise((function(resolve, reject) {
                 Http.ajax(new AjaxOption(url, "GET", data, (function(data) {
-                    var _a;
+                    var _a, res;
                     try {
-                        var res = null !== (_a = JSON.parse(data)) && void 0 !== _a ? _a : data;
-                        resolve(res);
+                        res = null !== (_a = JSON.parse(data)) && void 0 !== _a ? _a : data, resolve(res);
                     } catch (error) {
                         Logger.debug(error), reject();
                     }
@@ -718,39 +697,32 @@
     }(), HttpHeaders = function HttpHeaders() {}, Convert = function() {
         function Convert() {}
         return Convert.genterData = function(data) {
-            var _data = new History;
-            if (_data.date = Core.format(new Date(Number.parseInt(data.lowerDate.match(/[0-9]{13}/)[0]) + 800), "yyyy-MM-dd"), 
+            var temp_1, _data = new History;
+            return _data.date = Core.format(new Date(Number.parseInt(data.lowerDate.match(/[0-9]{13}/)[0]) + 800), "yyyy-MM-dd"), 
             _data.min = data.lowerPrice, _data.max = _data.min, _data.max_date = _data.date, 
             _data.current = data.currentPrice.toString(), _data.mark = "" == data.changPriceRemark ? "\u6682\u65e0" : data.changPriceRemark, 
-            0 == data.listPrice.length || !data.listPrice) {
-                var temp_1 = [];
-                data.datePrice.split("],[").forEach((function(v, n) {
-                    var t = new ListPriceItem, values = (v = v.replace(/\[|"|\]/g, "")).split(",");
-                    t.pr = Number.parseInt(values[1]), t.yh = 3 == values.length ? values[2] : v.substring(v.indexOf(values[2]), v.length), 
-                    t.dt = values[0], temp_1.push(t);
-                })), data.listPrice = temp_1;
-            }
-            return data.listPrice.forEach((function(v, n) {
+            0 != data.listPrice.length && data.listPrice || (temp_1 = [], data.datePrice.split("],[").forEach((function(v, n) {
+                var values, t = new ListPriceItem;
+                values = (v = v.replace(/\[|"|\]/g, "")).split(","), t.pr = Number.parseInt(values[1]), 
+                t.yh = 3 == values.length ? values[2] : v.substring(v.indexOf(values[2]), v.length), 
+                t.dt = values[0], temp_1.push(t);
+            })), data.listPrice = temp_1), data.listPrice.forEach((function(v, n) {
                 var detail = new PriceDetail;
                 detail.timestamp = Number.parseInt(v.dt.match(/[0-9]{13}/)[0]) + 800, detail.time = Core.format(new Date(detail.timestamp), "yyyy-MM-dd"), 
                 detail.price = v.pr, detail.mark = v.yh, _data.max < v.pr && (_data.max = v.pr, 
                 _data.max_date = detail.time), _data.price_detail.push(detail);
             })), _data;
         }, Convert.genterDataV2 = function(data) {
-            var _data = new History;
-            _data.date = Core.format(new Date(data.lowerDate), "yyyy-MM-dd"), _data.min = data.lowerPrice, 
-            _data.max = _data.min, _data.max_date = _data.date, _data.current = data.currentPrice.toString(), 
-            _data.mark = "" == data.changPriceRemark ? "\u6682\u65e0" : data.changPriceRemark;
-            var listPrice = [];
-            if (0 != data.datePrice.length) {
-                var temp_2 = [];
-                data.datePrice.split("],[").forEach((function(v, n) {
-                    var t = new ListPriceItem, values = (v = v.replace(/\[|"|\]/g, "")).split(",");
-                    t.pr = Number.parseInt(values[1]), t.yh = 3 == values.length ? values[2] : v.substring(v.indexOf(values[2]), v.length), 
-                    t.dt = values[0], temp_2.push(t);
-                })), listPrice = temp_2;
-            }
-            return listPrice.forEach((function(v, n) {
+            var _data, listPrice, temp_2;
+            return (_data = new History).date = Core.format(new Date(data.lowerDate), "yyyy-MM-dd"), 
+            _data.min = data.lowerPrice, _data.max = _data.min, _data.max_date = _data.date, 
+            _data.current = data.currentPrice.toString(), _data.mark = "" == data.changPriceRemark ? "\u6682\u65e0" : data.changPriceRemark, 
+            listPrice = [], 0 != data.datePrice.length && (temp_2 = [], data.datePrice.split("],[").forEach((function(v, n) {
+                var values, t = new ListPriceItem;
+                values = (v = v.replace(/\[|"|\]/g, "")).split(","), t.pr = Number.parseInt(values[1]), 
+                t.yh = 3 == values.length ? values[2] : v.substring(v.indexOf(values[2]), v.length), 
+                t.dt = values[0], temp_2.push(t);
+            })), listPrice = temp_2), listPrice.forEach((function(v, n) {
                 var detail = new PriceDetail;
                 detail.timestamp = Number.parseInt(v.dt.match(/[0-9]{13}/)[0]) + 800, detail.time = Core.format(new Date(detail.timestamp), "yyyy-MM-dd"), 
                 detail.price = v.pr, detail.mark = v.yh, _data.max < v.pr && (_data.max = v.pr, 
@@ -783,8 +755,7 @@
     }(), Result = function() {
         function Result() {}
         return Result.prototype.constructorq = function() {}, Result;
-    }();
-    !function(_super) {
+    }(), function(_super) {
         function StuResult() {
             return null !== _super && _super.apply(this, arguments) || this;
         }
@@ -794,14 +765,12 @@
             return null !== _super && _super.apply(this, arguments) || this;
         }
         __extends(StrResult, _super);
-    }(Result);
-    var HistoryResult = function(_super) {
+    }(Result), HistoryResult = function(_super) {
         function HistoryResult() {
             return null !== _super && _super.apply(this, arguments) || this;
         }
         return __extends(HistoryResult, _super), HistoryResult;
-    }(Result);
-    !function(_super) {
+    }(Result), function(_super) {
         function HistoryQueryResult() {
             return null !== _super && _super.apply(this, arguments) || this;
         }
@@ -816,8 +785,7 @@
             return null !== _super && _super.apply(this, arguments) || this;
         }
         __extends(HistoryV2Result, _super);
-    }(Result);
-    var Route = function() {
+    }(Result), Route = function() {
         function Route() {
             this.queryTao = "";
         }
@@ -967,21 +935,10 @@
         }, Toast.error = function(msg, title, time) {
             return void 0 === time && (time = -1), this.internalShow(msg, title, time, ToastType.Error);
         }, Toast;
-    }(), ToastType;
-    function styleInject(css, ref) {
-        void 0 === ref && (ref = {});
-        var insertAt = ref.insertAt;
-        if (css && "undefined" != typeof document) {
-            var head = document.head || document.getElementsByTagName("head")[0], style = document.createElement("style");
-            style.type = "text/css", "top" === insertAt && head.firstChild ? head.insertBefore(style, head.firstChild) : head.appendChild(style), 
-            style.styleSheet ? style.styleSheet.cssText = css : style.appendChild(document.createTextNode(css));
-        }
-    }
-    !function(ToastType) {
+    }(), function(ToastType) {
         ToastType.Default = "default", ToastType.Info = "info", ToastType.Success = "success", 
         ToastType.Error = "error";
-    }(ToastType || (ToastType = {}));
-    var css_248z$5 = 'html .aside-nav {\n    -ms-text-size-adjust: 100%;\n    -webkit-text-size-adjust: 100%;\n    -webkit-font-smoothing: antialiased;\n    font-size: 62.5%\n}\n\nbody .aside-nav {\n    font-family: "Helvetica Neue", Helvetica, "Microsoft YaHei", Arial, sans-serif;\n    margin: 0;\n    font-size: 1.6rem;\n    color: #4e546b\n}\n\n.aside-nav {\n    position: fixed;\n    bottom: 0;\n    left: -47px;\n    width: 260px;\n    height: 260px;\n    -webkit-filter: url(#goo);\n    filter: url(#goo);\n    -ms-user-select: none;\n    -moz-user-select: none;\n    -webkit-user-select: none;\n    user-select: none;\n    opacity: .75;\n    z-index: 99999\n}\n\n.aside-nav.no-filter {\n    -webkit-filter: none;\n    filter: none\n}\n\n.aside-nav .aside-menu {\n    position: absolute;\n    width: 70px;\n    height: 70px;\n    -webkit-border-radius: 50%;\n    border-radius: 50%;\n    background: #f34444;\n    left: -95px;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    margin: auto;\n    text-align: center;\n    line-height: 70px;\n    color: #fff;\n    font-size: 20px;\n    z-index: 1;\n    cursor: move\n}\n\n.aside-nav .menu-item {\n    position: absolute;\n    width: 60px;\n    height: 60px;\n    background-color: #ff7676;\n    left: -95px;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    margin: auto;\n    line-height: 60px;\n    text-align: center;\n    -webkit-border-radius: 50%;\n    border-radius: 50%;\n    text-decoration: none;\n    color: #fff;\n    -webkit-transition: background .5s, -webkit-transform .6s;\n    transition: background .5s, -webkit-transform .6s;\n    -moz-transition: transform .6s, background .5s, -moz-transform .6s;\n    transition: transform .6s, background .5s;\n    transition: transform .6s, background .5s, -webkit-transform .6s, -moz-transform .6s;\n    font-size: 14px;\n    -webkit-box-sizing: border-box;\n    -moz-box-sizing: border-box;\n    box-sizing: border-box\n}\n\n.aside-nav .menu-item:hover {\n    background: #a9c734\n}\n\n.aside-nav .menu-line {\n    line-height: 20px;\n    padding-top: 10px\n}\n\n.aside-nav:hover {\n    opacity: 1\n}\n\n.aside-nav:hover .aside-menu {\n    -webkit-animation: jello 1s;\n    -moz-animation: jello 1s;\n    animation: jello 1s\n}\n\n.aside-nav:hover .menu-first {\n    -webkit-transform: translate3d(0, -135%, 0);\n    -moz-transform: translate3d(0, -135%, 0);\n    transform: translate3d(0, -135%, 0)\n}\n\n.aside-nav:hover .menu-second {\n    -webkit-transform: translate3d(120%, -70%, 0);\n    -moz-transform: translate3d(120%, -70%, 0);\n    transform: translate3d(120%, -70%, 0)\n}\n\n.aside-nav:hover .menu-third {\n    -webkit-transform: translate3d(120%, 70%, 0);\n    -moz-transform: translate3d(120%, 70%, 0);\n    transform: translate3d(120%, 70%, 0)\n}\n\n.aside-nav:hover .menu-fourth {\n    -webkit-transform: translate3d(0, 135%, 0);\n    -moz-transform: translate3d(0, 135%, 0);\n    transform: translate3d(0, 135%, 0)\n}\n\n@-webkit-keyframes jello {\n    from, 11.1%, to {\n        -webkit-transform: none;\n        transform: none\n    }\n    22.2% {\n        -webkit-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -webkit-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -webkit-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -webkit-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -webkit-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -webkit-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -webkit-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n@-moz-keyframes jello {\n    from, 11.1%, to {\n        -moz-transform: none;\n        transform: none\n    }\n    22.2% {\n        -moz-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -moz-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -moz-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -moz-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -moz-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -moz-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -moz-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n@keyframes jello {\n    from, 11.1%, to {\n        -webkit-transform: none;\n        -moz-transform: none;\n        transform: none\n    }\n    22.2% {\n        -webkit-transform: skewX(-12.5deg) skewY(-12.5deg);\n        -moz-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -webkit-transform: skewX(6.25deg) skewY(6.25deg);\n        -moz-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -webkit-transform: skewX(-3.125deg) skewY(-3.125deg);\n        -moz-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -webkit-transform: skewX(1.5625deg) skewY(1.5625deg);\n        -moz-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -webkit-transform: skewX(-.78125deg) skewY(-.78125deg);\n        -moz-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -webkit-transform: skewX(0.390625deg) skewY(0.390625deg);\n        -moz-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -webkit-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        -moz-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n.animated {\n    -webkit-animation-duration: 1s;\n    -moz-animation-duration: 1s;\n    animation-duration: 1s;\n    -webkit-animation-fill-mode: both;\n    -moz-animation-fill-mode: both;\n    animation-fill-mode: both\n}\n\n@-webkit-keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -webkit-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -webkit-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -webkit-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -webkit-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -webkit-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -webkit-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n@-moz-keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -moz-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -moz-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -moz-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -moz-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -moz-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -moz-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n@keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -webkit-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        -moz-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -webkit-transform: translate3d(0, 800px, 0);\n        -moz-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -webkit-transform: translate3d(0, -20px, 0);\n        -moz-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -webkit-transform: translate3d(0, 10px, 0);\n        -moz-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -webkit-transform: translate3d(0, -5px, 0);\n        -moz-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -webkit-transform: translate3d(0, 0, 0);\n        -moz-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n.bounceInUp {\n    -webkit-animation-name: bounceInUp;\n    -moz-animation-name: bounceInUp;\n    animation-name: bounceInUp;\n    -webkit-animation-delay: 1s;\n    -moz-animation-delay: 1s;\n    animation-delay: 1s\n}\n', Common;
+    }(ToastType || (ToastType = {})), css_248z$5 = 'html .aside-nav {\n    -ms-text-size-adjust: 100%;\n    -webkit-text-size-adjust: 100%;\n    -webkit-font-smoothing: antialiased;\n    font-size: 62.5%\n}\n\nbody .aside-nav {\n    font-family: "Helvetica Neue", Helvetica, "Microsoft YaHei", Arial, sans-serif;\n    margin: 0;\n    font-size: 1.6rem;\n    color: #4e546b\n}\n\n.aside-nav {\n    position: fixed;\n    bottom: 0;\n    left: -47px;\n    width: 260px;\n    height: 260px;\n    -webkit-filter: url(#goo);\n    filter: url(#goo);\n    -ms-user-select: none;\n    -moz-user-select: none;\n    -webkit-user-select: none;\n    user-select: none;\n    opacity: .75;\n    z-index: 99999\n}\n\n.aside-nav.no-filter {\n    -webkit-filter: none;\n    filter: none\n}\n\n.aside-nav .aside-menu {\n    position: absolute;\n    width: 70px;\n    height: 70px;\n    -webkit-border-radius: 50%;\n    border-radius: 50%;\n    background: #f34444;\n    left: -95px;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    margin: auto;\n    text-align: center;\n    line-height: 70px;\n    color: #fff;\n    font-size: 20px;\n    z-index: 1;\n    cursor: move\n}\n\n.aside-nav .menu-item {\n    position: absolute;\n    width: 60px;\n    height: 60px;\n    background-color: #ff7676;\n    left: -95px;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    margin: auto;\n    line-height: 60px;\n    text-align: center;\n    -webkit-border-radius: 50%;\n    border-radius: 50%;\n    text-decoration: none;\n    color: #fff;\n    -webkit-transition: background .5s, -webkit-transform .6s;\n    transition: background .5s, -webkit-transform .6s;\n    -moz-transition: transform .6s, background .5s, -moz-transform .6s;\n    transition: transform .6s, background .5s;\n    transition: transform .6s, background .5s, -webkit-transform .6s, -moz-transform .6s;\n    font-size: 14px;\n    -webkit-box-sizing: border-box;\n    -moz-box-sizing: border-box;\n    box-sizing: border-box\n}\n\n.aside-nav .menu-item:hover {\n    background: #a9c734\n}\n\n.aside-nav .menu-line {\n    line-height: 20px;\n    padding-top: 10px\n}\n\n.aside-nav:hover {\n    opacity: 1\n}\n\n.aside-nav:hover .aside-menu {\n    -webkit-animation: jello 1s;\n    -moz-animation: jello 1s;\n    animation: jello 1s\n}\n\n.aside-nav:hover .menu-first {\n    -webkit-transform: translate3d(0, -135%, 0);\n    -moz-transform: translate3d(0, -135%, 0);\n    transform: translate3d(0, -135%, 0)\n}\n\n.aside-nav:hover .menu-second {\n    -webkit-transform: translate3d(120%, -70%, 0);\n    -moz-transform: translate3d(120%, -70%, 0);\n    transform: translate3d(120%, -70%, 0)\n}\n\n.aside-nav:hover .menu-third {\n    -webkit-transform: translate3d(120%, 70%, 0);\n    -moz-transform: translate3d(120%, 70%, 0);\n    transform: translate3d(120%, 70%, 0)\n}\n\n.aside-nav:hover .menu-fourth {\n    -webkit-transform: translate3d(0, 135%, 0);\n    -moz-transform: translate3d(0, 135%, 0);\n    transform: translate3d(0, 135%, 0)\n}\n\n@-webkit-keyframes jello {\n    from, 11.1%, to {\n        -webkit-transform: none;\n        transform: none\n    }\n    22.2% {\n        -webkit-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -webkit-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -webkit-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -webkit-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -webkit-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -webkit-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -webkit-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n@-moz-keyframes jello {\n    from, 11.1%, to {\n        -moz-transform: none;\n        transform: none\n    }\n    22.2% {\n        -moz-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -moz-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -moz-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -moz-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -moz-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -moz-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -moz-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n@keyframes jello {\n    from, 11.1%, to {\n        -webkit-transform: none;\n        -moz-transform: none;\n        transform: none\n    }\n    22.2% {\n        -webkit-transform: skewX(-12.5deg) skewY(-12.5deg);\n        -moz-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -webkit-transform: skewX(6.25deg) skewY(6.25deg);\n        -moz-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -webkit-transform: skewX(-3.125deg) skewY(-3.125deg);\n        -moz-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -webkit-transform: skewX(1.5625deg) skewY(1.5625deg);\n        -moz-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -webkit-transform: skewX(-.78125deg) skewY(-.78125deg);\n        -moz-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -webkit-transform: skewX(0.390625deg) skewY(0.390625deg);\n        -moz-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -webkit-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        -moz-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n.animated {\n    -webkit-animation-duration: 1s;\n    -moz-animation-duration: 1s;\n    animation-duration: 1s;\n    -webkit-animation-fill-mode: both;\n    -moz-animation-fill-mode: both;\n    animation-fill-mode: both\n}\n\n@-webkit-keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -webkit-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -webkit-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -webkit-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -webkit-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -webkit-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -webkit-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n@-moz-keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -moz-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -moz-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -moz-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -moz-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -moz-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -moz-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n@keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -webkit-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        -moz-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -webkit-transform: translate3d(0, 800px, 0);\n        -moz-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -webkit-transform: translate3d(0, -20px, 0);\n        -moz-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -webkit-transform: translate3d(0, 10px, 0);\n        -moz-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -webkit-transform: translate3d(0, -5px, 0);\n        -moz-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -webkit-transform: translate3d(0, 0, 0);\n        -moz-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n.bounceInUp {\n    -webkit-animation-name: bounceInUp;\n    -moz-animation-name: bounceInUp;\n    animation-name: bounceInUp;\n    -webkit-animation-delay: 1s;\n    -moz-animation-delay: 1s;\n    animation-delay: 1s\n}\n', 
     styleInject(css_248z$5), function(Common) {
         var Menu = function() {
             function Menu() {
@@ -991,98 +948,55 @@
             return Menu.prototype.loader = function() {}, Menu.prototype.getBody = function(option) {
                 return '<svg width="0" height="0"><defs><filter id="goo"><feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"></feGaussianBlur><feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo"></feColorMatrix><feComposite in="SourceGraphic" in2="goo" operator="atop"></feComposite></filter></defs></svg><div class="aside-nav bounceInUp animated" id="Wandhi-nav"><label for="" class="aside-menu" title="\u6309\u4f4f\u62d6\u52a8">VIP</label>' + option + "</div>";
             }, Menu.prototype.Init = function(menus, callback) {
-                var _this = this;
-                if (!Core.inIframe()) {
-                    this.loader();
-                    var str = "";
-                    menus.forEach((function(element, index) {
-                        str += '<a href="javascript:void(0)" title="' + element.title + '" data-cat="' + element.type + '" class="menu-item menu-line menu-' + _this.menusClass[index] + '">' + element.show + "</a>";
-                    })), Core.bodyAppend(this.getBody(str)), /Safari|iPhone/i.test(this.userAgent) && /chrome/i.test(this.userAgent) && $("#Wandhi-nav").addClass("no-filter");
-                    var drags = {
-                        down: !1,
-                        x: 0,
-                        y: 0,
-                        winWid: 0,
-                        winHei: 0,
-                        clientX: 0,
-                        clientY: 0
-                    }, asideNav = $(this.menuSelecter)[0];
-                    $("body").on("mousedown", "" + this.menuSelecter, (function(a) {
-                        var getCss = function(a, e) {
-                            var _a, _b, _c;
-                            return null !== (_b = null === (_a = document.defaultView) || void 0 === _a ? void 0 : _a.getComputedStyle(a, null)[e]) && void 0 !== _b ? _b : null !== (_c = a.currentStyle) && void 0 !== _c ? _c : a.currentStyle[e];
-                        };
-                        drags.down = !0, drags.clientX = a.clientX, drags.clientY = a.clientY, drags.x = parseInt(getCss(this, "left")), 
-                        drags.y = parseInt(getCss(this, "top")), drags.winHei = $(window).height(), drags.winWid = $(window).width(), 
-                        $(document).on("mousemove", (function(a) {
-                            var e = a.clientX - drags.clientX, t = a.clientY - drags.clientY;
-                            (asideNav = asideNav || $("#Wandhi-nav")[0]).style.top = drags.y + t + "px", asideNav.style.left = drags.x + e + "px";
-                        }));
-                    })).on("mouseup", "" + this.menuSelecter, (function() {
-                        drags.down = !1, $(document).off("mousemove");
-                    })), callback.call(this);
-                }
+                var that, str, drags, asideNav, _this = this;
+                Core.inIframe() || (that = this, this.loader(), str = "", menus.forEach((function(element, index) {
+                    str += '<a href="javascript:void(0)" title="' + element.title + '" data-cat="' + element.type + '" class="menu-item menu-line menu-' + _this.menusClass[index] + '">' + element.show + "</a>";
+                })), Core.bodyAppend(this.getBody(str)), /Safari|iPhone/i.test(this.userAgent) && /chrome/i.test(this.userAgent) && $("#Wandhi-nav").addClass("no-filter"), 
+                drags = {
+                    down: !1,
+                    x: 0,
+                    y: 0,
+                    winWid: 0,
+                    winHei: 0,
+                    clientX: 0,
+                    clientY: 0
+                }, asideNav = $(this.menuSelecter)[0], $("body").on("mousedown", "" + that.menuSelecter, (function(a) {
+                    var getCss = function(a, e) {
+                        var _a, _b, _c;
+                        return null !== (_b = null === (_a = document.defaultView) || void 0 === _a ? void 0 : _a.getComputedStyle(a, null)[e]) && void 0 !== _b ? _b : null !== (_c = a.currentStyle) && void 0 !== _c ? _c : a.currentStyle[e];
+                    };
+                    drags.down = !0, drags.clientX = a.clientX, drags.clientY = a.clientY, drags.x = parseInt(getCss(this, "left")), 
+                    drags.y = parseInt(getCss(this, "top")), drags.winHei = $(window).height(), drags.winWid = $(window).width(), 
+                    $(document).on("mousemove", (function(a) {
+                        var e = a.clientX - drags.clientX, t = a.clientY - drags.clientY;
+                        (asideNav = asideNav || $("#Wandhi-nav")[0]).style.top = drags.y + t + "px", asideNav.style.left = drags.x + e + "px";
+                    }));
+                })).on("mouseup", "" + that.menuSelecter, (function() {
+                    drags.down = !1, $(document).off("mousemove");
+                })), callback.call(this));
             }, Menu.close = function() {
                 $("#" + Menu.mainId).hide();
             }, Menu.mainId = "Wandhi-nav", Menu;
         }();
         Common.Menu = Menu;
-    }(Common || (Common = {}));
-    var container = new Map, Container = function() {
-        function Container() {}
-        return Container.Registe = function(type, args) {
-            var className = this.processName(type.name);
-            return container.set(className, window.Reflect.construct(type, this.buildParams(args))), 
-            container.get(className);
-        }, Container.buildParams = function(args) {
-            var para = [];
-            return null == args || args.map((function(item) {
-                para.push(item);
-            })), para;
-        }, Container.processName = function(name) {
-            return name.toLowerCase();
-        }, Container.Require = function(type) {
-            var _this = this, name = this.processName(type.name);
-            if (container.has(name)) return container.get(name);
-            var args, classParams = Reflect.getMetadata(METADATA_PARAMS, type);
-            return (null == classParams ? void 0 : classParams.length) && (args = classParams.map((function(item) {
-                return _this.Require(item);
-            }))), this.Registe(type, args);
-        }, Container.define = function(target, key) {
-            var _a, classType = Reflect.getMetadata(METADATA_TYPE, target, key), desc = null !== (_a = Object.getOwnPropertyDescriptor(target, key)) && void 0 !== _a ? _a : {
-                writable: !0,
-                configurable: !0
-            };
-            desc.value = this.Require(classType), Object.defineProperty(target, key, desc);
-        }, Container;
-    }(), METADATA_TYPE = "design:type", METADATA_PARAMS = "design:paramtypes";
-    function WandhiAuto(target, key) {
-        Container.define(target, key);
-    }
-    var PluginBase = function() {
+    }(Common || (Common = {})), PluginBase = function() {
         function PluginBase() {
             var _this = this;
-            this._unique = !0, this.Process = function() {
+            this._unique = !0, this.menu = new Common.Menu, this.Process = function() {
                 _this.loader(), _this.run();
             }, this._appName = "base";
         }
-        var _a, _b;
         return PluginBase.prototype.unique = function() {
             return this._unique;
         }, PluginBase.prototype.linkTest = function(url) {
-            var _this = this;
-            url || (url = this.core.currentUrl());
-            var flag = !1;
-            return this.rules.forEach((function(v, k) {
+            var flag, _this = this;
+            return url || (url = Core.currentUrl()), flag = !1, this.rules.forEach((function(v, k) {
                 return !v.test(url) || (flag = !0, _this.site = k, !1);
             })), flag;
         }, PluginBase.prototype.appName = function() {
             return this._appName;
-        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (_a = void 0 !== Core && Core) ? _a : Object) ], PluginBase.prototype, "core", void 0), 
-        __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (_b = void 0 !== Common && Common.Menu) ? _b : Object) ], PluginBase.prototype, "menu", void 0), 
-        PluginBase;
-    }(), SiteEnum;
-    !function(SiteEnum) {
+        }, PluginBase;
+    }(), function(SiteEnum) {
         SiteEnum.All = "All", SiteEnum.TaoBao = "TaoBao", SiteEnum.TMall = "TMall", SiteEnum.JingDong = "JingDong", 
         SiteEnum.IQiYi = "IQiYi", SiteEnum.YouKu = "YouKu", SiteEnum.LeShi = "LeShi", SiteEnum.TuDou = "TuDou", 
         SiteEnum.Tencent_V = "Tencent_V", SiteEnum.MangGuo = "MangGuo", SiteEnum.SoHu = "SoHu", 
@@ -1095,8 +1009,7 @@
         SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", SiteEnum.Steam = "Steam", SiteEnum.Vp = "Vp", 
         SiteEnum.CSDN = "CSDN", SiteEnum.ZhiHu = "ZhiHu", SiteEnum.JianShu = "JianShu", 
         SiteEnum.JueJin = "JueJin", SiteEnum.Gitee = "Gitee";
-    }(SiteEnum || (SiteEnum = {}));
-    var UpdateService = function(_super) {
+    }(SiteEnum || (SiteEnum = {})), UpdateService = function(_super) {
         function UpdateService() {
             var _this = _super.call(this) || this;
             return _this.rules = new Map([ [ SiteEnum.All, /(.*)/i ] ]), _this._unique = !1, 
@@ -1107,11 +1020,9 @@
             if (!Config.get(update_key, !1)) {
                 var current_1 = new VersionCompar(Config.env.script.version);
                 Http.get_text(Route.update_api).then((function(res) {
-                    var version = new VersionCompar(null == res ? void 0 : res.match(/@version[ ]*([\d\.]+)/)[1]);
-                    if (version.compareTo(current_1) === VersionResult.greater) {
-                        var msg = "\u65b0\u7248\u672c<span>" + version.versionString + '</span>\u5df2\u53d1\u5e03.<a id="new-version-link" class="link" href="' + Route.install_url_one + '">\u5b89\u88c5(\u7ebf\u8def\u4e00)</a><a id="new-version-link" class="link" href="' + Route.install_url_two + '">\u5b89\u88c5(\u7ebf\u8def\u4e8c)</a><a class="link" target="_blank" href="' + Route.home_url + '">\u67e5\u770b</a>';
-                        Toast.info(msg, "\u68c0\u67e5\u66f4\u65b0"), Config.set(update_key, !0, Hour);
-                    }
+                    var msg, version = new VersionCompar(null == res ? void 0 : res.match(/@version[ ]*([\d\.]+)/)[1]);
+                    version.compareTo(current_1) === VersionResult.greater && (msg = "\u65b0\u7248\u672c<span>" + version.versionString + '</span>\u5df2\u53d1\u5e03.<a id="new-version-link" class="link" href="' + Route.install_url_one + '">\u5b89\u88c5(\u7ebf\u8def\u4e00)</a><a id="new-version-link" class="link" href="' + Route.install_url_two + '">\u5b89\u88c5(\u7ebf\u8def\u4e8c)</a><a class="link" target="_blank" href="' + Route.home_url + '">\u67e5\u770b</a>', 
+                    Toast.info(msg, "\u68c0\u67e5\u66f4\u65b0"), Config.set(update_key, !0, Hour));
                 }));
             }
         }, UpdateService;
@@ -1134,12 +1045,10 @@
         }, VersionCompar.prototype.equals = function(e) {
             return this.compareTo(e) === VersionResult.equal;
         }, VersionCompar;
-    }(), VersionResult;
-    !function(VersionResult) {
+    }(), function(VersionResult) {
         VersionResult[VersionResult.less = -1] = "less", VersionResult[VersionResult.equal = 0] = "equal", 
         VersionResult[VersionResult.greater = 1] = "greater", VersionResult[VersionResult.incomparable = NaN] = "incomparable";
-    }(VersionResult || (VersionResult = {}));
-    var EventHelper = function() {
+    }(VersionResult || (VersionResult = {})), EventHelper = function() {
         function EventHelper() {}
         return EventHelper.bind_click = function(query, act) {
             var _a;
@@ -1162,15 +1071,12 @@
                 }));
             }));
         }, BaseCoupon.prototype.init_coupon_info = function(after, price, time, q_url) {
-            void 0 === q_url && (q_url = "");
-            var coup_info = "<p>\u79fb\u52a8\u7aef<span>\u5feb\u6377</span>\u8d2d\u4e70</p>", act = '<a class="vip-plugin-outside-coupons-button quan-none" href="javascript:void(0)">\u6253\u5f00\u624b\u673a\u626b\u4e00\u626b</a>', url = Runtime.url;
-            if (q_url) {
-                var now = new Date;
-                coup_info = "<p><span>" + price + '</span> \u5143\u5238</p><p class="vip-plugin-outside-coupons-date">\uff08' + Core.format(now, "yyyy-MM-dd") + " ~ " + time + "\uff09</p>", 
-                act = '<a class="vip-plugin-outside-coupons-button quan-exits">\u626b\u7801\u9886' + price + "\u5143\u4f18\u60e0\u5238</a>", 
-                url = q_url;
-            }
-            new Promise((function(resolve) {
+            var coup_info, act, url, now;
+            void 0 === q_url && (q_url = ""), coup_info = "<p>\u79fb\u52a8\u7aef<span>\u5feb\u6377</span>\u8d2d\u4e70</p>", 
+            act = '<a class="vip-plugin-outside-coupons-button quan-none" href="javascript:void(0)">\u6253\u5f00\u624b\u673a\u626b\u4e00\u626b</a>', 
+            url = Runtime.url, q_url && (now = new Date, coup_info = "<p><span>" + price + '</span> \u5143\u5238</p><p class="vip-plugin-outside-coupons-date">\uff08' + Core.format(now, "yyyy-MM-dd") + " ~ " + time + "\uff09</p>", 
+            act = '<a class="vip-plugin-outside-coupons-button quan-exits">\u626b\u7801\u9886' + price + "\u5143\u4f18\u60e0\u5238</a>", 
+            url = q_url), new Promise((function(resolve) {
                 $(".vip-plugin-outside-coupons-title").html(coup_info), $(".vip-plugin-outside-coupons-action").html(act), 
                 resolve();
             })).then((function() {
@@ -1202,14 +1108,13 @@
         }, VpCoupon.prototype.init_coupons = function() {
             var _this = this;
             Route.queryVpCoupons(Runtime.url, (function(res) {
-                if (Logger.debug(res), res.code) if (res.data.has_coupon) {
-                    var q = res.data, exp = new Date(q.quan_time);
-                    _this.init_qrcode(decodeURIComponent(q.quan_link)).then((function(res) {
-                        _this.init_coupon_info(q.after_price, q.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), decodeURIComponent(q.quan_link));
-                    }));
-                } else res.data.quan_link ? (_this.default(res.data.quan_link), EventHelper.bind_click("#vip-plugin-outside-coupons-qrcode-img", (function() {
+                var q, exp;
+                Logger.debug(res), res.code ? res.data.has_coupon ? (q = res.data, exp = new Date(q.quan_time), 
+                _this.init_qrcode(decodeURIComponent(q.quan_link)).then((function(res) {
+                    _this.init_coupon_info(q.after_price, q.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), decodeURIComponent(q.quan_link));
+                }))) : res.data.quan_link ? (_this.default(res.data.quan_link), EventHelper.bind_click("#vip-plugin-outside-coupons-qrcode-img", (function() {
                     Core.open(res.data.quan_link);
-                }))) : _this.default(); else _this.default();
+                }))) : _this.default() : _this.default();
             }));
         }, VpCoupon;
     }(BaseCoupon), SuningCoupon = function(_super) {
@@ -1229,14 +1134,13 @@
         }, SuningCoupon.prototype.init_coupons = function() {
             var _this = this;
             Route.querySnCoupons(Runtime.url, (function(res) {
-                if (Logger.debug(res), res.code) if (res.data.has_coupon) {
-                    var q = res.data, exp = new Date(q.quan_time);
-                    _this.init_qrcode(decodeURIComponent(q.quan_link)).then((function(res) {
-                        _this.init_coupon_info(q.after_price, q.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), decodeURIComponent(q.quan_link));
-                    }));
-                } else res.data.quan_link ? (_this.default(res.data.quan_link), EventHelper.bind_click("#vip-plugin-outside-coupons-qrcode-img", (function() {
+                var q, exp;
+                Logger.debug(res), res.code ? res.data.has_coupon ? (q = res.data, exp = new Date(q.quan_time), 
+                _this.init_qrcode(decodeURIComponent(q.quan_link)).then((function(res) {
+                    _this.init_coupon_info(q.after_price, q.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), decodeURIComponent(q.quan_link));
+                }))) : res.data.quan_link ? (_this.default(res.data.quan_link), EventHelper.bind_click("#vip-plugin-outside-coupons-qrcode-img", (function() {
                     Core.open(res.data.quan_link);
-                }))) : _this.default(); else _this.default();
+                }))) : _this.default() : _this.default();
             }));
         }, SuningCoupon;
     }(BaseCoupon), JdCoupon = function(_super) {
@@ -1249,64 +1153,48 @@
                 $(".product-intro").length ? (Core.appendTo(".product-intro", html), resolve(!0)) : setTimeout(_this.init_html, 2e3);
             }));
         }, JdCoupon.prototype.init_coupons = function() {
-            var _a, _b, _this = this, item_id = null === (_b = null === (_a = unsafeWindow.pageConfig) || void 0 === _a ? void 0 : _a.product) || void 0 === _b ? void 0 : _b.skuid;
-            if (item_id) {
-                var key_1 = "jd_" + item_id, coupon = Config.get(key_1);
-                if (coupon) if (coupon.has_coupon) {
-                    var q_1 = coupon, exp_1 = new Date(q_1.quan_time);
-                    this.init_qrcode(decodeURIComponent(q_1.quan_link)).then((function(res) {
-                        _this.init_coupon_info(q_1.after_price, q_1.quan_price, "" + Core.format(exp_1, "yyyy-MM-dd"), decodeURIComponent(q_1.quan_link));
-                    }));
-                } else coupon.quan_link ? this.default(coupon.quan_link) : this.default(); else Route.queryJdCoupons(item_id, (function(res) {
-                    if (Logger.debug(res), res.code) if (Config.set(key_1, res.data, 43200), res.data.has_coupon) {
-                        var q_2 = res.data, exp_2 = new Date(q_2.quan_time);
-                        _this.init_qrcode(decodeURIComponent(q_2.quan_link)).then((function(res) {
-                            _this.init_coupon_info(q_2.after_price, q_2.quan_price, "" + Core.format(exp_2, "yyyy-MM-dd"), decodeURIComponent(q_2.quan_link));
-                        }));
-                    } else res.data.quan_link ? _this.default(res.data.quan_link) : _this.default(); else _this.default();
-                }));
-            } else this.default();
+            var _a, _b, key_1, coupon, q_1, exp_1, _this = this, item_id = null === (_b = null === (_a = unsafeWindow.pageConfig) || void 0 === _a ? void 0 : _a.product) || void 0 === _b ? void 0 : _b.skuid;
+            item_id ? (key_1 = "jd_" + item_id, (coupon = Config.get(key_1)) ? coupon.has_coupon ? (q_1 = coupon, 
+            exp_1 = new Date(q_1.quan_time), this.init_qrcode(decodeURIComponent(q_1.quan_link)).then((function(res) {
+                _this.init_coupon_info(q_1.after_price, q_1.quan_price, "" + Core.format(exp_1, "yyyy-MM-dd"), decodeURIComponent(q_1.quan_link));
+            }))) : coupon.quan_link ? this.default(coupon.quan_link) : this.default() : Route.queryJdCoupons(item_id, (function(res) {
+                var q_2, exp_2;
+                Logger.debug(res), res.code ? (Config.set(key_1, res.data, 43200), res.data.has_coupon ? (q_2 = res.data, 
+                exp_2 = new Date(q_2.quan_time), _this.init_qrcode(decodeURIComponent(q_2.quan_link)).then((function(res) {
+                    _this.init_coupon_info(q_2.after_price, q_2.quan_price, "" + Core.format(exp_2, "yyyy-MM-dd"), decodeURIComponent(q_2.quan_link));
+                }))) : res.data.quan_link ? _this.default(res.data.quan_link) : _this.default()) : _this.default();
+            }))) : this.default();
         }, JdCoupon;
     }(BaseCoupon), TaoCoupon = function(_super) {
         function TaoCoupon() {
             return null !== _super && _super.apply(this, arguments) || this;
         }
-        var _a;
         return __extends(TaoCoupon, _super), TaoCoupon.prototype.init_html = function(html) {
             return new Promise((function(resolve) {
                 $("#J_DetailMeta").length ? Core.appendTo("#J_DetailMeta", html) : Core.appendTo("#detail", html + "<br/>"), 
                 resolve(!0);
             }));
         }, TaoCoupon.prototype.init_coupons = function() {
-            var _this = this, key = "n_itemId_" + this.core.getPar("id"), coupon = Config.get(key, !1);
-            coupon ? (Logger.info(coupon), this.render_coupon((null == coupon ? void 0 : coupon.length) > 0 && "string" != typeof coupon ? coupon[0] : void 0)) : Route.queryCoupons(this.core.getPar("id"), (function(data) {
-                var _a, _b;
-                if (data.code) {
-                    if ((null === (_a = data.data) || void 0 === _a ? void 0 : _a.length) > 0) {
-                        var q = data.data[0], exp = new Date(q.quan_time);
-                        _this.init_qrcode(decodeURIComponent(q.quan_link)).then((function(res) {
-                            _this.init_coupon_info(q.after_price, q.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), decodeURIComponent(q.quan_link));
-                        }));
-                    } else _this.init_qrcode(Runtime.url).then((function(res) {
-                        _this.init_coupon_info(0, 0, "");
-                    }));
-                    Config.set(key, (null === (_b = data.data) || void 0 === _b ? void 0 : _b.length) > 0 ? data.data : [], 43200);
-                } else _this.init_qrcode(Runtime.url).then((function(res) {
+            var _this = this, itemId = Core.getPar("id"), key = "n_itemId_" + itemId, coupon = Config.get(key, !1);
+            coupon ? (Logger.info(coupon), this.render_coupon((null == coupon ? void 0 : coupon.length) > 0 && "string" != typeof coupon ? coupon[0] : void 0)) : Route.queryCoupons(Core.getPar("id"), (function(data) {
+                var _a, _b, q, exp;
+                data.code ? ((null === (_a = data.data) || void 0 === _a ? void 0 : _a.length) > 0 ? (q = data.data[0], 
+                exp = new Date(q.quan_time), _this.init_qrcode(decodeURIComponent(q.quan_link)).then((function(res) {
+                    _this.init_coupon_info(q.after_price, q.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), decodeURIComponent(q.quan_link));
+                }))) : _this.init_qrcode(Runtime.url).then((function(res) {
+                    _this.init_coupon_info(0, 0, "");
+                })), Config.set(key, (null === (_b = data.data) || void 0 === _b ? void 0 : _b.length) > 0 ? data.data : [], 43200)) : _this.init_qrcode(Runtime.url).then((function(res) {
                     _this.init_coupon_info(0, 0, "");
                 }));
             }));
         }, TaoCoupon.prototype.render_coupon = function(quan) {
-            var _this = this;
-            if (void 0 === quan && (quan = void 0), null == quan) this.init_qrcode(Runtime.url).then((function(res) {
+            var q_1, exp, _this = this;
+            void 0 === quan && (quan = void 0), null == quan ? this.init_qrcode(Runtime.url).then((function(res) {
                 _this.init_coupon_info(0, 0, "");
-            })); else {
-                var q_1 = quan, exp = new Date(q_1.quan_time);
-                this.init_qrcode(decodeURIComponent(q_1.quan_link)).then((function(res) {
-                    _this.init_coupon_info(q_1.after_price, q_1.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), decodeURIComponent(q_1.quan_link));
-                }));
-            }
-        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (_a = void 0 !== Core && Core) ? _a : Object) ], TaoCoupon.prototype, "core", void 0), 
-        TaoCoupon;
+            })) : (q_1 = quan, exp = new Date(q_1.quan_time), this.init_qrcode(decodeURIComponent(q_1.quan_link)).then((function(res) {
+                _this.init_coupon_info(q_1.after_price, q_1.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), decodeURIComponent(q_1.quan_link));
+            })));
+        }, TaoCoupon;
     }(BaseCoupon), DefCoupon = function(_super) {
         function DefCoupon() {
             return null !== _super && _super.apply(this, arguments) || this;
@@ -1316,9 +1204,8 @@
                 resolve(!1);
             }));
         }, DefCoupon.prototype.init_coupons = function() {}, DefCoupon;
-    }(BaseCoupon), LinesOption = function LinesOption() {}, css_248z$4 = "#vip-plugin-outside {\n    border: 1px solid #eee;\n    margin: 0 auto;\n    position: relative;\n    clear: both;\n    display: none\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons {\n    width: 240px;\n    float: left\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode {\n    text-align: center;\n    min-height: 150px;\n    margin-top: 30px\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode canvas,\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode img {\n    margin: 0 auto\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-title {\n    margin-top: 20px;\n    color: #000;\n    font-size: 14px;\n    font-weight: 700;\n    text-align: center\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-title span {\n    color: #ff0036;\n    font-weight: 700\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action {\n    margin-top: 10px;\n    text-align: center\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action a {\n    text-decoration: none\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action .vip-plugin-outside-coupons-button {\n    min-width: 135px;\n    padding: 0 8px;\n    line-height: 35px;\n    color: #fff;\n    background: #ff0036;\n    font-size: 13px;\n    font-weight: 700;\n    letter-spacing: 1.5px;\n    margin: 0 auto;\n    text-align: center;\n    border-radius: 15px;\n    display: inline-block;\n    cursor: pointer\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action .vip-plugin-outside-coupons-button.quan-none {\n    color: #000;\n    background: #bec5c5\n}\n\n.vip-plugin-outside-coupons-date {\n    color: #233b3d;\n    font-weight: normal;\n    font-size: 12px;\n}\n\n#vip-plugin-outside .vip-plugin-outside-history .vip-plugin-outside-history-tip {\n    position: absolute;\n    margin: 0;\n    top: 50%;\n    left: 50%;\n    letter-spacing: 1px;\n    font-size: 15px;\n    transform: translateX(-50%) translateY(-50%)\n}\n\n#vip-plugin-outside .vip-plugin-outside-history, #vip-plugin-outside-chart-body {\n    height: 300px;\n    overflow: hidden;\n    position: relative\n}\n\n#vip-plugin-outside .vip-plugin-outside-history .vip-plugin-outside-chart-container,\n#vip-plugin-outside-chart-container-line {\n    width: 100%;\n    height: 100%\n}\n\n#vip-plugin-outside-similar {\n    width: 100%;\n    background: #fff;\n    z-index: 99999999;\n    height: 268px;\n    overflow: hidden;\n    left: -1px;\n    top: 36px;\n    border: 1px solid #edf1f2!important\n}\n\n.vip-plugin-outside-similar-buy-list {\n    width: 303px;\n    border-right: 1px solid rgb(237, 241, 242);\n    height: 270px;\n    padding: 0px;\n    overflow: hidden;\n    float: left;\n    margin: 0px;\n}\n.vip-plugin-outside-similar-buy-list-li-store{\n    float: left;\n    overflow: hidden;\n    margin: 8px 7px 4px 14px;\n    width: 16px;\n    height: 16px\n}\n.vip-plugin-outside-similar-buy-list li {\n    border-bottom: 1px solid #edf1f2;\n    overflow: hidden;\n    width: 100%;\n    height: 33px;\n    line-height: 33px\n}\n.vip-plugin-outside-similar-buy-list li:first-child b {\n    font-style: normal;\n    font-size: 14px;\n    margin-left: 14px;\n    font-weight: 700\n}\n.vip-plugin-outside-similar-buy-list-li-first {\n    top: 15px;\n    width: auto;\n    right: 51px;\n    padding: 0;\n    text-align: center;\n    font-size: 12px;\n    margin: 0;\n    height: auto\n}\n.vip-plugin-outside-similar-buy-list-li-title {\n    height: 33px;\n    margin: 0;\n    display: inline-block;\n    float: left;\n    font-size: 14px;\n    font-weight: 700;\n    padding: 0;\n    background: 0 0;\n    line-height: 33px;\n    max-width: 170px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    width: auto\n}\n.vip-plugin-outside-similar-buy-list-li-price {\n    color: #E4393C;\n    font-weight: 700;\n    line-height: 33px;\n    height: 33px;\n    width: auto;\n    float: right;\n    font-size: 14px;\n    margin-right: 14px;\n}\n";
-    styleInject(css_248z$4);
-    var MsgInfo = function MsgInfo() {}, PromoInfo = function PromoInfo() {
+    }(BaseCoupon), LinesOption = function LinesOption() {}, css_248z$4 = "#vip-plugin-outside {\n    border: 1px solid #eee;\n    margin: 0 auto;\n    position: relative;\n    clear: both;\n    display: none\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons {\n    width: 240px;\n    float: left\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode {\n    text-align: center;\n    min-height: 150px;\n    margin-top: 30px\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode canvas,\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode img {\n    margin: 0 auto\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-title {\n    margin-top: 20px;\n    color: #000;\n    font-size: 14px;\n    font-weight: 700;\n    text-align: center\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-title span {\n    color: #ff0036;\n    font-weight: 700\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action {\n    margin-top: 10px;\n    text-align: center\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action a {\n    text-decoration: none\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action .vip-plugin-outside-coupons-button {\n    min-width: 135px;\n    padding: 0 8px;\n    line-height: 35px;\n    color: #fff;\n    background: #ff0036;\n    font-size: 13px;\n    font-weight: 700;\n    letter-spacing: 1.5px;\n    margin: 0 auto;\n    text-align: center;\n    border-radius: 15px;\n    display: inline-block;\n    cursor: pointer\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action .vip-plugin-outside-coupons-button.quan-none {\n    color: #000;\n    background: #bec5c5\n}\n\n.vip-plugin-outside-coupons-date {\n    color: #233b3d;\n    font-weight: normal;\n    font-size: 12px;\n}\n\n#vip-plugin-outside .vip-plugin-outside-history .vip-plugin-outside-history-tip {\n    position: absolute;\n    margin: 0;\n    top: 50%;\n    left: 50%;\n    letter-spacing: 1px;\n    font-size: 15px;\n    transform: translateX(-50%) translateY(-50%)\n}\n\n#vip-plugin-outside .vip-plugin-outside-history, #vip-plugin-outside-chart-body {\n    height: 300px;\n    overflow: hidden;\n    position: relative\n}\n\n#vip-plugin-outside .vip-plugin-outside-history .vip-plugin-outside-chart-container,\n#vip-plugin-outside-chart-container-line {\n    width: 100%;\n    height: 100%\n}\n\n#vip-plugin-outside-similar {\n    width: 100%;\n    background: #fff;\n    z-index: 99999999;\n    height: 268px;\n    overflow: hidden;\n    left: -1px;\n    top: 36px;\n    border: 1px solid #edf1f2!important\n}\n\n.vip-plugin-outside-similar-buy-list {\n    width: 303px;\n    border-right: 1px solid rgb(237, 241, 242);\n    height: 270px;\n    padding: 0px;\n    overflow: hidden;\n    float: left;\n    margin: 0px;\n}\n.vip-plugin-outside-similar-buy-list-li-store{\n    float: left;\n    overflow: hidden;\n    margin: 8px 7px 4px 14px;\n    width: 16px;\n    height: 16px\n}\n.vip-plugin-outside-similar-buy-list li {\n    border-bottom: 1px solid #edf1f2;\n    overflow: hidden;\n    width: 100%;\n    height: 33px;\n    line-height: 33px\n}\n.vip-plugin-outside-similar-buy-list li:first-child b {\n    font-style: normal;\n    font-size: 14px;\n    margin-left: 14px;\n    font-weight: 700\n}\n.vip-plugin-outside-similar-buy-list-li-first {\n    top: 15px;\n    width: auto;\n    right: 51px;\n    padding: 0;\n    text-align: center;\n    font-size: 12px;\n    margin: 0;\n    height: auto\n}\n.vip-plugin-outside-similar-buy-list-li-title {\n    height: 33px;\n    margin: 0;\n    display: inline-block;\n    float: left;\n    font-size: 14px;\n    font-weight: 700;\n    padding: 0;\n    background: 0 0;\n    line-height: 33px;\n    max-width: 170px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    width: auto\n}\n.vip-plugin-outside-similar-buy-list-li-price {\n    color: #E4393C;\n    font-weight: 700;\n    line-height: 33px;\n    height: 33px;\n    width: auto;\n    float: right;\n    font-size: 14px;\n    margin-right: 14px;\n}\n", 
+    styleInject(css_248z$4), MsgInfo = function MsgInfo() {}, PromoInfo = function PromoInfo() {
         this.price = 0, this.time = 0;
     }, HistoryService = function(_super) {
         function HistoryService() {
@@ -1369,8 +1256,17 @@
         }, HistoryService.prototype.chartMsg = function(msg) {
             $(".vip-plugin-outside-history-tip").html(msg);
         }, HistoryService.prototype.getChartOption = function(data) {
-            var _a, _b, text = "\u5386\u53f2\u4f4e\u4ef7\uff1a{red|\uffe5" + data.min + "} ( {red|" + data.date + "} ) \u5206\u6790\uff1a" + data.mark, chartOption = new LinesOption;
-            (chartOption = {
+            var _a, _b, step, line, text = "\u5386\u53f2\u4f4e\u4ef7\uff1a{red|\uffe5" + data.min + "} ( {red|" + data.date + "} ) \u5206\u6790\uff1a" + data.mark, chartOption = new LinesOption, datas = function(data) {
+                var l = [];
+                return data.price_detail.forEach((function(v) {
+                    var p = {
+                        name: v.time,
+                        value: [ v.timestamp, v.price, v.mark ]
+                    };
+                    l.push(p);
+                })), l;
+            };
+            return step = 10, (chartOption = {
                 title: {
                     left: "center",
                     subtext: text,
@@ -1389,9 +1285,10 @@
                         type: "cross"
                     },
                     formatter: function(params) {
-                        params = params[0];
-                        var date = new Date(params.name), year = date.getFullYear(), month = date.getMonth() + 1, day = date.getDate(), monthStr = month.toString(), dayStr = day.toString();
-                        return month < 10 && (monthStr = "0" + month), day < 10 && (dayStr = "0" + day), 
+                        var date, year, month, day, monthStr, dayStr;
+                        return params = params[0], year = (date = new Date(params.name)).getFullYear(), 
+                        month = date.getMonth() + 1, day = date.getDate(), monthStr = month.toString(), 
+                        dayStr = day.toString(), month < 10 && (monthStr = "0" + month), day < 10 && (dayStr = "0" + day), 
                         "\u65e5\u671f\uff1a" + year + "-" + monthStr + "-" + dayStr + "<br/>\u4ef7\u683c\uff1a\uffe5" + params.value[1].toFixed(2) + ("" == params.value[2] ? "" : "<br/>" + params.value[2]);
                     }
                 },
@@ -1411,16 +1308,7 @@
                 series: [ {
                     type: "line",
                     step: "end",
-                    data: function(data) {
-                        var l = [];
-                        return data.price_detail.forEach((function(v) {
-                            var p = {
-                                name: v.time,
-                                value: [ v.timestamp, v.price, v.mark ]
-                            };
-                            l.push(p);
-                        })), l;
-                    }(data),
+                    data: datas(data),
                     showSymbol: !1,
                     symbolSize: 3,
                     lineStyle: {
@@ -1429,11 +1317,9 @@
                     }
                 } ]
             }).yAxis = {
-                min: 10 * Math.floor(.9 * data.min / 10),
-                max: 10 * Math.ceil(1.1 * data.max / 10)
-            };
-            var line = null === (_a = chartOption.series) || void 0 === _a ? void 0 : _a.pop();
-            return line.markPoint = {
+                min: Math.floor(.9 * data.min / step) * step,
+                max: Math.ceil(1.1 * data.max / step) * step
+            }, (line = null === (_a = chartOption.series) || void 0 === _a ? void 0 : _a.pop()).markPoint = {
                 data: [ {
                     value: data.min,
                     coord: [ data.date, data.min ],
@@ -1714,10 +1600,9 @@
         function GwdService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
             return _this.rules = new Map([ [ SiteEnum.TMall, /detail\.tmall\.com\/item\.htm/i ], [ SiteEnum.TaoBao, /item\.taobao\.com\//i ], [ SiteEnum.JingDong, /item\.(yiyaojd|jd)\.(com|hk)\/[0-9]*\.html/i ], [ SiteEnum.SuNing, /product\.suning\.com\//i ], [ SiteEnum.Vp, /detail\.vip\.com\//i ] ]), 
-            _this._appName = "GwdService", _this.factory = new DefCoupon, _this.dfp = Core.randStr(60), 
-            _this.fp = Core.randStr(30), _this;
+            _this._appName = "GwdService", _this.historyService = new HistoryService, _this.factory = new DefCoupon, 
+            _this.dfp = Core.randStr(60), _this.fp = Core.randStr(30), _this;
         }
-        var _a;
         return __extends(GwdService, _super), GwdService.prototype.loader = function() {}, 
         GwdService.prototype.run = function() {
             this.injectHistory();
@@ -1748,40 +1633,34 @@
                 res && _this.InitPriceHistory(), _this.factory.init_coupons && _this.factory.init_coupons();
             }));
         }, GwdService.prototype.InitPriceHistory = function() {
-            var _this = this;
-            $("#vip-plugin-outside").show(), this.theme(), this.chartMsg("\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u4e2d");
-            var that = this;
-            Route.queryHistoryV4(Runtime.url, this.site.toString(), that.fp, that.dfp, (function(data) {
-                if (Logger.debug(data), "price_status" in data) $(".vip-plugin-outside-chart-container").html('<div id="vip-plugin-outside-chart-container-line"></div>'), 
+            var that, _this = this;
+            $("#vip-plugin-outside").show(), this.theme(), this.chartMsg("\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u4e2d"), 
+            that = this, Route.queryHistoryV4(Runtime.url, this.site.toString(), that.fp, that.dfp, (function(data) {
+                var slContainer, msg = "";
+                Logger.debug(data), "price_status" in data ? ($(".vip-plugin-outside-chart-container").html('<div id="vip-plugin-outside-chart-container-line"></div>'), 
                 echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), _this.theme()).setOption(_this.getChartOption(data)), 
-                _this.chartMsg(""); else {
-                    if ("is_ban" in data && 1 == data.is_ban) {
-                        Swal__default.default.fire({
-                            icon: "info",
-                            html: "\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u5f02\u5e38,\u662f\u5426\u6253\u5f00\u9a8c\u8bc1\u9875\u9762\u8fdb\u884c\u9a8c\u8bc1?",
-                            showCloseButton: !0,
-                            showCancelButton: !0,
-                            focusConfirm: !1,
-                            confirmButtonText: "\u9a8c\u8bc1\u8d70\u8d77",
-                            cancelButtonText: "\u8001\u5b50\u4e0d\u770b"
-                        }).then((function(res) {
-                            res.isConfirmed && Core.open("https://browser.gwdang.com/slider/verify.html?fromUrl=" + encodeURIComponent(Runtime.url)), 
-                            Swal__default.default.close(res);
-                        }));
-                        "99999999999" != $(".swal2-container").css("z-index") && $(".swal2-container").css("z-index", "99999999999");
-                    }
-                    that.historyService.Process();
-                }
+                _this.chartMsg(msg)) : ("is_ban" in data && 1 == data.is_ban && (Swal__default.default.fire({
+                    icon: "info",
+                    html: "\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u5f02\u5e38,\u662f\u5426\u6253\u5f00\u9a8c\u8bc1\u9875\u9762\u8fdb\u884c\u9a8c\u8bc1?",
+                    showCloseButton: !0,
+                    showCancelButton: !0,
+                    focusConfirm: !1,
+                    confirmButtonText: "\u9a8c\u8bc1\u8d70\u8d77",
+                    cancelButtonText: "\u8001\u5b50\u4e0d\u770b"
+                }).then((function(res) {
+                    res.isConfirmed && Core.open("https://browser.gwdang.com/slider/verify.html?fromUrl=" + encodeURIComponent(Runtime.url)), 
+                    Swal__default.default.close(res);
+                })), slContainer = ".swal2-container", "99999999999" != $(slContainer).css("z-index") && $(slContainer).css("z-index", "99999999999")), 
+                that.historyService.Process());
             }));
         }, GwdService.prototype.getHistoryHtml = function() {
             return '<div id="vip-plugin-outside">\n                    <div class="vip-plugin-outside-coupons">\n                        <div class="vip-plugin-outside-coupons-qrcode"><canvas id="vip-plugin-outside-coupons-qrcode-img"></canvas></div>\n                        <div class="vip-plugin-outside-coupons-title"></div>\n                        <div class="vip-plugin-outside-coupons-action"></div>\n                    </div>\n                    <div id="vip-plugin-outside-history" class="vip-plugin-outside-history">\n                        <div class="vip-plugin-outside-chart-container"></div>\n                        <p class="vip-plugin-outside-history-tip"></p>\n                    </div>    \n                    \n                </div>';
         }, GwdService.prototype.chartMsg = function(msg) {
             $(".vip-plugin-outside-history-tip").html(msg);
         }, GwdService.prototype.getChartOption = function(data) {
-            var _a, _b, analysisTxt = data.analysis.tip, min = data.analysis.promo_days[data.analysis.promo_days.length - 1], text = analysisTxt + "\uff1a{red|\uffe5" + min.price + "} ( {red|" + min.date + "} )", maxData = new PromoInfo, minData = new PromoInfo;
-            minData.price = Number.MAX_SAFE_INTEGER, minData.humanPrice = Number.MAX_SAFE_INTEGER, 
-            maxData.humanPrice = Number.MIN_SAFE_INTEGER;
-            var chartOption = new LinesOption;
+            var _a, _b, chartOption, step, line, analysisTxt = data.analysis.tip, min = data.analysis.promo_days[data.analysis.promo_days.length - 1], text = analysisTxt + "\uff1a{red|\uffe5" + min.price + "} ( {red|" + min.date + "} )", maxData = new PromoInfo, minData = new PromoInfo;
+            return minData.price = Number.MAX_SAFE_INTEGER, minData.humanPrice = Number.MAX_SAFE_INTEGER, 
+            maxData.humanPrice = Number.MIN_SAFE_INTEGER, chartOption = new LinesOption, step = 10, 
             (chartOption = {
                 title: {
                     left: "center",
@@ -1801,9 +1680,10 @@
                         type: "cross"
                     },
                     formatter: function(params) {
-                        params = params[0];
-                        var date = new Date(params.name), year = date.getFullYear(), month = date.getMonth() + 1, day = date.getDate(), monthStr = month.toString(), dayStr = day.toString();
-                        return month < 10 && (monthStr = "0" + month), day < 10 && (dayStr = "0" + day), 
+                        var date, year, month, day, monthStr, dayStr;
+                        return params = params[0], year = (date = new Date(params.name)).getFullYear(), 
+                        month = date.getMonth() + 1, day = date.getDate(), monthStr = month.toString(), 
+                        dayStr = day.toString(), month < 10 && (monthStr = "0" + month), day < 10 && (dayStr = "0" + day), 
                         "\u65e5\u671f\uff1a" + year + "-" + monthStr + "-" + dayStr + "<br/>\u4ef7\u683c\uff1a\uffe5" + params.value[1].toFixed(2) + ("" == params.value[2] ? "" : "<br/>" + params.value[2]);
                     }
                 },
@@ -1824,29 +1704,21 @@
                     type: "line",
                     step: "end",
                     data: function(data) {
-                        var _a, l = [];
-                        if (data.store.length > 0) {
-                            var storeData = data.store[0];
-                            data.store.length > 1 && (storeData = data.store[1]);
-                            var couponsMap_1 = {};
-                            (null === (_a = data.promo) || void 0 === _a ? void 0 : _a.length) > 0 && data.promo.forEach((function(v) {
-                                couponsMap_1.hasOwnProperty(1e3 * v.time) || (couponsMap_1[1e3 * v.time] = v);
-                            }));
-                            var now_1 = storeData.all_line_begin_time;
-                            storeData.all_line.forEach((function(v) {
-                                v > maxData.humanPrice && (maxData.humanPrice = v, maxData.time = now_1 / 1e3), 
-                                v < minData.humanPrice && (minData.humanPrice = v, minData.time = now_1 / 1e3);
-                                var promo = new PromoInfo;
-                                promo.msg = new MsgInfo, couponsMap_1.hasOwnProperty(now_1) && (Logger.debug("yes"), 
-                                promo = couponsMap_1[now_1]);
-                                var p = {
-                                    name: now_1,
-                                    value: [ now_1, v, couponsMap_1.hasOwnProperty(now_1) ? promo.msg.coupon ? promo.msg.promotion : promo.msg.coupon : "" ]
-                                };
-                                l.push(p), now_1 += 864e5;
-                            })), Logger.debug(couponsMap_1);
-                        }
-                        return Logger.debug(maxData), Logger.debug(minData), l;
+                        var _a, storeData, couponsMap_1, now_1, dayTime_1, l = [];
+                        return data.store.length > 0 && (storeData = data.store[0], data.store.length > 1 && (storeData = data.store[1]), 
+                        couponsMap_1 = {}, (null === (_a = data.promo) || void 0 === _a ? void 0 : _a.length) > 0 && data.promo.forEach((function(v) {
+                            couponsMap_1.hasOwnProperty(1e3 * v.time) || (couponsMap_1[1e3 * v.time] = v);
+                        })), now_1 = storeData.all_line_begin_time, dayTime_1 = 864e5, storeData.all_line.forEach((function(v) {
+                            var promo, p;
+                            v > maxData.humanPrice && (maxData.humanPrice = v, maxData.time = now_1 / 1e3), 
+                            v < minData.humanPrice && (minData.humanPrice = v, minData.time = now_1 / 1e3), 
+                            (promo = new PromoInfo).msg = new MsgInfo, couponsMap_1.hasOwnProperty(now_1) && (Logger.debug("yes"), 
+                            promo = couponsMap_1[now_1]), p = {
+                                name: now_1,
+                                value: [ now_1, v, couponsMap_1.hasOwnProperty(now_1) ? promo.msg.coupon ? promo.msg.promotion : promo.msg.coupon : "" ]
+                            }, l.push(p), now_1 += dayTime_1;
+                        })), Logger.debug(couponsMap_1)), Logger.debug(maxData), Logger.debug(minData), 
+                        l;
                     }(data),
                     showSymbol: !1,
                     symbolSize: 3,
@@ -1856,11 +1728,9 @@
                     }
                 } ]
             }).yAxis = {
-                min: 10 * Math.floor(.9 * minData.humanPrice / 10),
-                max: 10 * Math.ceil(1.1 * maxData.humanPrice / 10)
-            };
-            var line = null === (_a = chartOption.series) || void 0 === _a ? void 0 : _a.pop();
-            return line.markPoint = {
+                min: Math.floor(.9 * minData.humanPrice / step) * step,
+                max: Math.ceil(1.1 * maxData.humanPrice / step) * step
+            }, (line = null === (_a = chartOption.series) || void 0 === _a ? void 0 : _a.pop()).markPoint = {
                 data: [ {
                     value: minData.humanPrice,
                     coord: [ 1e3 * minData.time, minData.humanPrice ],
@@ -2136,40 +2006,44 @@
                     fontFamily: "\u5fae\u8f6f\u96c5\u9ed1, Arial, Verdana, sans-serif"
                 }
             };
-        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (_a = void 0 !== HistoryService && HistoryService) ? _a : Object) ], GwdService.prototype, "historyService", void 0), 
-        GwdService;
-    }(PluginBase), css_248z$3 = ".tb-prop .tb-img li a {\n    width: auto !important;\n    background-position-x: 5px !important;\n}\n\n.tb-prop .tb-img li span {\n    text-indent: 1em !important;\n    display: block !important;\n    padding: 0 5px !important;\n    margin-left: 35px;\n}\n";
-    styleInject(css_248z$3);
-    var TaoBaoService = function(_super) {
+        }, GwdService;
+    }(PluginBase), css_248z$3 = ".tb-prop .tb-img li a {\n    width: auto !important;\n    background-position-x: 5px !important;\n}\n\n.tb-prop .tb-img li span {\n    text-indent: 1em !important;\n    display: block !important;\n    padding: 0 5px !important;\n    margin-left: 35px;\n}\n", 
+    styleInject(css_248z$3), TaoBaoService = function(_super) {
         function TaoBaoService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
             return _this._appName = "TaoBaoService", _this.rules = new Map([ [ SiteEnum.TaoBao, /taobao\.com\//i ], [ SiteEnum.TMall, /tmall\.(com|hk)\//i ] ]), 
-            _this.UrlTag = "Wandhi_qLink", _this;
+            _this.UrlTag = "Wandhi_qLink", _this.historyService = new GwdService, _this;
         }
-        var _a;
         return __extends(TaoBaoService, _super), TaoBaoService.prototype.loader = function() {
             Core.appendCss("//cdn.wandhi.com/style/extenstion/hui.style.css");
         }, TaoBaoService.prototype.run = function() {
             this.init(), this.historyService.linkTest() && this.historyService.Process();
         }, TaoBaoService.prototype.init = function() {
-            var _a, _this = this, init = "<div id='wandhi_div'><table class='wandhi_tab' id='wandhi_table'><thead><tr><th><b style='cursor:pointer'>\u4f18\u60e0\u5238</b></th><th>\u5238\u540e</th><th>\u6709 \u6548 \u671f</th><th>\u64cd\u4f5c</th></tr></thead><tr><td colspan='4'>\u6b63\u5728\u67e5\u8be2\u4f18\u60e0\u4fe1\u606f\uff0c\u8bf7\u7a0d\u5019...</td></tr></table></div>";
+            var _a, itemId, key, d, _this = this, init = "<div id='wandhi_div'><table class='wandhi_tab' id='wandhi_table'><thead><tr><th><b style='cursor:pointer'>\u4f18\u60e0\u5238</b></th><th>\u5238\u540e</th><th>\u6709 \u6548 \u671f</th><th>\u64cd\u4f5c</th></tr></thead><tr><td colspan='4'>\u6b63\u5728\u67e5\u8be2\u4f18\u60e0\u4fe1\u606f\uff0c\u8bf7\u7a0d\u5019...</td></tr></table></div>";
             $("#J_LinkBasket").parent().parent().prepend(init), $(".J_LinkAdd").parent().parent().prepend(init), 
-            (null === (_a = this.rules.get(SiteEnum.TaoBao)) || void 0 === _a ? void 0 : _a.test(this.core.currentUrl())) ? $("#wandhi_table").addClass("wandhi_tab_taobao") : $("#wandhi_table").addClass("wandhi_tab_tmall");
-            var itemId = this.core.getPar("id"), key = "td_s_" + itemId, d = Config.get(key, !1);
-            d ? this.initElement(d) : Route.queryCoupons(itemId, (function(data) {
+            (null === (_a = this.rules.get(SiteEnum.TaoBao)) || void 0 === _a ? void 0 : _a.test(Core.currentUrl())) ? $("#wandhi_table").addClass("wandhi_tab_taobao") : $("#wandhi_table").addClass("wandhi_tab_tmall"), 
+            itemId = Core.getPar("id"), key = "td_s_" + itemId, (d = Config.get(key, !1)) ? this.initElement(d) : Route.queryCoupons(itemId, (function(data) {
                 Config.set(key, data, 43200), _this.initElement(data);
             }));
         }, TaoBaoService.prototype.initElement = function(data) {
-            var _a;
-            $("#wandhi_table tbody tr").remove();
-            var row = "";
-            data.code && (null === (_a = data.data) || void 0 === _a ? void 0 : _a.length) > 0 && "string" != typeof data.data ? data.data.forEach((function(e) {
+            var _a, row;
+            $("#wandhi_table tbody tr").remove(), row = "", data.code && (null === (_a = data.data) || void 0 === _a ? void 0 : _a.length) > 0 && "string" != typeof data.data ? data.data.forEach((function(e) {
                 row += "<tr><td>" + e.quan_context + "</td><td>" + e.after_price + "</td><td>" + e.quan_time + "</td><td><b onclick=window.open(decodeURIComponent('" + e.quan_link + "')) style='cursor:pointer'>\u9886\u53d6</b></td></tr>";
             })) : row = "<tr><td colspan='4'>\u8fd9\u4e2a\u5546\u54c1\u6ca1\u6709\u8d85\u503c\u4f18\u60e0\u5238</td></tr>", 
             $("#wandhi_table tbody").append(row);
-        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (_a = void 0 !== GwdService && GwdService) ? _a : Object) ], TaoBaoService.prototype, "historyService", void 0), 
-        TaoBaoService;
-    }(PluginBase), BiliImgService = function(_super) {
+        }, TaoBaoService;
+    }(PluginBase), container = new Map, Container = function() {
+        function Container() {}
+        return Container.Registe = function(type, args) {
+            var className = this.processName(type.name);
+            return container.has(className) ? container.get(className) : className ? (container.set(className, window.Reflect.construct(type, args)), 
+            container.get(className)) : void 0;
+        }, Container.processName = function(name) {
+            return name.toLowerCase();
+        }, Container.Require = function(type) {
+            return this.Registe(type, []);
+        }, Container;
+    }(), BiliImgService = function(_super) {
         function BiliImgService() {
             var _this = _super.call(this) || this;
             return _this.rules = new Map([ [ SiteEnum.BiliBili, /www\.bilibili\.com\/video\/[av|bv]*/i ] ]), 
@@ -2198,19 +2072,17 @@
             }));
         }, BiliImgService.add_down_btn = function() {
             $(".video-data").last().append(BiliImgService.down), $("body").on("click", "#downvideo", (function() {
-                var _a, _b, _c, _d, aid = unsafeWindow.__INITIAL_STATE__.videoData.aid, cid = null !== (_d = null !== (_b = null === (_a = unsafeWindow.__INITIAL_STATE__.cidMap[aid]) || void 0 === _a ? void 0 : _a.cid) && void 0 !== _b ? _b : null === (_c = unsafeWindow.__INITIAL_STATE__.cidMap[aid]) || void 0 === _c ? void 0 : _c.cids[2]) && void 0 !== _d ? _d : unsafeWindow.__INITIAL_STATE__.videoData.cid, key = aid.toString() + cid.toString() + "MDD";
-                if (Logger.debug([ aid, cid ]), aid && cid) {
-                    var v_1 = Config.get(key, !1);
-                    v_1 ? (v_1 = v_1, Alert.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + v_1.data.accept_description[v_1.data.durl[0].order] + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(data) {
-                        window.open(v_1.data.durl[0].url);
-                    }), !0)) : Route.queryBiliDown(aid, cid, (function(res) {
-                        var _a;
-                        "" != (null === (_a = res.data) || void 0 === _a ? void 0 : _a.durl[0].url) ? (Config.set(key, res, Min), 
-                        Alert.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + res.data.accept_description[res.data.durl[0].order] + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(data) {
-                            window.open(res.data.durl[0].url);
-                        }), !0)) : Alert.error("\u5565\u4e5f\u6ca1\u67e5\u7740,\u5e26\u7740\u89c6\u9891\u5730\u5740\u7ed9\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\u5427~");
-                    }));
-                } else Alert.error("\u6682\u4e0d\u652f\u6301\u5f53\u524d\u89c6\u9891\uff0c\u5982\u6709\u7591\u95ee\u8bf7\u5e26\u4e0a\u94fe\u63a5\u8be2\u95ee\u4f5c\u8005");
+                var _a, _b, _c, _d, v_1, aid = unsafeWindow.__INITIAL_STATE__.videoData.aid, cid = null !== (_d = null !== (_b = null === (_a = unsafeWindow.__INITIAL_STATE__.cidMap[aid]) || void 0 === _a ? void 0 : _a.cid) && void 0 !== _b ? _b : null === (_c = unsafeWindow.__INITIAL_STATE__.cidMap[aid]) || void 0 === _c ? void 0 : _c.cids[2]) && void 0 !== _d ? _d : unsafeWindow.__INITIAL_STATE__.videoData.cid, key = aid.toString() + cid.toString() + "MDD";
+                Logger.debug([ aid, cid ]), aid && cid ? (v_1 = Config.get(key, !1)) ? (v_1 = v_1, 
+                Alert.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + v_1.data.accept_description[v_1.data.durl[0].order] + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(data) {
+                    window.open(v_1.data.durl[0].url);
+                }), !0)) : Route.queryBiliDown(aid, cid, (function(res) {
+                    var _a;
+                    "" != (null === (_a = res.data) || void 0 === _a ? void 0 : _a.durl[0].url) ? (Config.set(key, res, Min), 
+                    Alert.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + res.data.accept_description[res.data.durl[0].order] + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(data) {
+                        window.open(res.data.durl[0].url);
+                    }), !0)) : Alert.error("\u5565\u4e5f\u6ca1\u67e5\u7740,\u5e26\u7740\u89c6\u9891\u5730\u5740\u7ed9\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\u5427~");
+                })) : Alert.error("\u6682\u4e0d\u652f\u6301\u5f53\u524d\u89c6\u9891\uff0c\u5982\u6709\u7591\u95ee\u8bf7\u5e26\u4e0a\u94fe\u63a5\u8be2\u95ee\u4f5c\u8005");
             }));
         }, BiliImgService.add_triple_btn = function() {
             $(".video-data").last().append(BiliImgService.tripleClick), $("body").on("click", "#tripleClick", (function() {
@@ -2218,12 +2090,6 @@
                     $(item).trigger("click");
                 }));
             }));
-        }, BiliImgService.decrypt = function(str) {
-            return CryptoJS__default.default.AES.decrypt(str, CryptoJS__default.default.enc.Latin1.parse(Core.decode(B1)), {
-                iv: CryptoJS__default.default.enc.Latin1.parse(Core.decode(B2)),
-                mode: CryptoJS__default.default.mode.CBC,
-                adding: CryptoJS__default.default.pad.ZeroPadding
-            }).toString(CryptoJS__default.default.enc.Utf8);
         }, BiliImgService.btn = '\n    <span id="findimg" style="\n    background-color: #fb7199;\n    color: white;\n    font-size: 1rem;\n    text-align: center;\n    margin-left: 1rem;\n    padding:0.5rem;\n    cursor: pointer;\n    border-radius: 1rem;\n    ">\n        \u83b7\u53d6\u5c01\u9762\n    </span>', 
         BiliImgService.down = '\n    <span id="downvideo" style="\n    background-color: #fb7199;\n    color: white;\n    font-size: 1rem;\n    text-align: center;\n    margin-left: 1rem;\n    padding:0.5rem;\n    cursor: pointer;\n    border-radius: 1rem;\n    ">\n        \u4e0b\u8f7d\u89c6\u9891\n    </span>', 
         BiliImgService.tripleClick = '\n    <span id="tripleClick" style="\n    background-color: #fb7199;\n    color: white;\n    font-size: 1rem;\n    text-align: center;\n    margin-left: 1rem;\n    padding:0.5rem;\n    cursor: pointer;\n    border-radius: 1rem;\n    ">\n        \u4e00\u952e\u4e09\u8fde\n    </span>', 
@@ -2265,31 +2131,25 @@
                 Core.open("http://jd.huizhek.com");
             }));
         }, MovieService.prototype.autoHide = function() {
-            Logger.info("\u81ea\u52a8\u9690\u85cf"), this.site == SiteEnum.BiliBili && this.core.background((function() {
-                var _a;
-                if ($(".bpx-player-container").length > 0) {
-                    var modal = null === (_a = $(".bpx-player-container")) || void 0 === _a ? void 0 : _a.attr("data-screen");
-                    "web" == modal || "full" == modal ? $(".aside-nav").hide() : $(".aside-nav").show();
-                }
+            Logger.info("\u81ea\u52a8\u9690\u85cf"), this.site == SiteEnum.BiliBili && Core.background((function() {
+                var _a, modal;
+                $(".bpx-player-container").length > 0 && ("web" == (modal = null === (_a = $(".bpx-player-container")) || void 0 === _a ? void 0 : _a.attr("data-screen")) || "full" == modal ? $(".aside-nav").hide() : $(".aside-nav").show());
             }), 1);
         }, MovieService;
     }(PluginBase), JdService = function(_super) {
         function JdService() {
             var _this = _super.call(this) || this;
             return _this._appName = "JdService", _this.rules = new Map([ [ SiteEnum.JingDong, /item\.(yiyaojd|jd)\.c/i ] ]), 
-            _this;
+            _this.historyService = new GwdService, _this;
         }
-        var _a;
         return __extends(JdService, _super), JdService.prototype.loader = function() {
             this.historyService.linkTest() && this.historyService.Process();
         }, JdService.prototype.run = function() {
-            var keywords = $(".sku-name").text().trim();
-            $("#choose-btns").prepend('<a href="javascript:;" class="btn-special1 btn-lg btn-yhj"><span class="">\u67e5\u8be2\u4f18\u60e0\u5238</span></a>'), 
-            $(".btn-yhj").on("click", (function() {
+            var btn = '<a href="javascript:;" class="btn-special1 btn-lg btn-yhj"><span class="">\u67e5\u8be2\u4f18\u60e0\u5238</span></a>', keywords = $(".sku-name").text().trim();
+            $("#choose-btns").prepend(btn), $(".btn-yhj").on("click", (function() {
                 Core.open("http://jd.huizhek.com/?ah=total&kw=" + encodeURIComponent(keywords));
             }));
-        }, __decorate([ WandhiAuto, __metadata("design:type", "function" == typeof (_a = void 0 !== GwdService && GwdService) ? _a : Object) ], JdService.prototype, "historyService", void 0), 
-        JdService;
+        }, JdService;
     }(PluginBase), UrlHelper = function() {
         function UrlHelper() {}
         return UrlHelper.Bind = function(CssSelector, method, doc) {
@@ -2330,25 +2190,22 @@
             } ], this._OnClick);
         }, MusicService.prototype._OnClick = function() {
             this.rules, $("body").on("click", "[data-cat=process]", (function() {
-                var _a, _b;
+                var _a, _b, i, html;
                 if (/ximalaya/i.test(Runtime.url)) {
-                    for (var i = 0; i < unsafeWindow.document.scripts.length; i++) /window\.__INITIAL_STATE__ =/i.test(unsafeWindow.document.scripts[i].innerHTML) && (Logger.debug(unsafeWindow.document.scripts[i].innerHTML), 
+                    for (i = 0; i < unsafeWindow.document.scripts.length; i++) /window\.__INITIAL_STATE__ =/i.test(unsafeWindow.document.scripts[i].innerHTML) && (Logger.debug(unsafeWindow.document.scripts[i].innerHTML), 
                     eval(unsafeWindow.document.scripts[i].innerHTML.replace("window.__INITIAL_STATE__", "unsafeWindow.__INITIAL_STATE__")));
-                    if (__INITIAL_STATE__ && (null === (_b = null === (_a = __INITIAL_STATE__.store) || void 0 === _a ? void 0 : _a.SoundDetailPage) || void 0 === _b ? void 0 : _b.trackId)) Core.open("http://music.wandhi.com/?id=" + __INITIAL_STATE__.store.SoundDetailPage.trackId + "&type=ximalaya"); else {
-                        layer.closeAll();
-                        var html = '<div style="padding:0px 50px 0px 50px;"><ul class="sound-list dOi2">';
-                        $.each(__INITIAL_STATE__.store.AlbumDetailTrackList.tracksInfo.tracks, (function(index, item) {
-                            html += '<li class="d0i2"><a href="http://music.wandhi.com/?id=' + item.trackId + '&type=ximalaya" target="_blank">' + item.title + "</a></li>";
-                        })), html += "</ul></div>", layer.open({
-                            type: 1,
-                            area: [ "auto", "30%" ],
-                            title: "\u4e3a\u4f60\u627e\u5230\u4e86\u8fd9\u4e9b\u66f2\u76ee\u89e3\u6790\u2026\u2026",
-                            shade: .6,
-                            maxmin: !1,
-                            anim: 2,
-                            content: html
-                        });
-                    }
+                    __INITIAL_STATE__ && (null === (_b = null === (_a = __INITIAL_STATE__.store) || void 0 === _a ? void 0 : _a.SoundDetailPage) || void 0 === _b ? void 0 : _b.trackId) ? Core.open("http://music.wandhi.com/?id=" + __INITIAL_STATE__.store.SoundDetailPage.trackId + "&type=ximalaya") : (layer.closeAll(), 
+                    html = '<div style="padding:0px 50px 0px 50px;"><ul class="sound-list dOi2">', $.each(__INITIAL_STATE__.store.AlbumDetailTrackList.tracksInfo.tracks, (function(index, item) {
+                        html += '<li class="d0i2"><a href="http://music.wandhi.com/?id=' + item.trackId + '&type=ximalaya" target="_blank">' + item.title + "</a></li>";
+                    })), html += "</ul></div>", layer.open({
+                        type: 1,
+                        area: [ "auto", "30%" ],
+                        title: "\u4e3a\u4f60\u627e\u5230\u4e86\u8fd9\u4e9b\u66f2\u76ee\u89e3\u6790\u2026\u2026",
+                        shade: .6,
+                        maxmin: !1,
+                        anim: 2,
+                        content: html
+                    }));
                 } else /taihe.com/i.test(Runtime.url) ? Core.open("http://music.wandhi.com/?url=" + UrlHelper.urlEncode(Runtime.url.replace("taihe", "baidu"))) : Core.open("http://music.wandhi.com/?url=" + UrlHelper.urlEncode(Runtime.url));
             })), $("body").on("click", "[data-cat=search]", (function() {
                 Core.open("http://tv.wandhi.com/");
@@ -2358,11 +2215,9 @@
                 Core.open("https://t.cn/A6LoYnHT");
             }));
         }, MusicService;
-    }(PluginBase), ItemType;
-    !function(ItemType) {
+    }(PluginBase), function(ItemType) {
         ItemType.TaoBao = "tb", ItemType.TMall = "tm", ItemType.JingDong = "jd", ItemType.JingDongChaoshi = "jdcs";
-    }(ItemType || (ItemType = {}));
-    var Tao = function() {
+    }(ItemType || (ItemType = {})), Tao = function() {
         function Tao() {}
         return Tao.isVailidItemId = function(itemId) {
             if (!itemId) return !1;
@@ -2407,9 +2262,9 @@
                 }
             }), (function() {
                 return that.initSearchEvent();
-            }), 3), this.core.background((function() {
+            }), 3), Core.background((function() {
                 return that.initSearch(that);
-            }), 3), this.core.background((function() {
+            }), 3), Core.background((function() {
                 return that.initQuery();
             }), 4);
         }, ListService.prototype.initStyle = function() {
@@ -2422,7 +2277,7 @@
                     $this.hasClass("onekeyvip-box-wait") ? that.queryInfo(this) : $this.hasClass("onekeyvip-box-info-translucent") ? $this.removeClass("onekeyvip-box-info-translucent") : $this.addClass("onekeyvip-box-info-translucent");
                 }));
             } catch (e) {
-                this.core.background((function() {
+                Core.background((function() {
                     $(".onekeyvip-" + that.itemType + "-box-area").click((function() {
                         var $this = $(this);
                         $this.hasClass("onekeyvip-box-wait") ? that.queryInfo(this) : $this.hasClass("onekeyvip-box-info-translucent") ? $this.removeClass("onekeyvip-box-info-translucent") : $this.addClass("onekeyvip-box-info-translucent");
@@ -2436,20 +2291,15 @@
                 }));
             }));
         }, ListService.prototype.initSearchItem = function(selector) {
-            var _a, _b, _c, _d, _e, _f, $dom = $(selector);
+            var _a, _b, _c, _d, _e, _f, itemId, $a, res, $dom = $(selector);
             if (!$dom.hasClass("onekeyvip-box-done")) {
-                $dom.addClass("onekeyvip-box-done");
-                var itemId = null !== (_b = null !== (_a = $dom.attr("data-id")) && void 0 !== _a ? _a : $dom.data("sku")) && void 0 !== _b ? _b : "";
-                if (Tao.isVailidItemId(itemId) || (itemId = null !== (_d = null !== (_c = $dom.attr("data-itemid")) && void 0 !== _c ? _c : $dom.data("spu")) && void 0 !== _d ? _d : ""), 
+                if ($dom.addClass("onekeyvip-box-done"), itemId = null !== (_b = null !== (_a = $dom.attr("data-id")) && void 0 !== _a ? _a : $dom.data("sku")) && void 0 !== _b ? _b : "", 
+                Tao.isVailidItemId(itemId) || (itemId = null !== (_d = null !== (_c = $dom.attr("data-itemid")) && void 0 !== _c ? _c : $dom.data("spu")) && void 0 !== _d ? _d : ""), 
                 !Tao.isVailidItemId(itemId)) if ($dom.attr("href")) itemId = location.protocol + $dom.attr("href"); else {
-                    var $a = $dom.find("a");
-                    if (!$a.length) return;
+                    if (!($a = $dom.find("a")).length) return;
                     itemId = null !== (_e = $a.attr("data-nid")) && void 0 !== _e ? _e : "", Tao.isVailidItemId(itemId) || (itemId = $a.hasClass("j_ReceiveCoupon") && $a.length > 1 ? location.protocol + $($a[1]).attr("href") : location.protocol + $a.attr("href"));
                 }
-                if (!Tao.isVailidItemId(itemId) && itemId.indexOf("http") > -1) {
-                    var res = null !== (_f = /item.jd.com\/(.*?).html/i.exec(itemId)) && void 0 !== _f ? _f : [];
-                    itemId = res.length > 0 ? res[1] : "";
-                }
+                !Tao.isVailidItemId(itemId) && itemId.indexOf("http") > -1 && (itemId = (res = null !== (_f = /item.jd.com\/(.*?).html/i.exec(itemId)) && void 0 !== _f ? _f : []).length > 0 ? res[1] : ""), 
                 Tao.isValidTaoId(itemId) && (this.initBoxHtml($dom, itemId), this.initTagClass($dom, itemId));
             }
         }, ListService.prototype.initTagClass = function(target, itemId) {
@@ -2494,11 +2344,9 @@
                 }));
             }));
         }, ListService.prototype.initCouponInfo = function(itemId, couponInfo, target) {
-            var _a, $this = $(target);
-            if ((null === (_a = null == couponInfo ? void 0 : couponInfo.coupons) || void 0 === _a ? void 0 : _a.length) > 0 && 0 != couponInfo.coupons[0].coupon_price) {
-                var coupon = couponInfo.coupons[0];
-                this.showQueryFind($this, coupon.coupon_price);
-            } else this.showQueryEmpty($this);
+            var _a, coupon, $this = $(target), that = this;
+            (null === (_a = null == couponInfo ? void 0 : couponInfo.coupons) || void 0 === _a ? void 0 : _a.length) > 0 && 0 != couponInfo.coupons[0].coupon_price ? (coupon = couponInfo.coupons[0], 
+            this.showQueryFind($this, coupon.coupon_price)) : that.showQueryEmpty($this);
         }, ListService.prototype.showItemUrl = function(itemId, itemUrl) {
             Core.click(".onekeyvip-item-" + itemId, (function() {
                 return !itemUrl || (Core.open(itemUrl), !1);
@@ -2508,9 +2356,8 @@
         }, ListService.prototype.showQueryEmpty = function(selector) {
             selector.addClass("onekeyvip-box-info-translucent"), selector.html('<a href="javascript:void(0);" class="onekeyvip-box-info onekeyvip-box-info-empty" title="\u5207\u6362\u900f\u660e\u5ea6">\u6682\u65e0\u4f18\u60e0</a>');
         }, ListService;
-    }(PluginBase), css_248z$2 = "#content_views pre {\n    -webkit-touch-callout: auto !important;\n    -webkit-user-select: auto !important;\n    -khtml-user-select: auto !important;\n    -moz-user-select: auto !important;\n    -ms-user-select: auto !important;\n    user-select: auto !important;\n}\n\n#content_views pre code {\n    -webkit-touch-callout: auto !important;\n    -webkit-user-select: auto !important;\n    -khtml-user-select: auto !important;\n    -moz-user-select: auto !important;\n    -ms-user-select: auto !important;\n    user-select: auto !important;\n}\n\n.passport-login-container {\n    display: none !important;\n}\n";
-    styleInject(css_248z$2);
-    var CsdnAdService = function(_super) {
+    }(PluginBase), css_248z$2 = "#content_views pre {\n    -webkit-touch-callout: auto !important;\n    -webkit-user-select: auto !important;\n    -khtml-user-select: auto !important;\n    -moz-user-select: auto !important;\n    -ms-user-select: auto !important;\n    user-select: auto !important;\n}\n\n#content_views pre code {\n    -webkit-touch-callout: auto !important;\n    -webkit-user-select: auto !important;\n    -khtml-user-select: auto !important;\n    -moz-user-select: auto !important;\n    -ms-user-select: auto !important;\n    user-select: auto !important;\n}\n\n.passport-login-container {\n    display: none !important;\n}\n", 
+    styleInject(css_248z$2), CsdnAdService = function(_super) {
         function CsdnAdService() {
             var _this = _super.call(this) || this;
             return _this.rules = new Map([ [ SiteEnum.CSDN, /blog\.csdn\.net/i ] ]), _this._appName = "csdn", 
@@ -2518,7 +2365,7 @@
         }
         return __extends(CsdnAdService, _super), CsdnAdService.prototype.loader = function() {}, 
         CsdnAdService.prototype.run = function() {
-            this.core.background(this.removeAds, 3), this.commentClean();
+            Core.background(this.removeAds, 3), this.commentClean();
         }, CsdnAdService.prototype.removeAds = function() {
             CsdnAdService.adSelectors.forEach((function(selector) {
                 $(selector).remove();
@@ -2527,8 +2374,10 @@
             Core.lazyload((function() {
                 Logger.info("\u8bc4\u8bba\u533a\u6e05\u7406"), $(".comment-list-box").css("overflow", "").css("max-height", ""), 
                 $("#commentPage").removeClass("d-none"), $("#btnMoreComment").remove();
-            }), 3);
-        }, CsdnAdService.adSelectors = [ "#footerRightAds", ".side-question-box", "div[id^='dmp_ad']", "div[class^='ad_']", "div[id^='floor-ad_']", ".adsbygoogle" ], 
+            }), 3), Core.background((function() {
+                unsafeWindow.csdn.copyright.textData = "";
+            }));
+        }, CsdnAdService.adSelectors = [ "#footerRightAds", ".side-question-box", "div[id^='dmp_ad']", "div[class^='ad_']", "div[id^='floor-ad_']", ".adsbygoogle", "#recommendAdBox" ], 
         CsdnAdService;
     }(PluginBase), Menu = Common.Menu, WenKuService = function(_super) {
         function WenKuService() {
@@ -2601,14 +2450,12 @@
                 }));
             }));
         }, WenKuService.exportDoc = function() {
-            var doc = $(".reader-word-layer"), _doc = $(doc).clone();
+            var docContent, doc = $(".reader-word-layer"), _doc = $(doc).clone();
             _doc.each((function(i, e) {
                 $(e).is(":hidden") && $(e).remove();
-            }));
-            var docContent = "Mime-Version: 1.0\nContent-Base: " + Runtime.url + '\nContent-Type: Multipart/related; boundary="NEXT.ITEM-BOUNDARY";type="text/html"\n\n--NEXT.ITEM-BOUNDARY\nContent-Type: text/html; charset="utf-8"\nContent-Location: ' + Runtime.url + '\n\n<!DOCTYPE html>\n<html>\n<head>\n<meta http-equiv="Content-Type" content="text/html; charset=utf-8">\n<style>\n\n</style>\n</head>\n<body>\n' + _doc.text().split("\n").map((function(t) {
+            })), docContent = "Mime-Version: 1.0\nContent-Base: " + Runtime.url + '\nContent-Type: Multipart/related; boundary="NEXT.ITEM-BOUNDARY";type="text/html"\n\n--NEXT.ITEM-BOUNDARY\nContent-Type: text/html; charset="utf-8"\nContent-Location: ' + Runtime.url + '\n\n<!DOCTYPE html>\n<html>\n<head>\n<meta http-equiv="Content-Type" content="text/html; charset=utf-8">\n<style>\n\n</style>\n</head>\n<body>\n' + _doc.text().split("\n").map((function(t) {
                 return "<p>" + t + "</p>";
-            })).join("") + "\n</body>\n</html>\n--NEXT.ITEM-BOUNDARY--";
-            saveAs(new Blob([ docContent ], {
+            })).join("") + "\n</body>\n</html>\n--NEXT.ITEM-BOUNDARY--", saveAs(new Blob([ docContent ], {
                 type: "application/msword;charset=utf-8"
             }), unsafeWindow.pageData.viewBiz.docInfo.title + ".doc");
         }, WenKuService.scrollToEnd = function() {
@@ -2640,9 +2487,8 @@
                 }));
             }), 2);
         }, WenKuService.loaded = !1, WenKuService;
-    }(PluginBase), css_248z$1 = ".one-key-vip-container { z-index: 99999!important }\n.one-key-vip-popup { font-size: 14px !important }\n.one-key-vip-setting-label { display: flex;align-items: center;justify-content: space-between;padding-top: 20px; }\n.one-key-vip-setting-checkbox { width: 16px;height: 16px; }\n";
-    styleInject(css_248z$1);
-    var ToastAlert = function() {
+    }(PluginBase), css_248z$1 = ".one-key-vip-container { z-index: 99999!important }\n.one-key-vip-popup { font-size: 14px !important }\n.one-key-vip-setting-label { display: flex;align-items: center;justify-content: space-between;padding-top: 20px; }\n.one-key-vip-setting-checkbox { width: 16px;height: 16px; }\n", 
+    styleInject(css_248z$1), ToastAlert = function() {
         function ToastAlert() {}
         return ToastAlert.showMessage = function(title, html, toast, position, time) {
             return Swal__default.default.fire({
@@ -2722,14 +2568,13 @@
                 this.key = "";
             }
             if (this.key) {
-                var u = this.core.getPar(this.key);
+                var u = Core.getPar(this.key);
                 ToastAlert.info("\u94fe\u63a5\u5df2\u89e3\u6790,\u6b63\u5728\u8df3\u8f6c~"), u && (u = decodeURIComponent(u), 
                 Logger.debug(u), unsafeWindow.window.location.href = u);
             }
         }, LinkJumpService;
-    }(PluginBase), css_248z = ".slider + div, .slider + div + a,\n.texts,\n.header_new1,\n.slider_tips {\n    display: none !important;\n}\n";
-    styleInject(css_248z);
-    var _GwdService = function(_super) {
+    }(PluginBase), css_248z = ".slider + div, .slider + div + a,\n.texts,\n.header_new1,\n.slider_tips {\n    display: none !important;\n}\n", 
+    styleInject(css_248z), _GwdService = function(_super) {
         function _GwdService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
             return _this.rules = new Map([ [ SiteEnum.SuNing, /browser\.gwdang\.com/i ] ]), 
@@ -2737,24 +2582,52 @@
         }
         return __extends(_GwdService, _super), _GwdService.prototype.loader = function() {}, 
         _GwdService.prototype.run = function() {}, _GwdService;
+    }(PluginBase), AutoExpandService = function(_super) {
+        function AutoExpandService() {
+            var _this = _super.call(this) || this;
+            return _this.rules = new Map([ [ SiteEnum.CSDN, /blog\.csdn\.net\/*/i ] ]), _this.contentStyle = "{height: auto !important;max-height: none !important;}", 
+            _this.expandRules = [ {
+                site: [ SiteEnum.CSDN ],
+                selector: [ ".guide-box", ".wap-shadowbox", ".readall_box", ".btn_open_app_prompt_div" ],
+                content: [ ".article_content" ],
+                style: [],
+                script: function() {
+                    $(".container-fluid").on("click", (function(event) {
+                        var url = $(event).attr("data-url");
+                        url && (unsafeWindow.window.location.href = url, event.preventDefault());
+                    }));
+                }
+            } ], _this._appName = "autoExpand", _this._unique = !1, _this;
+        }
+        return __extends(AutoExpandService, _super), AutoExpandService.prototype.loader = function() {}, 
+        AutoExpandService.prototype.run = function() {
+            var _this = this, that = this;
+            this.expandRules.forEach((function(e) {
+                e.site.indexOf(_this.site) > -1 && (e.selector.length > 0 && e.selector.forEach((function(selector) {
+                    $(selector).remove();
+                })), e.style.length > 0 && e.style.forEach((function(style) {
+                    Core.appendCssContent(style);
+                })), e.content.length > 0 && Core.appendCssContent("" + e.content.join(" ") + that.contentStyle), 
+                null != e.script && e.script.apply([]));
+            }));
+        }, AutoExpandService;
     }(PluginBase), BIliTools = function() {
         function BIliTools() {}
         return BIliTools.av2Bv = function(avNo) {
-            var av = avNo.toString(), num = NaN;
+            var result, i, av = avNo.toString(), num = NaN;
             if ("[object Number]" === Object.prototype.toString.call(av) ? num = avNo : "[object String]" === Object.prototype.toString.call(av) && (num = parseInt(av.replace(/[^0-9]/gu, ""))), 
             isNaN(num) || num <= 0) return "";
-            num = (num ^ this.xor) + this.add;
-            for (var result = __spread("BV1  4 1 7  "), i = 0; i < 6; ) result[this.s[i]] = this.table[Math.floor(num / Math.pow(58, i)) % 58], 
+            for (num = (num ^ this.xor) + this.add, result = __spread("BV1  4 1 7  "), i = 0; i < 6; ) result[this.s[i]] = this.table[Math.floor(num / Math.pow(58, i)) % 58], 
             i += 1;
             return result.join("");
         }, BIliTools.bv2Av = function(bv) {
-            var str = "";
+            var result, i, str = "";
             if (12 === bv.length) str = bv; else if (10 === bv.length) str = "BV" + bv; else {
                 if (9 !== bv.length) return -1;
                 str = "BV1" + bv;
             }
             if (!str.match(/[Bb][Vv][fZodR9XQDSUm21yCkr6zBqiveYah8bt4xsWpHnJE7jL5VG3guMTKNPAwcF]{10}/gu)) return -1;
-            for (var result = 0, i = 0; i < 6; ) result += this.table.indexOf(str[this.s[i]]) * Math.pow(58, i), 
+            for (result = 0, i = 0; i < 6; ) result += this.table.indexOf(str[this.s[i]]) * Math.pow(58, i), 
             i += 1;
             return parseInt("av" + (result - this.add ^ this.xor));
         }, BIliTools.table = __spread("fZodR9XQDSUm21yCkr6zBqiveYah8bt4xsWpHnJE7jL5VG3guMTKNPAwcF"), 
@@ -2778,7 +2651,7 @@
         }, BiliMobileService;
     }(PluginBase), OneKeyVipInjection = function() {
         function OneKeyVipInjection() {
-            this.plugins = new Array, this.plugins = [ Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(BiliMobileService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(GwdService), Container.Require(CsdnAdService), Container.Require(WenKuService), Container.Require(LinkJumpService), Container.Require(_GwdService) ], 
+            this.plugins = new Array, this.plugins = [ Container.Require(AutoExpandService), Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(BiliMobileService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(GwdService), Container.Require(CsdnAdService), Container.Require(WenKuService), Container.Require(LinkJumpService), Container.Require(_GwdService) ], 
             Logger.info("container loaded");
         }
         return OneKeyVipInjection.prototype.Init = function() {
@@ -2789,6 +2662,5 @@
                 !element.unique());
             }));
         }, OneKeyVipInjection;
-    }();
-    Logger.level = LogLevel.info, Container.Require(OneKeyVipInjection).Init();
+    }(), Logger.level = LogLevel.info, Container.Require(OneKeyVipInjection).Init();
 }));

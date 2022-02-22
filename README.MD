@@ -12,6 +12,14 @@
     <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Mac%20%7C%20Android-blue.svg" alt="platform">
 </p>
 
+## 版本号说明
+
+**4.2.65**
+| | |
+| | |——Bug的修复、功能简单的调整
+| |————功能性添加或更新
+|——————架构发生重大调整时
+
 ## 🔧 [插件功能(点我查看详情)](https://wiki.wandhi.com/zh-cn/Feature.html)
 
 * ✅ 视频解析
