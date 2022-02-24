@@ -1,7 +1,7 @@
 // ==UserScript== 
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用 
 // @namespace    https://www.wandhi.com/
-// @version      4.3.2
+// @version      4.3.3
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载；🎉 5、上学吧答案查询(已下线)；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站)
@@ -2073,7 +2073,7 @@
             }));
         }, BiliImgService.add_down_btn = function() {
             $(".video-data").last().append(BiliImgService.down), $("body").on("click", "#downvideo", (function() {
-                var _a, _b, _c, _d, v_1, aid = unsafeWindow.__INITIAL_STATE__.videoData.aid, cid = null !== (_d = null !== (_b = null === (_a = unsafeWindow.__INITIAL_STATE__.cidMap[aid]) || void 0 === _a ? void 0 : _a.cid) && void 0 !== _b ? _b : null === (_c = unsafeWindow.__INITIAL_STATE__.cidMap[aid]) || void 0 === _c ? void 0 : _c.cids[2]) && void 0 !== _d ? _d : unsafeWindow.__INITIAL_STATE__.videoData.cid, key = aid.toString() + cid.toString() + "MDD";
+                var _a, _b, _c, _d, _e, v_1, aid = unsafeWindow.__INITIAL_STATE__.videoData.aid, cid = (null !== (_b = null === (_a = unsafeWindow.__INITIAL_STATE__.cidMap[aid]) || void 0 === _a ? void 0 : _a.cid) && void 0 !== _b ? _b : Core.getPar("p")) ? null === (_c = unsafeWindow.__INITIAL_STATE__.cidMap[aid]) || void 0 === _c ? void 0 : _c.cids[Core.getPar("p")] : null !== (_e = null === (_d = unsafeWindow.__INITIAL_STATE__.cidMap[aid]) || void 0 === _d ? void 0 : _d.cids[2]) && void 0 !== _e ? _e : unsafeWindow.__INITIAL_STATE__.videoData.cid, key = aid.toString() + cid.toString() + "MDD";
                 Logger.debug([ aid, cid ]), aid && cid ? (v_1 = Config.get(key, !1)) ? (v_1 = v_1, 
                 Alert.confim("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + v_1.data.accept_description[v_1.data.durl[0].order] + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", [ "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86" ], (function(data) {
                     window.open(v_1.data.durl[0].url);
