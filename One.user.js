@@ -222,11 +222,11 @@
         return Logger.log = function(msg, group, level) {}, Logger.debug = function(msg, group) {
             void 0 === group && (group = "debug"), this.log(msg, group, LogLevel$1.debug);
         }, Logger.info = function(msg, group) {
-            void 0 === group && (group = "debug"), this.log(msg, group, LogLevel$1.info);
+            void 0 === group && (group = "info"), this.log(msg, group, LogLevel$1.info);
         }, Logger.warn = function(msg, group) {
-            void 0 === group && (group = "debug"), this.log(msg, group, LogLevel$1.warn);
+            void 0 === group && (group = "warning"), this.log(msg, group, LogLevel$1.warn);
         }, Logger.error = function(msg, group) {
-            void 0 === group && (group = "debug"), this.log(msg, group, LogLevel$1.error);
+            void 0 === group && (group = "error"), this.log(msg, group, LogLevel$1.error);
         }, Logger;
     }();
     !function(LogLevel) {

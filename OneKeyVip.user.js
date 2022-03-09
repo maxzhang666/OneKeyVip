@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.3.3
+// @version      4.3.4
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载；🎉 5、上学吧答案查询(已下线)；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站)
@@ -48,6 +48,8 @@
 // @include      *://item.yiyaojd.com/*
 // @include      *://item.jd.com/*
 // @include      *://item.jd.hk/*
+// @include      *://search.kaola.com/*
+// @include      *://goods.kaola.com*
 // @include      *://detail.vip.com/detail-*
 // @include      *://product.suning.com/*
 // @include      *://music.163.com/song*
@@ -120,7 +122,7 @@
     "object" == typeof exports && "undefined" != typeof module ? factory(require("sweetalert2"), require("vue")) : "function" == typeof define && define.amd ? define([ "sweetalert2", "vue" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).Swal, global.Vue);
 })(this, (function(Swal, Vue) {
     "use strict";
-    var Swal__default, Vue__default, extendStatics, update_key, Min, Hour, Logger, LogLevel, Config, History, PriceDetail, ListPriceItem, BrowerType, Core, Runtime, AjaxOption, Alert, Http, HttpHeaders, Convert, Result, HistoryResult, Route, Toast, ToastType, css_248z$5, Common, PluginBase, SiteEnum, UpdateService, VersionCompar, VersionResult, EventHelper, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$4, MsgInfo, PromoInfo, HistoryService, GwdService, css_248z$3, TaoBaoService, container, Container, BiliImgService, Menu$1, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$2, CsdnAdService, Menu, WenKuService, css_248z$1, ToastAlert, LinkJumpService, css_248z, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, OneKeyVipInjection;
+    var Swal__default, Vue__default, extendStatics, update_key, Min, Hour, Logger, LogLevel, Config, History, PriceDetail, ListPriceItem, BrowerType, Core, Runtime, AjaxOption, Alert, Http, HttpHeaders, Convert, Result, HistoryResult, Route, Toast, ToastType, css_248z$5, Common, PluginBase, SiteEnum, UpdateService, VersionCompar, VersionResult, EventHelper, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$4, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, GwdService, css_248z$3, TaoBaoService, container, Container, BiliImgService, Menu$1, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$2, CsdnAdService, Menu, WenKuService, css_248z$1, ToastAlert, LinkJumpService, css_248z, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, OneKeyVipInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
@@ -281,11 +283,11 @@
         return Logger.log = function(msg, group, level) {}, Logger.debug = function(msg, group) {
             void 0 === group && (group = "debug"), this.log(msg, group, LogLevel.debug);
         }, Logger.info = function(msg, group) {
-            void 0 === group && (group = "debug"), this.log(msg, group, LogLevel.info);
+            void 0 === group && (group = "info"), this.log(msg, group, LogLevel.info);
         }, Logger.warn = function(msg, group) {
-            void 0 === group && (group = "debug"), this.log(msg, group, LogLevel.warn);
+            void 0 === group && (group = "warning"), this.log(msg, group, LogLevel.warn);
         }, Logger.error = function(msg, group) {
-            void 0 === group && (group = "debug"), this.log(msg, group, LogLevel.error);
+            void 0 === group && (group = "error"), this.log(msg, group, LogLevel.error);
         }, Logger;
     }(), function(LogLevel) {
         LogLevel[LogLevel.debug = 0] = "debug", LogLevel[LogLevel.info = 1] = "info", LogLevel[LogLevel.warn = 2] = "warn", 
@@ -310,6 +312,32 @@
                 exp: -1 == exp ? exp : (new Date).getTime() + 1e3 * exp
             };
             GM_setValue(this.encode(key), JSON.stringify(obj));
+        }, Config.remember = function(key, exp, callback) {
+            return __awaiter(this, void 0, void 0, (function() {
+                var v;
+                return __generator(this, (function(_a) {
+                    switch (_a.label) {
+                      case 0:
+                        return null != (v = this.get(key, null)) ? [ 3, 4 ] : callback instanceof Promise ? [ 4, new Promise((function(reso) {
+                            callback().then((function(res) {
+                                reso(res);
+                            }));
+                        })) ] : [ 3, 2 ];
+
+                      case 1:
+                        return v = _a.sent(), [ 3, 3 ];
+
+                      case 2:
+                        v = callback(), _a.label = 3;
+
+                      case 3:
+                        this.set(key, v, exp), _a.label = 4;
+
+                      case 4:
+                        return [ 2, v ];
+                    }
+                }));
+            }));
         }, Config.clear = function(key) {
             this.set(key, null, -10);
         }, Config.decode = function(str) {
@@ -853,6 +881,13 @@
                     }));
                 })) : _this.queryHistory(url, siteType, callback);
             }), 60);
+        }, Route.queryHistoryV5 = function(url) {
+            var _this = this;
+            return new Promise((function(reso, reje) {
+                _this.baseApi(_this.historyv3, new Map([ [ "url", url ] ]), (function(res) {
+                    res.code ? reso(res) : reje(res);
+                }));
+            }));
         }, Route.queryHistoryV4 = function(url, siteType, fp, dfp, callback) {
             var root = "https://browser.gwdang.com/extension/price_towards?url=" + encodeURIComponent(url) + "&ver=1&format=json&fp=" + fp + "&dfp=" + dfp + "&union=union_gwdang&from_device=chrome&version=" + (new Date).getTime();
             Http.JqGet(root, callback, new Map([ [ "cookie", Core.decode("Z3dkYW5nX3Blcm1hbmVudF9pZA==") + "=" + Core.randStr(34) ] ]));
@@ -868,6 +903,12 @@
             Route.baseApi(Route.sn_coupons, new Map([ [ "url", url ] ]), callback);
         }, Route.queryVpCoupons = function(url, callback) {
             Route.baseApi(Route.vp_coupons, new Map([ [ "url", url ] ]), callback);
+        }, Route.queryKlCoupons = function(itemId) {
+            return new Promise((function(reso) {
+                Route.baseApi(Route.kl_coupons, new Map([ [ "itemId", itemId ] ]), (function(res) {
+                    reso(res);
+                }));
+            }));
         }, Route.couponQuery = function(itemId, type, callback) {
             Route.baseApi("/coupons/info", new Map([ [ "id", itemId ], [ "type", type ] ]), callback);
         }, Route.update_api = "https://cdn.jsdelivr.net/gh/maxzhang666/OneKeyVip/OneKeyVip.user.js?t=" + Core.uuid(), 
@@ -878,7 +919,7 @@
         Route.bili = "/tools/bili", Route.biliInfo = "https://api.bilibili.com/x/web-interface/view", 
         Route.bilidown = "https://api.bilibili.com/x/player/playurl", Route.coupons = "/tb/infos/", 
         Route.like = "/tb/guesslike", Route.jd_coupons = "/jd/info", Route.sn_coupons = "/sn/info", 
-        Route.vp_coupons = "/vp/info", Route;
+        Route.vp_coupons = "/vp/info", Route.kl_coupons = "/kl/info", Route;
     }(), Toast = function() {
         function Toast(msg, title, type) {
             this.creationTime = new Date, this.message = msg, this.type = type, this.title = title, 
@@ -1004,12 +1045,13 @@
         SiteEnum.Acfun = "Acfun", SiteEnum.BiliBili = "BiliBili", SiteEnum.BiliMobile = "BiliMobile", 
         SiteEnum.M1905 = "M1905", SiteEnum.PPTV = "PPTV", SiteEnum.YinYueTai = "YinYueTai", 
         SiteEnum.WangYi = "WangYi", SiteEnum.Tencent_M = "Tencent_M", SiteEnum.KuGou = "KuGou", 
-        SiteEnum.KuWo = "KuWo", SiteEnum.XiaMi = "XiaMi", SiteEnum.TaiHe = "TaiHe", SiteEnum.QingTing = "QingTing", 
-        SiteEnum.LiZhi = "LiZhi", SiteEnum.MiGu = "MiGu", SiteEnum.XiMaLaYa = "XiMaLaYa", 
-        SiteEnum.WenKu = "WenKu", SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", SiteEnum.ALY = "ALY", 
-        SiteEnum.BDY1 = "BDY1", SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", SiteEnum.Steam = "Steam", 
-        SiteEnum.Vp = "Vp", SiteEnum.CSDN = "CSDN", SiteEnum.ZhiHu = "ZhiHu", SiteEnum.JianShu = "JianShu", 
-        SiteEnum.JueJin = "JueJin", SiteEnum.Gitee = "Gitee";
+        SiteEnum.KaoLa = "KaoLa", SiteEnum.KuWo = "KuWo", SiteEnum.XiaMi = "XiaMi", SiteEnum.TaiHe = "TaiHe", 
+        SiteEnum.QingTing = "QingTing", SiteEnum.LiZhi = "LiZhi", SiteEnum.MiGu = "MiGu", 
+        SiteEnum.XiMaLaYa = "XiMaLaYa", SiteEnum.WenKu = "WenKu", SiteEnum.SXB = "SXB", 
+        SiteEnum.BDY = "BDY", SiteEnum.ALY = "ALY", SiteEnum.BDY1 = "BDY1", SiteEnum.LZY = "LZY", 
+        SiteEnum.SuNing = "SuNing", SiteEnum.Steam = "Steam", SiteEnum.Vp = "Vp", SiteEnum.CSDN = "CSDN", 
+        SiteEnum.ZhiHu = "ZhiHu", SiteEnum.JianShu = "JianShu", SiteEnum.JueJin = "JueJin", 
+        SiteEnum.Gitee = "Gitee";
     }(SiteEnum || (SiteEnum = {})), UpdateService = function(_super) {
         function UpdateService() {
             var _this = _super.call(this) || this;
@@ -1597,26 +1639,50 @@
                 }
             };
         }, HistoryService;
-    }(PluginBase), GwdService = function(_super) {
+    }(PluginBase), KaolaCoupon = function(_super) {
+        function KaolaCoupon() {
+            return null !== _super && _super.apply(this, arguments) || this;
+        }
+        return __extends(KaolaCoupon, _super), KaolaCoupon.prototype.init_coupons = function() {
+            var key_1, coupon, q_1, exp_1, _this = this, itemId = unsafeWindow.__kaolaGTMGoodsData.product_no;
+            itemId ? (key_1 = "kol-" + itemId, (coupon = Config.get(key_1)) ? coupon.has_coupon ? (q_1 = coupon, 
+            exp_1 = new Date(q_1.quan_time), this.init_qrcode(decodeURIComponent(q_1.quan_link)).then((function(res) {
+                _this.init_coupon_info(q_1.after_price, q_1.quan_price, "" + Core.format(exp_1, "yyyy-MM-dd"), decodeURIComponent(q_1.quan_link));
+            }))) : coupon.quan_link ? this.default(coupon.quan_link) : this.default() : Route.queryKlCoupons(itemId).then((function(res) {
+                var q_2, exp_2;
+                Logger.debug(res), (null == res ? void 0 : res.code) ? (Config.set(key_1, res.data, 43200), 
+                res.data.has_coupon ? (q_2 = res.data, exp_2 = new Date(q_2.quan_time), _this.init_qrcode(decodeURIComponent(q_2.quan_link)).then((function(res) {
+                    _this.init_coupon_info(q_2.after_price, q_2.quan_price, "" + Core.format(exp_2, "yyyy-MM-dd"), decodeURIComponent(q_2.quan_link));
+                }))) : res.data.quan_link ? _this.default(res.data.quan_link) : _this.default()) : _this.default();
+            }))) : this.default();
+        }, KaolaCoupon.prototype.init_html = function(html) {
+            var _this = this;
+            return new Promise((function(resolve) {
+                $("#comboRecbox").length ? (Core.appendTo("#comboRecbox", html), resolve(!0)) : setTimeout((function() {
+                    _this.init_html(html);
+                }), 2e3);
+            }));
+        }, KaolaCoupon;
+    }(BaseCoupon), GwdService = function(_super) {
         function GwdService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
-            return _this.rules = new Map([ [ SiteEnum.TMall, /detail\.tmall\.com\/item\.htm/i ], [ SiteEnum.TaoBao, /item\.taobao\.com\//i ], [ SiteEnum.JingDong, /item\.(yiyaojd|jd)\.(com|hk)\/[0-9]*\.html/i ], [ SiteEnum.SuNing, /product\.suning\.com\//i ], [ SiteEnum.Vp, /detail\.vip\.com\//i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.TMall, /detail\.tmall\.com\/item\.htm/i ], [ SiteEnum.TaoBao, /item\.taobao\.com\//i ], [ SiteEnum.JingDong, /item\.(yiyaojd|jd)\.(com|hk)\/[0-9]*\.html/i ], [ SiteEnum.SuNing, /product\.suning\.com\//i ], [ SiteEnum.Vp, /detail\.vip\.com\//i ], [ SiteEnum.KaoLa, /goods\.kaola\.(com\.hk|com)/i ] ]), 
             _this._appName = "GwdService", _this.historyService = new HistoryService, _this.factory = new DefCoupon, 
-            _this.dfp = Core.randStr(60), _this.fp = Core.randStr(30), _this;
+            _this.dfp = Core.randStr(60), _this.fp = Core.randStr(30), _this.itemUrl = "", _this;
         }
         return __extends(GwdService, _super), GwdService.prototype.loader = function() {}, 
         GwdService.prototype.run = function() {
             this.injectHistory();
         }, GwdService.prototype.injectHistory = function() {
-            var _this = this;
+            var _a, _b, _this = this;
             switch (Logger.debug(this.site), this.site) {
               case SiteEnum.TaoBao:
               case SiteEnum.TMall:
-                this.factory = new TaoCoupon;
+                this.factory = new TaoCoupon, this.itemUrl = "https://item.taobao.com/item.htm?id=" + Core.getPar("id");
                 break;
 
               case SiteEnum.JingDong:
-                this.factory = new JdCoupon;
+                this.factory = new JdCoupon, this.itemUrl = "https://item.jd.com/" + (null === (_b = null === (_a = unsafeWindow.pageConfig) || void 0 === _a ? void 0 : _a.product) || void 0 === _b ? void 0 : _b.skuid) + ".html";
                 break;
 
               case SiteEnum.SuNing:
@@ -1627,6 +1693,10 @@
                 this.factory = new VpCoupon;
                 break;
 
+              case SiteEnum.KaoLa:
+                this.factory = new KaolaCoupon, this.itemUrl = "https://goods.kaola.com/product/" + unsafeWindow.__kaolaGTMGoodsData.product_no + ".html";
+                break;
+
               default:
                 this.factory = new DefCoupon;
             }
@@ -1634,31 +1704,130 @@
                 res && _this.InitPriceHistory(), _this.factory.init_coupons && _this.factory.init_coupons();
             }));
         }, GwdService.prototype.InitPriceHistory = function() {
-            var that, _this = this;
+            var _a, that, _this = this;
             $("#vip-plugin-outside").show(), this.theme(), this.chartMsg("\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u4e2d"), 
-            that = this, Route.queryHistoryV4(Runtime.url, this.site.toString(), that.fp, that.dfp, (function(data) {
-                var slContainer, msg = "";
-                Logger.debug(data), "price_status" in data ? ($(".vip-plugin-outside-chart-container").html('<div id="vip-plugin-outside-chart-container-line"></div>'), 
-                echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), _this.theme()).setOption(_this.getChartOption(data)), 
-                _this.chartMsg(msg)) : ("is_ban" in data && 1 == data.is_ban && (Swal__default.default.fire({
-                    icon: "info",
-                    html: "\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u5f02\u5e38,\u662f\u5426\u6253\u5f00\u9a8c\u8bc1\u9875\u9762\u8fdb\u884c\u9a8c\u8bc1?",
-                    showCloseButton: !0,
-                    showCancelButton: !0,
-                    focusConfirm: !1,
-                    confirmButtonText: "\u9a8c\u8bc1\u8d70\u8d77",
-                    cancelButtonText: "\u8001\u5b50\u4e0d\u770b"
-                }).then((function(res) {
-                    res.isConfirmed && Core.open("https://browser.gwdang.com/slider/verify.html?fromUrl=" + encodeURIComponent(Runtime.url)), 
-                    Swal__default.default.close(res);
-                })), slContainer = ".swal2-container", "99999999999" != $(slContainer).css("z-index") && $(slContainer).css("z-index", "99999999999")), 
-                that.historyService.Process());
+            that = this, Route.queryHistoryV5(null !== (_a = that.itemUrl) && void 0 !== _a ? _a : Runtime.url).then((function(res) {
+                Logger.debug(res.data), $(".vip-plugin-outside-chart-container").html('<div id="vip-plugin-outside-chart-container-line"></div>'), 
+                echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), _this.theme()).setOption(that.getChartOption(res.data)), 
+                _this.chartMsg("");
+            })).catch((function() {
+                Route.queryHistoryV4(Runtime.url, _this.site.toString(), that.fp, that.dfp, (function(data) {
+                    var slContainer, msg = "";
+                    Logger.debug(data), "price_status" in data ? ($(".vip-plugin-outside-chart-container").html('<div id="vip-plugin-outside-chart-container-line"></div>'), 
+                    echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), _this.theme()).setOption(that.getChartOptionGwd(data)), 
+                    _this.chartMsg(msg)) : ("is_ban" in data && 1 == data.is_ban && (Swal__default.default.fire({
+                        icon: "info",
+                        html: "\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u5f02\u5e38,\u662f\u5426\u6253\u5f00\u9a8c\u8bc1\u9875\u9762\u8fdb\u884c\u9a8c\u8bc1?",
+                        showCloseButton: !0,
+                        showCancelButton: !0,
+                        focusConfirm: !1,
+                        confirmButtonText: "\u9a8c\u8bc1\u8d70\u8d77",
+                        cancelButtonText: "\u8001\u5b50\u4e0d\u770b"
+                    }).then((function(res) {
+                        res.isConfirmed && Core.open("https://browser.gwdang.com/slider/verify.html?fromUrl=" + encodeURIComponent(Runtime.url)), 
+                        Swal__default.default.close(res);
+                    })), slContainer = ".swal2-container", "99999999999" != $(slContainer).css("z-index") && $(slContainer).css("z-index", "99999999999")), 
+                    that.historyService.Process());
+                }));
             }));
         }, GwdService.prototype.getHistoryHtml = function() {
             return '<div id="vip-plugin-outside">\n                    <div class="vip-plugin-outside-coupons">\n                        <div class="vip-plugin-outside-coupons-qrcode"><canvas id="vip-plugin-outside-coupons-qrcode-img"></canvas></div>\n                        <div class="vip-plugin-outside-coupons-title"></div>\n                        <div class="vip-plugin-outside-coupons-action"></div>\n                    </div>\n                    <div id="vip-plugin-outside-history" class="vip-plugin-outside-history">\n                        <div class="vip-plugin-outside-chart-container"></div>\n                        <p class="vip-plugin-outside-history-tip"></p>\n                    </div>    \n                    \n                </div>';
         }, GwdService.prototype.chartMsg = function(msg) {
             $(".vip-plugin-outside-history-tip").html(msg);
         }, GwdService.prototype.getChartOption = function(data) {
+            var _a, _b, text, maxData, minData, chartOption, step, line, analysisTxt = "\u6700\u4f4e";
+            return data.info.min, text = analysisTxt + "\uff1a{red|\uffe5" + data.info.min + "} ( {red|" + data.info.max + "} )", 
+            maxData = new PromoInfo, (minData = new PromoInfo).price = Number.MAX_SAFE_INTEGER, 
+            minData.humanPrice = Number.MAX_SAFE_INTEGER, maxData.humanPrice = Number.MIN_SAFE_INTEGER, 
+            chartOption = new LinesOption, step = 10, (chartOption = {
+                title: {
+                    left: "center",
+                    subtext: text,
+                    subtextStyle: {
+                        color: "#000",
+                        rich: {
+                            red: {
+                                color: "red"
+                            }
+                        }
+                    }
+                },
+                tooltip: {
+                    trigger: "axis",
+                    axisPointer: {
+                        type: "cross"
+                    },
+                    formatter: function(params) {
+                        var date, year, month, day, monthStr, dayStr;
+                        return params = params[0], year = (date = new Date(params.axisValue)).getFullYear(), 
+                        month = date.getMonth() + 1, day = date.getDate(), monthStr = month.toString(), 
+                        dayStr = day.toString(), month < 10 && (monthStr = "0" + month), day < 10 && (dayStr = "0" + day), 
+                        "\u65e5\u671f\uff1a" + year + "-" + monthStr + "-" + dayStr + "<br/>\u4ef7\u683c\uff1a\uffe5" + params.value[1].toFixed(2) + ("" == params.value[2] ? "" : "<br/>" + params.value[2]);
+                    }
+                },
+                grid: {
+                    left: 0,
+                    right: 20,
+                    top: 50,
+                    bottom: 10,
+                    containLabel: !0
+                },
+                xAxis: {
+                    type: "time"
+                },
+                yAxis: {
+                    type: "value"
+                },
+                series: [ {
+                    type: "line",
+                    step: "end",
+                    data: function(data) {
+                        var couponsMap, now_1, l = [];
+                        return data.list.length > 0 && (couponsMap = {}, now_1 = new Date("9999-99-99 00:00:00").getMilliseconds(), 
+                        data.list.forEach((function(v) {
+                            var p;
+                            v.time < now_1 && (now_1 = v.time), v.price > maxData.humanPrice && (maxData.humanPrice = v.price, 
+                            maxData.time = v.time), v.price < minData.humanPrice && (minData.humanPrice = v.price, 
+                            minData.time = v.time), (new PromoInfo).msg = new MsgInfo, p = {
+                                name: v.time,
+                                value: [ v.date, v.price, "" ]
+                            }, l.push(p);
+                        })), Logger.debug(couponsMap)), Logger.debug(maxData), Logger.debug(minData), l;
+                    }(data),
+                    showSymbol: !1,
+                    symbolSize: 3,
+                    lineStyle: {
+                        width: 1.5,
+                        color: "#ff0036"
+                    }
+                } ]
+            }).yAxis = {
+                min: Math.floor(.9 * minData.humanPrice / step) * step,
+                max: Math.ceil(1.1 * maxData.humanPrice / step) * step
+            }, (line = null === (_a = chartOption.series) || void 0 === _a ? void 0 : _a.pop()).markPoint = {
+                data: [ {
+                    value: minData.humanPrice,
+                    coord: [ 1e3 * minData.time, minData.humanPrice ],
+                    name: "\u6700\u5c0f\u503c",
+                    itemStyle: {
+                        color: "green"
+                    }
+                }, {
+                    value: maxData.humanPrice,
+                    coord: [ 1e3 * maxData.time, maxData.humanPrice ],
+                    name: "\u6700\u5927\u503c",
+                    itemStyle: {
+                        color: "red"
+                    }
+                } ]
+            }, null === (_b = chartOption.series) || void 0 === _b || _b.push(line), chartOption.dataZoom = [ {
+                type: "slider",
+                show: !0,
+                realtime: !0,
+                start: 0,
+                end: 100
+            } ], chartOption;
+        }, GwdService.prototype.getChartOptionGwd = function(data) {
             var _a, _b, chartOption, step, line, analysisTxt = data.analysis.tip, min = data.analysis.promo_days[data.analysis.promo_days.length - 1], text = analysisTxt + "\uff1a{red|\uffe5" + min.price + "} ( {red|" + min.date + "} )", maxData = new PromoInfo, minData = new PromoInfo;
             return minData.price = Number.MAX_SAFE_INTEGER, minData.humanPrice = Number.MAX_SAFE_INTEGER, 
             maxData.humanPrice = Number.MIN_SAFE_INTEGER, chartOption = new LinesOption, step = 10, 
@@ -1705,19 +1874,19 @@
                     type: "line",
                     step: "end",
                     data: function(data) {
-                        var _a, storeData, couponsMap_1, now_1, dayTime_1, l = [];
+                        var _a, storeData, couponsMap_1, now_2, dayTime_1, l = [];
                         return data.store.length > 0 && (storeData = data.store[0], data.store.length > 1 && (storeData = data.store[1]), 
                         couponsMap_1 = {}, (null === (_a = data.promo) || void 0 === _a ? void 0 : _a.length) > 0 && data.promo.forEach((function(v) {
                             couponsMap_1.hasOwnProperty(1e3 * v.time) || (couponsMap_1[1e3 * v.time] = v);
-                        })), now_1 = storeData.all_line_begin_time, dayTime_1 = 864e5, storeData.all_line.forEach((function(v) {
+                        })), now_2 = storeData.all_line_begin_time, dayTime_1 = 864e5, storeData.all_line.forEach((function(v) {
                             var promo, p;
-                            v > maxData.humanPrice && (maxData.humanPrice = v, maxData.time = now_1 / 1e3), 
-                            v < minData.humanPrice && (minData.humanPrice = v, minData.time = now_1 / 1e3), 
-                            (promo = new PromoInfo).msg = new MsgInfo, couponsMap_1.hasOwnProperty(now_1) && (Logger.debug("yes"), 
-                            promo = couponsMap_1[now_1]), p = {
-                                name: now_1,
-                                value: [ now_1, v, couponsMap_1.hasOwnProperty(now_1) ? promo.msg.coupon ? promo.msg.promotion : promo.msg.coupon : "" ]
-                            }, l.push(p), now_1 += dayTime_1;
+                            v > maxData.humanPrice && (maxData.humanPrice = v, maxData.time = now_2 / 1e3), 
+                            v < minData.humanPrice && (minData.humanPrice = v, minData.time = now_2 / 1e3), 
+                            (promo = new PromoInfo).msg = new MsgInfo, couponsMap_1.hasOwnProperty(now_2) && (Logger.debug("yes"), 
+                            promo = couponsMap_1[now_2]), p = {
+                                name: now_2,
+                                value: [ now_2, v, couponsMap_1.hasOwnProperty(now_2) ? promo.msg.coupon ? promo.msg.promotion : promo.msg.coupon : "" ]
+                            }, l.push(p), now_2 += dayTime_1;
                         })), Logger.debug(couponsMap_1)), Logger.debug(maxData), Logger.debug(minData), 
                         l;
                     }(data),
@@ -2232,7 +2401,7 @@
     }(), ListService = function(_super) {
         function ListService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.TaoBao, /s\.taobao\.com\/search/i ], [ SiteEnum.TMall, /list\.tmall\.com\/search_product\.htm/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.TaoBao, /s\.taobao\.com\/search/i ], [ SiteEnum.TMall, /list\.tmall\.com\/search_product\.htm/i ], [ SiteEnum.KaoLa, /search\.kaola\.com\/search\.html/i ] ]), 
             _this.selectorList = [], _this.selectora = [], _this.atrack = [], _this.key = "list_service_", 
             _this._appName = "TaoList", _this;
         }
@@ -2253,6 +2422,10 @@
               case SiteEnum.TMall:
                 this.selectorList.push(".product"), this.atrack.push(".productImg-wrap a", ".productTitle a"), 
                 this.itemType = ItemType.TaoBao;
+                break;
+
+              case SiteEnum.KaoLa:
+                return void this._initQuery();
             }
             var that = this;
             this.initStyle(), Core.autoLazyload((function() {
@@ -2352,6 +2525,44 @@
             Core.click(".onekeyvip-item-" + itemId, (function() {
                 return !itemUrl || (Core.open(itemUrl), !1);
             }));
+        }, ListService.prototype._initQuery = function() {
+            var _a, that = this;
+            null === (_a = $(".goods")) || void 0 === _a || _a.each((function(i, ele) {
+                var m = Core.random(1, 5);
+                Core.sleep(m).then((function() {
+                    that._queryCoupon(ele);
+                }));
+            }));
+        }, ListService.prototype._queryCoupon = function(target) {
+            var _a;
+            return __awaiter(this, void 0, void 0, (function() {
+                var href, itemIds, that, itemId, key_1, quan_1;
+                return __generator(this, (function(_b) {
+                    switch (_b.label) {
+                      case 0:
+                        return href = null === (_a = $(target).find("a")[0]) || void 0 === _a ? void 0 : _a.href, 
+                        itemIds = /kaola\.com\/product\/(.*?)\.html/.exec(href), that = this, null != itemIds && (null == itemIds ? void 0 : itemIds.length) > 1 ? (itemId = itemIds[1], 
+                        key_1 = "kol-" + itemId, (quan_1 = Config.get(key_1)) ? (this._showItemUrl(target, quan_1), 
+                        [ 3, 3 ]) : [ 3, 1 ]) : [ 3, 3 ];
+
+                      case 1:
+                        return Config.clear(key_1), [ 4, Route.queryKlCoupons(itemId).then((function(res) {
+                            (null == res ? void 0 : res.code) && (Config.set(key_1, res.data, 86400), that._showItemUrl(target, quan_1));
+                        })) ];
+
+                      case 2:
+                        _b.sent(), _b.label = 3;
+
+                      case 3:
+                        return [ 2 ];
+                    }
+                }));
+            }));
+        }, ListService.prototype._showItemUrl = function(target, quan) {
+            var _a;
+            null === (_a = $(target).find("a")) || void 0 === _a || _a.on("click", (function() {
+                return Logger.debug(quan), !quan.quan_link || (Core.open(quan.quan_link), !1);
+            }));
         }, ListService.prototype.showQueryFind = function(selector, couponMoney) {
             selector.html('<a target="_blank" class="onekeyvip-box-info onekeyvip-box-info-find" title="\u5207\u6362\u900f\u660e\u5ea6">' + couponMoney + "\u5143\u5238</a>");
         }, ListService.prototype.showQueryEmpty = function(selector) {
@@ -2378,7 +2589,7 @@
             }), 3), Core.background((function() {
                 unsafeWindow.csdn.copyright.textData = "";
             }));
-        }, CsdnAdService.adSelectors = [ "#footerRightAds", ".side-question-box", "div[id^='dmp_ad']", "div[class^='ad_']", "div[id^='floor-ad_']", ".adsbygoogle", "#recommendAdBox" ], 
+        }, CsdnAdService.adSelectors = [ "#footerRightAds", ".side-question-box", "div[id^='dmp_ad']", "div[class^='ad_']", "div[id^='floor-ad_']", ".adsbygoogle", "#recommendAdBox", ".signin" ], 
         CsdnAdService;
     }(PluginBase), Menu = Common.Menu, WenKuService = function(_super) {
         function WenKuService() {
