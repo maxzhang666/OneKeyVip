@@ -1,5 +1,3 @@
-<h1>各位大佬别没事就举报我了。脚本没有混淆、没有最小化！脚本没有混淆、没有最小化！脚本没有混淆、没有最小化！</h1>
-
 <h1 align="center">一键Vip解析工具箱</h1>
 
 本脚本可安装于支持 Tampermonkey 或 暴力猴扩展的浏览器，包括但不限于Chrome，360，QQ，UC等。
@@ -11,6 +9,14 @@
     <img src="https://img.shields.io/badge/safari%20-v12.0-brightgreen.svg" alt="safari">
     <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Mac%20%7C%20Android-blue.svg" alt="platform">
 </p>
+
+## 声明
+
+> 脚本未最小化或混淆
+> 
+> 未引用不符合规则的外部资源
+> 
+> 举报前三思,瞎举报会被Ban
 
 ## 版本号说明
 
@@ -31,6 +37,7 @@
 * ✅ 链接自动跳转
 * ✅ 内容自动展开(❤️❤️❤️待支持的网站等你提交❤️❤️❤️)
 * ✅ 阿里云盘refresh_token获取工具
+* ✅ YouTube视频下载
 
 ## 🔥挖坑
 
