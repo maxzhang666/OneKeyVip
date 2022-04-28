@@ -2446,7 +2446,7 @@
         }, JdService.prototype.run = function() {
             var btn = '<a href="javascript:;" class="btn-special1 btn-lg btn-yhj"><span class="">\u67e5\u8be2\u4f18\u60e0\u5238</span></a>', keywords = $(".sku-name").text().trim();
             $("#choose-btns").prepend(btn), $(".btn-yhj").on("click", (function() {
-                Core.open("http://jd.huizhek.com/?ah=total&kw=" + encodeURIComponent(keywords));
+                Core.open("https://shop.huizhek.com/?r=/l/jdlist&kw=" + encodeURIComponent(keywords) + "&t=223");
             }));
         }, JdService;
     }(PluginBase), UrlHelper = function() {
