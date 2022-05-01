@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.3.9
+// @version      4.4.0
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、上学吧答案查询(已下线)；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载
@@ -47,6 +47,7 @@
 // @include      *://detail.tmall.hk/*
 // @include      *://item.yiyaojd.com/*
 // @include      *://item.jd.com/*
+// @include      *://search.jd.com/*
 // @include      *://item.jd.hk/*
 // @include      *://search.kaola.com/*
 // @include      *://goods.kaola.com*
@@ -974,11 +975,13 @@
             }
             return Menu.prototype.loader = function() {}, Menu.prototype.getBody = function(option) {
                 return '<svg width="0" height="0"><defs><filter id="goo"><feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"></feGaussianBlur><feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo"></feColorMatrix><feComposite in="SourceGraphic" in2="goo" operator="atop"></feComposite></filter></defs></svg><div class="aside-nav bounceInUp animated" id="Wandhi-nav"><label for="" class="aside-menu" title="\u6309\u4f4f\u62d6\u52a8">VIP</label>' + option + "</div>";
-            }, Menu.prototype.Init = function(menus, callback) {
+            }, Menu.prototype.Init = function(menus, callback, skipIframe) {
                 var that, str, drags, asideNav, _this = this;
-                Core.inIframe() || (that = this, this.loader(), str = "", menus.forEach((function(element, index) {
+                void 0 === skipIframe && (skipIframe = !0), Core.inIframe() && skipIframe || (that = this, 
+                this.loader(), str = "", menus.forEach((function(element, index) {
                     str += '<a href="javascript:void(0)" title="' + element.title + '" data-cat="' + element.type + '" class="menu-item menu-line menu-' + _this.menusClass[index] + '">' + element.show + "</a>";
-                })), Core.bodyAppend(this.getBody(str)), /Safari|iPhone/i.test(this.userAgent) && /chrome/i.test(this.userAgent) && $("#Wandhi-nav").addClass("no-filter"), 
+                })), Logger.info("\u8ffd\u52a0\u83dc\u5355"), Core.bodyAppend(this.getBody(str)), 
+                /Safari|iPhone/i.test(this.userAgent) && /chrome/i.test(this.userAgent) && $("#Wandhi-nav").addClass("no-filter"), 
                 drags = {
                     down: !1,
                     x: 0,
@@ -1025,18 +1028,18 @@
         }, PluginBase;
     }(), function(SiteEnum) {
         SiteEnum.All = "All", SiteEnum.TaoBao = "TaoBao", SiteEnum.TMall = "TMall", SiteEnum.JingDong = "JingDong", 
-        SiteEnum.IQiYi = "IQiYi", SiteEnum.YouKu = "YouKu", SiteEnum.LeShi = "LeShi", SiteEnum.TuDou = "TuDou", 
-        SiteEnum.Tencent_V = "Tencent_V", SiteEnum.MangGuo = "MangGuo", SiteEnum.SoHu = "SoHu", 
-        SiteEnum.Acfun = "Acfun", SiteEnum.BiliBili = "BiliBili", SiteEnum.BiliMobile = "BiliMobile", 
-        SiteEnum.M1905 = "M1905", SiteEnum.PPTV = "PPTV", SiteEnum.YinYueTai = "YinYueTai", 
-        SiteEnum.WangYi = "WangYi", SiteEnum.Tencent_M = "Tencent_M", SiteEnum.KuGou = "KuGou", 
-        SiteEnum.KaoLa = "KaoLa", SiteEnum.KuWo = "KuWo", SiteEnum.XiaMi = "XiaMi", SiteEnum.TaiHe = "TaiHe", 
-        SiteEnum.QingTing = "QingTing", SiteEnum.LiZhi = "LiZhi", SiteEnum.MiGu = "MiGu", 
-        SiteEnum.XiMaLaYa = "XiMaLaYa", SiteEnum.WenKu = "WenKu", SiteEnum.YouTuBe = "YouTuBe", 
-        SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", SiteEnum.ALY = "ALY", SiteEnum.BDY1 = "BDY1", 
-        SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", SiteEnum.Steam = "Steam", SiteEnum.Vp = "Vp", 
-        SiteEnum.CSDN = "CSDN", SiteEnum.ZhiHu = "ZhiHu", SiteEnum.JianShu = "JianShu", 
-        SiteEnum.JueJin = "JueJin", SiteEnum.Gitee = "Gitee";
+        SiteEnum.JingDongList = "JingDongList", SiteEnum.IQiYi = "IQiYi", SiteEnum.YouKu = "YouKu", 
+        SiteEnum.LeShi = "LeShi", SiteEnum.TuDou = "TuDou", SiteEnum.Tencent_V = "Tencent_V", 
+        SiteEnum.MangGuo = "MangGuo", SiteEnum.SoHu = "SoHu", SiteEnum.Acfun = "Acfun", 
+        SiteEnum.BiliBili = "BiliBili", SiteEnum.BiliMobile = "BiliMobile", SiteEnum.M1905 = "M1905", 
+        SiteEnum.PPTV = "PPTV", SiteEnum.YinYueTai = "YinYueTai", SiteEnum.WangYi = "WangYi", 
+        SiteEnum.Tencent_M = "Tencent_M", SiteEnum.KuGou = "KuGou", SiteEnum.KaoLa = "KaoLa", 
+        SiteEnum.KuWo = "KuWo", SiteEnum.XiaMi = "XiaMi", SiteEnum.TaiHe = "TaiHe", SiteEnum.QingTing = "QingTing", 
+        SiteEnum.LiZhi = "LiZhi", SiteEnum.MiGu = "MiGu", SiteEnum.XiMaLaYa = "XiMaLaYa", 
+        SiteEnum.WenKu = "WenKu", SiteEnum.YouTuBe = "YouTuBe", SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", 
+        SiteEnum.ALY = "ALY", SiteEnum.BDY1 = "BDY1", SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", 
+        SiteEnum.Steam = "Steam", SiteEnum.Vp = "Vp", SiteEnum.CSDN = "CSDN", SiteEnum.ZhiHu = "ZhiHu", 
+        SiteEnum.JianShu = "JianShu", SiteEnum.JueJin = "JueJin", SiteEnum.Gitee = "Gitee";
     }(SiteEnum || (SiteEnum = {})), UpdateService = function(_super) {
         function UpdateService() {
             var _this = _super.call(this) || this;
@@ -2427,7 +2430,7 @@
             })), $("body").on("click", "[data-cat=tb]", (function() {
                 Core.open("http://shop.huizhek.com");
             })), $("body").on("click", "[data-cat=jd]", (function() {
-                Core.open("http://jd.huizhek.com");
+                Core.open("http://shop.huizhek.com");
             }));
         }, MovieService.prototype.autoHide = function() {
             Logger.info("\u81ea\u52a8\u9690\u85cf"), this.site == SiteEnum.BiliBili && Core.background((function() {
@@ -2486,7 +2489,7 @@
                 title: "\u4eac\u4e1c\u597d\u5238",
                 show: "\u4eac\u4e1c<br>\u597d\u5238",
                 type: "jd"
-            } ], this._OnClick);
+            } ], this._OnClick, !1);
         }, MusicService.prototype._OnClick = function() {
             this.rules, $("body").on("click", "[data-cat=process]", (function() {
                 var _a, _b, i, html;
@@ -2509,9 +2512,9 @@
             })), $("body").on("click", "[data-cat=search]", (function() {
                 Core.open("http://tv.wandhi.com/");
             })), $("body").on("click", "[data-cat=tb]", (function() {
-                Core.open("https://t.cn/A6LoYknW");
+                Core.open("https://shop.huizhek.com");
             })), $("body").on("click", "[data-cat=jd]", (function() {
-                Core.open("https://t.cn/A6LoYnHT");
+                Core.open("https://shop.huizhek.com");
             }));
         }, MusicService;
     }(PluginBase), function(ItemType) {
@@ -2530,14 +2533,14 @@
     }(), ListService = function(_super) {
         function ListService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.TaoBao, /s\.taobao\.com\/search/i ], [ SiteEnum.TMall, /list\.tmall\.com\/search_product\.htm/i ], [ SiteEnum.KaoLa, /search\.kaola\.com\/search\.html/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.TaoBao, /s\.taobao\.com\/search/i ], [ SiteEnum.TMall, /list\.tmall\.com\/search_product\.htm/i ], [ SiteEnum.KaoLa, /search\.kaola\.com\/search\.html/i ], [ SiteEnum.JingDongList, /search\.jd\.com/i ] ]), 
             _this.selectorList = [], _this.selectora = [], _this.atrack = [], _this.key = "list_service_", 
             _this._appName = "TaoList", _this;
         }
         return __extends(ListService, _super), ListService.prototype.loader = function() {}, 
         Object.defineProperty(ListService, "style", {
             get: function() {
-                return "    \n    .onekeyvip-tb-box-area {position: absolute;top: 10px;right: 5px;z-index: 9999;}\n    .onekeyvip-jd-box-area {position: absolute;top: 235px;left: 10px;z-index: 9999;}  \n    .onekeyvip-jdcs-box-area {position: absolute;top: 5px;right: 0px;z-index: 9999;}\n    .onekeyvip-box-info-translucent{opacity: .33;}\n    .onekeyvip-box-info, .onekeyvip-box-info:hover, .onekeyvip-box-info:visited {text-decoration: none!important;}\n    .onekeyvip-box-wait{cursor:pointer}\n    .onekeyvip-box-info {width: auto!important;height: auto!important;padding: 6px 8px!important;font-size: 12px;color: #fff!important;border-radius: 15px;cursor: pointer;}\n    .onekeyvip-jd-box-info-default, .onekeyvip-tb-box-info-default, .onekeyvip-jdcs-box-info-default{background: #3186fd!important;}\n    .onekeyvip-box-info-empty {color: #000!important;background: #ccc!important;}\n    .onekeyvip-box-info-find {background: #ff0036!important;}\n    .onekeyvip-box-done{position:relative}\n    ";
+                return "    \n    .onekeyvip-tb-box-area {position: absolute;top: 10px;right: 5px;z-index: 9999;}\n    .onekeyvip-jd-box-area {position: absolute;top: 275px;right: 10px;z-index: 9999;}  \n    .onekeyvip-jdcs-box-area {position: absolute;top: 5px;right: 0px;z-index: 9999;}\n    .onekeyvip-box-info-translucent{opacity: .33;}\n    .onekeyvip-box-info, .onekeyvip-box-info:hover, .onekeyvip-box-info:visited {text-decoration: none!important;}\n    .onekeyvip-box-wait{cursor:pointer}\n    .onekeyvip-box-info {width: auto!important;height: auto!important;padding: 6px 8px!important;font-size: 12px;color: #fff!important;border-radius: 15px;cursor: pointer;font-weight:bold}\n    .onekeyvip-jd-box-info-default, .onekeyvip-tb-box-info-default, .onekeyvip-jdcs-box-info-default{background: #3186fd!important;}\n    .onekeyvip-box-info-empty {color: #000!important;background: #ccc!important;}\n    .onekeyvip-box-info-find {background: #ff0036!important;}\n    .onekeyvip-box-done{position:relative}\n    ";
             },
             enumerable: !1,
             configurable: !0
@@ -2555,6 +2558,10 @@
 
               case SiteEnum.KaoLa:
                 return void this._initQuery();
+
+              case SiteEnum.JingDongList:
+                this.selectorList.push(".gl-warp .gl-item"), this.atrack.push(".p-img a", ".p-name a"), 
+                this.itemType = ItemType.JingDong;
             }
             var that = this;
             this.initStyle(), Core.autoLazyload((function() {
@@ -2649,9 +2656,13 @@
         }, ListService.prototype.initCouponInfo = function(itemId, couponInfo, target) {
             var _a, coupon, $this = $(target), that = this;
             (null === (_a = null == couponInfo ? void 0 : couponInfo.coupons) || void 0 === _a ? void 0 : _a.length) > 0 && 0 != couponInfo.coupons[0].coupon_price ? (coupon = couponInfo.coupons[0], 
-            this.showQueryFind($this, coupon.coupon_price)) : that.showQueryEmpty($this), this.showItemUrl(itemId, null == couponInfo ? void 0 : couponInfo.item_url);
-        }, ListService.prototype.showItemUrl = function(itemId, itemUrl) {
-            Core.click(".onekeyvip-item-" + itemId, (function() {
+            this.showQueryFind($this, coupon.coupon_price)) : that.showQueryEmpty($this), this.showItemUrl(itemId, null == couponInfo ? void 0 : couponInfo.item_url, that.site == SiteEnum.JingDong);
+        }, ListService.prototype.showItemUrl = function(itemId, itemUrl, flag) {
+            void 0 === flag && (flag = !1), flag ? $(".onekeyvip-item-" + itemId).each((function(i, ele) {
+                ele.onclick = function() {
+                    return !itemUrl || (Core.open(itemUrl), !1);
+                };
+            })) : Core.click(".onekeyvip-item-" + itemId, (function() {
                 return !itemUrl || (Core.open(itemUrl), !1);
             }));
         }, ListService.prototype._initQuery = function() {
@@ -2786,7 +2797,7 @@
                     })), $("body").on("click", "[data-cat=tb]", (function() {
                         Core.open("http://shop.huizhek.com");
                     })), $("body").on("click", "[data-cat=jd]", (function() {
-                        Core.open("http://jd.huizhek.com");
+                        Core.open("http://shop.huizhek.com");
                     })), [ 2 ];
                 }));
             }));
