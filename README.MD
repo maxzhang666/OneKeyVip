@@ -86,69 +86,6 @@
 
 [**点我查看**](https://wiki.wandhi.com/zh-cn/Faq.html)
 
-# 功能说明
-
-> 温馨提示:除特殊说明外，大部分功能的使用方式都为页面内弹出Vip按钮方式
-
-## 链接自动跳转
-
-> 自动跳过知乎、csdn、简书的链接中间页
-
-## Vip视频解析
-
-> 通过收集网络中的解析接口来解析视频，本身不存储视频，视频收集自网络
-
-> 点击视频页面弹出的vip按钮然后选择视频解析即可
-
-![AhExNW7HMy3tfdV](https://i.loli.net/2020/04/22/AhExNW7HMy3tfdV.png)
-
-## 音乐下载
-
-> 仅支持无版权限制、不收费的音乐下载
-
-## 优惠券
-
-> 淘宝、天猫、京东展示商品对应的优惠券信息,领券购买更优惠
-
-![MPlbU3tV8I19Eni](https://i.loli.net/2020/04/22/MPlbU3tV8I19Eni.png)
-
-## ~~上学吧查看答案~~
-
-> 已失效
-> ~~支持上学吧答案分析，通过收集网络中信息来匹配答案(接口来自第三方,偶尔抽风正常现象)~~
-
-<img src='https://i.loli.net/2020/04/29/dDxs1ZwH5M38jkU.jpg' alt='dDxs1ZwH5M38jkU'/>
-
-<img src='https://i.loli.net/2020/04/29/cvFDpan7VQuPHNi.png' alt='cvFDpan7VQuPHNi'/>
-
-## B站视频封面获取
-
-> 在视频标题后显示一个获取封面按钮，点击获取视频对应的封面图
-
-<img src='https://i.loli.net/2020/04/29/TJWXDUpHeRxwViu.png' alt='TJWXDUpHeRxwViu'/>
-
-## B站视频下载
-
-> 在视频标题后显示一个下载视频按钮，点击即可自动打开下载地址
-
-![B64G1hzEeUyYaCt](https://i.loli.net/2020/07/09/B64G1hzEeUyYaCt.png)
-
-## 商品历史价格
-
-> 在商品详情页展示商品的历史价格信息
-
-> 目前仅做了淘宝、天猫、京东商品的匹配
-
-> 后期根据需要匹配其他各大电商平台数据
-
-![WSRmnbLghyfHxEe](https://i.loli.net/2020/04/22/WSRmnbLghyfHxEe.png)
-
-## 百度文库解析下载
-
-> 将文库内容以Word形式导出
-
-> 只要**能看**就能够导出,即只要没有**阅读限制**即可导出
-
 ## 🔔 更新历史
 
 <details>
@@ -156,6 +93,7 @@
 <pre>
 <b>小调整不在记录</b>
 <ul>
+<li>4.4.1  添加微博链接自动跳转</li>
 <li>4.2.41 csdn移除代码复制部分限制</li>
 <li>4.2.39 修正已知问题,上学吧下个版本下线</li>
 <li>4.2.35 修正喜马拉雅匹配</li>
@@ -220,6 +158,71 @@
 <a href="https://github.com/maxzhang666/OneKeyVip/blob/master/CHANGELOG" >More</a>
 
 </details>
+
+# 功能说明
+
+> 温馨提示:除特殊说明外，大部分功能的使用方式都为页面内弹出Vip按钮方式
+
+## 链接自动跳转
+
+> 自动跳过知乎、csdn、简书的链接中间页
+
+## Vip视频解析
+
+> 通过收集网络中的解析接口来解析视频，本身不存储视频，视频收集自网络
+
+> 点击视频页面弹出的vip按钮然后选择视频解析即可
+
+![AhExNW7HMy3tfdV](https://i.loli.net/2020/04/22/AhExNW7HMy3tfdV.png)
+
+## 音乐下载
+
+> 仅支持无版权限制、不收费的音乐下载
+
+## 优惠券
+
+> 淘宝、天猫、京东展示商品对应的优惠券信息,领券购买更优惠
+
+![MPlbU3tV8I19Eni](https://i.loli.net/2020/04/22/MPlbU3tV8I19Eni.png)
+
+## ~~上学吧查看答案~~
+
+> 已失效
+> ~~支持上学吧答案分析，通过收集网络中信息来匹配答案(接口来自第三方,偶尔抽风正常现象)~~
+
+<img src='https://i.loli.net/2020/04/29/dDxs1ZwH5M38jkU.jpg' alt='dDxs1ZwH5M38jkU'/>
+
+<img src='https://i.loli.net/2020/04/29/cvFDpan7VQuPHNi.png' alt='cvFDpan7VQuPHNi'/>
+
+## B站视频封面获取
+
+> 在视频标题后显示一个获取封面按钮，点击获取视频对应的封面图
+
+<img src='https://i.loli.net/2020/04/29/TJWXDUpHeRxwViu.png' alt='TJWXDUpHeRxwViu'/>
+
+## B站视频下载
+
+> 在视频标题后显示一个下载视频按钮，点击即可自动打开下载地址
+
+![B64G1hzEeUyYaCt](https://i.loli.net/2020/07/09/B64G1hzEeUyYaCt.png)
+
+## 商品历史价格
+
+> 在商品详情页展示商品的历史价格信息
+
+> 目前仅做了淘宝、天猫、京东商品的匹配
+
+> 后期根据需要匹配其他各大电商平台数据
+
+![WSRmnbLghyfHxEe](https://i.loli.net/2020/04/22/WSRmnbLghyfHxEe.png)
+
+## 百度文库解析下载
+
+> 将文库内容以Word形式导出
+
+> 只要**能看**就能够导出,即只要没有**阅读限制**即可导出
+
+
 
 ## 💕 友情捐助
 
