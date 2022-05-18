@@ -1312,11 +1312,11 @@
                         type: "cross"
                     },
                     formatter: function(params) {
-                        var date, year, month, day, monthStr, dayStr;
+                        var _a, date, year, month, day, monthStr, dayStr;
                         return params = params[0], year = (date = new Date(params.name)).getFullYear(), 
                         month = date.getMonth() + 1, day = date.getDate(), monthStr = month.toString(), 
                         dayStr = day.toString(), month < 10 && (monthStr = "0" + month), day < 10 && (dayStr = "0" + day), 
-                        "\u65e5\u671f\uff1a" + year + "-" + monthStr + "-" + dayStr + "<br/>\u4ef7\u683c\uff1a\uffe5" + params.value[1].toFixed(2) + ("" == params.value[2] ? "" : "<br/>" + params.value[2]);
+                        "\u65e5\u671f\uff1a" + year + "-" + monthStr + "-" + dayStr + "<br/>\u4ef7\u683c\uff1a\uffe5" + (null === (_a = params.value[1]) || void 0 === _a ? void 0 : _a.toFixed(2)) + ("" == params.value[2] ? "" : "<br/>" + params.value[2]);
                     }
                 },
                 grid: {
@@ -1852,11 +1852,11 @@
                         type: "cross"
                     },
                     formatter: function(params) {
-                        var date, year, month, day, monthStr, dayStr;
+                        var _a, date, year, month, day, monthStr, dayStr;
                         return params = params[0], year = (date = new Date(params.axisValue)).getFullYear(), 
                         month = date.getMonth() + 1, day = date.getDate(), monthStr = month.toString(), 
                         dayStr = day.toString(), month < 10 && (monthStr = "0" + month), day < 10 && (dayStr = "0" + day), 
-                        "\u65e5\u671f\uff1a" + year + "-" + monthStr + "-" + dayStr + "<br/>\u4ef7\u683c\uff1a\uffe5" + params.value[1].toFixed(2) + ("" == params.value[2] ? "" : "<br/>" + params.value[2]);
+                        "\u65e5\u671f\uff1a" + year + "-" + monthStr + "-" + dayStr + "<br/>\u4ef7\u683c\uff1a\uffe5" + (null === (_a = params.value[1]) || void 0 === _a ? void 0 : _a.toFixed(2)) + ("" == params.value[2] ? "" : "<br/>" + params.value[2]);
                     }
                 },
                 grid: {
@@ -1944,11 +1944,11 @@
                         type: "cross"
                     },
                     formatter: function(params) {
-                        var date, year, month, day, monthStr, dayStr;
+                        var _a, date, year, month, day, monthStr, dayStr;
                         return params = params[0], year = (date = new Date(params.name)).getFullYear(), 
                         month = date.getMonth() + 1, day = date.getDate(), monthStr = month.toString(), 
                         dayStr = day.toString(), month < 10 && (monthStr = "0" + month), day < 10 && (dayStr = "0" + day), 
-                        "\u65e5\u671f\uff1a" + year + "-" + monthStr + "-" + dayStr + "<br/>\u4ef7\u683c\uff1a\uffe5" + params.value[1].toFixed(2) + ("" == params.value[2] ? "" : "<br/>" + params.value[2]);
+                        "\u65e5\u671f\uff1a" + year + "-" + monthStr + "-" + dayStr + "<br/>\u4ef7\u683c\uff1a\uffe5" + (null === (_a = params.value[1]) || void 0 === _a ? void 0 : _a.toFixed(2)) + ("" == params.value[2] ? "" : "<br/>" + params.value[2]);
                     }
                 },
                 grid: {
