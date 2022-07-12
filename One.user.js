@@ -460,11 +460,10 @@
             var _this = this;
             url || (url = Core.url);
             return this.rules.forEach((function(v, k) {
-                var innerFlag = !1;
-                return v.forEach((function(r) {
-                    if (!innerFlag) return r.test(url) ? (Logger.debug("app:".concat(_this.appName, "_").concat(SiteEnum[k], " test pass")), 
-                    innerFlag = !0, _this.site = k, !1) : void 0;
-                })), Logger.warn("app:".concat(_this.appName, " test fail")), innerFlag;
+                v.some((function(r) {
+                    if (r.test(url)) return Logger.debug("app:".concat(_this.appName, "_").concat(SiteEnum[k], " test pass")), 
+                    _this.site = k, !0;
+                })), Logger.warn("app:".concat(_this.appName, " test end"));
             })), !1;
         }, AppBase.prototype.getAppName = function() {
             return this.appName;
