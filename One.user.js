@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【One】懒人神器,懒人福利,全新架构,性能更出众————只需一个脚本包揽所有功能 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      1.0.0
+// @version      1.0.1
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、CSDN页面清理
@@ -9,6 +9,7 @@
 // @icon         https://www.wandhi.com//favicon.ico
 // @include      *://*
 // @require      https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
+// @require      https://lib.baomitu.com/limonte-sweetalert2/11.4.7/sweetalert2.all.min.js
 // @license      MIT
 // @grant        GM_setClipboard
 // @run-at       document-end
@@ -35,10 +36,15 @@
 // ==/UserScript==
 
 !function(global, factory) {
-    "object" == typeof exports && "undefined" != typeof module ? factory(exports) : "function" == typeof define && define.amd ? define([ "exports" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).One = {});
-}(this, (function(exports) {
+    "object" == typeof exports && "undefined" != typeof module ? factory(exports, require("sweetalert2")) : "function" == typeof define && define.amd ? define([ "exports", "sweetalert2" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).One = {}, global.Swal);
+}(this, (function(exports, Swal) {
     "use strict";
-    var SiteEnum, extendStatics = function(d, b) {
+    function _interopDefaultLegacy(e) {
+        return e && "object" == typeof e && "default" in e ? e : {
+            default: e
+        };
+    }
+    var SiteEnum, Swal__default = _interopDefaultLegacy(Swal), extendStatics = function(d, b) {
         return (extendStatics = Object.setPrototypeOf || {
             __proto__: []
         } instanceof Array && function(d, b) {
@@ -47,6 +53,13 @@
             for (var p in b) b.hasOwnProperty(p) && (d[p] = b[p]);
         })(d, b);
     };
+    function __extends(d, b) {
+        function __() {
+            this.constructor = d;
+        }
+        extendStatics(d, b), d.prototype = null === b ? Object.create(b) : (__.prototype = b.prototype, 
+        new __);
+    }
     function __awaiter$1(thisArg, _arguments, P, generator) {
         return new (P || (P = Promise))((function(resolve, reject) {
             function fulfilled(value) {
@@ -422,32 +435,7 @@
         }, Logger.error = function(msg) {
             this.log(msg, LogLevel.error);
         }, Logger;
-    }(), CsdnApp = function(_super) {
-        function CsdnApp() {
-            var _this = null !== _super && _super.apply(this, arguments) || this;
-            return _this.appName = "Csdn", _this.rules = new Map([ [ SiteEnum.CSDN, [ /blog\.csdn\.net/i ] ] ]), 
-            _this._unique = !1, _this.adSelectors = [ "#footerRightAds", ".side-question-box", "div[id^='dmp_ad']", "div[class^='ad_']", "div[id^='floor-ad_']", ".adsbygoogle" ], 
-            _this;
-        }
-        return function __extends(d, b) {
-            function __() {
-                this.constructor = d;
-            }
-            extendStatics(d, b), d.prototype = null === b ? Object.create(b) : (__.prototype = b.prototype, 
-            new __);
-        }(CsdnApp, _super), CsdnApp.prototype.loader = function() {}, CsdnApp.prototype.run = function() {
-            Core$1.background(this.adsClear, 3), this.commentClear();
-        }, CsdnApp.prototype.adsClear = function() {
-            this.adSelectors.forEach((function(selector) {
-                $(selector).remove();
-            }));
-        }, CsdnApp.prototype.commentClear = function() {
-            Core$1.lazyload((function() {
-                Logger$1.info("\u8bc4\u8bba\u533a\u6e05\u7406"), $(".comment-list-box").css("overflow", "").css("max-height", ""), 
-                $("#commentPage").removeClass("d-none"), $("#btnMoreComment").remove();
-            }), 3);
-        }, CsdnApp;
-    }(function() {
+    }(), AppBase = function() {
         function AppBase() {
             var _this = this;
             this.Process = function() {
@@ -459,25 +447,73 @@
         }, AppBase.prototype.linkTest = function(url) {
             var _this = this;
             url || (url = Core.url);
+            var flag = !1;
             return this.rules.forEach((function(v, k) {
                 v.some((function(r) {
                     if (r.test(url)) return Logger.debug("app:".concat(_this.appName, "_").concat(SiteEnum[k], " test pass")), 
-                    _this.site = k, !0;
+                    flag = !0, _this.site = k, !0;
                 })), Logger.warn("app:".concat(_this.appName, " test end"));
-            })), !1;
+            })), flag;
         }, AppBase.prototype.getAppName = function() {
             return this.appName;
         }, AppBase;
-    }()), container = new Map, Ioc = function() {
+    }(), CsdnApp = function(_super) {
+        function CsdnApp() {
+            var _this = null !== _super && _super.apply(this, arguments) || this;
+            return _this.appName = "Csdn", _this.rules = new Map([ [ SiteEnum.CSDN, [ /blog\.csdn\.net/i ] ] ]), 
+            _this._unique = !1, _this.adSelectors = [ "#footerRightAds", ".side-question-box", "div[id^='dmp_ad']", "div[class^='ad_']", "div[id^='floor-ad_']", ".adsbygoogle" ], 
+            _this;
+        }
+        return __extends(CsdnApp, _super), CsdnApp.prototype.loader = function() {}, CsdnApp.prototype.run = function() {
+            Core$1.background(this.adsClear, 3), this.commentClear();
+        }, CsdnApp.prototype.adsClear = function() {
+            this.adSelectors.forEach((function(selector) {
+                $(selector).remove();
+            }));
+        }, CsdnApp.prototype.commentClear = function() {
+            Core$1.lazyload((function() {
+                Logger$1.info("\u8bc4\u8bba\u533a\u6e05\u7406"), $(".comment-list-box").css("overflow", "").css("max-height", ""), 
+                $("#commentPage").removeClass("d-none"), $("#btnMoreComment").remove();
+            }), 3);
+        }, CsdnApp;
+    }(AppBase), container = new Map, Ioc = function() {
         function Ioc() {}
         return Ioc.register = function(app) {
             var className = app.name.toLowerCase();
             return container.has(className) ? container.get(className) : className ? (container.set(className, window.Reflect.construct(app, [])), 
             container.get(className)) : void 0;
         }, Ioc;
-    }(), One = function() {
+    }(), MagnetRegApp = function(_super) {
+        function MagnetRegApp() {
+            var _this = null !== _super && _super.apply(this, arguments) || this;
+            return _this._unique = !1, _this.appName = "Magnet", _this.rules = new Map([ [ SiteEnum.All, [ /.*/i ] ] ]), 
+            _this;
+        }
+        return __extends(MagnetRegApp, _super), MagnetRegApp.prototype.loader = function() {}, 
+        MagnetRegApp.prototype.run = function() {
+            GM_registerMenuCommand("\u63d0\u53d6\u78c1\u529b", (function() {
+                var regs = new RegExp(/^magnet:\?xt=urn:btih:[0-9a-fA-F]{40}.*$/, "gim").exec(unsafeWindow.document.body.innerText);
+                (null == regs ? void 0 : regs.length) > 0 ? Swal__default.default.fire({
+                    title: "\u78c1\u529b\u96c6",
+                    input: "textarea",
+                    inputValue: regs.join("<br>"),
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "\u6211\u597d\u4e86"
+                }) : Swal__default.default.fire({
+                    toast: !0,
+                    position: "top",
+                    showConfirmButton: !1,
+                    timerProgressBar: !0,
+                    title: "\u4ec0\u4e48\u4e5f\u6ca1\u63d0\u53d6\u5230",
+                    icon: "warning",
+                    timer: 2e3
+                });
+            }));
+        }, MagnetRegApp;
+    }(AppBase), One = function() {
         function One() {
-            this.services = [ Ioc.register(CsdnApp) ];
+            this.services = [ Ioc.register(CsdnApp), Ioc.register(MagnetRegApp) ];
         }
         return One.prototype.run = function() {
             this.services.every((function(element) {

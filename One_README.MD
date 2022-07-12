@@ -13,6 +13,7 @@
 ## 🔧 [插件功能(点我查看详情)](https://wiki.wandhi.com/zh-cn/Feature.html)
 
 * ✅ CSDN页面清洁
+* ✅ 页面磁力链接提取
 
 > 插件初期阶段,功能迭代完善中
 
@@ -64,20 +65,18 @@
 
 > 还你一个干净的阅读体验
 
-
 ## 🔔 更新历史
 
 <details>
 <summary>展开</summary>
 <pre>
 <ul>
+<li>1.0.1 页面磁力链接提取</li>
 <li>1.0.0 CSDN页面清理</li>
 </ul>
 </pre>
 
 </details>
-
-
 
 ## 💕 友情捐助
 
