@@ -492,7 +492,7 @@
         return __extends(MagnetRegApp, _super), MagnetRegApp.prototype.loader = function() {}, 
         MagnetRegApp.prototype.run = function() {
             GM_registerMenuCommand("\u63d0\u53d6\u78c1\u529b", (function() {
-                var regs = new RegExp(/^magnet:\?xt=urn:btih:[0-9a-fA-F]{40}.*$/, "gim").exec(unsafeWindow.document.body.innerText);
+                var regs = new RegExp(/magnet:\?xt=urn:btih:[0-9a-fA-F]{40}/, "gim").exec(unsafeWindow.document.body.innerText);
                 (null == regs ? void 0 : regs.length) > 0 ? Swal__default.default.fire({
                     title: "\u78c1\u529b\u96c6",
                     input: "textarea",
