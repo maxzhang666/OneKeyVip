@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【One】懒人神器,懒人福利,全新架构,性能更出众————只需一个脚本包揽所有功能 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      1.0.1
+// @version      1.0.2
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、CSDN页面清理
@@ -492,15 +492,23 @@
         return __extends(MagnetRegApp, _super), MagnetRegApp.prototype.loader = function() {}, 
         MagnetRegApp.prototype.run = function() {
             GM_registerMenuCommand("\u63d0\u53d6\u78c1\u529b", (function() {
-                var regs = new RegExp(/magnet:\?xt=urn:btih:[0-9a-fA-F]{40}/, "gim").exec(unsafeWindow.document.body.innerText);
-                (null == regs ? void 0 : regs.length) > 0 ? Swal__default.default.fire({
-                    title: "\u78c1\u529b\u96c6",
-                    input: "textarea",
-                    inputValue: regs.join("<br>"),
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "\u6211\u597d\u4e86"
-                }) : Swal__default.default.fire({
+                for (var m, reg = /magnet:\?xt=urn:btih:[0-9a-fA-F]{40}/gm, magnets = []; null != (m = reg.exec(unsafeWindow.document.body.innerText)); ) m.index === reg.lastIndex && reg.lastIndex++, 
+                m.forEach((function(match, groupIndex) {
+                    magnets.push(match);
+                }));
+                if (magnets.length > 0) {
+                    var newMagnets = magnets.filter((function(e, i) {
+                        return magnets.indexOf(e) === i;
+                    }));
+                    Swal__default.default.fire({
+                        title: "\u78c1\u529b\u96c6",
+                        input: "textarea",
+                        inputValue: newMagnets.join("\r"),
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "\u6211\u597d\u4e86"
+                    });
+                } else Swal__default.default.fire({
                     toast: !0,
                     position: "top",
                     showConfirmButton: !1,
