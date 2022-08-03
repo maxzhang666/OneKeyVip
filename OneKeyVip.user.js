@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.5.0
+// @version      4.5.1
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、上学吧答案查询(已下线)；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载
@@ -87,7 +87,8 @@
 // @include      *://weibo.cn/sinaurl*
 // @include      *://afdian.net/link*
 // @include      *://*oschina.net/action/GoToLink*
-// @exclude      *://*.wandhi.com/*
+// @exclude      *://tv.wandhi.com/*
+// @include      *://settings.wandhi.com/*
 // @require      https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
 // @require      https://lib.baomitu.com/limonte-sweetalert2/11.4.7/sweetalert2.all.min.js
 // @require      https://lib.baomitu.com/echarts/4.6.0/echarts.min.js
@@ -127,7 +128,7 @@
     "object" == typeof exports && "undefined" != typeof module ? factory(require("sweetalert2"), require("vue")) : "function" == typeof define && define.amd ? define([ "sweetalert2", "vue" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).Swal, global.Vue);
 })(this, (function(Swal, Vue) {
     "use strict";
-    var Swal__default, Vue__default, extendStatics, update_key, Min, Hour, Day, Week, Logger, LogLevel, Config, History, PriceDetail, ListPriceItem, BrowerType, Core, Runtime, AjaxOption, Alert, Http, HttpHeaders, Convert, Result, HistoryResult, Route, Toast, ToastType, css_248z$7, Common, PluginBase, SiteEnum, UpdateService, VersionCompar, VersionResult, EventHelper, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$6, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$5, sAlert, GwdService, css_248z$4, TaoBaoService, container, Container, css_248z$3, BiliImgService, Menu$1, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$2, CsdnAdService, Menu, WenKuService, LinkJumpService, css_248z$1, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z, MfbMenu, MfbModel, YoutubeService, OneKeyVipInjection;
+    var Swal__default, Vue__default, extendStatics, update_key, Min, Hour, Day, Week, Logger, LogLevel, Config, History, PriceDetail, ListPriceItem, BrowerType, Core, Runtime, AjaxOption, Alert, Http, HttpHeaders, Convert, Result, HistoryResult, Route, Toast, ToastType, css_248z$7, Common, PluginBase, SiteEnum, UpdateService, VersionCompar, VersionResult, EventHelper, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$6, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$5, sAlert, GwdService, css_248z$4, TaoBaoService, container, Container, css_248z$3, BiliImgService, Menu$1, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$2, CsdnAdService, Menu, WenKuService, LinkJumpService, css_248z$1, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z, MfbMenu, MfbModel, YoutubeService, ConfigEnum, SettingService, ControlMenuService, OneKeyVipInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
@@ -1031,21 +1032,22 @@
             return this._appName;
         }, PluginBase;
     }(), function(SiteEnum) {
-        SiteEnum.All = "All", SiteEnum.TaoBao = "TaoBao", SiteEnum.TMall = "TMall", SiteEnum.JingDong = "JingDong", 
-        SiteEnum.JingDongList = "JingDongList", SiteEnum.IQiYi = "IQiYi", SiteEnum.YouKu = "YouKu", 
-        SiteEnum.LeShi = "LeShi", SiteEnum.TuDou = "TuDou", SiteEnum.Tencent_V = "Tencent_V", 
-        SiteEnum.MangGuo = "MangGuo", SiteEnum.SoHu = "SoHu", SiteEnum.Acfun = "Acfun", 
-        SiteEnum.BiliBili = "BiliBili", SiteEnum.BiliMobile = "BiliMobile", SiteEnum.M1905 = "M1905", 
-        SiteEnum.PPTV = "PPTV", SiteEnum.YinYueTai = "YinYueTai", SiteEnum.WangYi = "WangYi", 
-        SiteEnum.Tencent_M = "Tencent_M", SiteEnum.KuGou = "KuGou", SiteEnum.KaoLa = "KaoLa", 
-        SiteEnum.KuWo = "KuWo", SiteEnum.XiaMi = "XiaMi", SiteEnum.TaiHe = "TaiHe", SiteEnum.QingTing = "QingTing", 
-        SiteEnum.LiZhi = "LiZhi", SiteEnum.MiGu = "MiGu", SiteEnum.XiMaLaYa = "XiMaLaYa", 
-        SiteEnum.WenKu = "WenKu", SiteEnum.YouTuBe = "YouTuBe", SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", 
-        SiteEnum.ALY = "ALY", SiteEnum.BDY1 = "BDY1", SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", 
-        SiteEnum.Steam = "Steam", SiteEnum.Vp = "Vp", SiteEnum.CSDN = "CSDN", SiteEnum.ZhiHu = "ZhiHu", 
-        SiteEnum.JianShu = "JianShu", SiteEnum.JueJin = "JueJin", SiteEnum.Gitee = "Gitee", 
-        SiteEnum.Weibo = "Weibo", SiteEnum.TuXiaoChao = "TuXiaoChao", SiteEnum.OsCh = "OsCh", 
-        SiteEnum.AiFaDian = "AiFaDian";
+        SiteEnum.All = "All", SiteEnum.Settings = "Settings", SiteEnum.Settings_AutoJump = "Settings_AutoJump", 
+        SiteEnum.Settings_AutoJump_Opt = "Settings_AutoJump_Opt", SiteEnum.TaoBao = "TaoBao", 
+        SiteEnum.TMall = "TMall", SiteEnum.JingDong = "JingDong", SiteEnum.JingDongList = "JingDongList", 
+        SiteEnum.IQiYi = "IQiYi", SiteEnum.YouKu = "YouKu", SiteEnum.LeShi = "LeShi", SiteEnum.TuDou = "TuDou", 
+        SiteEnum.Tencent_V = "Tencent_V", SiteEnum.MangGuo = "MangGuo", SiteEnum.SoHu = "SoHu", 
+        SiteEnum.Acfun = "Acfun", SiteEnum.BiliBili = "BiliBili", SiteEnum.BiliMobile = "BiliMobile", 
+        SiteEnum.M1905 = "M1905", SiteEnum.PPTV = "PPTV", SiteEnum.YinYueTai = "YinYueTai", 
+        SiteEnum.WangYi = "WangYi", SiteEnum.Tencent_M = "Tencent_M", SiteEnum.KuGou = "KuGou", 
+        SiteEnum.KaoLa = "KaoLa", SiteEnum.KuWo = "KuWo", SiteEnum.XiaMi = "XiaMi", SiteEnum.TaiHe = "TaiHe", 
+        SiteEnum.QingTing = "QingTing", SiteEnum.LiZhi = "LiZhi", SiteEnum.MiGu = "MiGu", 
+        SiteEnum.XiMaLaYa = "XiMaLaYa", SiteEnum.WenKu = "WenKu", SiteEnum.YouTuBe = "YouTuBe", 
+        SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", SiteEnum.ALY = "ALY", SiteEnum.BDY1 = "BDY1", 
+        SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", SiteEnum.Steam = "Steam", SiteEnum.Vp = "Vp", 
+        SiteEnum.CSDN = "CSDN", SiteEnum.ZhiHu = "ZhiHu", SiteEnum.JianShu = "JianShu", 
+        SiteEnum.JueJin = "JueJin", SiteEnum.Gitee = "Gitee", SiteEnum.Weibo = "Weibo", 
+        SiteEnum.TuXiaoChao = "TuXiaoChao", SiteEnum.OsCh = "OsCh", SiteEnum.AiFaDian = "AiFaDian";
     }(SiteEnum || (SiteEnum = {})), UpdateService = function(_super) {
         function UpdateService() {
             var _this = _super.call(this) || this;
@@ -1673,8 +1675,8 @@
                 timer: 1e3 * time,
                 customClass: this.customeCss
             });
-        }, sAlert.warning = function(msg, time) {
-            void 0 === time && (time = 2), this.toast(msg, "warning", "center", time);
+        }, sAlert.warning = function(msg, position, time) {
+            void 0 === position && (position = "center"), void 0 === time && (time = 2), this.toast(msg, "warning", position, time);
         }, sAlert.error = function(msg, time) {
             void 0 === time && (time = 2), this.toast(msg, "error", "center", time);
         }, sAlert.info = function(msg, icon, position, time) {
@@ -2847,6 +2849,7 @@
         }
         return __extends(LinkJumpService, _super), LinkJumpService.prototype.loader = function() {}, 
         LinkJumpService.prototype.run = function() {
+            var u, config = "AutoJump_" + this.site.toString();
             switch (this.site) {
               case SiteEnum.CSDN:
               case SiteEnum.ZhiHu:
@@ -2872,11 +2875,8 @@
               default:
                 this.key = "";
             }
-            if (this.key) {
-                var u = Core.getPar(this.key);
-                sAlert.info("\u94fe\u63a5\u5df2\u89e3\u6790,\u6b63\u5728\u8df3\u8f6c~"), u && (u = decodeURIComponent(u), 
-                Logger.debug(u), unsafeWindow.window.location.href = u);
-            }
+            this.key && Config.get(config, !0) ? (u = Core.getPar(this.key), sAlert.info("\u94fe\u63a5\u5df2\u89e3\u6790,\u6b63\u5728\u8df3\u8f6c~"), 
+            u && (u = decodeURIComponent(u), Logger.debug(u), unsafeWindow.window.location.href = u)) : sAlert.warning("\u5df2\u5173\u95ed\u672c\u7f51\u7ad9\u7684\u8df3\u8f6c\u529f\u80fd");
         }, LinkJumpService;
     }(PluginBase), css_248z$1 = ".slider + div, .slider + div + a,\n.texts,\n.header_new1,\n.slider_tips {\n    display: none !important;\n}\n", 
     styleInject(css_248z$1), _GwdService = function(_super) {
@@ -3046,9 +3046,60 @@
             })) ];
             this.mfbMenu.Init(menus);
         }, YoutubeService;
+    }(PluginBase), function(ConfigEnum) {
+        ConfigEnum.AutoJump_ZhiHu = "AutoJump_ZhiHu", ConfigEnum.AutoJump_CSDN = "AutoJump_CSDN", 
+        ConfigEnum.AutoJump_JianShu = "AutoJump_JianShu", ConfigEnum.AutoJump_Gitee = "AutoJump_Gitee", 
+        ConfigEnum.AutoJump_JueJin = "AutoJump_JueJin", ConfigEnum.AutoJump_Weibo = "AutoJump_Weibo", 
+        ConfigEnum.AutoJump_TuXiaoChao = "AutoJump_TuXiaoChao", ConfigEnum.AutoJump_OsCh = "AutoJump_OsCh", 
+        ConfigEnum.AutoJump_AiFaDian = "AutoJump_AiFaDian";
+    }(ConfigEnum || (ConfigEnum = {})), SettingService = function(_super) {
+        function SettingService() {
+            var _this = null !== _super && _super.apply(this, arguments) || this;
+            return _this.rules = new Map([ [ SiteEnum.Settings, /settings\.wandhi\.com\/index\/index\/page/i ], [ SiteEnum.Settings_AutoJump, /settings\.wandhi\.com\/tools\/autojump\/page/i ], [ SiteEnum.Settings_AutoJump_Opt, /settings\.wandhi\.com\/tools\/autojump-op\/page/i ] ]), 
+            _this._unique = !1, _this._appName = "\u63a7\u5236\u9762\u677f", _this;
+        }
+        return __extends(SettingService, _super), SettingService.prototype.loader = function() {
+            this.removeAlert();
+        }, SettingService.prototype.run = function() {
+            switch (this.site) {
+              case SiteEnum.Settings:
+                this.initVer();
+                break;
+
+              case SiteEnum.Settings_AutoJump_Opt:
+                this.autoJumpOpt();
+            }
+        }, SettingService.prototype.autoJumpOpt = function() {
+            $("input[type=checkbox]").removeProp("disabled"), [ ConfigEnum.AutoJump_ZhiHu, ConfigEnum.AutoJump_CSDN, ConfigEnum.AutoJump_JianShu, ConfigEnum.AutoJump_Gitee, ConfigEnum.AutoJump_JueJin, ConfigEnum.AutoJump_Weibo, ConfigEnum.AutoJump_TuXiaoChao, ConfigEnum.AutoJump_OsCh, ConfigEnum.AutoJump_AiFaDian ].forEach((function(e, i) {
+                $("#" + e.toString()).prop("checked", Config.get(e.toString(), !0));
+            })), $("input[type=checkbox]").on("change", (function(e) {
+                var el = e.target;
+                Logger.debug("\u914d\u7f6e[" + e.target.id + "]\u53d1\u751f\u53d8\u66f4,\u6700\u7ec8\u503c:[" + $(e.target).prop("checked") + "]"), 
+                Config.set(el.id, $(el).prop("checked")), sAlert.info("\u4fdd\u5b58\u6210\u529f");
+            }));
+        }, SettingService.prototype.initVer = function() {
+            $("#currentVer").text(Config.env.version);
+        }, SettingService.prototype.removeAlert = function() {
+            $(".alert-danger").remove();
+        }, SettingService.prototype.injection = function() {
+            unsafeWindow.window.scriptInfo = Config.env, unsafeWindow.window.gm_Set = Config.set, 
+            unsafeWindow.window.gm_Get = Config.get;
+        }, SettingService;
+    }(PluginBase), ControlMenuService = function(_super) {
+        function ControlMenuService() {
+            var _this = null !== _super && _super.apply(this, arguments) || this;
+            return _this.rules = new Map([ [ SiteEnum.All, /.*/i ] ]), _this._appName = "\u63a7\u5236\u83dc\u5355", 
+            _this._unique = !1, _this;
+        }
+        return __extends(ControlMenuService, _super), ControlMenuService.prototype.loader = function() {}, 
+        ControlMenuService.prototype.run = function() {
+            GM_registerMenuCommand("\u63a7\u5236\u4e2d\u5fc3", (function() {
+                Core.open("https://settings.wandhi.com");
+            }));
+        }, ControlMenuService;
     }(PluginBase), OneKeyVipInjection = function() {
         function OneKeyVipInjection() {
-            this.plugins = new Array, this.plugins = [ Container.Require(AutoExpandService), Container.Require(AliyunPanToken), Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(BiliMobileService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(GwdService), Container.Require(CsdnAdService), Container.Require(WenKuService), Container.Require(LinkJumpService), Container.Require(YoutubeService), Container.Require(_GwdService) ], 
+            this.plugins = new Array, this.plugins = [ Container.Require(ControlMenuService), Container.Require(SettingService), Container.Require(AutoExpandService), Container.Require(AliyunPanToken), Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(BiliMobileService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(GwdService), Container.Require(CsdnAdService), Container.Require(WenKuService), Container.Require(LinkJumpService), Container.Require(YoutubeService), Container.Require(_GwdService) ], 
             Logger.info("container loaded");
         }
         return OneKeyVipInjection.prototype.Init = function() {
