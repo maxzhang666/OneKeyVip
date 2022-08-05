@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【One】懒人神器,懒人福利,全新架构,性能更出众————只需一个脚本包揽所有功能 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      1.0.2
+// @version      1.0.3
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、CSDN页面清理
@@ -461,13 +461,12 @@
         function CsdnApp() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
             return _this.appName = "Csdn", _this.rules = new Map([ [ SiteEnum.CSDN, [ /blog\.csdn\.net/i ] ] ]), 
-            _this._unique = !1, _this.adSelectors = [ "#footerRightAds", ".side-question-box", "div[id^='dmp_ad']", "div[class^='ad_']", "div[id^='floor-ad_']", ".adsbygoogle" ], 
-            _this;
+            _this._unique = !1, _this;
         }
         return __extends(CsdnApp, _super), CsdnApp.prototype.loader = function() {}, CsdnApp.prototype.run = function() {
             Core$1.background(this.adsClear, 3), this.commentClear();
         }, CsdnApp.prototype.adsClear = function() {
-            this.adSelectors.forEach((function(selector) {
+            CsdnApp.adSelectors.forEach((function(selector) {
                 $(selector).remove();
             }));
         }, CsdnApp.prototype.commentClear = function() {
@@ -475,7 +474,8 @@
                 Logger$1.info("\u8bc4\u8bba\u533a\u6e05\u7406"), $(".comment-list-box").css("overflow", "").css("max-height", ""), 
                 $("#commentPage").removeClass("d-none"), $("#btnMoreComment").remove();
             }), 3);
-        }, CsdnApp;
+        }, CsdnApp.adSelectors = [ "#footerRightAds", ".side-question-box", "div[id^='dmp_ad']", "div[class^='ad_']", "div[id^='floor-ad_']", ".adsbygoogle" ], 
+        CsdnApp;
     }(AppBase), container = new Map, Ioc = function() {
         function Ioc() {}
         return Ioc.register = function(app) {
