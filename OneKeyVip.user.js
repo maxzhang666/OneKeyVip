@@ -2722,7 +2722,7 @@
         }
         return __extends(CsdnAdService, _super), CsdnAdService.prototype.loader = function() {}, 
         CsdnAdService.prototype.run = function() {
-            Core.background(this.removeAds, 3), this.commentClean();
+            Core.background(this.removeAds, 3), this.commentClean(), this.commentFile();
         }, CsdnAdService.prototype.removeAds = function() {
             CsdnAdService.adSelectors.forEach((function(selector) {
                 $(selector).remove();
@@ -2734,6 +2734,12 @@
             }), 3), Core.background((function() {
                 unsafeWindow.csdn.copyright.textData = "";
             }));
+        }, CsdnAdService.prototype.commentFile = function() {
+            Core.lazyload((function() {
+                Logger.info("\u6587\u4ef6\u94fe\u63a5\u533a\u5206"), $(".type_download").each((function(i, e) {
+                    $(e).prepend('<img src="https://csdnimg.cn/release/downloadcmsfe/public/img/source.ac4c7e83.png" data-v-d2529d5a="" style="padding-right: 10px;">');
+                }));
+            }), 3);
         }, CsdnAdService.adSelectors = [ "#footerRightAds", ".side-question-box", "div[id^='dmp_ad']", "div[class^='ad_']", "div[id^='floor-ad_']", ".adsbygoogle", "#recommendAdBox", ".signin" ], 
         CsdnAdService;
     }(PluginBase), Menu = Common.Menu, WenKuService = function(_super) {
@@ -3081,14 +3087,15 @@
                 this.autoJumpOpt();
             }
         }, SettingService.prototype.autoJumpOpt = function() {
-            $("input[type=checkbox]").removeProp("disabled"), [ ConfigEnum.AutoJump_ZhiHu, ConfigEnum.AutoJump_CSDN, ConfigEnum.AutoJump_JianShu, ConfigEnum.AutoJump_Gitee, ConfigEnum.AutoJump_JueJin, ConfigEnum.AutoJump_Weibo, ConfigEnum.AutoJump_TuXiaoChao, ConfigEnum.AutoJump_OsCh, ConfigEnum.AutoJump_AiFaDian ].forEach((function(e, i) {
+            var checkboxes = $("input[type=checkbox]");
+            checkboxes.removeProp("disabled"), [ ConfigEnum.AutoJump_ZhiHu, ConfigEnum.AutoJump_CSDN, ConfigEnum.AutoJump_JianShu, ConfigEnum.AutoJump_Gitee, ConfigEnum.AutoJump_JueJin, ConfigEnum.AutoJump_Weibo, ConfigEnum.AutoJump_TuXiaoChao, ConfigEnum.AutoJump_OsCh, ConfigEnum.AutoJump_AiFaDian ].forEach((function(e, i) {
                 $("#" + e.toString()).prop("checked", Config.get(e.toString(), !0));
-            })), $("input[type=checkbox]").on("change", (function(e) {
+            })), checkboxes.on("change", (function(e) {
                 var el = e.target;
                 Logger.debug("\u914d\u7f6e[" + e.target.id + "]\u53d1\u751f\u53d8\u66f4,\u6700\u7ec8\u503c:[" + $(e.target).prop("checked") + "]"), 
                 Config.set(el.id, $(el).prop("checked")), sAlert.info("\u4fdd\u5b58\u6210\u529f");
             }));
-        }, SettingService.prototype.initVer = function() {
+        }, SettingService.prototype.csdnOpt = function() {}, SettingService.prototype.initVer = function() {
             $("#currentVer").text(Config.env.script.version);
         }, SettingService.prototype.removeAlert = function() {
             $(".alert-danger").remove();
