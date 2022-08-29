@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.5.4
+// @version      4.5.5
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、上学吧答案查询(已下线)；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载
@@ -89,6 +89,7 @@
 // @include      *://*oschina.net/action/GoToLink*
 // @include      *://jump2.bdimg.com/safecheck*
 // @include      *://www.douban.com/link2/?url*
+// @include      *://search.suning.com/*
 // @exclude      *://tv.wandhi.com/*
 // @exclude      *://vip.wandhi.com/*
 // @include      *://settings.wandhi.com/*
@@ -2524,7 +2525,8 @@
             }));
         }, MusicService;
     }(PluginBase), function(ItemType) {
-        ItemType.TaoBao = "tb", ItemType.TMall = "tm", ItemType.JingDong = "jd", ItemType.JingDongChaoshi = "jdcs";
+        ItemType.TaoBao = "tb", ItemType.TMall = "tm", ItemType.JingDong = "jd", ItemType.JingDongChaoshi = "jdcs", 
+        ItemType.Suning = "sn";
     }(ItemType || (ItemType = {})), Tao = function() {
         function Tao() {}
         return Tao.isVailidItemId = function(itemId) {
@@ -2539,7 +2541,7 @@
     }(), ListService = function(_super) {
         function ListService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.TaoBao, /s\.taobao\.com\/search/i ], [ SiteEnum.TMall, /list\.tmall\.com\/search_product\.htm/i ], [ SiteEnum.KaoLa, /search\.kaola\.com\/search\.html/i ], [ SiteEnum.JingDongList, /search\.jd\.com/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.TaoBao, /s\.taobao\.com\/search/i ], [ SiteEnum.TMall, /list\.tmall\.com\/search_product\.htm/i ], [ SiteEnum.KaoLa, /search\.kaola\.com\/search\.html/i ], [ SiteEnum.JingDongList, /search\.jd\.com/i ], [ SiteEnum.SuNing, /search\.suning\.com/i ] ]), 
             _this.selectorList = [], _this.selectora = [], _this.atrack = [], _this.key = "list_service_", 
             _this._appName = "TaoList", _this;
         }
@@ -2551,7 +2553,7 @@
             enumerable: !1,
             configurable: !0
         }), ListService.prototype.run = function() {
-            switch (this.site) {
+            switch (ListService.that = this, this.site) {
               case SiteEnum.TaoBao:
                 this.selectorList.push(".items .item"), this.atrack.push(".pic a", ".title a"), 
                 this.itemType = ItemType.TaoBao;
@@ -2568,6 +2570,11 @@
               case SiteEnum.JingDongList:
                 this.selectorList.push(".gl-warp .gl-item"), this.atrack.push(".p-img a", ".p-name a"), 
                 this.itemType = ItemType.JingDong;
+                break;
+
+              case SiteEnum.SuNing:
+                this.selectorList.push(".item-wrap"), this.atrack.push(".img-block a", ".title-selling-point a"), 
+                this.itemType = ItemType.Suning;
             }
             var that = this;
             this.initStyle(), Core.autoLazyload((function() {
@@ -2584,7 +2591,7 @@
                 return that.initQuery();
             }), 4);
         }, ListService.prototype.initStyle = function() {
-            Core.appendCssContent(ListService.style);
+            Core.appendCssContent(ListService.style), this.itemType == ItemType.Suning && Core.appendCssContent(".onekeyvip-sn-box-area{position: relative;}");
         }, ListService.prototype.initSearchEvent = function() {
             var that = this;
             try {
@@ -2607,16 +2614,17 @@
                 }));
             }));
         }, ListService.prototype.initSearchItem = function(selector) {
-            var _a, _b, _c, _d, _e, _f, itemId, $a, res, $dom = $(selector);
+            var _a, _b, _c, _d, _e, _f, _g, _h, itemId, $a, res, $dom = $(selector);
             if (!$dom.hasClass("onekeyvip-box-done")) {
-                if ($dom.addClass("onekeyvip-box-done"), itemId = null !== (_b = null !== (_a = $dom.attr("data-id")) && void 0 !== _a ? _a : $dom.data("sku")) && void 0 !== _b ? _b : "", 
-                Tao.isVailidItemId(itemId) || (itemId = null !== (_d = null !== (_c = $dom.attr("data-itemid")) && void 0 !== _c ? _c : $dom.data("spu")) && void 0 !== _d ? _d : ""), 
+                if ($dom.addClass("onekeyvip-box-done"), itemId = null !== (_c = null !== (_b = null !== (_a = $dom.attr("data-id")) && void 0 !== _a ? _a : $dom.data("sku")) && void 0 !== _b ? _b : $dom.attr("id")) && void 0 !== _c ? _c : "", 
+                Tao.isVailidItemId(itemId) || (itemId = null !== (_f = null !== (_e = null !== (_d = $dom.attr("data-itemid")) && void 0 !== _d ? _d : $dom.data("spu")) && void 0 !== _e ? _e : $dom.attr("id")) && void 0 !== _f ? _f : ""), 
                 !Tao.isVailidItemId(itemId)) if ($dom.attr("href")) itemId = location.protocol + $dom.attr("href"); else {
                     if (!($a = $dom.find("a")).length) return;
-                    itemId = null !== (_e = $a.attr("data-nid")) && void 0 !== _e ? _e : "", Tao.isVailidItemId(itemId) || (itemId = $a.hasClass("j_ReceiveCoupon") && $a.length > 1 ? location.protocol + $($a[1]).attr("href") : location.protocol + $a.attr("href"));
+                    itemId = null !== (_g = $a.attr("data-nid")) && void 0 !== _g ? _g : "", Tao.isVailidItemId(itemId) || (itemId = $a.hasClass("j_ReceiveCoupon") && $a.length > 1 ? location.protocol + $($a[1]).attr("href") : location.protocol + $a.attr("href"));
                 }
-                !Tao.isVailidItemId(itemId) && itemId.indexOf("http") > -1 && (itemId = (res = null !== (_f = /item.jd.com\/(.*?).html/i.exec(itemId)) && void 0 !== _f ? _f : []).length > 0 ? res[1] : ""), 
-                Tao.isValidTaoId(itemId) && (this.initBoxHtml($dom, itemId), this.initTagClass($dom, itemId));
+                !Tao.isVailidItemId(itemId) && itemId.indexOf("http") > -1 && (itemId = (res = null !== (_h = /item.jd.com\/(.*?).html/i.exec(itemId)) && void 0 !== _h ? _h : []).length > 0 ? res[1] : ""), 
+                Tao.isValidTaoId(itemId) || ListService.that.itemType != ItemType.Suning || (itemId = $dom.attr("id")).split("-").length > 1 && (itemId = itemId.split("-")[1] + "-" + itemId.split("-")[0]), 
+                Tao.isValidTaoId(itemId) ? (this.initBoxHtml($dom, itemId), this.initTagClass($dom, itemId)) : Logger.debug("\u5546\u54c1\u5217\u8868id\u65e0\u6548:" + itemId);
             }
         }, ListService.prototype.initTagClass = function(target, itemId) {
             this.atrack.forEach((function(e) {
@@ -2639,7 +2647,7 @@
                     switch (_a.label) {
                       case 0:
                         return that = this, ($this = $(target)).removeClass("onekeyvip-box-wait"), itemId = $this.data("itemid"), 
-                        k = that.key + "_All_" + itemId, render = function(res) {
+                        k = that.key + "_All2_" + ListService.that.itemType + "_" + itemId, render = function(res) {
                             if (0 != (null == res ? void 0 : res.code)) {
                                 var couponInfo_1 = res.data;
                                 that.initCouponInfo(itemId, couponInfo_1, target);
@@ -2661,15 +2669,18 @@
             }));
         }, ListService.prototype.initCouponInfo = function(itemId, couponInfo, target) {
             var _a, coupon, $this = $(target), that = this;
-            (null === (_a = null == couponInfo ? void 0 : couponInfo.coupons) || void 0 === _a ? void 0 : _a.length) > 0 && 0 != couponInfo.coupons[0].coupon_price ? (coupon = couponInfo.coupons[0], 
-            this.showQueryFind($this, coupon.coupon_price)) : that.showQueryEmpty($this), this.showItemUrl(itemId, null == couponInfo ? void 0 : couponInfo.item_url, that.site == SiteEnum.JingDong);
+            (null === (_a = null == couponInfo ? void 0 : couponInfo.coupons) || void 0 === _a ? void 0 : _a.length) > 0 && 0 != couponInfo.coupons[0].coupon_price && null != couponInfo.coupons[0].coupon_price ? (coupon = couponInfo.coupons[0], 
+            this.showQueryFind($this, coupon.coupon_price)) : that.showQueryEmpty($this), this.showItemUrl(itemId, null == couponInfo ? void 0 : couponInfo.item_url, that.site == SiteEnum.JingDong || that.site == SiteEnum.SuNing);
         }, ListService.prototype.showItemUrl = function(itemId, itemUrl, flag) {
             void 0 === flag && (flag = !1), flag ? $(".onekeyvip-item-" + itemId).each((function(i, ele) {
                 ele.onclick = function() {
                     return !itemUrl || (Core.open(itemUrl), !1);
                 };
-            })) : Core.click(".onekeyvip-item-" + itemId, (function() {
-                return !itemUrl || (Core.open(itemUrl), !1);
+            })) : $(".onekeyvip-item-" + itemId).each((function(i, ele) {
+                $(ele).on("click", (function() {
+                    return Logger.debug("\u52ab\u6301\u70b9\u51fb:" + itemUrl), !itemUrl || (Core.open(itemUrl), 
+                    !1);
+                }));
             }));
         }, ListService.prototype._initQuery = function() {
             var _a, that = this;
