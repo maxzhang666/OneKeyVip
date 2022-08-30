@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.5.5
+// @version      4.5.6
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、上学吧答案查询(已下线)；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载
@@ -109,6 +109,7 @@
 // @connect      tool.manmanbuy.com
 // @connect      xbeibeix.com
 // @connect      gwdang.com
+// @connect      scriptcat.org
 // @grant        unsafeWindow
 // @grant        GM_xmlhttpRequest
 // @grant        GM_info
@@ -907,14 +908,15 @@
         }, Route.couponQuery = function(itemId, type, callback) {
             Route.baseApi("/coupons/info", new Map([ [ "id", itemId ], [ "type", type ] ]), callback);
         }, Route.update_api = "https://cdn.jsdelivr.net/gh/maxzhang666/OneKeyVip/OneKeyVip.user.js?t=" + Core.uuid(), 
-        Route.home_url = "https://wiki.wandhi.com", Route.install_url_one = "https://greasyfork.org/zh-CN/scripts/384538", 
-        Route.install_url_two = "https://scriptcat.org/script-show-page/72", Route.sxb_anhao = "http://www.lelunwen.com/e/action/ListInfo/?classid=45", 
-        Route.sxb_key = "sxb_anhao", Route.config = "/config/query", Route.history = "/history/", 
-        Route.historyv1 = "/history/v1", Route.historyv2 = "/history/v2", Route.historyv3 = "/history/v3", 
-        Route.bili = "/tools/bili", Route.biliInfo = "https://api.bilibili.com/x/web-interface/view", 
-        Route.bilidown = "https://api.bilibili.com/x/player/playurl", Route.coupons = "/tb/infos/", 
-        Route.like = "/tb/guesslike", Route.jd_coupons = "/jd/info", Route.sn_coupons = "/sn/info", 
-        Route.vp_coupons = "/vp/info", Route.kl_coupons = "/kl/info", Route;
+        Route.update_api_script_cat = "https://scriptcat.org/api/v1/scripts/72", Route.home_url = "https://wiki.wandhi.com", 
+        Route.install_url_one = "https://greasyfork.org/zh-CN/scripts/384538", Route.install_url_two = "https://scriptcat.org/script-show-page/72", 
+        Route.sxb_anhao = "http://www.lelunwen.com/e/action/ListInfo/?classid=45", Route.sxb_key = "sxb_anhao", 
+        Route.config = "/config/query", Route.history = "/history/", Route.historyv1 = "/history/v1", 
+        Route.historyv2 = "/history/v2", Route.historyv3 = "/history/v3", Route.bili = "/tools/bili", 
+        Route.biliInfo = "https://api.bilibili.com/x/web-interface/view", Route.bilidown = "https://api.bilibili.com/x/player/playurl", 
+        Route.coupons = "/tb/infos/", Route.like = "/tb/guesslike", Route.jd_coupons = "/jd/info", 
+        Route.sn_coupons = "/sn/info", Route.vp_coupons = "/vp/info", Route.kl_coupons = "/kl/info", 
+        Route;
     }(), Toast = function() {
         function Toast(msg, title, type) {
             this.creationTime = new Date, this.message = msg, this.type = type, this.title = title, 
@@ -1062,13 +1064,22 @@
         return __extends(UpdateService, _super), UpdateService.prototype.loader = function() {}, 
         UpdateService.prototype.run = function() {
             if (!Config.get(update_key, !1)) {
-                var current_1 = new VersionCompar(Config.env.script.version);
-                Http.get_text(Route.update_api).then((function(res) {
-                    var msg, version = new VersionCompar(null == res ? void 0 : res.match(/@version[ ]*([\d\.]+)/)[1]);
-                    version.compareTo(current_1) === VersionResult.greater && (msg = "\u65b0\u7248\u672c<span>" + version.versionString + '</span>\u5df2\u53d1\u5e03.<a id="new-version-link" class="link" href="' + Route.install_url_one + '">\u5b89\u88c5(\u7ebf\u8def\u4e00)</a><a id="new-version-link" class="link" href="' + Route.install_url_two + '">\u5b89\u88c5(\u7ebf\u8def\u4e8c)</a><a class="link" target="_blank" href="' + Route.home_url + '">\u67e5\u770b</a>', 
-                    Toast.info(msg, "\u68c0\u67e5\u66f4\u65b0"), Config.set(update_key, !0, Hour));
-                }));
+                var current = new VersionCompar(Config.env.script.version);
+                this.scriptCat(current);
             }
+        }, UpdateService.prototype.scriptCat = function(current) {
+            Http.get(Route.update_api_script_cat).then((function(r) {
+                var _a, _b, msg, version = new VersionCompar(null === (_b = null === (_a = null == r ? void 0 : r.data) || void 0 === _a ? void 0 : _a.script) || void 0 === _b ? void 0 : _b.version);
+                Logger.debug("\u5f53\u524d\u7248\u672c:[" + current.versionString + "],\u6700\u65b0\u7248\u672c:[" + version.versionString + "]"), 
+                version.compareTo(current) === VersionResult.greater && (msg = "\u65b0\u7248\u672c<span>" + version.versionString + '</span>\u5df2\u53d1\u5e03.<a id="new-version-link" class="link" href="' + Route.install_url_one + '">\u5b89\u88c5(\u7ebf\u8def\u4e00)</a><a id="new-version-link" class="link" href="' + Route.install_url_two + '">\u5b89\u88c5(\u7ebf\u8def\u4e8c)</a><a class="link" target="_blank" href="' + Route.home_url + '">\u67e5\u770b</a>', 
+                Toast.info(msg, "\u68c0\u67e5\u66f4\u65b0"), Config.set(update_key, !0, Hour));
+            }));
+        }, UpdateService.prototype.jsD = function(current) {
+            Http.get_text(Route.update_api).then((function(res) {
+                var msg, version = new VersionCompar(null == res ? void 0 : res.match(/@version[ ]*([\d\.]+)/)[1]);
+                version.compareTo(current) === VersionResult.greater && (msg = "\u65b0\u7248\u672c<span>" + version.versionString + '</span>\u5df2\u53d1\u5e03.<a id="new-version-link" class="link" href="' + Route.install_url_one + '">\u5b89\u88c5(\u7ebf\u8def\u4e00)</a><a id="new-version-link" class="link" href="' + Route.install_url_two + '">\u5b89\u88c5(\u7ebf\u8def\u4e8c)</a><a class="link" target="_blank" href="' + Route.home_url + '">\u67e5\u770b</a>', 
+                Toast.info(msg, "\u68c0\u67e5\u66f4\u65b0"), Config.set(update_key, !0, Hour));
+            }));
         }, UpdateService;
     }(PluginBase), VersionCompar = function() {
         function VersionCompar(e) {
