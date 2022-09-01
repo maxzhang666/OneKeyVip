@@ -679,7 +679,8 @@
             }));
         }, Http.get = function(url, data, head, loading, time_out) {
             return void 0 === data && (data = new Map), void 0 === head && (head = new Map), 
-            void 0 === time_out && (time_out = 10), Alert.loading(), new Promise((function(resolve, reject) {
+            void 0 === loading && (loading = !0), void 0 === time_out && (time_out = 10), loading && Alert.loading(), 
+            new Promise((function(resolve, reject) {
                 Http.ajax(new AjaxOption(url, "GET", data, (function(data) {
                     var _a, res;
                     try {
