@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.5.8
+// @version      4.5.9
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、上学吧答案查询(已下线)；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载
@@ -133,7 +133,7 @@
     "object" == typeof exports && "undefined" != typeof module ? factory(require("sweetalert2"), require("vue")) : "function" == typeof define && define.amd ? define([ "sweetalert2", "vue" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).Swal, global.Vue);
 })(this, (function(Swal, Vue) {
     "use strict";
-    var Swal__default, Vue__default, extendStatics, update_key, Min, Hour, Day, Week, Logger, LogLevel, Config, History, PriceDetail, ListPriceItem, BrowerType, Core, Runtime, AjaxOption, Alert, Http, HttpHeaders, Convert, Result, HistoryResult, Route, Toast, ToastType, css_248z$7, Common, PluginBase, SiteEnum, UpdateService, VersionCompar, VersionResult, EventHelper, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$6, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$5, sAlert, GwdService, css_248z$4, TaoBaoService, container, Container, css_248z$3, BiliImgService, Menu$1, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$2, CsdnAdService, Menu, WenKuService, LinkJumpService, css_248z$1, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z, MfbMenu, MfbModel, YoutubeService, ConfigEnum, SettingService, ControlMenuService, OneKeyVipInjection;
+    var Swal__default, Vue__default, extendStatics, update_key, Min, Hour, Day, Week, Logger, LogLevel, Config, History, PriceDetail, ListPriceItem, BrowerType, Core, AjaxOption, Alert, Http, HttpHeaders, Convert, Result, HistoryResult, Route, Toast, ToastType, css_248z$7, Common, PluginBase, SiteEnum, UpdateService, VersionCompar, VersionResult, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$6, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$5, sAlert, GwdService, css_248z$4, TaoBaoService, container, Container, css_248z$3, BiliImgService, Menu$1, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$2, CsdnAdService, Menu, WenKuService, LinkJumpService, css_248z$1, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z, MfbMenu, MfbModel, YoutubeService, ConfigEnum, SettingService, ControlMenuService, OneKeyVipInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
@@ -511,15 +511,6 @@
             return null != userAgent.match(/firefox/) ? browser = BrowerType.Firefox : null != userAgent.match(/edge/) ? browser = BrowerType.Edge : null != userAgent.match(/edg/) ? browser = BrowerType.Edg : null != userAgent.match(/bidubrowser/) ? browser = BrowerType.Baidu : null != userAgent.match(/lbbrowser/) ? browser = BrowerType.Liebao : null != userAgent.match(/ubrowser/) ? browser = BrowerType.UC : null != userAgent.match(/qqbrowse/) ? browser = BrowerType.QQ : null != userAgent.match(/metasr/) ? browser = BrowerType.Sogou : null != userAgent.match(/opr/) ? browser = BrowerType.Opera : null != userAgent.match(/maxthon/) ? browser = BrowerType.Maxthon : null != userAgent.match(/2345explorer/) ? browser = BrowerType.Ie2345 : null != userAgent.match(/chrome/) ? browser = navigator.mimeTypes.length > 10 ? BrowerType.Se360 : BrowerType.Chrome : null != userAgent.match(/safari/) && (browser = BrowerType.Safiri), 
             browser;
         }, Core;
-    }(), Runtime = function() {
-        function Runtime() {}
-        return Object.defineProperty(Runtime, "url", {
-            get: function() {
-                return window.location.href;
-            },
-            enumerable: !1,
-            configurable: !0
-        }), Runtime;
     }(), function() {
         function HttpRequest(option) {
             this.headers = new Map, this.url = option.url, this.method = option.methodType, 
@@ -619,7 +610,7 @@
                 time: 1e3 * _time
             });
         }, Alert.loadingS = function(msg, time) {
-            void 0 === time && (time = -1), Swal__default.default.fire({
+            return void 0 === time && (time = -1), Swal__default.default.fire({
                 title: msg,
                 didOpen: function() {
                     Swal__default.default.showLoading();
@@ -650,16 +641,12 @@
                     try {
                         null === (_a = option.onSuccess) || void 0 === _a || _a.call(option, "POST" == option.methodType ? JSON.parse(res.responseText) : res.responseText);
                     } catch (error) {
-                        Alert.confim("", '                                        \n                        <h1>\u54cd\u5e94\u5f02\u5e38\uff0c\u8bf7\u590d\u5236\u4e0b\u5217\u4fe1\u606f\u5411\u5f00\u53d1\u8005\u53cd\u9988\u95ee\u9898</h1><br>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u9519\u8bef\u65e5\u5fd7\uff1a</span><br>\n                        <p>' + error + "(" + res.status + ')</p>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u9519\u8bef\u8be6\u60c5\uff1a</span><br>\n                        <p>' + escape(res.responseText) + '</p>                        \n                        <span style="color:red;font-weight: bold;font-size: large;">\u73af\u5883\u4fe1\u606f\uff1a</span><br>\n                        <p>\u6cb9\u7334\u7248\u672c\uff1a' + Config.env.version + "</p>\n                        <p>\u811a\u672c\u7248\u672c\uff1a" + Config.env.script.version + "</p>\n                        <p>Url\uff1a" + Runtime.url + "</p>      \n                        <p>RUrl\uff1a" + option.url + "</p>\n                    ", [ "\u53bb\u53cd\u9988", "\u5173\u95ed" ], (function() {
-                            Core.open("https://gitee.com/ixysy/OneKeyVip/issues");
-                        })), null === (_b = option.onSuccess) || void 0 === _b || _b.call(option, null);
+                        null === (_b = option.onSuccess) || void 0 === _b || _b.call(option, null);
                     }
                 },
                 onerror: function(res) {
                     var _a, _b, _c;
-                    (null === (_a = res.finalUrl) || void 0 === _a ? void 0 : _a.indexOf("adguard.org")) > 0 || (null === (_b = option.url) || void 0 === _b ? void 0 : _b.indexOf("jsdelivr")) > 0 ? option.onError(null) : (Alert.confim("", '              \n                        <h1>\u8bf7\u6c42\u5931\u8d25\uff0c\u8bf7\u590d\u5236\u4e0b\u5217\u4fe1\u606f\u5411\u5f00\u53d1\u8005\u53cd\u9988\u95ee\u9898</h1><br>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u9519\u8bef\u8be6\u60c5\uff1a</span><br>\n                        <p>' + escape(res.responseText) + "(" + res.status + ')</p>\n                        <span style="color:red;font-weight: bold;font-size: large;">\u73af\u5883\u4fe1\u606f\uff1a</span><br>\n                        <p>\u6cb9\u7334\u7248\u672c\uff1a' + Config.env.version + "</p>\n                        <p>\u811a\u672c\u7248\u672c\uff1a" + Config.env.script.version + "</p>\n                        <p>Url\uff1a" + Runtime.url + "</p>           \n                        <p>RUrl\uff1a" + option.url + "</p>           \n                    ", [ "\u53bb\u53cd\u9988", "\u5173\u95ed" ], (function() {
-                        Core.open("https://gitee.com/ixysy/OneKeyVip/issues");
-                    })), null === (_c = option.onError) || void 0 === _c || _c.call(option, res));
+                    (null === (_a = res.finalUrl) || void 0 === _a ? void 0 : _a.indexOf("adguard.org")) > 0 || (null === (_b = option.url) || void 0 === _b ? void 0 : _b.indexOf("jsdelivr")) > 0 ? option.onError(null) : null === (_c = option.onError) || void 0 === _c || _c.call(option, res);
                 }
             });
         }, Http.getData = function(url, callback) {
@@ -671,10 +658,9 @@
                 callback(d);
             }));
         }, Http.post = function(url, data, timeOut) {
-            var index;
-            return void 0 === timeOut && (timeOut = 10), index = Alert.loading(), new Promise((function(resolve) {
+            return void 0 === timeOut && (timeOut = 10), new Promise((function(resolve) {
                 Http.ajax(new AjaxOption(url, "POST", data, (function(data) {
-                    Alert.close(index), resolve(data);
+                    resolve(data);
                 }), new Map, timeOut));
             }));
         }, Http.get = function(url, data, head, loading, time_out) {
@@ -1112,6 +1098,15 @@
                 act();
             }));
         }, EventHelper;
+    }(), Runtime = function() {
+        function Runtime() {}
+        return Object.defineProperty(Runtime, "url", {
+            get: function() {
+                return window.location.href;
+            },
+            enumerable: !1,
+            configurable: !0
+        }), Runtime;
     }(), BaseCoupon = function() {
         function BaseCoupon() {}
         return BaseCoupon.prototype.init_qrcode = function(url) {
