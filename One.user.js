@@ -4,7 +4,7 @@
 // @version      1.0.3
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
-// @description  功能介绍：1、CSDN页面清理
+// @description  功能介绍：1、CSDN页面清理 2、页面磁力链接提取
 // @author       MaxZhang
 // @icon         https://www.wandhi.com//favicon.ico
 // @include      *://*
