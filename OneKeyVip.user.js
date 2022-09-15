@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.5.10
+// @version      4.5.11
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、上学吧答案查询(已下线)；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转
@@ -134,7 +134,7 @@
     "object" == typeof exports && "undefined" != typeof module ? factory(require("sweetalert2"), require("vue")) : "function" == typeof define && define.amd ? define([ "sweetalert2", "vue" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).Swal, global.Vue);
 })(this, (function(Swal, Vue) {
     "use strict";
-    var Swal__default, Vue__default, extendStatics, update_key, Min, Hour, Day, Week, Logger, LogLevel, Config, History, PriceDetail, ListPriceItem, BrowerType, Core, AjaxOption, Alert, Http, HttpHeaders, Convert, Result, HistoryResult, Route, Toast, ToastType, css_248z$7, Common, PluginBase, SiteEnum, UpdateService, VersionCompar, VersionResult, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$6, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$5, sAlert, GwdService, css_248z$4, TaoBaoService, container, Container, css_248z$3, BiliImgService, Menu$1, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$2, CsdnAdService, Menu, WenKuService, LinkJumpService, css_248z$1, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z, MfbMenu, MfbModel, YoutubeService, ConfigEnum, SettingService, ControlMenuService, OneKeyVipInjection;
+    var Swal__default, Vue__default, extendStatics, update_key, Min, Hour, Day, Week, Logger, LogLevel, Config, History, PriceDetail, ListPriceItem, BrowerType, Core, AjaxOption, Alert, Http, HttpHeaders, Convert, Result, HistoryResult, Route, Toast, ToastType, css_248z$7, Common, PluginBase, SiteEnum, UpdateService, VersionCompar, VersionResult, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$6, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$5, sAlert, GwdService, css_248z$4, TaoBaoService, container, Container, css_248z$3, BiliImgService, Menu$1, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$2, ConfigEnum, CsdnAdService, Menu, WenKuService, LinkJumpService, css_248z$1, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, OneKeyVipInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
@@ -2735,7 +2735,15 @@
             selector.addClass("onekeyvip-box-info-translucent"), selector.html('<a href="javascript:void(0);" class="onekeyvip-box-info onekeyvip-box-info-empty" title="\u5207\u6362\u900f\u660e\u5ea6">\u6682\u65e0\u4f18\u60e0</a>');
         }, ListService;
     }(PluginBase), css_248z$2 = "#content_views pre {\n    -webkit-touch-callout: auto !important;\n    -webkit-user-select: auto !important;\n    -khtml-user-select: auto !important;\n    -moz-user-select: auto !important;\n    -ms-user-select: auto !important;\n    user-select: auto !important;\n}\n\n#content_views pre code {\n    -webkit-touch-callout: auto !important;\n    -webkit-user-select: auto !important;\n    -khtml-user-select: auto !important;\n    -moz-user-select: auto !important;\n    -ms-user-select: auto !important;\n    user-select: auto !important;\n}\n\n.passport-login-container {\n    display: none !important;\n}\n", 
-    styleInject(css_248z$2), CsdnAdService = function(_super) {
+    styleInject(css_248z$2), function(ConfigEnum) {
+        ConfigEnum.AutoJump_ZhiHu = "AutoJump_ZhiHu", ConfigEnum.AutoJump_CSDN = "AutoJump_CSDN", 
+        ConfigEnum.AutoJump_JianShu = "AutoJump_JianShu", ConfigEnum.AutoJump_Gitee = "AutoJump_Gitee", 
+        ConfigEnum.AutoJump_JueJin = "AutoJump_JueJin", ConfigEnum.AutoJump_Weibo = "AutoJump_Weibo", 
+        ConfigEnum.AutoJump_TuXiaoChao = "AutoJump_TuXiaoChao", ConfigEnum.AutoJump_OsCh = "AutoJump_OsCh", 
+        ConfigEnum.AutoJump_AiFaDian = "AutoJump_AiFaDian", ConfigEnum.CSDN_OpImgLink = "csdn_op_img_link", 
+        ConfigEnum.CSDN_OpAdClean = "csdn_op_ad_clean", ConfigEnum.CSDN_OpCommentClean = "csdn_op_ad_clean", 
+        ConfigEnum.CSDN_OpClipboardClean = "csdn_op_clipboard_clean";
+    }(ConfigEnum || (ConfigEnum = {})), CsdnAdService = function(_super) {
         function CsdnAdService() {
             var _this = _super.call(this) || this;
             return _this.rules = new Map([ [ SiteEnum.CSDN, /blog\.csdn\.net/i ] ]), _this._appName = "csdn", 
@@ -2743,7 +2751,10 @@
         }
         return __extends(CsdnAdService, _super), CsdnAdService.prototype.loader = function() {}, 
         CsdnAdService.prototype.run = function() {
-            Core.background(this.removeAds, 3), this.commentClean(), this.commentFile();
+            Config.get(ConfigEnum.CSDN_OpAdClean, !0) && Core.background(this.removeAds, 3), 
+            Config.get(ConfigEnum.CSDN_OpClipboardClean, !0) && Core.background((function() {
+                unsafeWindow.csdn.copyright.textData = "";
+            })), Config.get(ConfigEnum.CSDN_OpCommentClean, !0) && this.commentClean(), Config.get(ConfigEnum.CSDN_OpImgLink, !0) && this.commentFile();
         }, CsdnAdService.prototype.removeAds = function() {
             CsdnAdService.adSelectors.forEach((function(selector) {
                 $(selector).remove();
@@ -2752,9 +2763,7 @@
             Core.lazyload((function() {
                 Logger.info("\u8bc4\u8bba\u533a\u6e05\u7406"), $(".comment-list-box").css("overflow", "").css("max-height", ""), 
                 $("#commentPage").removeClass("d-none"), $("#btnMoreComment").remove();
-            }), 3), Core.background((function() {
-                unsafeWindow.csdn.copyright.textData = "";
-            }));
+            }), 3);
         }, CsdnAdService.prototype.commentFile = function() {
             Core.lazyload((function() {
                 Logger.info("\u6587\u4ef6\u94fe\u63a5\u533a\u5206"), $(".type_download").each((function(i, e) {
@@ -3086,16 +3095,10 @@
             })) ];
             this.mfbMenu.Init(menus);
         }, YoutubeService;
-    }(PluginBase), function(ConfigEnum) {
-        ConfigEnum.AutoJump_ZhiHu = "AutoJump_ZhiHu", ConfigEnum.AutoJump_CSDN = "AutoJump_CSDN", 
-        ConfigEnum.AutoJump_JianShu = "AutoJump_JianShu", ConfigEnum.AutoJump_Gitee = "AutoJump_Gitee", 
-        ConfigEnum.AutoJump_JueJin = "AutoJump_JueJin", ConfigEnum.AutoJump_Weibo = "AutoJump_Weibo", 
-        ConfigEnum.AutoJump_TuXiaoChao = "AutoJump_TuXiaoChao", ConfigEnum.AutoJump_OsCh = "AutoJump_OsCh", 
-        ConfigEnum.AutoJump_AiFaDian = "AutoJump_AiFaDian";
-    }(ConfigEnum || (ConfigEnum = {})), SettingService = function(_super) {
+    }(PluginBase), SettingService = function(_super) {
         function SettingService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
-            return _this.rules = new Map([ [ SiteEnum.Settings, /settings\.wandhi\.com\/index\/index\/page/i ], [ SiteEnum.Settings_AutoJump, /settings\.wandhi\.com\/tools\/autojump\/page/i ], [ SiteEnum.Settings_AutoJump_Opt, /settings\.wandhi\.com\/tools\/autojump-op\/page/i ], [ SiteEnum.Settings_CSDN, /settings\.wandhi\.com\/tools\/csdn\/page/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.Settings, /settings\.wandhi\.com\/index\/index\/page/i ], [ SiteEnum.Settings_AutoJump, /settings\.wandhi\.com\/tools\/autojump\/page/i ], [ SiteEnum.Settings_AutoJump_Opt, /settings\.wandhi\.com\/tools\/autojump-op\/page/i ], [ SiteEnum.Settings_CSDN, /settings\.wandhi\.com\/tools\/csdn\/page/i ], [ SiteEnum.Settings_CSDN_Opt, /settings\.wandhi\.com\/tools\/csdn-op\/page/i ] ]), 
             _this._unique = !1, _this._appName = "\u63a7\u5236\u9762\u677f", _this;
         }
         return __extends(SettingService, _super), SettingService.prototype.loader = function() {
@@ -3108,6 +3111,10 @@
 
               case SiteEnum.Settings_AutoJump_Opt:
                 this.autoJumpOpt();
+                break;
+
+              case SiteEnum.Settings_CSDN_Opt:
+                this.csdnOpt();
             }
         }, SettingService.prototype.autoJumpOpt = function() {
             var checkboxes = $("input[type=checkbox]");
@@ -3118,7 +3125,19 @@
                 Logger.debug("\u914d\u7f6e[" + e.target.id + "]\u53d1\u751f\u53d8\u66f4,\u6700\u7ec8\u503c:[" + $(e.target).prop("checked") + "]"), 
                 Config.set(el.id, $(el).prop("checked")), sAlert.info("\u4fdd\u5b58\u6210\u529f");
             }));
-        }, SettingService.prototype.csdnOpt = function() {}, SettingService.prototype.initVer = function() {
+        }, SettingService.prototype.csdnOpt = function() {
+            var keys = [ ConfigEnum.CSDN_OpAdClean, ConfigEnum.CSDN_OpImgLink, ConfigEnum.CSDN_OpClipboardClean, ConfigEnum.CSDN_OpClipboardClean ];
+            this.checkBoxInit(keys);
+        }, SettingService.prototype.checkBoxInit = function(keys) {
+            var checkboxes = $("input[type=checkbox]");
+            checkboxes.removeProp("disabled"), keys.forEach((function(e, i) {
+                $("#" + e.toString()).prop("checked", Config.get(e.toString(), !0));
+            })), checkboxes.on("change", (function(e) {
+                var el = e.target;
+                Logger.debug("\u914d\u7f6e[" + e.target.id + "]\u53d1\u751f\u53d8\u66f4,\u6700\u7ec8\u503c:[" + $(e.target).prop("checked") + "]"), 
+                Config.set(el.id, $(el).prop("checked")), sAlert.info("\u4fdd\u5b58\u6210\u529f");
+            }));
+        }, SettingService.prototype.initVer = function() {
             $("#currentVer").text(Config.env.script.version);
         }, SettingService.prototype.removeAlert = function() {
             $(".alert-danger").remove();
