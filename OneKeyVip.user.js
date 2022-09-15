@@ -2741,7 +2741,7 @@
         ConfigEnum.AutoJump_JueJin = "AutoJump_JueJin", ConfigEnum.AutoJump_Weibo = "AutoJump_Weibo", 
         ConfigEnum.AutoJump_TuXiaoChao = "AutoJump_TuXiaoChao", ConfigEnum.AutoJump_OsCh = "AutoJump_OsCh", 
         ConfigEnum.AutoJump_AiFaDian = "AutoJump_AiFaDian", ConfigEnum.CSDN_OpImgLink = "csdn_op_img_link", 
-        ConfigEnum.CSDN_OpAdClean = "csdn_op_ad_clean", ConfigEnum.CSDN_OpCommentClean = "csdn_op_ad_clean", 
+        ConfigEnum.CSDN_OpAdClean = "csdn_op_ad_clean", ConfigEnum.CSDN_OpCommentClean = "csdn_op_comment_clean", 
         ConfigEnum.CSDN_OpClipboardClean = "csdn_op_clipboard_clean";
     }(ConfigEnum || (ConfigEnum = {})), CsdnAdService = function(_super) {
         function CsdnAdService() {
