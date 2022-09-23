@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.6.1
+// @version      4.6.2
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、上学吧答案查询(已下线)；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转 12、搜索引擎快速跳转
@@ -3162,7 +3162,7 @@
     }(PluginBase), SearchService = function(_super) {
         function SearchService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
-            return _this.rules = new Map([ [ SiteEnum.Baidu, /www\.baidu\.com\/baidu\?/i ], [ SiteEnum.Baidu, /www\.baidu\.com\/s\?/i ], [ SiteEnum.Google, /www\.google\.com\/search\?/i ], [ SiteEnum.SoGou, /www\.sogou\.com\/web/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.Baidu, /www\.baidu\.com\/[baidu|s]\?/i ], [ SiteEnum.Google, /www\.google\.com\/search\?/i ], [ SiteEnum.SoGou, /www\.sogou\.com\/web/i ] ]), 
             _this._appName = "\u4fbf\u6377\u641c\u7d22", _this._unique = !1, _this.siteConfig = new Map([ [ SiteEnum.Baidu, "#kw" ], [ SiteEnum.Google, "input[name=q]" ], [ SiteEnum.SoGou, "#upquery" ] ]), 
             _this;
         }
@@ -3185,10 +3185,11 @@
         }
         return OneKeyVipInjection.prototype.Init = function() {
             this.plugins.every((function(element) {
-                return !element.linkTest() || (new Promise((function(resolve) {
+                return element.linkTest() ? (new Promise((function(resolve) {
                     resolve(1);
                 })).then(element.Process), Logger.debug("element [" + element.appName() + "];unique:[" + element.unique() + "]"), 
-                !element.unique());
+                !element.unique()) : (Logger.debug("element [" + element.appName() + "];not pass"), 
+                !0);
             }));
         }, OneKeyVipInjection;
     }(), Logger.level = LogLevel.info, Container.Require(OneKeyVipInjection).Init();
