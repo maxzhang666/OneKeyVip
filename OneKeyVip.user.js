@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.6.2
+// @version      4.6.3
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、上学吧答案查询(已下线)；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转 12、搜索引擎快速跳转
@@ -1031,9 +1031,10 @@
     }(), function(SiteEnum) {
         SiteEnum.All = "All", SiteEnum.Settings = "Settings", SiteEnum.Settings_AutoJump = "Settings_AutoJump", 
         SiteEnum.Settings_AutoJump_Opt = "Settings_AutoJump_Opt", SiteEnum.Settings_CSDN = "Settings_CSDN", 
-        SiteEnum.Settings_CSDN_Opt = "Settings_CSDN_Opt", SiteEnum.TaoBao = "TaoBao", SiteEnum.TMall = "TMall", 
-        SiteEnum.JingDong = "JingDong", SiteEnum.JingDongList = "JingDongList", SiteEnum.IQiYi = "IQiYi", 
-        SiteEnum.YouKu = "YouKu", SiteEnum.LeShi = "LeShi", SiteEnum.TuDou = "TuDou", SiteEnum.Tencent_V = "Tencent_V", 
+        SiteEnum.Settings_CSDN_Opt = "Settings_CSDN_Opt", SiteEnum.Settings_Search_Opt = "Settings_Search_Opt", 
+        SiteEnum.TaoBao = "TaoBao", SiteEnum.TMall = "TMall", SiteEnum.JingDong = "JingDong", 
+        SiteEnum.JingDongList = "JingDongList", SiteEnum.IQiYi = "IQiYi", SiteEnum.YouKu = "YouKu", 
+        SiteEnum.LeShi = "LeShi", SiteEnum.TuDou = "TuDou", SiteEnum.Tencent_V = "Tencent_V", 
         SiteEnum.MangGuo = "MangGuo", SiteEnum.SoHu = "SoHu", SiteEnum.Acfun = "Acfun", 
         SiteEnum.BiliBili = "BiliBili", SiteEnum.BiliMobile = "BiliMobile", SiteEnum.M1905 = "M1905", 
         SiteEnum.PPTV = "PPTV", SiteEnum.YinYueTai = "YinYueTai", SiteEnum.WangYi = "WangYi", 
@@ -2745,7 +2746,7 @@
         ConfigEnum.AutoJump_TuXiaoChao = "AutoJump_TuXiaoChao", ConfigEnum.AutoJump_OsCh = "AutoJump_OsCh", 
         ConfigEnum.AutoJump_AiFaDian = "AutoJump_AiFaDian", ConfigEnum.CSDN_OpImgLink = "csdn_op_img_link", 
         ConfigEnum.CSDN_OpAdClean = "csdn_op_ad_clean", ConfigEnum.CSDN_OpCommentClean = "csdn_op_comment_clean", 
-        ConfigEnum.CSDN_OpClipboardClean = "csdn_op_clipboard_clean";
+        ConfigEnum.CSDN_OpClipboardClean = "csdn_op_clipboard_clean", ConfigEnum.Search_Helper_Switch = "search_helper_switch";
     }(ConfigEnum || (ConfigEnum = {})), CsdnAdService = function(_super) {
         function CsdnAdService() {
             var _this = _super.call(this) || this;
@@ -3100,7 +3101,7 @@
     }(PluginBase), SettingService = function(_super) {
         function SettingService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
-            return _this.rules = new Map([ [ SiteEnum.Settings, /settings\.wandhi\.com\/index\/index\/page/i ], [ SiteEnum.Settings_AutoJump, /settings\.wandhi\.com\/tools\/autojump\/page/i ], [ SiteEnum.Settings_AutoJump_Opt, /settings\.wandhi\.com\/tools\/autojump-op\/page/i ], [ SiteEnum.Settings_CSDN, /settings\.wandhi\.com\/tools\/csdn\/page/i ], [ SiteEnum.Settings_CSDN_Opt, /settings\.wandhi\.com\/tools\/csdn-op\/page/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.Settings, /settings\.wandhi\.com\/index\/index\/page/i ], [ SiteEnum.Settings_AutoJump, /settings\.wandhi\.com\/tools\/autojump\/page/i ], [ SiteEnum.Settings_AutoJump_Opt, /settings\.wandhi\.com\/tools\/autojump-op\/page/i ], [ SiteEnum.Settings_CSDN, /settings\.wandhi\.com\/tools\/csdn\/page/i ], [ SiteEnum.Settings_CSDN_Opt, /settings\.wandhi\.com\/tools\/csdn-op\/page/i ], [ SiteEnum.Settings_Search_Opt, /settings\.wandhi\.com\/tools\/search-helper-op\/page/i ] ]), 
             _this._unique = !1, _this._appName = "\u63a7\u5236\u9762\u677f", _this;
         }
         return __extends(SettingService, _super), SettingService.prototype.loader = function() {
@@ -3117,7 +3118,14 @@
 
               case SiteEnum.Settings_CSDN_Opt:
                 this.csdnOpt();
+                break;
+
+              case SiteEnum.Settings_Search_Opt:
+                this.searchHelperOpt();
             }
+        }, SettingService.prototype.searchHelperOpt = function() {
+            var keys = [ ConfigEnum.Search_Helper_Switch ];
+            this.checkBoxInit(keys);
         }, SettingService.prototype.autoJumpOpt = function() {
             var checkboxes = $("input[type=checkbox]");
             checkboxes.removeProp("disabled"), [ ConfigEnum.AutoJump_ZhiHu, ConfigEnum.AutoJump_CSDN, ConfigEnum.AutoJump_JianShu, ConfigEnum.AutoJump_Gitee, ConfigEnum.AutoJump_JueJin, ConfigEnum.AutoJump_Weibo, ConfigEnum.AutoJump_TuXiaoChao, ConfigEnum.AutoJump_OsCh, ConfigEnum.AutoJump_AiFaDian ].forEach((function(e, i) {
@@ -3169,14 +3177,16 @@
         return __extends(SearchService, _super), SearchService.prototype.loader = function() {
             SearchService.currentSite = this.site, this.siteConfig.has(this.site) && (SearchService.keySelector = this.siteConfig.get(this.site));
         }, SearchService.prototype.run = function() {
-            var menus = [ new MfbModel("\u767e\u5ea6", "onekeyvip-baidu", (function() {
-                Core.open("https://www.baidu.com/s?wd=" + $(SearchService.keySelector).val());
-            })), new MfbModel("\u641c\u72d7", "onekeyvip-sougou", (function() {
-                Core.open("https://www.sogou.com/web?query=" + $(SearchService.keySelector).val() + "&ie=utf8");
-            })), new MfbModel("\u8c37\u6b4c", "onekeyvip-google", (function() {
-                Core.open("https://www.google.com/search?q=" + $(SearchService.keySelector).val());
-            })) ];
-            new MfbMenu("cl").Init(menus);
+            if (Config.get(ConfigEnum.Search_Helper_Switch, !0)) {
+                var menus = [ new MfbModel("\u767e\u5ea6", "onekeyvip-baidu", (function() {
+                    Core.open("https://www.baidu.com/s?wd=" + $(SearchService.keySelector).val());
+                })), new MfbModel("\u641c\u72d7", "onekeyvip-sougou", (function() {
+                    Core.open("https://www.sogou.com/web?query=" + $(SearchService.keySelector).val() + "&ie=utf8");
+                })), new MfbModel("\u8c37\u6b4c", "onekeyvip-google", (function() {
+                    Core.open("https://www.google.com/search?q=" + $(SearchService.keySelector).val());
+                })) ];
+                new MfbMenu("cl").Init(menus);
+            }
         }, SearchService.keySelector = "#none", SearchService;
     }(PluginBase), OneKeyVipInjection = function() {
         function OneKeyVipInjection() {
