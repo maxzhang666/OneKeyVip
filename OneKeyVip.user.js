@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.6.4
+// @version      4.6.5
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、上学吧答案查询(已下线)；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转 12、搜索引擎快速跳转
@@ -457,6 +457,8 @@
             $("body").append($('<link rel="stylesheet" href="' + url + '">'));
         }, Core.bodyAppend = function(html) {
             $("body").append(html);
+        }, Core.bodyPrepend = function(html) {
+            $("body").prepend(html);
         }, Core.appendJs = function(url) {
             var linkScript = document.createElement("script");
             linkScript.type = "text/javascript", linkScript.src = url, this.head.appendChild(linkScript);
@@ -514,29 +516,9 @@
             var browser = !1, userAgent = window.navigator.userAgent.toLowerCase();
             return null != userAgent.match(/firefox/) ? browser = BrowerType.Firefox : null != userAgent.match(/edge/) ? browser = BrowerType.Edge : null != userAgent.match(/edg/) ? browser = BrowerType.Edg : null != userAgent.match(/bidubrowser/) ? browser = BrowerType.Baidu : null != userAgent.match(/lbbrowser/) ? browser = BrowerType.Liebao : null != userAgent.match(/ubrowser/) ? browser = BrowerType.UC : null != userAgent.match(/qqbrowse/) ? browser = BrowerType.QQ : null != userAgent.match(/metasr/) ? browser = BrowerType.Sogou : null != userAgent.match(/opr/) ? browser = BrowerType.Opera : null != userAgent.match(/maxthon/) ? browser = BrowerType.Maxthon : null != userAgent.match(/2345explorer/) ? browser = BrowerType.Ie2345 : null != userAgent.match(/chrome/) ? browser = navigator.mimeTypes.length > 10 ? BrowerType.Se360 : BrowerType.Chrome : null != userAgent.match(/safari/) && (browser = BrowerType.Safiri), 
             browser;
+        }, Core.getPercent = function(num, total) {
+            return num = parseFloat(String(num)), total = parseFloat(String(total)), isNaN(num) || isNaN(total) ? 0 : total <= 0 ? "0" : Math.round(num / total * 1e4) / 100;
         }, Core;
-    }(), function() {
-        function HttpRequest(option) {
-            this.headers = new Map, this.url = option.url, this.method = option.methodType, 
-            this.dataType = option.dataType, this._option = option;
-        }
-        HttpRequest.prototype.onload = function(res) {
-            this._option.onSuccess(res);
-        }, HttpRequest.prototype.onerror = function() {
-            this.onerror();
-        }, HttpRequest.prototype.setQueryData = function(datas) {
-            var fd, i;
-            if (datas instanceof FormData) this.data = datas; else {
-                for (i in fd = new FormData, datas) fd.append(i, datas[i]);
-                this.data = fd;
-            }
-        }, Object.defineProperty(HttpRequest.prototype, "onLoad", {
-            get: function() {
-                return this.onSuccess;
-            },
-            enumerable: !1,
-            configurable: !0
-        });
     }(), AjaxOption = function() {
         function AjaxOption(_url, _methodType, _data, _success, _header, timeOut) {
             void 0 === _methodType && (_methodType = "GET"), void 0 === _header && (_header = new Map), 
@@ -881,7 +863,7 @@
         }, Route.queryBiliImg = function(aid, callback) {
             Http.getData(this.biliInfo + "?aid=" + aid, callback);
         }, Route.queryBiliDown = function(aid, cid, callback) {
-            Http.getData(this.bilidown + "?cid=" + cid + "&avid=" + aid + "&qn=112", callback);
+            Http.getData(this.bilidown + "?cid=" + cid + "&avid=" + aid + "&qn=112&fnval=4048", callback);
         }, Route.queryCoupons = function(itemId, callback) {
             this.baseApi(this.coupons, new Map([ [ "id", itemId ] ]), callback);
         }, Route.queryJdCoupons = function(itemId, callback) {
@@ -2340,8 +2322,33 @@
         return __extends(BiliImgService, _super), BiliImgService.listHtml = function(list) {
             var rows = "";
             return list.forEach((function(e) {
-                rows += '<tr>\n                        <td class="bili-table-cell">' + e.part + '</td>\n                        <td class="bili-table-cell"><button class="okv-btn okv-btn-primary bili-down-item" data-cid="' + e.cid + '">\u4e0b\u8f7d</button></td>\n                    </tr>';
+                rows += '<tr>\n                        <td class="bili-table-cell">' + e.part + '</td>\n                        <td class="bili-table-cell"><button class="okv-btn okv-btn-primary bili-down-item" data-cid="' + e.cid + '" data-part-title="' + e.part + '">\u4e0b\u8f7d</button></td>\n                    </tr>';
             })), '<div style="height: 30rem"><table class="bili-table bili-table-small">\n                    <thead class="bili-table-head">\n                        <tr>                        \n                            <th class="bili-table-cell">\u6807\u9898</th>\n                            <th class="bili-table-cell">\u64cd\u4f5c</th>\n                        </tr>\n                    </thead>\n                    <tbody class="at-table-tbody">                    \n                        ' + rows + "\n                    </tbody>    \n                </table></div>";
+        }, BiliImgService.getQuality = function(id) {
+            switch (id) {
+              case 16:
+                return "360P \u6d41\u7545";
+
+              case 32:
+                return "480P \u6e05\u6670";
+
+              case 64:
+                return "720P \u9ad8\u6e05";
+
+              case 80:
+                return "1080P \u9ad8\u6e05";
+
+              case 112:
+                return "1080P 60\u5e27";
+
+              default:
+                return "\u672a\u77e5";
+            }
+        }, BiliImgService.videoListHtml = function(list) {
+            var _this = this, rows = "";
+            return list.forEach((function(e) {
+                rows += '<tr>\n                        <td class="bili-table-cell">' + _this.getQuality(e.id) + '</td>\n                        <td class="bili-table-cell">' + (e.bandwidth / 1024 / 1024).toFixed(2) + 'MB</td>\n                        <td class="bili-table-cell">' + e.frameRate + '</td>\n                        <td class="bili-table-cell">' + e.codecs + '</td>\n                        <td class="bili-table-cell"><button class="okv-btn okv-btn-primary bili-down-video-item" data-url="' + e.baseUrl + '">\u4e0b\u8f7d</button></td>\n                    </tr>';
+            })), '<div style="height: 30rem"><table class="bili-table bili-table-small">\n                    <thead class="bili-table-head">\n                        <tr>                        \n                            <th class="bili-table-cell">\u54c1\u8d28</th>\n                            <th class="bili-table-cell">\u5927\u5c0f</th>\n                            <th class="bili-table-cell">\u7801\u7387</th>\n                            <th class="bili-table-cell">\u7f16\u7801</th>\n                            <th class="bili-table-cell">\u64cd\u4f5c</th>\n                        </tr>\n                    </thead>\n                    <tbody class="at-table-tbody">                    \n                        ' + rows + "\n                    </tbody>    \n                </table></div>";
         }, BiliImgService.prototype.loader = function() {
             Core.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
         }, BiliImgService.prototype.run = function() {
@@ -2376,24 +2383,57 @@
             BiliImgService.getVideoInfo(aid).then((function(res) {
                 sAlert.html(res.title, _this.listHtml(res.pages), !0, "\u6211\u597d\u4e86", "#3085d6", "40%"), 
                 $(".bili-down-item").on("click", (function(e) {
-                    var cid = $(e.currentTarget).attr("data-cid");
-                    BiliImgService.downVideo(aid, cid);
+                    var cid = $(e.currentTarget).attr("data-cid"), title = $(e.currentTarget).attr("data-part-title");
+                    BiliImgService.downVideo(aid, cid, title);
                 }));
             }));
-        }, BiliImgService.downVideo = function(aid, cid) {
-            var key = "" + aid + cid + "MDD";
+        }, BiliImgService.downVideo = function(aid, cid, title) {
+            var _this = this, key = "" + aid + cid + "MDD-NEW";
             Config.remember(key, Min, (function() {
                 return new Promise((function(resolve, reject) {
                     Route.queryBiliDown(aid, cid, (function(res) {
-                        var _a;
-                        "" != (null === (_a = res.data) || void 0 === _a ? void 0 : _a.durl[0].url) ? resolve(res) : reject(res);
+                        var _a, _b, _c;
+                        (null === (_c = null === (_b = null === (_a = res.data) || void 0 === _a ? void 0 : _a.dash) || void 0 === _b ? void 0 : _b.video) || void 0 === _c ? void 0 : _c.length) > 0 ? resolve(res) : reject(res);
                     }));
                 }));
             })).then((function(res) {
-                sAlert.confirm("\u4e0b\u8f7d\u5730\u5740", "\u67e5\u8be2\u5230[" + res.data.accept_description[res.data.durl[0].order] + "]\uff0c\u662f\u5426\u4e0b\u8f7d\uff1f", "\u597d\u7684\u8d70\u8d77", "\u8fd8\u662f\u7b97\u4e86").then((function(sres) {
-                    sres.isConfirmed && window.open(res.data.durl[0].url);
-                })).finally((function() {
+                sAlert.html(title, _this.videoListHtml(res.data.dash.video), !0, "\u6211\u597d\u4e86", "#3085d6", "40%").finally((function() {
                     BiliImgService.initDown();
+                })), $(".bili-down-video-item").on("click", (function(e) {
+                    var url = $(e.currentTarget).attr("data-url");
+                    Swal__default.default.fire({
+                        title: "\u51c6\u5907\u4e0b\u8f7d",
+                        html: '<span id="bili-download-step">\u5f00\u59cb\u4e0b\u8f7d\u540e\u5f53\u524d\u9875\u9762\u5c06\u4e0d\u53ef\u64cd\u4f5c,\u662f\u5426\u5f00\u59cb\u4e0b\u8f7d\uff1f</span>',
+                        showCancelButton: !0,
+                        confirmButtonText: "\u597d\u7684\u5f00\u59cb",
+                        cancelButtonText: "\u8fd8\u662f\u7b97\u4e86",
+                        showLoaderOnConfirm: !0,
+                        preConfirm: function() {
+                            return new Promise((function(r, j) {
+                                GM_download({
+                                    url: url,
+                                    name: title + ".mp4",
+                                    headers: {
+                                        referer: Runtime.url
+                                    },
+                                    onerror: function(data) {
+                                        j(data);
+                                    },
+                                    onprogress: function(data) {
+                                        $("#bili-download-step").text("\u5f53\u524d\u8fdb\u5ea6" + Core.getPercent(data.done, data.total) + "%"), 
+                                        data.done == data.total && r();
+                                    }
+                                });
+                            }));
+                        },
+                        allowOutsideClick: function() {
+                            return !Swal__default.default.isLoading();
+                        }
+                    }).then((function(result) {
+                        result.isConfirmed && sAlert.info("\u4e0b\u8f7d\u7ed3\u675f");
+                    })).finally((function() {
+                        BiliImgService.downVideo(aid, cid, title);
+                    }));
                 }));
             })).catch((function(e) {
                 Logger.error(e), sAlert.error("\u5565\u4e5f\u6ca1\u67e5\u7740,\u518d\u8bd5\u4e00\u4e0b\u6216\u8005\u5e26\u7740\u89c6\u9891\u5730\u5740\u7ed9\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\u5427~");
@@ -2414,7 +2454,7 @@
             }));
         }, BiliImgService.btn = '<button class="okv-btn okv-btn-primary okv-bg-pink bili-top-button" id="findimg">\u83b7\u53d6\u5c01\u9762</button>', 
         BiliImgService.down = '<button id="downvideo" class="okv-btn okv-btn-primary okv-bg-pink bili-top-button">\u4e0b\u8f7d\u89c6\u9891</button>', 
-        BiliImgService.tripleClick = '<button class="okv-btn okv-btn-primary okv-bg-pink bili-top-button" id="tripleClick">\u4e00\u952e\u4e09\u8fde</button>', 
+        BiliImgService.tripleClick = '<button class="okv-btn okv-btn-primary okv-bg-pink bili-top-button" id="tripleClick">\u4e00\u4e0b\u70b9\u4ee8(\u70b9\u8d5e\u3001\u6295\u5e01\u3001\u6536\u85cf)</button>', 
         BiliImgService;
     }(PluginBase), Menu$1 = Common.Menu, MovieService = function(_super) {
         function MovieService() {
