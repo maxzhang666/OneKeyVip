@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.6.6
+// @version      4.6.7
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、上学吧答案查询(已下线)；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转 12、搜索引擎快速跳转
@@ -2342,14 +2342,51 @@
               case 112:
                 return "1080P 60\u5e27";
 
+              case 30280:
+              case 30260:
+                return "320Kbps";
+
+              case 30259:
+                return "128Kbps";
+
+              case 30257:
+                return "64Kbps";
+
+              case 30255:
+                return "AUDIO";
+
+              case 30251:
+                return "FLAC";
+
+              case 30250:
+                return "ATMOS";
+
+              case 30232:
+                return "128Kbps";
+
+              case 30216:
+                return "64Kbps";
+
               default:
                 return "\u672a\u77e5";
             }
-        }, BiliImgService.videoListHtml = function(list) {
-            var _this = this, rows = "";
-            return list.forEach((function(e) {
-                rows += '<tr>\n                        <td class="bili-table-cell">' + _this.getQuality(e.id) + '</td>\n                        <td class="bili-table-cell">' + (e.bandwidth / 1024).toFixed(2) + 'MB</td>\n                        <td class="bili-table-cell">' + e.frameRate + '</td>\n                        <td class="bili-table-cell">' + e.codecs + '</td>\n                        <td class="bili-table-cell"><button class="okv-btn okv-btn-primary bili-down-video-item" data-url="' + e.baseUrl + '">\u4e0b\u8f7d</button></td>\n                    </tr>';
-            })), '<div style="height: 30rem"><table class="bili-table bili-table-small">\n                    <thead class="bili-table-head">\n                        <tr>                        \n                            <th class="bili-table-cell">\u54c1\u8d28</th>\n                            <th class="bili-table-cell">\u5927\u5c0f</th>\n                            <th class="bili-table-cell">\u7801\u7387</th>\n                            <th class="bili-table-cell">\u7f16\u7801</th>\n                            <th class="bili-table-cell">\u64cd\u4f5c</th>\n                        </tr>\n                    </thead>\n                    <tbody class="at-table-tbody">                    \n                        ' + rows + "\n                    </tbody>    \n                </table></div>";
+        }, BiliImgService.videoListHtml = function(videoList, audioList, duration) {
+            var _this = this, sizeFormat = function(size) {
+                void 0 === size && (size = 0);
+                for (var unit = [ "B", "K", "M", "G" ], i = unit.length - 1, dex = Math.pow(1024, i), vor = Math.pow(1e3, i); dex > 1; ) {
+                    if (size >= vor) {
+                        size = Number((size / dex).toFixed(2));
+                        break;
+                    }
+                    dex /= 1024, vor /= 1e3, i--;
+                }
+                return size ? size + unit[i] : "N/A";
+            }, rows = "";
+            return videoList.forEach((function(e) {
+                rows += '<tr>\n                        <td class="bili-table-cell">\u89c6\u9891</td>\n                        <td class="bili-table-cell">' + _this.getQuality(e.id) + '</td>\n                        <td class="bili-table-cell">' + sizeFormat(e.bandwidth * duration / 8) + '</td>\n                        <td class="bili-table-cell">' + e.frameRate + '</td>\n                        <td class="bili-table-cell">' + e.codecs + '</td>\n                        <td class="bili-table-cell"><button class="okv-btn okv-btn-primary bili-down-video-item" data-url="' + e.baseUrl + '" data-type="1">\u4e0b\u8f7d</button></td>\n                    </tr>';
+            })), audioList.forEach((function(e) {
+                rows += '<tr>\n                        <td class="bili-table-cell">\u97f3\u9891</td>\n                        <td class="bili-table-cell">' + _this.getQuality(e.id) + '</td>\n                        <td class="bili-table-cell">' + sizeFormat(e.bandwidth * duration / 8) + '</td>\n                        <td class="bili-table-cell">' + e.frameRate + '</td>\n                        <td class="bili-table-cell">' + e.codecs + '</td>\n                        <td class="bili-table-cell"><button class="okv-btn okv-btn-primary bili-down-video-item" data-url="' + e.baseUrl + '" data-type="2">\u4e0b\u8f7d</button></td>\n                    </tr>';
+            })), '\n<div style="height: 30rem">\n    <div style="margin-bottom: 20px">\u6ce8\u610f:\u97f3\u89c6\u9891\u662f\u5206\u5f00\u7684,\u8bf7\u4e0b\u8f7d\u540e\u81ea\u884c\u5408\u5e76</div>\n    <table class="bili-table bili-table-small">\n        <thead class="bili-table-head">\n            <tr>                        \n                <th class="bili-table-cell">\u7c7b\u578b</th>\n                <th class="bili-table-cell">\u54c1\u8d28</th>\n                <th class="bili-table-cell">\u5927\u5c0f</th>\n                <th class="bili-table-cell">\u7801\u7387</th>\n                <th class="bili-table-cell">\u7f16\u7801</th>\n                <th class="bili-table-cell">\u64cd\u4f5c</th>\n            </tr>\n        </thead>\n        <tbody class="at-table-tbody">                    \n            ' + rows + "\n        </tbody>    \n    </table>\n</div>";
         }, BiliImgService.prototype.loader = function() {
             Core.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
         }, BiliImgService.prototype.run = function() {
@@ -2398,10 +2435,10 @@
                     }));
                 }));
             })).then((function(res) {
-                sAlert.html(title, _this.videoListHtml(res.data.dash.video), !0, "\u6211\u597d\u4e86", "#3085d6", "40%").finally((function() {
+                sAlert.html(title, _this.videoListHtml(res.data.dash.video, res.data.dash.audio, res.data.dash.duration), !0, "\u6211\u597d\u4e86", "#3085d6", "40%").finally((function() {
                     BiliImgService.initDown();
                 })), $(".bili-down-video-item").on("click", (function(e) {
-                    var url = $(e.currentTarget).attr("data-url");
+                    var url = $(e.currentTarget).attr("data-url"), type = $(e.currentTarget).attr("data-type");
                     Swal__default.default.fire({
                         title: "\u51c6\u5907\u4e0b\u8f7d",
                         html: '<span id="bili-download-step">\u5f00\u59cb\u4e0b\u8f7d\u540e\u5f53\u524d\u9875\u9762\u5c06\u4e0d\u53ef\u64cd\u4f5c,\u662f\u5426\u5f00\u59cb\u4e0b\u8f7d\uff1f</span>',
@@ -2413,7 +2450,7 @@
                             return new Promise((function(r, j) {
                                 GM_download({
                                     url: url,
-                                    name: title + ".mp4",
+                                    name: "\u3010" + ("1" == type ? "\u89c6\u9891" : "\u97f3\u9891") + "\u3011" + title + ".mp4",
                                     headers: {
                                         referer: Runtime.url
                                     },
