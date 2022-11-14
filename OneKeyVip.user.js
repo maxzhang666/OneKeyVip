@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.6.7
+// @version      4.6.8
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、上学吧答案查询(已下线)；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转 12、搜索引擎快速跳转
@@ -1319,11 +1319,12 @@
                         type: "cross"
                     },
                     formatter: function(params) {
-                        var _a, date, year, month, day, monthStr, dayStr;
+                        var _a, _b, date, year, month, day, monthStr, dayStr, price;
                         return params = params[0], year = (date = new Date(params.name)).getFullYear(), 
                         month = date.getMonth() + 1, day = date.getDate(), monthStr = month.toString(), 
                         dayStr = day.toString(), month < 10 && (monthStr = "0" + month), day < 10 && (dayStr = "0" + day), 
-                        "\u65e5\u671f\uff1a" + year + "-" + monthStr + "-" + dayStr + "<br/>\u4ef7\u683c\uff1a\uffe5" + (null === (_a = params.value[1]) || void 0 === _a ? void 0 : _a.toFixed(2)) + ("" == params.value[2] ? "" : "<br/>" + params.value[2]);
+                        price = null === (_a = params.value[1]) || void 0 === _a ? void 0 : _a.toString(), 
+                        "\u65e5\u671f\uff1a" + year + "-" + monthStr + "-" + dayStr + "<br/>\u4ef7\u683c\uff1a\uffe5" + (price = null === (_b = parseFloat(price)) || void 0 === _b ? void 0 : _b.toFixed(2)) + ("" == params.value[2] ? "" : "<br/>" + params.value[2]);
                     }
                 },
                 grid: {
@@ -1859,11 +1860,12 @@
                         type: "cross"
                     },
                     formatter: function(params) {
-                        var _a, date, year, month, day, monthStr, dayStr;
+                        var _a, _b, date, year, month, day, monthStr, dayStr, price;
                         return params = params[0], year = (date = new Date(params.axisValue)).getFullYear(), 
                         month = date.getMonth() + 1, day = date.getDate(), monthStr = month.toString(), 
                         dayStr = day.toString(), month < 10 && (monthStr = "0" + month), day < 10 && (dayStr = "0" + day), 
-                        "\u65e5\u671f\uff1a" + year + "-" + monthStr + "-" + dayStr + "<br/>\u4ef7\u683c\uff1a\uffe5" + (null === (_a = params.value[1]) || void 0 === _a ? void 0 : _a.toFixed(2)) + ("" == params.value[2] ? "" : "<br/>" + params.value[2]);
+                        price = null === (_a = params.value[1]) || void 0 === _a ? void 0 : _a.toString(), 
+                        "\u65e5\u671f\uff1a" + year + "-" + monthStr + "-" + dayStr + "<br/>\u4ef7\u683c\uff1a\uffe5" + (price = null === (_b = parseFloat(price)) || void 0 === _b ? void 0 : _b.toFixed(2)) + ("" == params.value[2] ? "" : "<br/>" + params.value[2]);
                     }
                 },
                 grid: {
@@ -1951,11 +1953,12 @@
                         type: "cross"
                     },
                     formatter: function(params) {
-                        var _a, date, year, month, day, monthStr, dayStr;
+                        var _a, _b, date, year, month, day, monthStr, dayStr, price;
                         return params = params[0], year = (date = new Date(params.name)).getFullYear(), 
                         month = date.getMonth() + 1, day = date.getDate(), monthStr = month.toString(), 
                         dayStr = day.toString(), month < 10 && (monthStr = "0" + month), day < 10 && (dayStr = "0" + day), 
-                        "\u65e5\u671f\uff1a" + year + "-" + monthStr + "-" + dayStr + "<br/>\u4ef7\u683c\uff1a\uffe5" + (null === (_a = params.value[1]) || void 0 === _a ? void 0 : _a.toFixed(2)) + ("" == params.value[2] ? "" : "<br/>" + params.value[2]);
+                        price = null === (_a = params.value[1]) || void 0 === _a ? void 0 : _a.toString(), 
+                        "\u65e5\u671f\uff1a" + year + "-" + monthStr + "-" + dayStr + "<br/>\u4ef7\u683c\uff1a\uffe5" + (price = null === (_b = parseFloat(price)) || void 0 === _b ? void 0 : _b.toFixed(2)) + ("" == params.value[2] ? "" : "<br/>" + params.value[2]);
                     }
                 },
                 grid: {
