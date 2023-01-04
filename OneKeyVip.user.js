@@ -987,7 +987,7 @@
             Http.get(Route.update_api_script_cat, new Map, new Map, !1).then((function(r) {
                 var _a, _b, msg, version = new VersionCompar(null === (_b = null === (_a = null == r ? void 0 : r.data) || void 0 === _a ? void 0 : _a.script) || void 0 === _b ? void 0 : _b.version);
                 Logger.debug("\u5f53\u524d\u7248\u672c:[" + current.versionString + "],\u6700\u65b0\u7248\u672c:[" + version.versionString + "]"), 
-                version.compareTo(current) === VersionResult.greater && (msg = "\u65b0\u7248\u672c<span>" + version.versionString + '</span>\u5df2\u53d1\u5e03.<a class="link" target="_blank" href="' + Route.home_url + '">\u67e5\u770b</a><br><a id="new-version-link" class="link" href="' + Route.install_url_one + '">\u5b89\u88c5(\u7ebf\u8def\u4e00)</a><br><a id="new-version-link" class="link" href="' + Route.install_url_two + '">\u5b89\u88c5(\u7ebf\u8def\u4e8c)</a>', 
+                version.compareTo(current) === VersionResult.greater && (msg = "\u65b0\u7248\u672c<span>" + version.versionString + '</span>\u5df2\u53d1\u5e03.<a class="link" target="_blank" href="' + Route.home_url + '">\u67e5\u770b</a><br><a id="new-version-link" class="link" href="' + Route.install_url_one + '" target="_blank">\u5b89\u88c5(\u7ebf\u8def\u4e00)</a><br><a id="new-version-link" class="link" href="' + Route.install_url_two + '" target="_blank">\u5b89\u88c5(\u7ebf\u8def\u4e8c)</a>', 
                 Swal__default.default.fire({
                     toast: !0,
                     position: "bottom-left",
