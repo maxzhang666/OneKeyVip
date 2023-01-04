@@ -464,7 +464,7 @@
             _this._unique = !1, _this;
         }
         return __extends(CsdnApp, _super), CsdnApp.prototype.loader = function() {}, CsdnApp.prototype.run = function() {
-            Core$1.background(this.adsClear, 3), this.commentClear();
+            Core$1.background(this.adsClear, 3), this.commentClear(), this.articleClean();
         }, CsdnApp.prototype.adsClear = function() {
             CsdnApp.adSelectors.forEach((function(selector) {
                 $(selector).remove();
@@ -474,6 +474,9 @@
                 Logger$1.info("\u8bc4\u8bba\u533a\u6e05\u7406"), $(".comment-list-box").css("overflow", "").css("max-height", ""), 
                 $("#commentPage").removeClass("d-none"), $("#btnMoreComment").remove();
             }), 3);
+        }, CsdnApp.prototype.articleClean = function() {
+            Logger$1.info("\u6587\u7ae0\u533a\u6e05\u7406"), $("#article_content").removeAttr("style"), 
+            $(".hide-article-box").remove();
         }, CsdnApp.adSelectors = [ "#footerRightAds", ".side-question-box", "div[id^='dmp_ad']", "div[class^='ad_']", "div[id^='floor-ad_']", ".adsbygoogle" ], 
         CsdnApp;
     }(AppBase), container = new Map, Ioc = function() {

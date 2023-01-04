@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.6.9
+// @version      4.6.10
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、上学吧答案查询(已下线)；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转 12、搜索引擎快速跳转
@@ -2780,9 +2780,10 @@
         ConfigEnum.AutoJump_JueJin = "AutoJump_JueJin", ConfigEnum.AutoJump_Weibo = "AutoJump_Weibo", 
         ConfigEnum.AutoJump_TuXiaoChao = "AutoJump_TuXiaoChao", ConfigEnum.AutoJump_OsCh = "AutoJump_OsCh", 
         ConfigEnum.AutoJump_AiFaDian = "AutoJump_AiFaDian", ConfigEnum.CSDN_OpImgLink = "csdn_op_img_link", 
-        ConfigEnum.CSDN_OpAdClean = "csdn_op_ad_clean", ConfigEnum.CSDN_OpCommentClean = "csdn_op_comment_clean", 
-        ConfigEnum.CSDN_OpClipboardClean = "csdn_op_clipboard_clean", ConfigEnum.Search_Helper_Switch = "search_helper_switch", 
-        ConfigEnum.Search_OptMenuMethod = "search_opt_menu_method", ConfigEnum.Search_OptMenuPos = "search_opt_menu_pos";
+        ConfigEnum.CSDN_OpAdClean = "csdn_op_ad_clean", ConfigEnum.CSDN_OpArticleClean = "csdn_op_article_clean", 
+        ConfigEnum.CSDN_OpCommentClean = "csdn_op_comment_clean", ConfigEnum.CSDN_OpClipboardClean = "csdn_op_clipboard_clean", 
+        ConfigEnum.Search_Helper_Switch = "search_helper_switch", ConfigEnum.Search_OptMenuMethod = "search_opt_menu_method", 
+        ConfigEnum.Search_OptMenuPos = "search_opt_menu_pos";
     }(ConfigEnum || (ConfigEnum = {})), CsdnAdService = function(_super) {
         function CsdnAdService() {
             var _this = _super.call(this) || this;
@@ -2794,7 +2795,8 @@
             Config.get(ConfigEnum.CSDN_OpAdClean, !0) && Core.background(this.removeAds, 3), 
             Config.get(ConfigEnum.CSDN_OpClipboardClean, !0) && Core.background((function() {
                 unsafeWindow.csdn.copyright.textData = "";
-            })), Config.get(ConfigEnum.CSDN_OpCommentClean, !0) && this.commentClean(), Config.get(ConfigEnum.CSDN_OpImgLink, !0) && this.commentFile();
+            })), Config.get(ConfigEnum.CSDN_OpCommentClean, !0) && this.commentClean(), Config.get(ConfigEnum.CSDN_OpImgLink, !0) && this.commentFile(), 
+            Config.get(ConfigEnum.CSDN_OpArticleClean, !0) && this.articleClean();
         }, CsdnAdService.prototype.removeAds = function() {
             CsdnAdService.adSelectors.forEach((function(selector) {
                 $(selector).remove();
@@ -2810,6 +2812,11 @@
                     $(e).prepend('<img src="https://csdnimg.cn/release/downloadcmsfe/public/img/source.ac4c7e83.png" data-v-d2529d5a="" style="padding-right: 10px;">');
                 }));
             }), 3);
+        }, CsdnAdService.prototype.articleClean = function() {
+            Core.lazyload((function() {
+                Logger.info("\u6587\u7ae0\u533a\u6e05\u7406"), $("#article_content").removeAttr("style"), 
+                $(".hide-article-box").remove();
+            }));
         }, CsdnAdService.adSelectors = [ "#footerRightAds", ".side-question-box", "div[id^='dmp_ad']", "div[class^='ad_']", "div[id^='floor-ad_']", ".adsbygoogle", "#recommendAdBox", "#asideNewNps", ".signin" ], 
         CsdnAdService;
     }(PluginBase), Menu = Common.Menu, WenKuService = function(_super) {
