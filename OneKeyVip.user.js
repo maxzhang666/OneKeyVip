@@ -3183,7 +3183,7 @@
                 Config.set(el.id, $(el).prop("checked")), sAlert.info("\u4fdd\u5b58\u6210\u529f");
             }));
         }, SettingService.prototype.csdnOpt = function() {
-            var keys = [ ConfigEnum.CSDN_OpAdClean, ConfigEnum.CSDN_OpImgLink, ConfigEnum.CSDN_OpCommentClean, ConfigEnum.CSDN_OpClipboardClean ];
+            var keys = [ ConfigEnum.CSDN_OpAdClean, ConfigEnum.CSDN_OpImgLink, ConfigEnum.CSDN_OpCommentClean, ConfigEnum.CSDN_OpArticleClean, ConfigEnum.CSDN_OpClipboardClean ];
             this.checkBoxInit(keys);
         }, SettingService.prototype.checkBoxInit = function(keys) {
             var checkboxes = $("input[type=checkbox]");
