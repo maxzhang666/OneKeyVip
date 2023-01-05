@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.6.10
+// @version      4.6.11
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、上学吧答案查询(已下线)；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转 12、搜索引擎快速跳转
@@ -981,14 +981,16 @@
         }
         return __extends(UpdateService, _super), UpdateService.prototype.loader = function() {}, 
         UpdateService.prototype.run = function() {
-            var current = new VersionCompar(Config.env.script.version);
-            this.scriptCat(current);
+            if (!Config.get(update_key, !1)) {
+                var current = new VersionCompar(Config.env.script.version);
+                this.scriptCat(current);
+            }
         }, UpdateService.prototype.scriptCat = function(current) {
             Http.get(Route.update_api_script_cat, new Map, new Map, !1).then((function(r) {
                 var _a, _b, msg, version = new VersionCompar(null === (_b = null === (_a = null == r ? void 0 : r.data) || void 0 === _a ? void 0 : _a.script) || void 0 === _b ? void 0 : _b.version);
                 Logger.debug("\u5f53\u524d\u7248\u672c:[" + current.versionString + "],\u6700\u65b0\u7248\u672c:[" + version.versionString + "]"), 
                 version.compareTo(current) === VersionResult.greater && (msg = "\u65b0\u7248\u672c<span>" + version.versionString + '</span>\u5df2\u53d1\u5e03.<a class="link" target="_blank" href="' + Route.home_url + '">\u67e5\u770b</a><br><a id="new-version-link" class="link" href="' + Route.install_url_one + '" target="_blank">\u5b89\u88c5(\u7ebf\u8def\u4e00)</a><br><a id="new-version-link" class="link" href="' + Route.install_url_two + '" target="_blank">\u5b89\u88c5(\u7ebf\u8def\u4e8c)</a>', 
-                Swal__default.default.fire({
+                GM_addStyle(".swal2-popup{font-size: 16px !important}"), Swal__default.default.fire({
                     toast: !0,
                     position: "bottom-left",
                     icon: "success",
