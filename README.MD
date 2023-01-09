@@ -23,10 +23,25 @@
 
 ![x2TF67](https://cdn.jsdelivr.net/gh/maxzhang666/assets@master/img/2022/02/22/x2TF67.png)[](https://)
 
+## 💩 交流群 **有任何问题都可以加群反馈或在网站留言，修复更及时**
+
+### TG [猛击加入](//t.me/joinchat/fDZTZfGWE_9lYTFl)
+
+### 四群[**137750146**](http://qm.qq.com/cgi-bin/qm/qr?k=gUbyjh9xrnskBWGYm-9DbnJqWBZOpcva&jump_from=webapi&authKey=5ci2KE+i56fFxxCVrj2Wkj4D3D7aKphITW07QdHls771upOyVT/06ekBgrNUZKeF) [**一键加群**](http://qm.qq.com/cgi-bin/qm/qr?k=gUbyjh9xrnskBWGYm-9DbnJqWBZOpcva&jump_from=webapi&authKey=5ci2KE+i56fFxxCVrj2Wkj4D3D7aKphITW07QdHls771upOyVT/06ekBgrNUZKeF)
+
+### 三群[**722457505**](//shang.qq.com/wpa/qunwpa?idkey=a12d43edc065daad3043ca272a0eb9332ecd878f2921683c51e9d4e02554c80f)
+
+### 二群[**655341576**](https://shang.qq.com/wpa/qunwpa?idkey=dd0275fbf9149b71e4f2f4e44902b552c846e9a2234f68eaca35a442510f061b)**已满** [**一键加群**](https://shang.qq.com/wpa/qunwpa?idkey=dd0275fbf9149b71e4f2f4e44902b552c846e9a2234f68eaca35a442510f061b)
+
+### 一群[**340569308**](http://shang.qq.com/wpa/qunwpa?idkey=7fc3fef0db96421305e65c41cc081ffeca507fdc23cab93d731277be829985ec)**已满** [**一键加群**](http://shang.qq.com/wpa/qunwpa?idkey=7fc3fef0db96421305e65c41cc081ffeca507fdc23cab93d731277be829985ec)
+
+### [**QQ频道**](https://qun.qq.com/qqweb/qunpro/share?_wv=3&_wwv=128&inviteCode=1U23Gb&from=181074&biz=ka)**推荐**
+
 ## 🔧 [插件功能(点我查看详情)](https://wiki.wandhi.com/zh-cn/Feature.html)
 
 * ✅ 视频解析
 * ✅ 音乐下载
+* ✅ 夸克网盘直链获取
 * ✅ 商品详情页优惠券
 * ✅ 商品列表页优惠券
 * ✅ B站视频封面获取
@@ -56,22 +71,6 @@
 
 ### [Gitee:https://gitee.com/ixysy/OneKeyVip](https://gitee.com/ixysy/OneKeyVip)
 
-## 💩 交流群
-
-### TG [猛击加入](//t.me/joinchat/fDZTZfGWE_9lYTFl)
-
-### 四群[**137750146**](http://qm.qq.com/cgi-bin/qm/qr?k=gUbyjh9xrnskBWGYm-9DbnJqWBZOpcva&jump_from=webapi&authKey=5ci2KE+i56fFxxCVrj2Wkj4D3D7aKphITW07QdHls771upOyVT/06ekBgrNUZKeF) [**一键加群**](http://qm.qq.com/cgi-bin/qm/qr?k=gUbyjh9xrnskBWGYm-9DbnJqWBZOpcva&jump_from=webapi&authKey=5ci2KE+i56fFxxCVrj2Wkj4D3D7aKphITW07QdHls771upOyVT/06ekBgrNUZKeF)
-
-### 三群[**722457505**](//shang.qq.com/wpa/qunwpa?idkey=a12d43edc065daad3043ca272a0eb9332ecd878f2921683c51e9d4e02554c80f)
-
-### 二群[**655341576**](https://shang.qq.com/wpa/qunwpa?idkey=dd0275fbf9149b71e4f2f4e44902b552c846e9a2234f68eaca35a442510f061b)**已满** [**一键加群**](https://shang.qq.com/wpa/qunwpa?idkey=dd0275fbf9149b71e4f2f4e44902b552c846e9a2234f68eaca35a442510f061b)
-
-### 一群[**340569308**](http://shang.qq.com/wpa/qunwpa?idkey=7fc3fef0db96421305e65c41cc081ffeca507fdc23cab93d731277be829985ec)**已满** [**一键加群**](http://shang.qq.com/wpa/qunwpa?idkey=7fc3fef0db96421305e65c41cc081ffeca507fdc23cab93d731277be829985ec)
-
-### [**QQ频道**](https://qun.qq.com/qqweb/qunpro/share?_wv=3&_wwv=128&inviteCode=1U23Gb&from=181074&biz=ka)**推荐**
-
-> 有问题可以加群反馈或在网站留言，修复更及时
-
 ## 📜 反馈说明
 
 > 反馈问题请按照以下格式进行：
@@ -97,6 +96,7 @@
 <pre>
 <b>小调整不在记录</b>
 <ul>
+<li>4.7.1  添加夸克网盘直链支持</li>
 <li>4.4.5  调整依赖包CDN地址</li>
 <li>4.4.1  添加微博链接自动跳转</li>
 <li>4.2.41 csdn移除代码复制部分限制</li>
@@ -196,6 +196,10 @@
 * 贴吧
 * 豆瓣
 * 17173
+
+## 夸克网盘直链获取
+
+![夸克直链.png](https://s2.loli.net/2023/01/08/2IkvatHFsr7bh59.png)
 
 ## Vip视频解析
 

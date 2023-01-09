@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.6.11
+// @version      4.7.1
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、上学吧答案查询(已下线)；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转 12、搜索引擎快速跳转
@@ -91,9 +91,11 @@
 // @include      *://www.douban.com/link2/?url*
 // @include      *://link.17173.com*
 // @include      *://search.suning.com/*
+// @include      *://pan.quark.cn/*
 // @match        *://www.baidu.com/*
 // @match        *://www.google.com/*
 // @match        *://www.sogou.com/*
+// @match        *://www.so.com/s*
 // @exclude      *://tv.wandhi.com/*
 // @exclude      *://vip.wandhi.com/*
 // @include      *://settings.wandhi.com/*
@@ -113,6 +115,7 @@
 // @connect      xbeibeix.com
 // @connect      gwdang.com
 // @connect      scriptcat.org
+// @connect      quark.cn
 // @grant        unsafeWindow
 // @grant        GM_xmlhttpRequest
 // @grant        GM_info
@@ -137,7 +140,7 @@
     "object" == typeof exports && "undefined" != typeof module ? factory(require("sweetalert2")) : "function" == typeof define && define.amd ? define([ "sweetalert2" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).Swal);
 })(this, (function(Swal) {
     "use strict";
-    var Swal__default, extendStatics, update_key, Min, Hour, Day, Week, Logger, LogLevel, Config, History, PriceDetail, ListPriceItem, BrowerType, Core, AjaxOption, Alert, Http, HttpHeaders, Convert, Result, HistoryResult, Route, css_248z$8, Common, PluginBase, SiteEnum, UpdateService, VersionCompar, VersionResult, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$7, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$6, sAlert, GwdService, css_248z$5, TaoBaoService, container, Container, css_248z$4, BiliImgService, Menu$1, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$3, ConfigEnum, CsdnAdService, Menu, WenKuService, LinkJumpService, css_248z$2, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$1, css_248z, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, OneKeyVipInjection;
+    var Swal__default, extendStatics, update_key, Min, Hour, Day, Week, Logger, LogLevel, Config, History, PriceDetail, ListPriceItem, BrowerType, Core, AjaxOption, Alert, Http, HttpHeaders, Convert, Result, HistoryResult, Route, css_248z$8, Common, PluginBase, SiteEnum, UpdateService, VersionCompar, VersionResult, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$7, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$6, sAlert, GwdService, css_248z$5, TaoBaoService, container, Container, css_248z$4, BiliImgService, Menu$1, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$3, ConfigEnum, CsdnAdService, Menu, WenKuService, LinkJumpService, css_248z$2, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$1, css_248z, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, NetDiskDirectService, OneKeyVipInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
@@ -365,6 +368,8 @@
         }
         return Core.appendTo = function(selecter, html) {
             $(selecter).append(html);
+        }, Core.prepend = function(selector, html) {
+            $(selector).prepend(html);
         }, Core.lazyload = function(callback, time) {
             return void 0 === time && (time = 5), __awaiter(this, void 0, Promise, (function() {
                 var _this = this;
@@ -484,6 +489,10 @@
             }, /(y+)/.test(fmt) && (fmt = fmt.replace(RegExp.$1, (time.getFullYear() + "").substr(4 - RegExp.$1.length))), 
             o) new RegExp("(" + k + ")").test(fmt) && (fmt = fmt.replace(RegExp.$1, 1 == RegExp.$1.length ? o[k] : ("00" + o[k]).substr(("" + o[k]).length)));
             return fmt;
+        }, Core.sizeFormat = function(value) {
+            var unit, index;
+            return value === +value ? (unit = [ "B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" ], 
+            index = Math.floor(Math.log(value) / Math.log(1024)), "" + (value / Math.pow(1024, index)).toFixed(1) + unit[index]) : "";
         }, Core.encode = function(str) {
             return window.btoa(str);
         }, Core.decode = function(str) {
@@ -521,6 +530,20 @@
             browser;
         }, Core.getPercent = function(num, total) {
             return num = parseFloat(String(num)), total = parseFloat(String(total)), isNaN(num) || isNaN(total) ? 0 : total <= 0 ? "0" : Math.round(num / total * 1e4) / 100;
+        }, Core.getReact = function(dom, traverseUp) {
+            var domFiber, compFiber_1, i, GetCompFiber, compFiber;
+            if (void 0 === traverseUp && (traverseUp = 0), null == (domFiber = dom[Object.keys(dom).find((function(key) {
+                return key.startsWith("__reactFiber$") || key.startsWith("__reactInternalInstance$");
+            }))])) return null;
+            if (domFiber._currentElement) {
+                for (compFiber_1 = domFiber._currentElement._owner, i = 0; i < traverseUp; i++) compFiber_1 = compFiber_1._currentElement._owner;
+                return compFiber_1._instance;
+            }
+            for (compFiber = (GetCompFiber = function(fiber) {
+                for (var parentFiber = fiber.return; "string" == typeof parentFiber.type; ) parentFiber = parentFiber.return;
+                return parentFiber;
+            })(domFiber), i = 0; i < traverseUp; i++) compFiber = GetCompFiber(compFiber);
+            return compFiber.stateNode || compFiber;
         }, Core;
     }(), AjaxOption = function() {
         function AjaxOption(_url, _methodType, _data, _success, _header, timeOut) {
@@ -638,6 +661,41 @@
                     (null === (_a = res.finalUrl) || void 0 === _a ? void 0 : _a.indexOf("adguard.org")) > 0 || (null === (_b = option.url) || void 0 === _b ? void 0 : _b.indexOf("jsdelivr")) > 0 ? option.onError(null) : null === (_c = option.onError) || void 0 === _c || _c.call(option, res);
                 }
             });
+        }, Http.ajaxNew = function(url, method, data) {
+            var _a, _b, _getData, _data, head = new HttpHeaders;
+            return url.indexOf("wandhi") > 0 && (head.version = Config.env.script.version, head.auth = null !== (_a = Config.env.script.author) && void 0 !== _a ? _a : "", 
+            head.namespace = null !== (_b = Config.env.script.namespace) && void 0 !== _b ? _b : ""), 
+            _getData = function(_data) {
+                if (_data instanceof FormData) return data;
+                if (data instanceof Map) {
+                    var fd_1 = new FormData;
+                    return _data.forEach((function(v, k) {
+                        fd_1.append(k, v);
+                    })), fd_1;
+                }
+                return JSON.stringify(_data);
+            }, _data = _getData(data), Logger.debug(_data), data instanceof FormData || data instanceof Map ? head["Content-Type"] = "application/x-www-form-urlencoded; charset=utf-8" : head["Content-Type"] = "application/json; charset=utf-8", 
+            new Promise((function(resolve, reject) {
+                GM_xmlhttpRequest({
+                    url: url,
+                    method: method,
+                    headers: head,
+                    data: _data,
+                    onload: function(res) {
+                        try {
+                            resolve(JSON.parse(res.responseText));
+                        } catch (error) {
+                            Logger.debug(error), resolve(res.responseText);
+                        }
+                    },
+                    onerror: function(err) {
+                        Logger.debug(err), reject(err);
+                    },
+                    ontimeout: function() {
+                        Logger.debug("\u8bf7\u6c42\u8d85\u65f6:" + url), reject("\u8bf7\u6c42\u8d85\u65f6");
+                    }
+                });
+            }));
         }, Http.getData = function(url, callback) {
             $.getJSON(url, (function(d) {
                 callback(d);
@@ -883,6 +941,10 @@
             }));
         }, Route.couponQuery = function(itemId, type, callback) {
             Route.baseApi("/coupons/info", new Map([ [ "id", itemId ], [ "type", type ] ]), callback);
+        }, Route.quarkDriect = function(fids) {
+            return Http.ajaxNew("https://drive.quark.cn/1/clouddrive/file/download?pr=ucpro&fr=pc", "POST", {
+                fids: fids
+            });
         }, Route.update_api = "https://cdn.jsdelivr.net/gh/maxzhang666/OneKeyVip/OneKeyVip.user.js?t=" + Core.uuid(), 
         Route.update_api_script_cat = "https://scriptcat.org/api/v1/scripts/72", Route.home_url = "https://wiki.wandhi.com", 
         Route.install_url_one = "https://greasyfork.org/zh-CN/scripts/384538", Route.install_url_two = "https://scriptcat.org/script-show-page/72", 
@@ -972,7 +1034,8 @@
         SiteEnum.JianShu = "JianShu", SiteEnum.JueJin = "JueJin", SiteEnum.Gitee = "Gitee", 
         SiteEnum.Weibo = "Weibo", SiteEnum.TuXiaoChao = "TuXiaoChao", SiteEnum.OsCh = "OsCh", 
         SiteEnum.AiFaDian = "AiFaDian", SiteEnum.Baidu = "Baidu", SiteEnum.DouBan = "DouBan", 
-        SiteEnum.g17173 = "g17173", SiteEnum.Google = "Google", SiteEnum.SoGou = "SoGou";
+        SiteEnum.g17173 = "g17173", SiteEnum.Google = "Google", SiteEnum.SoGou = "SoGou", 
+        SiteEnum.KuaKeHome = "KuaKeHome";
     }(SiteEnum || (SiteEnum = {})), UpdateService = function(_super) {
         function UpdateService() {
             var _this = _super.call(this) || this;
@@ -3219,7 +3282,7 @@
     }(PluginBase), SearchService = function(_super) {
         function SearchService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
-            return _this.rules = new Map([ [ SiteEnum.Baidu, /www\.baidu\.com\/(baidu|s)\?/i ], [ SiteEnum.Google, /www\.google\.com\/search\?/i ], [ SiteEnum.SoGou, /www\.sogou\.com\/web/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.Baidu, /www\.baidu\.com\/(baidu|s)\?/i ], [ SiteEnum.Google, /www\.google\.com\/search\?/i ], [ SiteEnum.SoGou, /www\.sogou\.com\/web/i ], [ SiteEnum.SoGou, /www\.so\.com\/s\?/i ] ]), 
             _this._appName = "\u4fbf\u6377\u641c\u7d22", _this._unique = !1, _this.siteConfig = new Map([ [ SiteEnum.Baidu, "#kw" ], [ SiteEnum.Google, "input[name=q]" ], [ SiteEnum.SoGou, "#upquery" ] ]), 
             _this;
         }
@@ -3233,13 +3296,81 @@
                     Core.open("https://www.sogou.com/web?query=" + $(SearchService.keySelector).val() + "&ie=utf8");
                 })), new MfbModel("\u8c37\u6b4c", "onekeyvip-google", (function() {
                     Core.open("https://www.google.com/search?q=" + $(SearchService.keySelector).val());
+                })), new MfbModel("360", "onekeyvip-360logo", (function() {
+                    Core.open("https://www.so.com/s?q=" + $(SearchService.keySelector).val());
                 })) ];
                 new MfbMenu(Config.get(ConfigEnum.Search_OptMenuPos, "cl"), Config.get(ConfigEnum.Search_OptMenuMethod, "hover")).Init(menus);
             }
         }, SearchService.keySelector = "#none", SearchService;
+    }(PluginBase), NetDiskDirectService = function(_super) {
+        function NetDiskDirectService() {
+            var _this = _super.call(this) || this;
+            return _this.rules = new Map([ [ SiteEnum.KuaKeHome, /pan\.quark\.cn\/list/ ] ]), 
+            _this._appName = "NetDiskDirect", _this;
+        }
+        return __extends(NetDiskDirectService, _super), NetDiskDirectService.prototype.loader = function() {}, 
+        NetDiskDirectService.prototype.run = function() {
+            NetDiskDirectService._site = this.site, this.site == SiteEnum.KuaKeHome && (NetDiskDirectService.btnSelecotr = ".btn-operate", 
+            NetDiskDirectService.btn = '<div class="ovk-main" style="margin-right: 10px;">\n    <button type="button" class="ant-btn btn-file okv-btn-direct">\n        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMyMjIiIHN0cm9rZS13aWR0aD0iMiI+PHBhdGggc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBkPSJNOSAxMmwyIDIgMi0yeiIvPjxwYXRoIGQ9Ik0xNCA4aDEuNTUzYy44NSAwIDEuMTYuMDkzIDEuNDcuMjY3LjMxMS4xNzQuNTU2LjQzLjcyMi43NTYuMTY2LjMyNi4yNTUuNjUuMjU1IDEuNTR2NC44NzNjMCAuODkyLS4wODkgMS4yMTUtLjI1NSAxLjU0LS4xNjYuMzI3LS40MS41ODMtLjcyMi43NTctLjMxLjE3NC0uNjIuMjY3LTEuNDcuMjY3SDYuNDQ3Yy0uODUgMC0xLjE2LS4wOTMtMS40Ny0uMjY3YTEuNzc4IDEuNzc4IDAgMDEtLjcyMi0uNzU2Yy0uMTY2LS4zMjYtLjI1NS0uNjUtLjI1NS0xLjU0di00Ljg3M2MwLS44OTIuMDg5LTEuMjE1LjI1NS0xLjU0LjE2Ni0uMzI3LjQxLS41ODMuNzIyLS43NTcuMzEtLjE3NC42Mi0uMjY3IDEuNDctLjI2N0gxMSIvPjxwYXRoIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZD0iTTExIDN2MTAiLz48L2c+PC9zdmc+" class="btn-icon" alt="" style="width: 20px;height: 20px">\n        <span>\u83b7\u53d6\u76f4\u94fe</span>\n    </button>\n</div>', 
+            NetDiskDirectService.getSelecor = NetDiskDirectService.getQuarkSelectedFile, NetDiskDirectService.quarkListener());
+        }, NetDiskDirectService.quarkListener = function() {
+            var _this = this;
+            window.addEventListener("hashchange", (function(e) {
+                return __awaiter(_this, void 0, void 0, (function() {
+                    return __generator(this, (function(_a) {
+                        switch (_a.label) {
+                          case 0:
+                            return "https://pan.quark.cn/list#/", "https://pan.quark.cn/list#/list/all", "https://pan.quark.cn/list#/" === e.oldURL && "https://pan.quark.cn/list#/list/all" === e.newURL ? [ 2 ] : [ 4, Core.sleep(.15) ];
+
+                          case 1:
+                            return _a.sent(), $(".quark-button").length > 0 ? [ 2 ] : (NetDiskDirectService.initButton(), 
+                            [ 2 ]);
+                        }
+                    }));
+                }));
+            })), NetDiskDirectService.initButton(), NetDiskDirectService.quarkEvent(), NetDiskDirectService.commonEvent();
+        }, NetDiskDirectService.quarkEvent = function() {
+            $(document).on("click", ".okv-btn-direct", (function(e) {
+                var fids, selectList = NetDiskDirectService.getQuarkSelectedFile();
+                Logger.debug("\u5938\u514b-\u9009\u62e9\u6587\u4ef6" + selectList), 0 !== selectList.length ? selectList.filter((function(e) {
+                    return !e.file;
+                })).length != selectList.length ? (fids = selectList.filter((function(e) {
+                    return e.file;
+                })).map((function(e) {
+                    return e.fid;
+                })), NetDiskDirectService._site == SiteEnum.KuaKeHome ? Route.quarkDriect(fids).then((function(res) {
+                    Logger.debug(res), 31001 != res.code ? 0 == res.code ? sAlert.html("\u76f4\u94fe\u4fe1\u606f", NetDiskDirectService.generateDom(res.data), !0, "\u6211\u597d\u4e86", "#3085d6", "40%") : sAlert.error("\u94fe\u63a5\u83b7\u53d6\u5931\u8d25,\u8bf7\u7a0d\u540e\u518d\u8bd5") : sAlert.error("\u8bf7\u5148\u767b\u5f55\u7f51\u76d8");
+                })) : sAlert.error("\u8bf7\u5148\u5c06\u6587\u4ef6\u4fdd\u5b58\u5230\u81ea\u5df1\u7684\u7f51\u76d8")) : sAlert.error("\u6682\u4e0d\u652f\u6301\u6587\u4ef6\u5939\u4e0b\u8f7d") : sAlert.error("\u8bf7\u5148\u52fe\u9009\u8981\u4e0b\u8f7d\u7684\u6587\u4ef6");
+            }));
+        }, NetDiskDirectService.commonEvent = function() {
+            $(document).on("click", ".quark-down-item", (function(e) {
+                Core.open(e.target.dataset.url, !0);
+            }));
+        }, NetDiskDirectService.generateDom = function(list) {
+            var rows = "";
+            return list.forEach((function(e) {
+                rows += '<tr>\n                        <td class="bili-table-cell">' + e.file_name + '</td>\n                        <td class="bili-table-cell">' + Core.sizeFormat(e.size) + '</td>\n                        <td class="bili-table-cell"><button class="okv-btn okv-btn-primary quark-down-item" data-url="' + e.download_url + '">\u4e0b\u8f7d</button></td>\n                    </tr>';
+            })), '<div style="height: 30rem"><table class="bili-table bili-table-small">\n                    <thead class="bili-table-head">\n                        <tr>                        \n                            <th class="bili-table-cell">\u6807\u9898</th>\n                            <th class="bili-table-cell">\u5927\u5c0f</th>\n                            <th class="bili-table-cell">\u64cd\u4f5c</th>\n                        </tr>\n                    </thead>\n                    <tbody class="at-table-tbody">                    \n                        ' + rows + "\n                    </tbody>    \n                </table></div>";
+        }, NetDiskDirectService.initButton = function() {
+            Core.autoLazyload((function() {
+                return $(NetDiskDirectService.btnSelecotr).length > 0;
+            }), (function() {
+                Core.prepend(NetDiskDirectService.btnSelecotr, NetDiskDirectService.btn);
+            }), .5);
+        }, NetDiskDirectService.getQuarkSelectedFile = function() {
+            var reactDom, props, fileList, selectedKeys_1, selectedList = [];
+            try {
+                return reactDom = document.getElementsByClassName("file-list")[0], (props = Core.getReact(reactDom).props) && (fileList = props.list || [], 
+                selectedKeys_1 = props.selectedRowKeys || [], fileList.forEach((function(val) {
+                    selectedKeys_1.includes(val.fid) && selectedList.push(val);
+                }))), selectedList;
+            } catch (e) {
+                return selectedList;
+            }
+        }, NetDiskDirectService.btnSelecotr = "", NetDiskDirectService.btn = "", NetDiskDirectService;
     }(PluginBase), OneKeyVipInjection = function() {
         function OneKeyVipInjection() {
-            this.plugins = new Array, this.plugins = [ Container.Require(ControlMenuService), Container.Require(SettingService), Container.Require(AutoExpandService), Container.Require(AliyunPanToken), Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(BiliMobileService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(GwdService), Container.Require(CsdnAdService), Container.Require(WenKuService), Container.Require(LinkJumpService), Container.Require(YoutubeService), Container.Require(_GwdService), Container.Require(SearchService) ], 
+            this.plugins = new Array, this.plugins = [ Container.Require(ControlMenuService), Container.Require(SettingService), Container.Require(AutoExpandService), Container.Require(AliyunPanToken), Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(BiliMobileService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(GwdService), Container.Require(CsdnAdService), Container.Require(WenKuService), Container.Require(LinkJumpService), Container.Require(YoutubeService), Container.Require(_GwdService), Container.Require(SearchService), Container.Require(NetDiskDirectService) ], 
             Logger.info("container loaded");
         }
         return OneKeyVipInjection.prototype.Init = function() {
