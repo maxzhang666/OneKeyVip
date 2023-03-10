@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         【One】懒人神器,懒人福利,全新架构,性能更出众————只需一个脚本包揽所有功能 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      1.0.3
+// @version      1.0.4
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
-// @description  功能介绍：1、CSDN页面清理 2、页面磁力链接提取
+// @description  功能介绍：1、ScriptsCat脚本猫脚本查询 2、CSDN页面清理 3、页面磁力链接提取
 // @author       MaxZhang
 // @icon         https://www.wandhi.com//favicon.ico
 // @include      *://*
@@ -16,6 +16,7 @@
 // @connect      api.wandhi.com
 // @connect      cdn.jsdelivr.net
 // @connect      gwdang.com
+// @connect      scriptcat.org
 // @grant        unsafeWindow
 // @grant        GM_xmlhttpRequest
 // @grant        GM_info
@@ -522,9 +523,176 @@
                 });
             }));
         }, MagnetRegApp;
+    }(AppBase), Str = function() {
+        function Str() {}
+        return Str.trim = function(source, char) {
+            return source.replace(new RegExp("^\\" + char + "+|\\" + char + "+$", "g"), "");
+        }, Str;
+    }(), Http = function() {
+        function Http() {}
+        return Http.ajax = function(option, header) {
+            var _a;
+            void 0 === header && (header = new Map);
+            var head = new HttpHeaders;
+            head["User-Agent"] = null !== (_a = null === navigator || void 0 === navigator ? void 0 : navigator.userAgent) && void 0 !== _a ? _a : "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.114", 
+            head.Accept = "application/atom+xml,application/xml,text/xml,application/json,text/plain,*/*", 
+            (null == header ? void 0 : header.size) > 0 && header.forEach((function(v, k) {
+                head[k] = v;
+            })), Logger.debug("http head info:", head), option.headers || (option.headers = head);
+            try {
+                GM_xmlhttpRequest(option);
+            } catch (e) {
+                Logger.error(e);
+            }
+        }, Http.getFormData = function(data) {
+            if (data instanceof Map) {
+                var fd_1 = new FormData;
+                data.forEach((function(v, k) {
+                    var _v;
+                    _v = "string" == typeof v ? v.toString() : JSON.stringify(v), fd_1.append(k, _v);
+                })), data = fd_1;
+            }
+            return data;
+        }, Http._getData = function(data, contentType) {
+            if (void 0 === contentType && (contentType = "json"), data instanceof Map) {
+                var fd_2 = new FormData;
+                data.forEach((function(v, k) {
+                    fd_2.append(k, v);
+                })), data = fd_2;
+            }
+            var res = "";
+            if ("json" == contentType) {
+                var obj_1 = Object.create(null);
+                data.forEach((function(k, v) {
+                    obj_1[v] = k;
+                })), res = JSON.stringify(obj_1);
+            } else data.forEach((function(k, v) {
+                res += "".concat(v, "=").concat(encodeURIComponent(k.toString()), "&");
+            })), res = Str.trim(res, "&");
+            return res;
+        }, Http.post = function(url, data, contentType, timeOut) {
+            return void 0 === timeOut && (timeOut = 10), new Promise((function(resolve, reject) {
+                Http.ajax({
+                    url: url,
+                    method: "POST",
+                    data: Http.getFormData(data),
+                    timeout: 1e3 * timeOut,
+                    onload: function(response) {
+                        var _a;
+                        try {
+                            var res = null !== (_a = JSON.parse(response.responseText)) && void 0 !== _a ? _a : response.responseText;
+                            resolve(res);
+                        } catch (error) {
+                            Logger.debug(error), reject();
+                        }
+                    },
+                    onerror: function(response) {
+                        reject(response);
+                    },
+                    ontimeout: function() {
+                        reject("\u8bf7\u6c42\u8d85\u65f6");
+                    }
+                });
+            }));
+        }, Http.get = function(url, data, head, time_out) {
+            return void 0 === head && (head = new Map), void 0 === time_out && (time_out = 10), 
+            new Promise((function(resolve, reject) {
+                Http.ajax({
+                    url: url,
+                    method: "GET",
+                    timeout: 1e3 * time_out,
+                    onload: function(response) {
+                        var _a;
+                        try {
+                            var res = null !== (_a = JSON.parse(response.responseText)) && void 0 !== _a ? _a : response.responseText;
+                            resolve(res);
+                        } catch (error) {
+                            Logger.debug(error), reject();
+                        }
+                    },
+                    onerror: function(response) {
+                        reject(response);
+                    },
+                    ontimeout: function() {
+                        reject("\u8bf7\u6c42\u8d85\u65f6");
+                    }
+                }, head);
+            }));
+        }, Http;
+    }(), HttpHeaders = function HttpHeaders() {}, Config = function() {
+        function Config() {}
+        return Object.defineProperty(Config, "env", {
+            get: function() {
+                return GM_info;
+            },
+            enumerable: !1,
+            configurable: !0
+        }), Config.get = function(key, defaultValue) {
+            void 0 === defaultValue && (defaultValue = "");
+            var objStr = GM_getValue(this.encode(key), null);
+            if (objStr) {
+                var obj = JSON.parse(objStr);
+                if (-1 == obj.exp || obj.exp > (new Date).getTime()) return Logger$1.info("cache true:" + key + "," + obj.exp), 
+                obj.value;
+                GM_deleteValue(key);
+            }
+            return Logger$1.info("cache false"), defaultValue;
+        }, Config.set = function(key, v, exp) {
+            void 0 === exp && (exp = -1);
+            var obj = {
+                key: key,
+                value: v,
+                exp: -1 == exp ? exp : (new Date).getTime() + 1e3 * exp
+            };
+            Logger$1.debug(obj), GM_setValue(this.encode(key), JSON.stringify(obj));
+        }, Config.remember = function(key, exp, callback) {
+            var _this = this;
+            return new Promise((function(reso, reject) {
+                var v = _this.get(key, null);
+                null == v || "" === v ? callback().then((function(res) {
+                    _this.set(key, res, exp), reso(res);
+                })).catch((function(e) {
+                    reject(e);
+                })) : (Logger$1.debug(v), reso(v));
+            }));
+        }, Config.clear = function(key) {
+            GM_deleteValue(key);
+        }, Config.decode = function(str) {
+            return atob(str);
+        }, Config.encode = function(str) {
+            return btoa(str);
+        }, Config;
+    }(), ScriptsFind = function(_super) {
+        function ScriptsFind() {
+            var _this = null !== _super && _super.apply(this, arguments) || this;
+            return _this._unique = !1, _this.appName = "ScriptsFind", _this.rules = new Map([ [ SiteEnum.All, [ /.*/i ] ] ]), 
+            _this;
+        }
+        return __extends(ScriptsFind, _super), ScriptsFind.prototype.loader = function() {}, 
+        ScriptsFind.prototype.run = function() {
+            return __awaiter$1(this, void 0, Promise, (function() {
+                var domain, data;
+                return __generator$1(this, (function(_a) {
+                    switch (_a.label) {
+                      case 0:
+                        return domain = unsafeWindow.window.location.host, null != (data = Config.get("scriptscat_query_" + domain, null)) ? [ 3, 2 ] : [ 4, Http.get("https://scriptcat.org/api/v2/scripts?domain=" + domain) ];
+
+                      case 1:
+                        data = _a.sent(), Config.set("scriptscat_query_" + domain, data, 7200), _a.label = 2;
+
+                      case 2:
+                        return GM_registerMenuCommand("\u5f53\u524d\u7f51\u7ad9\u53ef\u7528\u811a\u672c:" + data.data.total, (function() {
+                            GM_openInTab("https://scriptcat.org/search?keyword=" + domain, {
+                                active: !0
+                            });
+                        })), [ 2 ];
+                    }
+                }));
+            }));
+        }, ScriptsFind;
     }(AppBase), One = function() {
         function One() {
-            this.services = [ Ioc.register(CsdnApp), Ioc.register(MagnetRegApp) ];
+            this.services = [ Ioc.register(CsdnApp), Ioc.register(MagnetRegApp), Ioc.register(ScriptsFind) ];
         }
         return One.prototype.run = function() {
             this.services.every((function(element) {

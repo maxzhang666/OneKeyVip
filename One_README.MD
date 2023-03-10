@@ -12,6 +12,7 @@
 
 ## 🔧 [插件功能(点我查看详情)](https://wiki.wandhi.com/zh-cn/Feature.html)
 
+* ✅ 脚本猫可用脚本查询
 * ✅ CSDN页面清洁
 * ✅ 页面磁力链接提取
 
