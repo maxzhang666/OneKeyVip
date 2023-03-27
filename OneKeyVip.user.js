@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.7.5
+// @version      4.7.6
 // @homepage     https://wiki.wandhi.com/
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转 12、搜索引擎快速跳转
@@ -948,7 +948,7 @@
                 fids: fids
             });
         }, Route.update_api = "https://cdn.jsdelivr.net/gh/maxzhang666/OneKeyVip/OneKeyVip.user.js?t=" + Core.uuid(), 
-        Route.update_api_script_cat = "https://scriptcat.org/api/v1/scripts/72", Route.home_url = "https://wiki.wandhi.com", 
+        Route.update_api_script_cat = "https://scriptcat.org/api/v2/scripts/72", Route.home_url = "https://wiki.wandhi.com", 
         Route.install_url_one = "https://greasyfork.org/zh-CN/scripts/384538", Route.install_url_two = "https://scriptcat.org/script-show-page/72", 
         Route.sxb_anhao = "http://www.lelunwen.com/e/action/ListInfo/?classid=45", Route.sxb_key = "sxb_anhao", 
         Route.config = "/config/query", Route.history = "/history/", Route.historyv1 = "/history/v1", 
