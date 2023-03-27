@@ -121,7 +121,7 @@
 // @grant        unsafeWindow
 // @grant        GM_xmlhttpRequest
 // @grant        GM_info
-// @grant        GM.addStyle
+// @grant        GM_addStyle
 // @grant        GM_getValue
 // @grant        GM_setValue
 // @grant        GM_notification
