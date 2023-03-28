@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,百度文库解析导出,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.7.6
+// @version      4.7.7
 // @homepage     https://wiki.wandhi.com/
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转 12、搜索引擎快速跳转
@@ -98,6 +98,7 @@
 // @match        *://www.google.com/*
 // @match        *://www.sogou.com/*
 // @match        *://www.so.com/s*
+// @match        *://sspai.com/link*
 // @exclude      *://tv.wandhi.com/*
 // @exclude      *://vip.wandhi.com/*
 // @include      *://settings.wandhi.com/*
@@ -1038,7 +1039,7 @@
         SiteEnum.TuXiaoChao = "TuXiaoChao", SiteEnum.OsCh = "OsCh", SiteEnum.AiFaDian = "AiFaDian", 
         SiteEnum.Baidu = "Baidu", SiteEnum.DouBan = "DouBan", SiteEnum.g17173 = "g17173", 
         SiteEnum.Google = "Google", SiteEnum.SoGou = "SoGou", SiteEnum.KuaKeHome = "KuaKeHome", 
-        SiteEnum.TencentDoc = "TencentDoc", SiteEnum.TencentMail = "TencentMail";
+        SiteEnum.TencentDoc = "TencentDoc", SiteEnum.TencentMail = "TencentMail", SiteEnum.SsPAi = "SsPai";
     }(SiteEnum || (SiteEnum = {})), UpdateService = function(_super) {
         function UpdateService() {
             var _this = _super.call(this) || this;
@@ -3000,7 +3001,7 @@
     }(PluginBase), LinkJumpService = function(_super) {
         function LinkJumpService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ], [ SiteEnum.Gitee, /gitee\.com\/link/i ], [ SiteEnum.JueJin, /juejin\.cn\/\?target/i ], [ SiteEnum.Weibo, /weibo\.cn\/sinaurl/i ], [ SiteEnum.TuXiaoChao, /support\.qq\.com\/products\/.*\/link-jump/i ], [ SiteEnum.OsCh, /oschina\.net\/action\/GoToLink/i ], [ SiteEnum.AiFaDian, /afdian\.net\/link\?target/i ], [ SiteEnum.Baidu, /jump(2?)\.bdimg\.com\/safecheck/i ], [ SiteEnum.DouBan, /www\.douban\.com\/link2\// ], [ SiteEnum.g17173, /link\.17173\.com\/\?target/i ], [ SiteEnum.TencentDoc, /docs\.qq\.com\/scenario\/link/i ], [ SiteEnum.TencentMail, /mail\.qq\.com\/cgi-bin\/readtemplate/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ], [ SiteEnum.Gitee, /gitee\.com\/link/i ], [ SiteEnum.JueJin, /juejin\.cn\/\?target/i ], [ SiteEnum.Weibo, /weibo\.cn\/sinaurl/i ], [ SiteEnum.TuXiaoChao, /support\.qq\.com\/products\/.*\/link-jump/i ], [ SiteEnum.OsCh, /oschina\.net\/action\/GoToLink/i ], [ SiteEnum.AiFaDian, /afdian\.net\/link\?target/i ], [ SiteEnum.Baidu, /jump(2?)\.bdimg\.com\/safecheck/i ], [ SiteEnum.DouBan, /www\.douban\.com\/link2\// ], [ SiteEnum.g17173, /link\.17173\.com\/\?target/i ], [ SiteEnum.TencentDoc, /docs\.qq\.com\/scenario\/link/i ], [ SiteEnum.TencentMail, /mail\.qq\.com\/cgi-bin\/readtemplate/i ], [ SiteEnum.SsPAi, /sspai\.com\/link/i ] ]), 
             _this.key = "", _this.selector = "", _this._unique = !1, _this._appName = "LinkJump", 
             _this;
         }
@@ -3014,6 +3015,7 @@
               case SiteEnum.JueJin:
               case SiteEnum.AiFaDian:
               case SiteEnum.g17173:
+              case SiteEnum.SsPAi:
                 this.key = "target";
                 break;
 
@@ -3045,7 +3047,8 @@
             }
             Config.get(config, !0) ? (url = "", "" != this.key ? url = Core.getPar(this.key) : "" != this.selector && (url = $(this.selector).text()), 
             null != url && "" != url ? (sAlert.info("\u94fe\u63a5\u5df2\u89e3\u6790,\u6b63\u5728\u8df3\u8f6c~"), 
-            this.jump(url)) : sAlert.warning("\u672a\u80fd\u89e3\u6790\u5230\u94fe\u63a5,\u8bf7\u624b\u52a8\u8df3\u8f6c")) : sAlert.warning("\u5df2\u5173\u95ed\u672c\u7f51\u7ad9\u7684\u8df3\u8f6c\u529f\u80fd");
+            this.jump(url)) : (sAlert.warning("\u672a\u80fd\u89e3\u6790\u5230\u94fe\u63a5,\u8bf7\u624b\u52a8\u8df3\u8f6c"), 
+            Logger.debug("\u89e3\u6790\u94fe\u63a5:" + url + ",key:" + this.key))) : sAlert.warning("\u5df2\u5173\u95ed\u672c\u7f51\u7ad9\u7684\u8df3\u8f6c\u529f\u80fd");
         }, LinkJumpService.prototype.jump = function(url) {
             url && (url = decodeURIComponent(url), Logger.debug(url), unsafeWindow.window.location.href = url);
         }, LinkJumpService;
