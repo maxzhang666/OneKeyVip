@@ -1039,7 +1039,8 @@
         SiteEnum.TuXiaoChao = "TuXiaoChao", SiteEnum.OsCh = "OsCh", SiteEnum.AiFaDian = "AiFaDian", 
         SiteEnum.Baidu = "Baidu", SiteEnum.DouBan = "DouBan", SiteEnum.g17173 = "g17173", 
         SiteEnum.Google = "Google", SiteEnum.SoGou = "SoGou", SiteEnum.KuaKeHome = "KuaKeHome", 
-        SiteEnum.TencentDoc = "TencentDoc", SiteEnum.TencentMail = "TencentMail", SiteEnum.SsPAi = "SsPai";
+        SiteEnum.TencentDoc = "TencentDoc", SiteEnum.TencentMail = "TencentMail", SiteEnum.SsPAi = "SsPai", 
+        SiteEnum.FeiShuDoc = "FeiShuDoc";
     }(SiteEnum || (SiteEnum = {})), UpdateService = function(_super) {
         function UpdateService() {
             var _this = _super.call(this) || this;

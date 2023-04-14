@@ -178,7 +178,7 @@
         SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", SiteEnum.BDY1 = "BDY1", SiteEnum.BD_DETAIL_OLD = "BD_DETAIL_OLD", 
         SiteEnum.BD_DETAIL_NEW = "BD_DETAIL_NEW", SiteEnum.BD_DETAIL_Share = "BD_DETAIL_Share", 
         SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", SiteEnum.Vp = "Vp", SiteEnum.Gwd = "Gwd", 
-        SiteEnum.Xxqg = "Xxqg", SiteEnum.CSDN = "CSDN";
+        SiteEnum.Xxqg = "Xxqg", SiteEnum.CSDN = "CSDN", SiteEnum.FeiShuDoc = "FeiShuDoc";
     }(SiteEnum || (SiteEnum = {}));
     var LogLevel$1, Core$1 = function() {
         function Core() {}
@@ -302,7 +302,7 @@
             return function(v) {
                 return function step(op) {
                     if (f) throw new TypeError("Generator is already executing.");
-                    for (;_; ) try {
+                    for (;g && (g = 0, op[0] && (_ = 0)), _; ) try {
                         if (f = 1, y && (t = 2 & op[0] ? y.return : op[0] ? y.throw || ((t = y.return) && t.call(y), 
                         0) : y.next) && !(t = t.call(y, op[1])).done) return t;
                         switch (y = 0, t && (op = [ 2 & op[0], t.value ]), op[0]) {
