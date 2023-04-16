@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【One】懒人神器,懒人福利,全新架构,性能更出众————只需一个脚本包揽所有功能 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      1.0.4
+// @version      1.0.5
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、ScriptsCat脚本猫脚本查询 2、CSDN页面清理 3、页面磁力链接提取
@@ -12,7 +12,6 @@
 // @require      https://lib.baomitu.com/limonte-sweetalert2/11.4.7/sweetalert2.all.min.js
 // @license      MIT
 // @grant        GM_setClipboard
-// @run-at       document-end
 // @connect      api.wandhi.com
 // @connect      cdn.jsdelivr.net
 // @connect      gwdang.com
@@ -165,6 +164,29 @@
                 }([ n, v ]);
             };
         }
+    }
+    function __read(o, n) {
+        var m = "function" == typeof Symbol && o[Symbol.iterator];
+        if (!m) return o;
+        var r, e, i = m.call(o), ar = [];
+        try {
+            for (;(void 0 === n || n-- > 0) && !(r = i.next()).done; ) ar.push(r.value);
+        } catch (error) {
+            e = {
+                error: error
+            };
+        } finally {
+            try {
+                r && !r.done && (m = i.return) && m.call(i);
+            } finally {
+                if (e) throw e.error;
+            }
+        }
+        return ar;
+    }
+    function __spread() {
+        for (var ar = [], i = 0; i < arguments.length; i++) ar = ar.concat(__read(arguments[i]));
+        return ar;
     }
     !function(SiteEnum) {
         SiteEnum.All = "All", SiteEnum.TaoBao = "TaoBao", SiteEnum.TMall = "TMall", SiteEnum.JingDong = "JingDong", 
@@ -690,9 +712,61 @@
                 }));
             }));
         }, ScriptsFind;
+    }(AppBase), Hook = function() {
+        function Hook() {}
+        return Hook.HookHidden = function(v) {
+            Object.defineProperty(window.document, "hidden", {
+                value: v
+            }), null == window.webkitHidden && (window.webkitHidden = !1), Object.defineProperty(window.document, "webkitHidden", {
+                value: v
+            });
+        }, Hook.hookVisibility = function(v) {
+            Object.defineProperty(window.document, "visibilityState", {
+                value: v
+            });
+        }, Hook.hookXmlHttpRequest = function(condition, callback) {
+            XMLHttpRequest.prototype._open = XMLHttpRequest.prototype.open, XMLHttpRequest.prototype.open = function() {
+                for (var args = [], _i = 0; _i < arguments.length; _i++) args[_i] = arguments[_i];
+                var _a = __read(args, 2), method = _a[0], url = _a[1];
+                condition(method, url, this) && callback(this), this._open.apply(this, __spread(args));
+            };
+        }, Hook;
+    }(), FeiShuDocApp = function(_super) {
+        function FeiShuDocApp() {
+            var _this = null !== _super && _super.apply(this, arguments) || this;
+            return _this._unique = !1, _this.appName = "\u98de\u4e66\u6587\u6863\u590d\u5236", 
+            _this.rules = new Map([ [ SiteEnum.FeiShuDoc, [ /bytedance\.feishu\.cn/i ] ] ]), 
+            _this;
+        }
+        return __extends(FeiShuDocApp, _super), FeiShuDocApp.prototype.loader = function() {
+            Hook.hookXmlHttpRequest((function(method, url, xml) {
+                return url.includes("space/api/suite/permission/document/actions/state/") && "POST" == method;
+            }), (function(xml) {
+                xml.addEventListener("readystatechange", (function() {
+                    var _a;
+                    if (4 === xml.readyState) {
+                        var response = xml.response;
+                        try {
+                            response = JSON.parse(response);
+                        } catch (e) {}
+                        Logger$1.debug("\u98de\u4e66\u62e6\u622a:response"), Logger$1.debug(response), 1 !== (null === (_a = response.data.actions) || void 0 === _a ? void 0 : _a.copy) && (response.data.actions.copy = 1, 
+                        response.data.actions.duplicate = 1, response.data.actions.export = 1, response.data.actions.is_editor = 1, 
+                        Object.defineProperty(xml, "response", {
+                            get: function() {
+                                return response;
+                            }
+                        }), Object.defineProperty(xml, "responseText", {
+                            get: function() {
+                                return JSON.stringify(response);
+                            }
+                        }));
+                    }
+                }), !1);
+            }));
+        }, FeiShuDocApp.prototype.run = function() {}, FeiShuDocApp;
     }(AppBase), One = function() {
         function One() {
-            this.services = [ Ioc.register(CsdnApp), Ioc.register(MagnetRegApp), Ioc.register(ScriptsFind) ];
+            this.services = [ Ioc.register(CsdnApp), Ioc.register(MagnetRegApp), Ioc.register(FeiShuDocApp), Ioc.register(ScriptsFind) ];
         }
         return One.prototype.run = function() {
             this.services.every((function(element) {
