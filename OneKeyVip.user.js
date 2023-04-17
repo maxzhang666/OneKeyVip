@@ -3353,7 +3353,7 @@
                 })).map((function(e) {
                     return e.fid;
                 })), NetDiskDirectService._site == SiteEnum.KuaKeHome ? Route.quarkDriect(fids).then((function(res) {
-                    Logger.debug(res), 31001 != res.code ? 0 == res.code ? sAlert.html("\u76f4\u94fe\u4fe1\u606f", NetDiskDirectService.generateDom(res.data), !0, "\u6211\u597d\u4e86", "#3085d6", "40%") : sAlert.error("\u94fe\u63a5\u83b7\u53d6\u5931\u8d25,\u8bf7\u7a0d\u540e\u518d\u8bd5") : sAlert.error("\u8bf7\u5148\u767b\u5f55\u7f51\u76d8");
+                    Logger.debug(res), 31001 != res.code ? 0 == res.code ? sAlert.html("\u76f4\u94fe\u4fe1\u606f", NetDiskDirectService.generateDom(res.data), !0, "\u6211\u597d\u4e86", "#3085d6", "40%") : sAlert.error("\u94fe\u63a5\u83b7\u53d6\u5931\u8d25,\u8bf7\u7a0d\u540e\u518d\u8bd5(" + res.code + ")") : sAlert.error("\u8bf7\u5148\u767b\u5f55\u7f51\u76d8");
                 })) : sAlert.error("\u8bf7\u5148\u5c06\u6587\u4ef6\u4fdd\u5b58\u5230\u81ea\u5df1\u7684\u7f51\u76d8")) : sAlert.error("\u6682\u4e0d\u652f\u6301\u6587\u4ef6\u5939\u4e0b\u8f7d") : sAlert.error("\u8bf7\u5148\u52fe\u9009\u8981\u4e0b\u8f7d\u7684\u6587\u4ef6");
             }));
         }, NetDiskDirectService.commonEvent = function() {
