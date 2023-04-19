@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【One】懒人神器,懒人福利,全新架构,性能更出众————只需一个脚本包揽所有功能 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      1.0.5
+// @version      1.0.6
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、ScriptsCat脚本猫脚本查询 2、CSDN页面清理 3、页面磁力链接提取
@@ -509,6 +509,62 @@
             return container.has(className) ? container.get(className) : className ? (container.set(className, window.Reflect.construct(app, [])), 
             container.get(className)) : void 0;
         }, Ioc;
+    }(), Config = function() {
+        function Config() {}
+        return Object.defineProperty(Config, "env", {
+            get: function() {
+                return GM_info;
+            },
+            enumerable: !1,
+            configurable: !0
+        }), Config.get = function(key, defaultValue) {
+            void 0 === defaultValue && (defaultValue = "");
+            var objStr = GM_getValue(this.encode(key), null);
+            if (objStr) {
+                var obj = JSON.parse(objStr);
+                if (-1 == obj.exp || obj.exp > (new Date).getTime()) return Logger$1.info("cache true:" + key + "," + obj.exp), 
+                obj.value;
+                GM_deleteValue(key);
+            }
+            return Logger$1.info("cache false"), defaultValue;
+        }, Config.set = function(key, v, exp) {
+            void 0 === exp && (exp = -1);
+            var obj = {
+                key: key,
+                value: v,
+                exp: -1 == exp ? exp : (new Date).getTime() + 1e3 * exp
+            };
+            Logger$1.debug(obj), GM_setValue(this.encode(key), JSON.stringify(obj));
+        }, Config.remember = function(key, exp, callback) {
+            var _this = this;
+            return new Promise((function(reso, reject) {
+                var v = _this.get(key, null);
+                null == v || "" === v ? callback().then((function(res) {
+                    _this.set(key, res, exp), reso(res);
+                })).catch((function(e) {
+                    reject(e);
+                })) : (Logger$1.debug(v), reso(v));
+            }));
+        }, Config.clear = function(key) {
+            GM_deleteValue(key);
+        }, Config.decode = function(str) {
+            return atob(str);
+        }, Config.encode = function(str) {
+            return btoa(str);
+        }, Config.inc = function(s) {
+            var v = Config.get(s, 0);
+            v++, Config.set(s, v);
+        }, Config;
+    }(), GmMenu = function() {
+        function GmMenu() {}
+        return GmMenu.Register = function(name, callback, showUse) {
+            void 0 === showUse && (showUse = !0);
+            var k = encodeURIComponent("app_use_" + name);
+            showUse && (name = "\ud83d\ude80" + name + "(\u4f7f\u7528\u7edf\u8ba1:" + Config.get(k, 0) + ")"), 
+            GM_registerMenuCommand(name, (function() {
+                showUse && Config.inc(k), callback();
+            }));
+        }, GmMenu;
     }(), MagnetRegApp = function(_super) {
         function MagnetRegApp() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
@@ -517,7 +573,7 @@
         }
         return __extends(MagnetRegApp, _super), MagnetRegApp.prototype.loader = function() {}, 
         MagnetRegApp.prototype.run = function() {
-            GM_registerMenuCommand("\u63d0\u53d6\u78c1\u529b", (function() {
+            GmMenu.Register("\u63d0\u53d6\u78c1\u529b", (function() {
                 for (var m, reg = /magnet:\?xt=urn:btih:[0-9a-fA-F]{40}/gm, magnets = []; null != (m = reg.exec(unsafeWindow.document.body.innerText)); ) m.index === reg.lastIndex && reg.lastIndex++, 
                 m.forEach((function(match, groupIndex) {
                     magnets.push(match);
@@ -641,50 +697,7 @@
                 }, head);
             }));
         }, Http;
-    }(), HttpHeaders = function HttpHeaders() {}, Config = function() {
-        function Config() {}
-        return Object.defineProperty(Config, "env", {
-            get: function() {
-                return GM_info;
-            },
-            enumerable: !1,
-            configurable: !0
-        }), Config.get = function(key, defaultValue) {
-            void 0 === defaultValue && (defaultValue = "");
-            var objStr = GM_getValue(this.encode(key), null);
-            if (objStr) {
-                var obj = JSON.parse(objStr);
-                if (-1 == obj.exp || obj.exp > (new Date).getTime()) return Logger$1.info("cache true:" + key + "," + obj.exp), 
-                obj.value;
-                GM_deleteValue(key);
-            }
-            return Logger$1.info("cache false"), defaultValue;
-        }, Config.set = function(key, v, exp) {
-            void 0 === exp && (exp = -1);
-            var obj = {
-                key: key,
-                value: v,
-                exp: -1 == exp ? exp : (new Date).getTime() + 1e3 * exp
-            };
-            Logger$1.debug(obj), GM_setValue(this.encode(key), JSON.stringify(obj));
-        }, Config.remember = function(key, exp, callback) {
-            var _this = this;
-            return new Promise((function(reso, reject) {
-                var v = _this.get(key, null);
-                null == v || "" === v ? callback().then((function(res) {
-                    _this.set(key, res, exp), reso(res);
-                })).catch((function(e) {
-                    reject(e);
-                })) : (Logger$1.debug(v), reso(v));
-            }));
-        }, Config.clear = function(key) {
-            GM_deleteValue(key);
-        }, Config.decode = function(str) {
-            return atob(str);
-        }, Config.encode = function(str) {
-            return btoa(str);
-        }, Config;
-    }(), ScriptsFind = function(_super) {
+    }(), HttpHeaders = function HttpHeaders() {}, ScriptsFind = function(_super) {
         function ScriptsFind() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
             return _this._unique = !1, _this.appName = "ScriptsFind", _this.rules = new Map([ [ SiteEnum.All, [ /.*/i ] ] ]), 
@@ -703,7 +716,7 @@
                         data = _a.sent(), Config.set("scriptscat_query_" + domain, data, 7200), _a.label = 2;
 
                       case 2:
-                        return GM_registerMenuCommand("\u5f53\u524d\u7f51\u7ad9\u53ef\u7528\u811a\u672c:" + data.data.total, (function() {
+                        return GmMenu.Register("\u5f53\u524d\u7f51\u7ad9\u53ef\u7528\u811a\u672c:" + data.data.total, (function() {
                             GM_openInTab("https://scriptcat.org/search?keyword=" + domain, {
                                 active: !0
                             });
@@ -764,9 +777,40 @@
                 }), !1);
             }));
         }, FeiShuDocApp.prototype.run = function() {}, FeiShuDocApp;
+    }(AppBase), RightClickFreeApp = function(_super) {
+        function RightClickFreeApp() {
+            var _this = null !== _super && _super.apply(this, arguments) || this;
+            return _this._unique = !1, _this.appName = "\u53f3\u952e\u9650\u5236\u89e3\u9664", 
+            _this.rules = new Map([ [ SiteEnum.All, [ /.*/i ] ] ]), _this;
+        }
+        return __extends(RightClickFreeApp, _super), RightClickFreeApp.prototype.loader = function() {}, 
+        RightClickFreeApp.prototype.run = function() {
+            GmMenu.Register("\u89e3\u9664\u53f3\u952e\u9650\u5236", (function() {
+                RightClickFreeApp.rcFree();
+            }));
+        }, RightClickFreeApp.rcFree = function() {
+            function t(e) {
+                e.stopPropagation(), e.stopImmediatePropagation && e.stopImmediatePropagation();
+            }
+            document.querySelectorAll("*").forEach((function(e) {
+                "none" === window.getComputedStyle(e, null).getPropertyValue("user-select") && e.style.setProperty("user-select", "text", "important");
+            })), [ "copy", "cut", "contextmenu", "selectstart", "mousedown", "mouseup", "mousemove", "keydown", "keypress", "keyup" ].forEach((function(e) {
+                document.documentElement.addEventListener(e, t, {
+                    capture: !0
+                });
+            })), Swal__default.default.fire({
+                toast: !0,
+                position: "top",
+                showConfirmButton: !1,
+                timerProgressBar: !0,
+                title: "\u9650\u5236\u89e3\u9664\u6210\u529f",
+                icon: "warning",
+                timer: 2e3
+            });
+        }, RightClickFreeApp;
     }(AppBase), One = function() {
         function One() {
-            this.services = [ Ioc.register(CsdnApp), Ioc.register(MagnetRegApp), Ioc.register(FeiShuDocApp), Ioc.register(ScriptsFind) ];
+            this.services = [ Ioc.register(CsdnApp), Ioc.register(MagnetRegApp), Ioc.register(FeiShuDocApp), Ioc.register(RightClickFreeApp), Ioc.register(ScriptsFind) ];
         }
         return One.prototype.run = function() {
             this.services.every((function(element) {

@@ -353,6 +353,9 @@
             return atob(str);
         }, Config.encode = function(str) {
             return btoa(str);
+        }, Config.inc = function(s) {
+            var v = Config.get(s, 0);
+            v++, Config.set(s, v);
         }, Config;
     }(), History = function History() {
         this.max = 0, this.price_detail = [];
