@@ -763,7 +763,6 @@
                             response = JSON.parse(response);
                         } catch (e) {}
                         Logger$1.debug("\u98de\u4e66\u62e6\u622a:response"), Logger$1.debug(response), 1 !== (null === (_a = response.data.actions) || void 0 === _a ? void 0 : _a.copy) && (response.data.actions.copy = 1, 
-                        response.data.actions.duplicate = 1, response.data.actions.export = 1, response.data.actions.is_editor = 1, 
                         Object.defineProperty(xml, "response", {
                             get: function() {
                                 return response;
