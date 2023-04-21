@@ -76,6 +76,7 @@
 // @include      *://wenku.baidu.com/view/*
 // @include      *blog.csdn.net/*
 // @match        *download.csdn.net/*
+// @match        *c.pc.qq.com/middlem*
 // @include      *://link.csdn.net/*
 // @include      *://link.zhihu.com/*
 // @include      *://browser.gwdang.com/*
@@ -1046,7 +1047,7 @@
         SiteEnum.AiFaDian = "AiFaDian", SiteEnum.Baidu = "Baidu", SiteEnum.DouBan = "DouBan", 
         SiteEnum.g17173 = "g17173", SiteEnum.Google = "Google", SiteEnum.SoGou = "SoGou", 
         SiteEnum.KuaKeHome = "KuaKeHome", SiteEnum.TencentDoc = "TencentDoc", SiteEnum.TencentMail = "TencentMail", 
-        SiteEnum.SsPAi = "SsPai", SiteEnum.FeiShuDoc = "FeiShuDoc";
+        SiteEnum.SsPAi = "SsPai", SiteEnum.FeiShuDoc = "FeiShuDoc", SiteEnum.TencentQQ = "TencentQQ";
     }(SiteEnum || (SiteEnum = {})), UpdateService = function(_super) {
         function UpdateService() {
             var _this = _super.call(this) || this;
@@ -3008,7 +3009,7 @@
     }(PluginBase), LinkJumpService = function(_super) {
         function LinkJumpService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ], [ SiteEnum.Gitee, /gitee\.com\/link/i ], [ SiteEnum.JueJin, /juejin\.cn\/\?target/i ], [ SiteEnum.Weibo, /weibo\.cn\/sinaurl/i ], [ SiteEnum.TuXiaoChao, /support\.qq\.com\/products\/.*\/link-jump/i ], [ SiteEnum.OsCh, /oschina\.net\/action\/GoToLink/i ], [ SiteEnum.AiFaDian, /afdian\.net\/link\?target/i ], [ SiteEnum.Baidu, /jump(2?)\.bdimg\.com\/safecheck/i ], [ SiteEnum.DouBan, /www\.douban\.com\/link2\// ], [ SiteEnum.g17173, /link\.17173\.com\/\?target/i ], [ SiteEnum.TencentDoc, /docs\.qq\.com\/scenario\/link/i ], [ SiteEnum.TencentMail, /mail\.qq\.com\/cgi-bin\/readtemplate/i ], [ SiteEnum.SsPAi, /sspai\.com\/link/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ], [ SiteEnum.Gitee, /gitee\.com\/link/i ], [ SiteEnum.JueJin, /juejin\.cn\/\?target/i ], [ SiteEnum.Weibo, /weibo\.cn\/sinaurl/i ], [ SiteEnum.TuXiaoChao, /support\.qq\.com\/products\/.*\/link-jump/i ], [ SiteEnum.OsCh, /oschina\.net\/action\/GoToLink/i ], [ SiteEnum.AiFaDian, /afdian\.net\/link\?target/i ], [ SiteEnum.Baidu, /jump(2?)\.bdimg\.com\/safecheck/i ], [ SiteEnum.DouBan, /www\.douban\.com\/link2\// ], [ SiteEnum.g17173, /link\.17173\.com\/\?target/i ], [ SiteEnum.TencentDoc, /docs\.qq\.com\/scenario\/link/i ], [ SiteEnum.TencentMail, /mail\.qq\.com\/cgi-bin\/readtemplate/i ], [ SiteEnum.TencentQQ, /c\.pc\.qq\.com\/middlem\.html/i ], [ SiteEnum.SsPAi, /sspai\.com\/link/i ] ]), 
             _this.key = "", _this.selector = "", _this._unique = !1, _this._appName = "LinkJump", 
             _this;
         }
@@ -3031,6 +3032,10 @@
               case SiteEnum.OsCh:
               case SiteEnum.TencentDoc:
                 this.key = "url";
+                break;
+
+              case SiteEnum.TencentQQ:
+                this.key = "pfurl";
                 break;
 
               case SiteEnum.Weibo:
