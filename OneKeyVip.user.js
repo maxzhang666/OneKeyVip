@@ -75,6 +75,7 @@
 // @include      *://yun.baidu.com/share/link*
 // @include      *://wenku.baidu.com/view/*
 // @include      *blog.csdn.net/*
+// @match        *download.csdn.net/*
 // @include      *://link.csdn.net/*
 // @include      *://link.zhihu.com/*
 // @include      *://browser.gwdang.com/*
@@ -1039,13 +1040,13 @@
         SiteEnum.XiMaLaYa = "XiMaLaYa", SiteEnum.WenKu = "WenKu", SiteEnum.YouTuBe = "YouTuBe", 
         SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", SiteEnum.ALY = "ALY", SiteEnum.BDY1 = "BDY1", 
         SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", SiteEnum.Steam = "Steam", SiteEnum.Vp = "Vp", 
-        SiteEnum.CSDN = "CSDN", SiteEnum.ZhiHu = "ZhiHu", SiteEnum.JianShu = "JianShu", 
-        SiteEnum.JueJin = "JueJin", SiteEnum.Gitee = "Gitee", SiteEnum.Weibo = "Weibo", 
-        SiteEnum.TuXiaoChao = "TuXiaoChao", SiteEnum.OsCh = "OsCh", SiteEnum.AiFaDian = "AiFaDian", 
-        SiteEnum.Baidu = "Baidu", SiteEnum.DouBan = "DouBan", SiteEnum.g17173 = "g17173", 
-        SiteEnum.Google = "Google", SiteEnum.SoGou = "SoGou", SiteEnum.KuaKeHome = "KuaKeHome", 
-        SiteEnum.TencentDoc = "TencentDoc", SiteEnum.TencentMail = "TencentMail", SiteEnum.SsPAi = "SsPai", 
-        SiteEnum.FeiShuDoc = "FeiShuDoc";
+        SiteEnum.CSDN = "CSDN", SiteEnum.CSDN_Download = "CSDN_Download", SiteEnum.ZhiHu = "ZhiHu", 
+        SiteEnum.JianShu = "JianShu", SiteEnum.JueJin = "JueJin", SiteEnum.Gitee = "Gitee", 
+        SiteEnum.Weibo = "Weibo", SiteEnum.TuXiaoChao = "TuXiaoChao", SiteEnum.OsCh = "OsCh", 
+        SiteEnum.AiFaDian = "AiFaDian", SiteEnum.Baidu = "Baidu", SiteEnum.DouBan = "DouBan", 
+        SiteEnum.g17173 = "g17173", SiteEnum.Google = "Google", SiteEnum.SoGou = "SoGou", 
+        SiteEnum.KuaKeHome = "KuaKeHome", SiteEnum.TencentDoc = "TencentDoc", SiteEnum.TencentMail = "TencentMail", 
+        SiteEnum.SsPAi = "SsPai", SiteEnum.FeiShuDoc = "FeiShuDoc";
     }(SiteEnum || (SiteEnum = {})), UpdateService = function(_super) {
         function UpdateService() {
             var _this = _super.call(this) || this;
@@ -3070,8 +3071,8 @@
     }(PluginBase), AutoExpandService = function(_super) {
         function AutoExpandService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.CSDN, /blog\.csdn\.net\/*/i ] ]), _this.contentStyle = "{height: auto !important;max-height: none !important;}", 
-            _this.expandRules = [ {
+            return _this.rules = new Map([ [ SiteEnum.CSDN, /blog\.csdn\.net\/*/i ], [ SiteEnum.CSDN_Download, /download\.csdn\.net\/download/i ] ]), 
+            _this.contentStyle = "{height: auto !important;max-height: none !important;}", _this.expandRules = [ {
                 site: [ SiteEnum.CSDN ],
                 selector: [ ".guide-box", ".wap-shadowbox", ".readall_box", ".btn_open_app_prompt_div" ],
                 content: [ ".article_content" ],
@@ -3083,13 +3084,20 @@
                         url && (unsafeWindow.window.location.href = url, event.preventDefault());
                     }));
                 }
+            }, {
+                site: [ SiteEnum.CSDN_Download ],
+                selector: [],
+                style: [],
+                content: [ ".detail.hidden.no-preview" ],
+                script: function() {},
+                clicker: [ "#download-detail .fl[role]" ]
             } ], _this._appName = "autoExpand", _this._unique = !1, _this;
         }
         return __extends(AutoExpandService, _super), AutoExpandService.prototype.loader = function() {}, 
         AutoExpandService.prototype.run = function() {
-            var _this = this, that = this;
+            var that = this;
             this.expandRules.forEach((function(e) {
-                e.site.indexOf(_this.site) > -1 && (e.selector.length > 0 && e.selector.forEach((function(selector) {
+                e.site.indexOf(that.site) > -1 && (e.selector.length > 0 && e.selector.forEach((function(selector) {
                     $(selector).remove();
                 })), e.clicker.length > 0 && e.clicker.forEach((function(clicker) {
                     $(clicker).trigger("click");
