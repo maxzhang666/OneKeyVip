@@ -200,7 +200,8 @@
         SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", SiteEnum.BDY1 = "BDY1", SiteEnum.BD_DETAIL_OLD = "BD_DETAIL_OLD", 
         SiteEnum.BD_DETAIL_NEW = "BD_DETAIL_NEW", SiteEnum.BD_DETAIL_Share = "BD_DETAIL_Share", 
         SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", SiteEnum.Vp = "Vp", SiteEnum.Gwd = "Gwd", 
-        SiteEnum.Xxqg = "Xxqg", SiteEnum.CSDN = "CSDN", SiteEnum.FeiShuDoc = "FeiShuDoc";
+        SiteEnum.Xxqg = "Xxqg", SiteEnum.CSDN = "CSDN", SiteEnum.FeiShuDoc = "FeiShuDoc", 
+        SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin";
     }(SiteEnum || (SiteEnum = {}));
     var LogLevel$1, Core$1 = function() {
         function Core() {}
