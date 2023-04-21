@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【One】懒人神器,懒人福利,全新架构,性能更出众————只需一个脚本包揽所有功能 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      1.0.7
+// @version      1.0.8
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、ScriptsCat脚本猫脚本查询 2、CSDN页面清理 3、页面磁力链接提取
@@ -811,21 +811,39 @@
     }(AppBase), AdBlockApp = function(_super) {
         function AdBlockApp() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
-            return _this._unique = !1, _this.appName = "AdBlock", _this.rules = new Map([ [ SiteEnum.Juhaowan, [ /www\.juhaowan\.club/i ] ] ]), 
+            return _this._unique = !1, _this.appName = "AdBlock", _this.rules = new Map([ [ SiteEnum.Juhaowan, [ /www\.juhaowan\.club/i ] ], [ SiteEnum.MhXin, [ /mhxin\.com\/manhua/i ] ] ]), 
             _this.rule = [ {
                 site: SiteEnum.CSDN,
                 selector: [ ".__zy_flash" ]
+            }, {
+                site: SiteEnum.MhXin,
+                hook: [ "tg.wmqfey.com/sc/6276", "diy.dcqs4.com/sh/to/1380", "diy.wcdc5.com/sh/to/1381", "tc.6tofsu.com:8001/d/6276", "tpic.kszvmqo.cn/2021/12/31155849600.txt" ]
             } ], _this;
         }
         return __extends(AdBlockApp, _super), AdBlockApp.prototype.loader = function() {}, 
         AdBlockApp.prototype.run = function() {
             var that = this;
             that.rule.forEach((function(item) {
-                var _a;
+                var _a, _b;
                 item.site === that.site && (null === (_a = item.selector) || void 0 === _a || _a.forEach((function(selector) {
                     setInterval((function() {
                         $(selector).remove();
                     }), 1e3);
+                })), (null === (_b = item.hook) || void 0 === _b ? void 0 : _b.length) && Hook.hookXmlHttpRequest((function(method, url, xml) {
+                    for (var _a, _b, i = 0; null !== (_b = i < (null === (_a = item.hook) || void 0 === _a ? void 0 : _a.length)) && void 0 !== _b && _b; i++) if (url.includes(item.hook[i])) return !0;
+                    return !1;
+                }), (function(xml) {
+                    xml.addEventListener("readystatechange", (function() {
+                        4 === xml.readyState && (Object.defineProperty(xml, "response", {
+                            get: function() {
+                                return "";
+                            }
+                        }), Object.defineProperty(xml, "responseText", {
+                            get: function() {
+                                return "";
+                            }
+                        }));
+                    }), !1);
                 })));
             }));
         }, AdBlockApp;
