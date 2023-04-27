@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,夸克网盘直链批量获取,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.7.9
+// @version      4.8.0
 // @homepage     https://wiki.wandhi.com/
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转 12、搜索引擎快速跳转
@@ -77,6 +77,7 @@
 // @include      *blog.csdn.net/*
 // @match        *download.csdn.net/*
 // @match        *c.pc.qq.com/middlem*
+// @match        *pan.baidu.com/disk/main*
 // @include      *://link.csdn.net/*
 // @include      *://link.zhihu.com/*
 // @include      *://browser.gwdang.com/*
@@ -145,7 +146,7 @@
     "object" == typeof exports && "undefined" != typeof module ? factory(require("sweetalert2")) : "function" == typeof define && define.amd ? define([ "sweetalert2" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).Swal);
 })(this, (function(Swal) {
     "use strict";
-    var Swal__default, extendStatics, update_key, Min, Hour, Day, Week, Logger, LogLevel, Config, History, PriceDetail, ListPriceItem, BrowerType, Core, AjaxOption, Alert, Http, HttpHeaders, Convert, Result, HistoryResult, Route, css_248z$8, Common, PluginBase, SiteEnum, UpdateService, VersionCompar, VersionResult, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$7, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$6, sAlert, GwdService, css_248z$5, TaoBaoService, container, Container, css_248z$4, BiliImgService, Menu$1, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$3, ConfigEnum, CsdnAdService, Menu, WenKuService, LinkJumpService, css_248z$2, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$1, css_248z, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, NetDiskDirectService, OneKeyVipInjection;
+    var Swal__default, extendStatics, update_key, Min, Hour, Day, Week, Logger, LogLevel, Config, History, PriceDetail, ListPriceItem, BrowerType, Core, AjaxOption, Alert, Http, HttpHeaders, Convert, Result, HistoryResult, Route, css_248z$8, Common, PluginBase, SiteEnum, UpdateService, VersionCompar, VersionResult, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$7, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$6, sAlert, GwdService, css_248z$5, TaoBaoService, container, Container, css_248z$4, BiliImgService, Menu$1, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$3, ConfigEnum, CsdnAdService, Menu, WenKuService, LinkJumpService, css_248z$2, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$1, css_248z, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, NetDiskDirectService, OneKeyVipInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
@@ -951,6 +952,9 @@
             }));
         }, Route.couponQuery = function(itemId, type, callback) {
             Route.baseApi("/coupons/info", new Map([ [ "id", itemId ], [ "type", type ] ]), callback);
+        }, Route.baiduDriect = function(fids) {
+            var url = "https://pan.baidu.com/rest/2.0/xpan/multimedia?method=filemetas&dlink=1&fsids=" + fids;
+            return Http.ajaxNew(url, "GET", [], new Map([ [ "User-Agent", "netdisk;P2SP;" ] ]));
         }, Route.quarkDriect = function(fids) {
             return Http.ajaxNew("https://drive.quark.cn/1/clouddrive/file/download?pr=ucpro&fr=pc", "POST", {
                 fids: fids
@@ -1044,11 +1048,12 @@
         SiteEnum.CSDN = "CSDN", SiteEnum.CSDN_Download = "CSDN_Download", SiteEnum.ZhiHu = "ZhiHu", 
         SiteEnum.JianShu = "JianShu", SiteEnum.JueJin = "JueJin", SiteEnum.Gitee = "Gitee", 
         SiteEnum.Weibo = "Weibo", SiteEnum.TuXiaoChao = "TuXiaoChao", SiteEnum.OsCh = "OsCh", 
-        SiteEnum.AiFaDian = "AiFaDian", SiteEnum.Baidu = "Baidu", SiteEnum.DouBan = "DouBan", 
-        SiteEnum.g17173 = "g17173", SiteEnum.Google = "Google", SiteEnum.SoGou = "SoGou", 
-        SiteEnum.KuaKeHome = "KuaKeHome", SiteEnum.TencentDoc = "TencentDoc", SiteEnum.TencentMail = "TencentMail", 
-        SiteEnum.SsPAi = "SsPai", SiteEnum.FeiShuDoc = "FeiShuDoc", SiteEnum.TencentQQ = "TencentQQ", 
-        SiteEnum.Shuma = "Shuma", SiteEnum.BD_DETAIL_OLD = "BD_DETAIL_OLD", SiteEnum.BD_DETAIL_NEW = "BD_DETAIL_NEW", 
+        SiteEnum.AiFaDian = "AiFaDian", SiteEnum.Baidu = "Baidu", SiteEnum.BaiduPanMain = "BaiduPanMain", 
+        SiteEnum.BaiduPanHome = "BaiduPanHome", SiteEnum.DouBan = "DouBan", SiteEnum.g17173 = "g17173", 
+        SiteEnum.Google = "Google", SiteEnum.SoGou = "SoGou", SiteEnum.KuaKeHome = "KuaKeHome", 
+        SiteEnum.TencentDoc = "TencentDoc", SiteEnum.TencentMail = "TencentMail", SiteEnum.SsPAi = "SsPai", 
+        SiteEnum.FeiShuDoc = "FeiShuDoc", SiteEnum.TencentQQ = "TencentQQ", SiteEnum.Shuma = "Shuma", 
+        SiteEnum.BD_DETAIL_OLD = "BD_DETAIL_OLD", SiteEnum.BD_DETAIL_NEW = "BD_DETAIL_NEW", 
         SiteEnum.BD_DETAIL_Share = "BD_DETAIL_Share", SiteEnum.Gwd = "Gwd", SiteEnum.Xxqg = "Xxqg", 
         SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin";
     }(SiteEnum || (SiteEnum = {})), UpdateService = function(_super) {
@@ -2424,17 +2429,12 @@
             })), audioList.forEach((function(e) {
                 rows += '<tr>\n                        <td class="bili-table-cell">\u97f3\u9891</td>\n                        <td class="bili-table-cell">' + _this.getQuality(e.id) + '</td>\n                        <td class="bili-table-cell">' + sizeFormat(e.bandwidth * duration / 8) + '</td>\n                        <td class="bili-table-cell">' + e.frameRate + '</td>\n                        <td class="bili-table-cell">' + e.codecs + '</td>\n                        <td class="bili-table-cell"><button class="okv-btn okv-btn-primary bili-down-video-item" data-url="' + e.baseUrl + '" data-type="2">\u4e0b\u8f7d</button></td>\n                    </tr>';
             })), '\n<div style="height: 30rem">\n    <div style="margin-bottom: 20px">\u6ce8\u610f:\u97f3\u89c6\u9891\u662f\u5206\u5f00\u7684,\u8bf7\u4e0b\u8f7d\u540e\u81ea\u884c\u5408\u5e76<a href="https://wiki.wandhi.com/zh-cn/Download.html">\u70b9\u6211\u4e0b\u8f7d\u5408\u5e76\u5de5\u5177</a></div>\n    <table class="bili-table bili-table-small">\n        <thead class="bili-table-head">\n            <tr>                        \n                <th class="bili-table-cell">\u7c7b\u578b</th>\n                <th class="bili-table-cell">\u54c1\u8d28</th>\n                <th class="bili-table-cell">\u5927\u5c0f</th>\n                <th class="bili-table-cell">\u7801\u7387</th>\n                <th class="bili-table-cell">\u7f16\u7801</th>\n                <th class="bili-table-cell">\u64cd\u4f5c</th>\n            </tr>\n        </thead>\n        <tbody class="at-table-tbody">                    \n            ' + rows + "\n        </tbody>    \n    </table>\n</div>";
-        }, BiliImgService.prototype.loader = function() {
-            Core.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
-        }, BiliImgService.prototype.run = function() {
+        }, BiliImgService.prototype.loader = function() {}, BiliImgService.prototype.run = function() {
             this.init();
         }, BiliImgService.prototype.init = function() {
             Core.autoLazyload((function() {
-                if ($(".video-data").length && ($(".bilibili-player-video-info-people-number").length || $(".bpx-player-video-info-online").length)) {
-                    var coin = $(".coin").text().replace("\u4e07", "").trim();
-                    if ($.isNumeric(coin) || "\u6295\u5e01" == coin) return !0;
-                }
-                return !1;
+                var _a;
+                return (null === (_a = $(".reply-box-textarea")) || void 0 === _a ? void 0 : _a.length) > 0;
             }), (function() {
                 BiliImgService.add_img_btn(), BiliImgService.add_down_btn(), BiliImgService.add_triple_btn();
             }), 1);
@@ -3337,17 +3337,19 @@
                 new MfbMenu(Config.get(ConfigEnum.Search_OptMenuPos, "cl"), Config.get(ConfigEnum.Search_OptMenuMethod, "hover")).Init(menus);
             }
         }, SearchService.keySelector = "#none", SearchService;
-    }(PluginBase), NetDiskDirectService = function(_super) {
+    }(PluginBase), QuarkFileResponse = function QuarkFileResponse() {}, NetDiskDirectService = function(_super) {
         function NetDiskDirectService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.KuaKeHome, /pan\.quark\.cn\/list/ ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.KuaKeHome, /pan\.quark\.cn\/list/ ], [ SiteEnum.BaiduPanMain, /pan\.baidu\.com\/disk\/main/i ] ]), 
             _this._appName = "NetDiskDirect", _this;
         }
         return __extends(NetDiskDirectService, _super), NetDiskDirectService.prototype.loader = function() {}, 
         NetDiskDirectService.prototype.run = function() {
-            NetDiskDirectService._site = this.site, this.site == SiteEnum.KuaKeHome && (NetDiskDirectService.btnSelecotr = ".btn-operate", 
+            NetDiskDirectService._site = this.site, this.site == SiteEnum.KuaKeHome ? (NetDiskDirectService.btnSelecotr = ".btn-operate", 
             NetDiskDirectService.btn = '<div class="ovk-main" style="margin-right: 10px;">\n    <button type="button" class="ant-btn btn-file okv-btn-direct">\n        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMyMjIiIHN0cm9rZS13aWR0aD0iMiI+PHBhdGggc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBkPSJNOSAxMmwyIDIgMi0yeiIvPjxwYXRoIGQ9Ik0xNCA4aDEuNTUzYy44NSAwIDEuMTYuMDkzIDEuNDcuMjY3LjMxMS4xNzQuNTU2LjQzLjcyMi43NTYuMTY2LjMyNi4yNTUuNjUuMjU1IDEuNTR2NC44NzNjMCAuODkyLS4wODkgMS4yMTUtLjI1NSAxLjU0LS4xNjYuMzI3LS40MS41ODMtLjcyMi43NTctLjMxLjE3NC0uNjIuMjY3LTEuNDcuMjY3SDYuNDQ3Yy0uODUgMC0xLjE2LS4wOTMtMS40Ny0uMjY3YTEuNzc4IDEuNzc4IDAgMDEtLjcyMi0uNzU2Yy0uMTY2LS4zMjYtLjI1NS0uNjUtLjI1NS0xLjU0di00Ljg3M2MwLS44OTIuMDg5LTEuMjE1LjI1NS0xLjU0LjE2Ni0uMzI3LjQxLS41ODMuNzIyLS43NTcuMzEtLjE3NC42Mi0uMjY3IDEuNDctLjI2N0gxMSIvPjxwYXRoIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZD0iTTExIDN2MTAiLz48L2c+PC9zdmc+" class="btn-icon" alt="" style="width: 20px;height: 20px">\n        <span>\u83b7\u53d6\u76f4\u94fe</span>\n    </button>\n</div>', 
-            NetDiskDirectService.getSelecor = NetDiskDirectService.getQuarkSelectedFile, NetDiskDirectService.quarkListener());
+            NetDiskDirectService.getSelecor = NetDiskDirectService.getQuarkSelectedFile, NetDiskDirectService.quarkListener()) : this.site == SiteEnum.BaiduPanMain && (NetDiskDirectService.btnSelecotr = ".wp-s-agile-tool-bar__header", 
+            NetDiskDirectService.btn = '<div class="ovk-main" style="margin-right: 10px;">\n    <button type="button" class="u-button nd-file-list-toolbar-action-item u-button--primary u-button--small is-round is-has-icon okv-btn-direct" style="background: #09AAFF;border-color: #09AAFF;font-size: 14px;padding: 7px 16px;border: none;\n}">\n        <i class="u-icon u-icon-download"></i>\n        <span>\u83b7\u53d6\u76f4\u94fe</span>\n    </button>\n</div>', 
+            NetDiskDirectService.initButton(), NetDiskDirectService.baiduEvent(), NetDiskDirectService.commonEvent());
         }, NetDiskDirectService.quarkListener = function() {
             var _this = this;
             window.addEventListener("hashchange", (function(e) {
@@ -3364,6 +3366,25 @@
                     }));
                 }));
             })), NetDiskDirectService.initButton(), NetDiskDirectService.quarkEvent(), NetDiskDirectService.commonEvent();
+        }, NetDiskDirectService.baiduSelectedList = function() {
+            try {
+                return require("system-core:context/context.js").instanceForSystem.list.getSelected();
+            } catch (e) {
+                return unsafeWindow.document.querySelector(".wp-s-core-pan").__vue__.selectedList;
+            }
+        }, NetDiskDirectService.baiduEvent = function() {
+            $(document).on("click", ".okv-btn-direct", (function(e) {
+                var fidsStr, selectList = NetDiskDirectService.baiduSelectedList();
+                0 !== selectList.length ? 2 !== (fidsStr = "[" + selectList.map((function(item) {
+                    return item.fs_id;
+                })).join(",") + "]").length ? Route.baiduDriect(encodeURIComponent(fidsStr)).then((function(res) {
+                    Logger.debug(res), 0 === res.errno ? sAlert.html("\u76f4\u94fe\u4fe1\u606f", NetDiskDirectService.generateDom(res.list.map((function(e) {
+                        var obj = new QuarkFileResponse;
+                        return obj.fid = e.fs_id.toString(), obj.file_name = e.filename, obj.download_url = e.dlink, 
+                        obj.size = e.size, obj;
+                    }))), !0, "\u6211\u597d\u4e86", "#3085d6", "40%") : 112 === res.errno ? sAlert.error("\u63d0\u793a\uff1a\u9875\u9762\u8fc7\u671f\uff0c\u8bf7\u5237\u65b0\u91cd\u8bd5\uff01") : sAlert.error("\u63d0\u793a\uff1a\u83b7\u53d6\u4e0b\u8f7d\u94fe\u63a5\u5931\u8d25\uff01\u8bf7\u5237\u65b0\u7f51\u9875\u540e\u91cd\u8bd5\uff01");
+                })) : sAlert.error("\u63d0\u793a\uff1a\u8bf7\u6253\u5f00\u6587\u4ef6\u5939\u540e\u52fe\u9009\u6587\u4ef6\uff01") : sAlert.error("\u63d0\u793a\uff1a\u8bf7\u5148\u52fe\u9009\u8981\u4e0b\u8f7d\u7684\u6587\u4ef6\uff01");
+            }));
         }, NetDiskDirectService.quarkEvent = function() {
             $(document).on("click", ".okv-btn-direct", (function(e) {
                 var fids, selectList = NetDiskDirectService.getQuarkSelectedFile();
