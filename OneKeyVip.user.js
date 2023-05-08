@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,夸克网盘直链批量获取,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.8.0
+// @version      4.8.1
 // @homepage     https://wiki.wandhi.com/
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转 12、搜索引擎快速跳转
@@ -483,7 +483,13 @@
             $("body").append($('<script type="text/javascript" src="' + url + '"><\/script>'));
         }, Core.currentUrl = function() {
             return window.location.href;
-        }, Core.inIframe = function() {
+        }, Object.defineProperty(Core, "url", {
+            get: function() {
+                return window.location.href;
+            },
+            enumerable: !1,
+            configurable: !0
+        }), Core.inIframe = function() {
             return !(!self.frameElement || "IFRAME" != self.frameElement.tagName) || (window.frames.length != parent.frames.length || self != top);
         }, Core.format = function(time, fmt) {
             var o, k;
@@ -1184,7 +1190,8 @@
                 var q, exp;
                 Logger.debug(res), res.code ? res.data.has_coupon ? (q = res.data, exp = new Date(q.quan_time), 
                 _this.init_qrcode(decodeURIComponent(q.quan_link)).then((function(res) {
-                    _this.init_coupon_info(q.after_price, q.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), decodeURIComponent(q.quan_link));
+                    var _a;
+                    _this.init_coupon_info(q.after_price, q.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), null !== (_a = decodeURIComponent(q.quan_link)) && void 0 !== _a ? _a : Core.url);
                 }))) : res.data.quan_link ? (_this.default(res.data.quan_link), EventHelper.bind_click("#vip-plugin-outside-coupons-qrcode-img", (function() {
                     Core.open(res.data.quan_link);
                 }))) : _this.default() : _this.default();
@@ -1756,9 +1763,9 @@
                 allowOutsideClick: !1,
                 allowEscapeKey: !1
             });
-        }, sAlert.confirm = function(title, text, confirmText, cancelText, icon) {
+        }, sAlert.confirm = function(title, text, confirmText, cancelText, icon, denyText) {
             void 0 === confirmText && (confirmText = "\u786e\u5b9a"), void 0 === cancelText && (cancelText = "\u53d6\u6d88"), 
-            void 0 === icon && (icon = "question");
+            void 0 === icon && (icon = "question"), void 0 === denyText && (denyText = "");
             var option = {
                 title: title,
                 text: text,
@@ -1770,7 +1777,7 @@
                 confirmButtonText: confirmText,
                 cancelButtonText: cancelText
             };
-            return Swal__default.default.fire(option);
+            return "" != denyText && (option.denyButtonText = denyText), Swal__default.default.fire(option);
         }, sAlert.showImg = function(image, title, text, alt) {
             return Swal__default.default.fire({
                 title: title,
@@ -1855,24 +1862,24 @@
         }, GwdService.prototype.InitPriceHistory = function() {
             var _a, that, _this = this;
             $("#vip-plugin-outside").show(), this.theme(), this.chartMsg("\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u4e2d"), 
-            that = this, Route.queryHistoryV5(null !== (_a = that.itemUrl) && void 0 !== _a ? _a : Runtime.url).then((function(res) {
+            that = this, Route.queryHistoryV5(null !== (_a = that.itemUrl) && void 0 !== _a ? _a : Core.url).then((function(res) {
                 Logger.debug(res.data), $(".vip-plugin-outside-chart-container").html('<div id="vip-plugin-outside-chart-container-line"></div>'), 
                 echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), _this.theme()).setOption(that.getChartOption(res.data)), 
                 _this.chartMsg("");
             })).catch((function() {
-                Route.queryHistoryV4(Runtime.url, _this.site.toString(), that.fp(), that.dfp(), (function(data) {
+                Route.queryHistoryV4(Core.url, _this.site.toString(), that.fp(), that.dfp(), (function(data) {
                     var slContainer, msg = "";
                     Logger.debug(data), "price_status" in data ? ($(".vip-plugin-outside-chart-container").html('<div id="vip-plugin-outside-chart-container-line"></div>'), 
                     echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), _this.theme()).setOption(that.getChartOptionGwd(data)), 
-                    _this.chartMsg(msg)) : ("is_ban" in data && 1 == data.is_ban && (sAlert.confirm("\u54ce\u54df\u4e0d\u9519\u54e6", "\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u5f02\u5e38,\u662f\u5426\u6253\u5f00\u9a8c\u8bc1\u9875\u9762\u8fdb\u884c\u9a8c\u8bc1?", "\u9a8c\u8bc1\u8d70\u8d77", "\u8001\u5b50\u4e0d\u770b", "info").then((function(res) {
-                        res.isConfirmed && Core.open("https://browser.gwdang.com/slider/verify.html?fromUrl=" + encodeURIComponent(Runtime.url)), 
+                    _this.chartMsg(msg)) : ("is_ban" in data && 1 == data.is_ban && 1 != Config.get("gwd_verify_close") && (sAlert.confirm("\u54ce\u54df\u4e0d\u9519\u54e6", "\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u5f02\u5e38,\u662f\u5426\u6253\u5f00\u9a8c\u8bc1\u9875\u9762\u8fdb\u884c\u9a8c\u8bc1?", "\u9a8c\u8bc1\u8d70\u8d77", "\u8001\u5b50\u4e0d\u770b", "info", "\u5c4f\u853d\u4e00\u5929").then((function(res) {
+                        res.isConfirmed ? Core.open("https://browser.gwdang.com/slider/verify.html?fromUrl=" + encodeURIComponent(Core.url)) : res.isDenied && Config.set("gwd_verify_close", 1, 86400), 
                         sAlert.close(res);
                     })), slContainer = ".swal2-container", "99999999999" != $(slContainer).css("z-index") && $(slContainer).css("z-index", "99999999999")), 
                     that.historyService.Process());
                 }));
             }));
         }, GwdService.prototype.getHistoryHtml = function() {
-            return '<div id="vip-plugin-outside">\n                    <div class="vip-plugin-outside-toolbar">\n                    [\u624b\u5de5\u67e5\u8be2\uff1a<a href="https://tool.manmanbuy.com/m/disSitePro.aspx?c_from=m&url=' + this.itemUrl + '" target="_blank">\u63a5\u53e3\u4e00</a>,<a href="http://www.hisprice.cn/his.php?hisurl=' + this.itemUrl + '" target="_blank">\u63a5\u53e3\u4e8c</a>]\n                    </div>\n                    <div class="vip-plugin-outside-coupons">\n                        <div class="vip-plugin-outside-coupons-qrcode" id="vip-plugin-outside-coupons-qrcode-img"></div>\n                        <div class="vip-plugin-outside-coupons-title"></div>\n                        <div class="vip-plugin-outside-coupons-action"></div>\n                    </div>\n                    <div id="vip-plugin-outside-history" class="vip-plugin-outside-history">\n                        <div class="vip-plugin-outside-chart-container"></div>\n                        <p class="vip-plugin-outside-history-tip"></p>\n                    </div>    \n                    \n                </div>';
+            return '<div id="vip-plugin-outside">\n                    <div class="vip-plugin-outside-toolbar">\n                    [\u624b\u5de5\u67e5\u8be2\uff1a<a href="https://tool.manmanbuy.com/m/disSitePro.aspx?c_from=m&url=' + Core.url + '" target="_blank">\u63a5\u53e3\u4e00</a>,<a href="http://www.hisprice.cn/his.php?hisurl=' + Core.url + '" target="_blank">\u63a5\u53e3\u4e8c</a>]\n                    </div>\n                    <div class="vip-plugin-outside-coupons">\n                        <div class="vip-plugin-outside-coupons-qrcode" id="vip-plugin-outside-coupons-qrcode-img"></div>\n                        <div class="vip-plugin-outside-coupons-title"></div>\n                        <div class="vip-plugin-outside-coupons-action"></div>\n                    </div>\n                    <div id="vip-plugin-outside-history" class="vip-plugin-outside-history">\n                        <div class="vip-plugin-outside-chart-container"></div>\n                        <p class="vip-plugin-outside-history-tip"></p>\n                    </div>    \n                    \n                </div>';
         }, GwdService.prototype.chartMsg = function(msg) {
             $(".vip-plugin-outside-history-tip").html(msg);
         }, GwdService.prototype.getChartOption = function(data) {
