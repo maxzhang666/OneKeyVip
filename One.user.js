@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【One】懒人神器,懒人福利,全新架构,性能更出众————只需一个脚本包揽所有功能 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      1.0.8
+// @version      1.0.9
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、ScriptsCat脚本猫脚本查询 2、CSDN页面清理 3、页面磁力链接提取
@@ -847,9 +847,21 @@
                 })));
             }));
         }, AdBlockApp;
+    }(AppBase), CommonFeature = function(_super) {
+        function CommonFeature() {
+            var _this = null !== _super && _super.apply(this, arguments) || this;
+            return _this._unique = !1, _this.appName = "CommonFeature", _this.rules = new Map([ [ SiteEnum.All, [ /.*/i ] ] ]), 
+            _this;
+        }
+        return __extends(CommonFeature, _super), CommonFeature.prototype.loader = function() {}, 
+        CommonFeature.prototype.run = function() {
+            GmMenu.Register("\u5f00\u542f\u7f51\u9875\u7f16\u8f91", (function() {
+                unsafeWindow.document.body.contentEditable = "true", unsafeWindow.document.designMode = "on";
+            }));
+        }, CommonFeature;
     }(AppBase), One = function() {
         function One() {
-            this.services = [ Ioc.register(CsdnApp), Ioc.register(MagnetRegApp), Ioc.register(FeiShuDocApp), Ioc.register(RightClickFreeApp), Ioc.register(AdBlockApp), Ioc.register(ScriptsFind) ];
+            this.services = [ Ioc.register(CommonFeature), Ioc.register(CsdnApp), Ioc.register(MagnetRegApp), Ioc.register(FeiShuDocApp), Ioc.register(RightClickFreeApp), Ioc.register(AdBlockApp), Ioc.register(ScriptsFind) ];
         }
         return One.prototype.run = function() {
             this.services.every((function(element) {
