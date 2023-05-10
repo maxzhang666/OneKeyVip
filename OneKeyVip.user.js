@@ -2904,7 +2904,7 @@
                     var _a, text = null === (_a = unsafeWindow.getSelection()) || void 0 === _a ? void 0 : _a.toString();
                     text && (Core.copyText(text) ? sAlert.info("\u590d\u5236\u6210\u529f") : sAlert.error("\u590d\u5236\u5931\u8d25,\u8bf7\u5c1d\u8bd5\u4f7f\u7528\u6309\u94ae\u590d\u5236"));
                 }));
-            }), 3);
+            }), 3), $("#content_views").unbind("copy");
         }, CsdnAdService.prototype.removeAds = function() {
             CsdnAdService.adSelectors.forEach((function(selector) {
                 $(selector).remove();
