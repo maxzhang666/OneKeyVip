@@ -375,8 +375,8 @@
         function Core() {
             this.url = Core.currentUrl();
         }
-        return Core.appendTo = function(selecter, html) {
-            $(selecter).append(html);
+        return Core.appendTo = function(selector, html) {
+            $(selector).append(html);
         }, Core.prepend = function(selector, html) {
             $(selector).prepend(html);
         }, Core.lazyload = function(callback, time) {
