@@ -16,6 +16,7 @@
 // @connect      cdn.jsdelivr.net
 // @connect      gwdang.com
 // @connect      scriptcat.org
+// @connect      taobao.com
 // @grant        unsafeWindow
 // @grant        GM_xmlhttpRequest
 // @grant        GM_info

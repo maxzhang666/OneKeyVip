@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,夸克网盘直链批量获取,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.8.7
+// @version      4.8.8
 // @homepage     https://wiki.wandhi.com/
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转 12、搜索引擎快速跳转
@@ -774,6 +774,22 @@
                 Http.ajax(new AjaxOption(url, "GET", new Map, (function(data) {
                     resolve(data);
                 })));
+            }));
+        }, Http.get302 = function(url) {
+            return new Promise((function(resolve) {
+                GM_xmlhttpRequest({
+                    url: url,
+                    onload: function(response) {
+                        resolve(response.finalUrl);
+                    },
+                    onabort: function() {
+                        resolve();
+                    },
+                    method: "GET",
+                    onerror: function(response) {
+                        resolve();
+                    }
+                });
             }));
         }, Http;
     }(), HttpHeaders = function HttpHeaders() {}, Convert = function() {
@@ -2710,8 +2726,8 @@
         }), ListService.prototype.run = function() {
             switch (ListService.that = this, this.site) {
               case SiteEnum.TaoBao:
-                this.selectorList.push(".items .item"), this.atrack.push(".pic a", ".title a"), 
-                this.itemType = ItemType.TaoBao;
+                this.selectorList.push(".items .item"), this.selectorList.push('a[class^="Card--doubleCardWrapper"]'), 
+                this.atrack.push(".pic a", ".title a"), this.itemType = ItemType.TaoBao;
                 break;
 
               case SiteEnum.TMall:
@@ -2769,18 +2785,40 @@
                 }));
             }));
         }, ListService.prototype.initSearchItem = function(selector) {
-            var _a, _b, _c, _d, _e, _f, _g, _h, itemId, $a, res, $dom = $(selector);
-            if (!$dom.hasClass("onekeyvip-box-done")) {
-                if ($dom.addClass("onekeyvip-box-done"), itemId = null !== (_c = null !== (_b = null !== (_a = $dom.attr("data-id")) && void 0 !== _a ? _a : $dom.data("sku")) && void 0 !== _b ? _b : $dom.attr("id")) && void 0 !== _c ? _c : "", 
-                Tao.isVailidItemId(itemId) || (itemId = null !== (_f = null !== (_e = null !== (_d = $dom.attr("data-itemid")) && void 0 !== _d ? _d : $dom.data("spu")) && void 0 !== _e ? _e : $dom.attr("id")) && void 0 !== _f ? _f : ""), 
-                !Tao.isVailidItemId(itemId)) if ($dom.attr("href")) itemId = location.protocol + $dom.attr("href"); else {
-                    if (!($a = $dom.find("a")).length) return;
-                    itemId = null !== (_g = $a.attr("data-nid")) && void 0 !== _g ? _g : "", Tao.isVailidItemId(itemId) || (itemId = $a.hasClass("j_ReceiveCoupon") && $a.length > 1 ? location.protocol + $($a[1]).attr("href") : location.protocol + $a.attr("href"));
-                }
-                !Tao.isVailidItemId(itemId) && itemId.indexOf("http") > -1 && (itemId = (res = null !== (_h = /item.jd.com\/(.*?).html/i.exec(itemId)) && void 0 !== _h ? _h : []).length > 0 ? res[1] : ""), 
-                Tao.isValidTaoId(itemId) || ListService.that.itemType != ItemType.Suning || (itemId = $dom.attr("id")).split("-").length > 1 && (itemId = itemId.split("-")[1] + "-" + itemId.split("-")[0]), 
-                Tao.isValidTaoId(itemId) ? (this.initBoxHtml($dom, itemId), this.initTagClass($dom, itemId)) : Logger.debug("\u5546\u54c1\u5217\u8868id\u65e0\u6548:" + itemId);
-            }
+            var _a, _b, _c, _d, _e, _f, _g, _h;
+            return __awaiter(this, void 0, Promise, (function() {
+                var $dom, itemId, $a, res;
+                return __generator(this, (function(_j) {
+                    switch (_j.label) {
+                      case 0:
+                        return ($dom = $(selector)).hasClass("onekeyvip-box-done") ? [ 2 ] : (itemId = null !== (_c = null !== (_b = null !== (_a = $dom.attr("data-id")) && void 0 !== _a ? _a : $dom.data("sku")) && void 0 !== _b ? _b : $dom.attr("id")) && void 0 !== _c ? _c : "", 
+                        Tao.isVailidItemId(itemId) || (itemId = null !== (_f = null !== (_e = null !== (_d = $dom.attr("data-itemid")) && void 0 !== _d ? _d : $dom.data("spu")) && void 0 !== _e ? _e : $dom.attr("id")) && void 0 !== _f ? _f : ""), 
+                        Tao.isVailidItemId(itemId) ? [ 3, 5 ] : $dom.attr("href") ? (itemId = location.protocol + $dom.attr("href"), 
+                        this.site != SiteEnum.TaoBao && this.site != SiteEnum.TMall ? [ 3, 3 ] : itemId.indexOf("click.simba.taobao.com") > -1 ? [ 4, Http.get302(itemId) ] : [ 3, 2 ]) : [ 3, 4 ]);
+
+                      case 1:
+                        itemId = _j.sent(), Logger.debug("302\u5904\u7406\u540eitemId:" + itemId), _j.label = 2;
+
+                      case 2:
+                        itemId = Core.getPar("id", itemId), _j.label = 3;
+
+                      case 3:
+                        return [ 3, 5 ];
+
+                      case 4:
+                        if (!($a = $dom.find("a")).length) return [ 2 ];
+                        itemId = null !== (_g = $a.attr("data-nid")) && void 0 !== _g ? _g : "", Tao.isVailidItemId(itemId) || (itemId = $a.hasClass("j_ReceiveCoupon") && $a.length > 1 ? location.protocol + $($a[1]).attr("href") : location.protocol + $a.attr("href")), 
+                        _j.label = 5;
+
+                      case 5:
+                        return !Tao.isVailidItemId(itemId) && itemId.indexOf("http") > -1 && (res = null !== (_h = /item.jd.com\/(.*?).html/i.exec(itemId)) && void 0 !== _h ? _h : [], 
+                        itemId = res.length > 0 ? res[1] : ""), Tao.isValidTaoId(itemId) || ListService.that.itemType != ItemType.Suning || (itemId = $dom.attr("id")).split("-").length > 1 && (itemId = itemId.split("-")[1] + "-" + itemId.split("-")[0]), 
+                        Tao.isValidTaoId(itemId) ? (this.initBoxHtml($dom, itemId), this.initTagClass($dom, itemId), 
+                        $dom.addClass("onekeyvip-box-done")) : Logger.debug("\u5546\u54c1\u5217\u8868id\u65e0\u6548:" + itemId), 
+                        [ 2 ];
+                    }
+                }));
+            }));
         }, ListService.prototype.initTagClass = function(target, itemId) {
             this.atrack.forEach((function(e) {
                 target.find(e).hasClass("onekeyvip-item-" + itemId) || target.find(e).addClass("onekeyvip-item-" + itemId);
