@@ -11,6 +11,12 @@
     <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Mac%20%7C%20Android-blue.svg" alt="platform">
 </p>
 
+## 💕京东、淘宝活动导购群 推荐
+
+👉[点我](https://qm.qq.com/cgi-bin/qm/qr?k=oPx93FEy2sZCnIRN74xSYbrFcU-p5D4W&jump_from=webapi&authKey=GSyv7KekSu7mHLKiB13u/E+XGxjJHn7vbEE2SUJZ4imN0uIixixS7qm1ZaFI/qpg)👈或使用手机QQ扫码加群(禁言)
+
+![DF035001-4FF7-46C7-8736-0457FFB828AE.png](https://s2.loli.net/2023/06/01/LOfFMtTa8hBmJdz.jpg)
+
 ## 声明
 
 > 脚本未最小化或混淆
