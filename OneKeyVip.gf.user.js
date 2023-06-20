@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,夸克网盘直链批量获取,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
+// @name         【玩的嗨】VIP工具箱,京东、淘宝、聚划算、天猫隐藏优惠券与历史价格,夸克网盘直链批量获取,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
 // @version      4.8.8
 // @homepage     https://wiki.wandhi.com/
