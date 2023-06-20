@@ -39,16 +39,6 @@
 // @include      *://v.yinyuetai.com/playlist/*
 // @include      *://*.wasu.cn/Play/show/*
 // @include      *://music.taihe.com/song*
-// @include      *://item.taobao.com/*
-// @include      *://s.taobao.com/search*
-// @include      *://list.tmall.com/search_product.htm*
-// @include      *://detail.tmall.com/*
-// @include      *://chaoshi.detail.tmall.com/*
-// @include      *://detail.tmall.hk/*
-// @include      *://item.yiyaojd.com/*
-// @include      *://item.jd.com/*
-// @include      *://search.jd.com/*
-// @include      *://item.jd.hk/*
 // @include      *://search.kaola.com/*
 // @include      *://goods.kaola.com*
 // @include      *://detail.vip.com/detail-*
@@ -111,42 +101,42 @@
 // @require      https://lib.baomitu.com/layer/2.3/layer.js
 // @require      https://lib.baomitu.com/qrcode-generator/1.4.4/qrcode.min.js
 // @require      https://lib.baomitu.com/FileSaver.js/2.0.5/FileSaver.min.js
-// @license      MIT
-// @grant        GM_setClipboard
-// @run-at       document-end
-// @connect      shangxueba365.com
-// @connect      api.wandhi.com
-// @connect      cdn.jsdelivr.net
-// @connect      tool.manmanbuy.com
-// @connect      xbeibeix.com
-// @connect      gwdang.com
-// @connect      scriptcat.org
-// @connect      quark.cn
-// @grant        unsafeWindow
-// @grant        GM_xmlhttpRequest
-// @grant        GM_info
-// @grant        GM_addStyle
-// @grant        GM_getValue
-// @grant        GM_setValue
-// @grant        GM_notification
-// @grant        GM_openInTab
-// @grant        GM_deleteValue
-// @grant        GM_registerMenuCommand
-// @grant        GM_unregisterMenuCommand
-// @grant        GM_download
-// @compatible   firefox
-// @compatible   chrome
-// @compatible   opera safari edge
-// @compatible   safari
-// @compatible   edge
-// @antifeature  referral-link 此提示为GreasyFork代码规范要求含有查券功能的脚本必须添加，实际使用无任何强制跳转，代码可查，请知悉。
+// @license MIT
+// @grant GM_setClipboard
+// @run-at document-end
+// @connect shangxueba365.com
+// @connect api.wandhi.com
+// @connect cdn.jsdelivr.net
+// @connect tool.manmanbuy.com
+// @connect xbeibeix.com
+// @connect gwdang.com
+// @connect scriptcat.org
+// @connect quark.cn
+// @grant unsafeWindow
+// @grant GM_xmlhttpRequest
+// @grant GM_info
+// @grant GM_addStyle
+// @grant GM_getValue
+// @grant GM_setValue
+// @grant GM_notification
+// @grant GM_openInTab
+// @grant GM_deleteValue
+// @grant GM_registerMenuCommand
+// @grant GM_unregisterMenuCommand
+// @grant GM_download
+// @compatible firefox
+// @compatible chrome
+// @compatible opera safari edge
+// @compatible safari
+// @compatible edge
+// @antifeature referral-link 此提示为GreasyFork代码规范要求含有查券功能的脚本必须添加，实际使用无任何强制跳转，代码可查，请知悉。
 // ==/UserScript==
 
 (function(global, factory) {
     "object" == typeof exports && "undefined" != typeof module ? factory(require("sweetalert2")) : "function" == typeof define && define.amd ? define([ "sweetalert2" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).Swal);
 })(this, (function(Swal) {
     "use strict";
-    var Swal__default, extendStatics, update_key, Min, Hour, Day, Week, Logger, LogLevel, Config, History, PriceDetail, ListPriceItem, BrowerType, Core, AjaxOption, Alert, Http, HttpHeaders, Convert, Result, HistoryResult, Route, css_248z$8, Common, PluginBase, SiteEnum, UpdateService, VersionCompar, VersionResult, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$7, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$6, sAlert, GwdService, css_248z$5, TaoBaoService, container, Container, css_248z$4, ConfigEnum, BiliImgService, Menu$1, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$3, CsdnAdService, Menu, WenKuService, LinkJumpService, css_248z$2, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$1, css_248z, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, NetDiskDirectService, AdClearService, OneKeyVipInjection;
+    var Swal__default, container, Container, Logger, LogLevel, extendStatics, BrowerType, Core, update_key, Min, Hour, Day, Week, css_248z$7, Common, PluginBase, SiteEnum, Config, History, PriceDetail, ListPriceItem, AjaxOption, Alert, Http, HttpHeaders, Convert, Result, HistoryResult, Route, css_248z$6, sAlert, css_248z$5, Runtime, ConfigEnum, BiliImgService, Menu$1, MovieService, UrlHelper, MusicService, EventHelper, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$4, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, GwdService, css_248z$3, CsdnAdService, Menu, WenKuService, LinkJumpService, css_248z$2, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$1, css_248z, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, NetDiskDirectService, AdClearService, GfUpdateService, VersionCompar, VersionResult, OneKeyVipGfInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
@@ -293,16 +283,18 @@
         (style = document.createElement("style")).type = "text/css", "top" === insertAt && head.firstChild ? head.insertBefore(style, head.firstChild) : head.appendChild(style), 
         style.styleSheet ? style.styleSheet.cssText = css : style.appendChild(document.createTextNode(css)));
     }
-    Swal__default = _interopDefaultLegacy(Swal), extendStatics = function(d, b) {
-        return (extendStatics = Object.setPrototypeOf || {
-            __proto__: []
-        } instanceof Array && function(d, b) {
-            d.__proto__ = b;
-        } || function(d, b) {
-            for (var p in b) b.hasOwnProperty(p) && (d[p] = b[p]);
-        })(d, b);
-    }, update_key = "isUpdate", Min = 60, Hour = 60 * Min, Day = 24 * Hour, Week = 7 * Day, 
-    Logger = function() {
+    Swal__default = _interopDefaultLegacy(Swal), container = new Map, Container = function() {
+        function Container() {}
+        return Container.Registe = function(type, args) {
+            var className = this.processName(type.name);
+            return container.has(className) ? container.get(className) : className ? (container.set(className, window.Reflect.construct(type, args)), 
+            container.get(className)) : void 0;
+        }, Container.processName = function(name) {
+            return name.toLowerCase();
+        }, Container.Require = function(type) {
+            return this.Registe(type, []);
+        }, Container;
+    }(), Logger = function() {
         function Logger() {}
         return Logger.log = function(msg, group, level) {}, Logger.debug = function(msg, group) {
             void 0 === group && (group = "debug"), this.log(msg, group, LogLevel.debug);
@@ -316,54 +308,15 @@
     }(), function(LogLevel) {
         LogLevel[LogLevel.debug = 0] = "debug", LogLevel[LogLevel.info = 1] = "info", LogLevel[LogLevel.warn = 2] = "warn", 
         LogLevel[LogLevel.error = 3] = "error";
-    }(LogLevel || (LogLevel = {})), Config = function() {
-        function Config() {}
-        return Object.defineProperty(Config, "env", {
-            get: function() {
-                return GM_info;
-            },
-            enumerable: !1,
-            configurable: !0
-        }), Config.get = function(key, defaultValue) {
-            var objStr, obj;
-            if (void 0 === defaultValue && (defaultValue = ""), objStr = GM_getValue(this.encode(key), null)) {
-                if (-1 == (obj = JSON.parse(objStr)).exp || obj.exp > (new Date).getTime()) return Logger.info("cache true:" + key + "," + obj.exp), 
-                obj.value;
-                GM_deleteValue(key);
-            }
-            return Logger.info("cache false"), defaultValue;
-        }, Config.set = function(key, v, exp) {
-            void 0 === exp && (exp = -1);
-            var obj = {
-                key: key,
-                value: v,
-                exp: -1 == exp ? exp : (new Date).getTime() + 1e3 * exp
-            };
-            Logger.debug(obj), GM_setValue(this.encode(key), JSON.stringify(obj));
-        }, Config.remember = function(key, exp, callback) {
-            var _this = this;
-            return new Promise((function(reso, reject) {
-                var v = _this.get(key, null);
-                null == v || "" === v ? callback().then((function(res) {
-                    _this.set(key, res, exp), reso(res);
-                })).catch((function(e) {
-                    reject(e);
-                })) : (Logger.debug(v), reso(v));
-            }));
-        }, Config.clear = function(key) {
-            GM_deleteValue(key);
-        }, Config.decode = function(str) {
-            return atob(str);
-        }, Config.encode = function(str) {
-            return btoa(str);
-        }, Config.inc = function(s) {
-            var v = Config.get(s, 0);
-            v++, Config.set(s, v);
-        }, Config;
-    }(), History = function History() {
-        this.max = 0, this.price_detail = [];
-    }, PriceDetail = function PriceDetail() {}, ListPriceItem = function ListPriceItem() {}, 
-    function(BrowerType) {
+    }(LogLevel || (LogLevel = {})), extendStatics = function(d, b) {
+        return (extendStatics = Object.setPrototypeOf || {
+            __proto__: []
+        } instanceof Array && function(d, b) {
+            d.__proto__ = b;
+        } || function(d, b) {
+            for (var p in b) b.hasOwnProperty(p) && (d[p] = b[p]);
+        })(d, b);
+    }, function(BrowerType) {
         BrowerType[BrowerType.Edge = 0] = "Edge", BrowerType[BrowerType.Edg = 1] = "Edg", 
         BrowerType[BrowerType.Chrome = 2] = "Chrome", BrowerType[BrowerType.Firefox = 3] = "Firefox", 
         BrowerType[BrowerType.Safiri = 4] = "Safiri", BrowerType[BrowerType.Se360 = 5] = "Se360", 
@@ -566,7 +519,142 @@
             document.execCommand("copy") ? (document.body.removeChild(textArea), !0) : (document.body.removeChild(textArea), 
             !1);
         }, Core;
-    }(), AjaxOption = function() {
+    }(), update_key = "isUpdate", Min = 60, Hour = 60 * Min, Day = 24 * Hour, Week = 7 * Day, 
+    css_248z$7 = 'html .aside-nav {\n    -ms-text-size-adjust: 100%;\n    -webkit-text-size-adjust: 100%;\n    -webkit-font-smoothing: antialiased;\n    font-size: 62.5%\n}\n\nbody .aside-nav {\n    font-family: "Helvetica Neue", Helvetica, "Microsoft YaHei", Arial, sans-serif;\n    margin: 0;\n    font-size: 1.6rem;\n    color: #4e546b\n}\n\n.aside-nav {\n    position: fixed;\n    bottom: 0;\n    left: -47px;\n    width: 260px;\n    height: 260px;\n    -webkit-filter: url(#goo);\n    filter: url(#goo);\n    -ms-user-select: none;\n    -moz-user-select: none;\n    -webkit-user-select: none;\n    user-select: none;\n    opacity: .75;\n    z-index: 99999\n}\n\n.aside-nav.no-filter {\n    -webkit-filter: none;\n    filter: none\n}\n\n.aside-nav .aside-menu {\n    position: absolute;\n    width: 70px;\n    height: 70px;\n    -webkit-border-radius: 50%;\n    border-radius: 50%;\n    background: #f34444;\n    left: -95px;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    margin: auto;\n    text-align: center;\n    line-height: 70px;\n    color: #fff;\n    font-size: 20px;\n    z-index: 1;\n    cursor: move\n}\n\n.aside-nav .menu-item {\n    position: absolute;\n    width: 60px;\n    height: 60px;\n    background-color: #ff7676;\n    left: -95px;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    margin: auto;\n    line-height: 60px;\n    text-align: center;\n    -webkit-border-radius: 50%;\n    border-radius: 50%;\n    text-decoration: none;\n    color: #fff;\n    -webkit-transition: background .5s, -webkit-transform .6s;\n    transition: background .5s, -webkit-transform .6s;\n    -moz-transition: transform .6s, background .5s, -moz-transform .6s;\n    transition: transform .6s, background .5s;\n    transition: transform .6s, background .5s, -webkit-transform .6s, -moz-transform .6s;\n    font-size: 14px;\n    -webkit-box-sizing: border-box;\n    -moz-box-sizing: border-box;\n    box-sizing: border-box\n}\n\n.aside-nav .menu-item:hover {\n    background: #a9c734\n}\n\n.aside-nav .menu-line {\n    line-height: 20px;\n    padding-top: 10px\n}\n\n.aside-nav:hover {\n    opacity: 1\n}\n\n.aside-nav:hover .aside-menu {\n    -webkit-animation: jello 1s;\n    -moz-animation: jello 1s;\n    animation: jello 1s\n}\n\n.aside-nav:hover .menu-first {\n    -webkit-transform: translate3d(0, -135%, 0);\n    -moz-transform: translate3d(0, -135%, 0);\n    transform: translate3d(0, -135%, 0)\n}\n\n.aside-nav:hover .menu-second {\n    -webkit-transform: translate3d(120%, -70%, 0);\n    -moz-transform: translate3d(120%, -70%, 0);\n    transform: translate3d(120%, -70%, 0)\n}\n\n.aside-nav:hover .menu-third {\n    -webkit-transform: translate3d(120%, 70%, 0);\n    -moz-transform: translate3d(120%, 70%, 0);\n    transform: translate3d(120%, 70%, 0)\n}\n\n.aside-nav:hover .menu-fourth {\n    -webkit-transform: translate3d(0, 135%, 0);\n    -moz-transform: translate3d(0, 135%, 0);\n    transform: translate3d(0, 135%, 0)\n}\n\n@-webkit-keyframes jello {\n    from, 11.1%, to {\n        -webkit-transform: none;\n        transform: none\n    }\n    22.2% {\n        -webkit-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -webkit-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -webkit-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -webkit-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -webkit-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -webkit-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -webkit-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n@-moz-keyframes jello {\n    from, 11.1%, to {\n        -moz-transform: none;\n        transform: none\n    }\n    22.2% {\n        -moz-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -moz-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -moz-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -moz-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -moz-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -moz-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -moz-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n@keyframes jello {\n    from, 11.1%, to {\n        -webkit-transform: none;\n        -moz-transform: none;\n        transform: none\n    }\n    22.2% {\n        -webkit-transform: skewX(-12.5deg) skewY(-12.5deg);\n        -moz-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -webkit-transform: skewX(6.25deg) skewY(6.25deg);\n        -moz-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -webkit-transform: skewX(-3.125deg) skewY(-3.125deg);\n        -moz-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -webkit-transform: skewX(1.5625deg) skewY(1.5625deg);\n        -moz-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -webkit-transform: skewX(-.78125deg) skewY(-.78125deg);\n        -moz-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -webkit-transform: skewX(0.390625deg) skewY(0.390625deg);\n        -moz-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -webkit-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        -moz-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n.animated {\n    -webkit-animation-duration: 1s;\n    -moz-animation-duration: 1s;\n    animation-duration: 1s;\n    -webkit-animation-fill-mode: both;\n    -moz-animation-fill-mode: both;\n    animation-fill-mode: both\n}\n\n@-webkit-keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -webkit-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -webkit-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -webkit-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -webkit-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -webkit-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -webkit-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n@-moz-keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -moz-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -moz-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -moz-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -moz-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -moz-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -moz-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n@keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -webkit-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        -moz-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -webkit-transform: translate3d(0, 800px, 0);\n        -moz-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -webkit-transform: translate3d(0, -20px, 0);\n        -moz-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -webkit-transform: translate3d(0, 10px, 0);\n        -moz-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -webkit-transform: translate3d(0, -5px, 0);\n        -moz-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -webkit-transform: translate3d(0, 0, 0);\n        -moz-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n.bounceInUp {\n    -webkit-animation-name: bounceInUp;\n    -moz-animation-name: bounceInUp;\n    animation-name: bounceInUp;\n    -webkit-animation-delay: 1s;\n    -moz-animation-delay: 1s;\n    animation-delay: 1s\n}\n', 
+    styleInject(css_248z$7), function(Common) {
+        var Menu = function() {
+            function Menu() {
+                this.core = new Core, this.site = /tv.wandhi.com/i, this.userAgent = navigator.userAgent, 
+                this.menusClass = [ "first", "second", "third", "fourth", "fifth" ], this.menuSelecter = "#Wandhi-nav";
+            }
+            return Menu.prototype.loader = function() {}, Menu.prototype.getBody = function(option) {
+                return '<svg width="0" height="0"><defs><filter id="goo"><feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"></feGaussianBlur><feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo"></feColorMatrix><feComposite in="SourceGraphic" in2="goo" operator="atop"></feComposite></filter></defs></svg><div class="aside-nav bounceInUp animated" id="Wandhi-nav"><label for="" class="aside-menu" title="\u6309\u4f4f\u62d6\u52a8">VIP</label>' + option + "</div>";
+            }, Menu.prototype.Init = function(menus, callback, skipIframe) {
+                var that, str, drags, asideNav, _this = this;
+                void 0 === skipIframe && (skipIframe = !0), Core.inIframe() && skipIframe || (that = this, 
+                this.loader(), str = "", menus.forEach((function(element, index) {
+                    str += '<a href="javascript:void(0)" title="' + element.title + '" data-cat="' + element.type + '" class="menu-item menu-line menu-' + _this.menusClass[index] + '">' + element.show + "</a>";
+                })), Logger.info("\u8ffd\u52a0\u83dc\u5355"), Core.bodyAppend(this.getBody(str)), 
+                /Safari|iPhone/i.test(this.userAgent) && /chrome/i.test(this.userAgent) && $("#Wandhi-nav").addClass("no-filter"), 
+                drags = {
+                    down: !1,
+                    x: 0,
+                    y: 0,
+                    winWid: 0,
+                    winHei: 0,
+                    clientX: 0,
+                    clientY: 0
+                }, asideNav = $(this.menuSelecter)[0], $("body").on("mousedown", "" + that.menuSelecter, (function(a) {
+                    var getCss = function(a, e) {
+                        var _a, _b, _c;
+                        return null !== (_b = null === (_a = document.defaultView) || void 0 === _a ? void 0 : _a.getComputedStyle(a, null)[e]) && void 0 !== _b ? _b : null !== (_c = a.currentStyle) && void 0 !== _c ? _c : a.currentStyle[e];
+                    };
+                    drags.down = !0, drags.clientX = a.clientX, drags.clientY = a.clientY, drags.x = parseInt(getCss(this, "left")), 
+                    drags.y = parseInt(getCss(this, "top")), drags.winHei = $(window).height(), drags.winWid = $(window).width(), 
+                    $(document).on("mousemove", (function(a) {
+                        var e = a.clientX - drags.clientX, t = a.clientY - drags.clientY;
+                        (asideNav = asideNav || $("#Wandhi-nav")[0]).style.top = drags.y + t + "px", asideNav.style.left = drags.x + e + "px";
+                    }));
+                })).on("mouseup", "" + that.menuSelecter, (function() {
+                    drags.down = !1, $(document).off("mousemove");
+                })), callback.call(this));
+            }, Menu.close = function() {
+                $("#" + Menu.mainId).hide();
+            }, Menu.mainId = "Wandhi-nav", Menu;
+        }();
+        Common.Menu = Menu;
+    }(Common || (Common = {})), PluginBase = function() {
+        function PluginBase() {
+            var _this = this;
+            this._unique = !0, this.menu = new Common.Menu, this.Process = function() {
+                _this.loader(), _this.run();
+            }, this._appName = "base";
+        }
+        return PluginBase.prototype.unique = function() {
+            return this._unique;
+        }, PluginBase.prototype.linkTest = function(url) {
+            var flag, _this = this;
+            return url || (url = Core.currentUrl()), flag = !1, this.rules.forEach((function(v, k) {
+                return !v.test(url) || (flag = !0, _this.site = k, !1);
+            })), flag;
+        }, PluginBase.prototype.appName = function() {
+            return this._appName;
+        }, PluginBase;
+    }(), function(SiteEnum) {
+        SiteEnum.All = "All", SiteEnum.Settings = "Settings", SiteEnum.Settings_AutoJump = "Settings_AutoJump", 
+        SiteEnum.Settings_AutoJump_Opt = "Settings_AutoJump_Opt", SiteEnum.Settings_CSDN = "Settings_CSDN", 
+        SiteEnum.Settings_CSDN_Opt = "Settings_CSDN_Opt", SiteEnum.Settings_Search = "Settings_Search", 
+        SiteEnum.Settings_Search_Opt = "Settings_Search_Opt", SiteEnum.Settings_Bili_Pc_Opt = "Settings_Bili_Pc_Opt", 
+        SiteEnum.TaoBao = "TaoBao", SiteEnum.TMall = "TMall", SiteEnum.JingDong = "JingDong", 
+        SiteEnum.JingDongList = "JingDongList", SiteEnum.IQiYi = "IQiYi", SiteEnum.YouKu = "YouKu", 
+        SiteEnum.LeShi = "LeShi", SiteEnum.TuDou = "TuDou", SiteEnum.Tencent_V = "Tencent_V", 
+        SiteEnum.MangGuo = "MangGuo", SiteEnum.SoHu = "SoHu", SiteEnum.Acfun = "Acfun", 
+        SiteEnum.BiliBili = "BiliBili", SiteEnum.BiliMobile = "BiliMobile", SiteEnum.M1905 = "M1905", 
+        SiteEnum.PPTV = "PPTV", SiteEnum.YinYueTai = "YinYueTai", SiteEnum.WangYi = "WangYi", 
+        SiteEnum.Tencent_M = "Tencent_M", SiteEnum.KuGou = "KuGou", SiteEnum.KaoLa = "KaoLa", 
+        SiteEnum.KuWo = "KuWo", SiteEnum.XiaMi = "XiaMi", SiteEnum.TaiHe = "TaiHe", SiteEnum.QingTing = "QingTing", 
+        SiteEnum.LiZhi = "LiZhi", SiteEnum.MiGu = "MiGu", SiteEnum.XiMaLaYa = "XiMaLaYa", 
+        SiteEnum.WenKu = "WenKu", SiteEnum.YouTuBe = "YouTuBe", SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", 
+        SiteEnum.ALY = "ALY", SiteEnum.BDY1 = "BDY1", SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", 
+        SiteEnum.Steam = "Steam", SiteEnum.Vp = "Vp", SiteEnum.CSDN = "CSDN", SiteEnum.CSDN_Download = "CSDN_Download", 
+        SiteEnum.ZhiHu = "ZhiHu", SiteEnum.JianShu = "JianShu", SiteEnum.JueJin = "JueJin", 
+        SiteEnum.Gitee = "Gitee", SiteEnum.Weibo = "Weibo", SiteEnum.TuXiaoChao = "TuXiaoChao", 
+        SiteEnum.OsCh = "OsCh", SiteEnum.AiFaDian = "AiFaDian", SiteEnum.Baidu = "Baidu", 
+        SiteEnum.BaiduPanMain = "BaiduPanMain", SiteEnum.BaiduPanHome = "BaiduPanHome", 
+        SiteEnum.DouBan = "DouBan", SiteEnum.g17173 = "g17173", SiteEnum.Google = "Google", 
+        SiteEnum.SoGou = "SoGou", SiteEnum.KuaKeHome = "KuaKeHome", SiteEnum.TencentDoc = "TencentDoc", 
+        SiteEnum.TencentMail = "TencentMail", SiteEnum.SsPAi = "SsPai", SiteEnum.FeiShuDoc = "FeiShuDoc", 
+        SiteEnum.TencentQQ = "TencentQQ", SiteEnum.Shuma = "Shuma", SiteEnum.BD_DETAIL_OLD = "BD_DETAIL_OLD", 
+        SiteEnum.BD_DETAIL_NEW = "BD_DETAIL_NEW", SiteEnum.BD_DETAIL_Share = "BD_DETAIL_Share", 
+        SiteEnum.Gwd = "Gwd", SiteEnum.Xxqg = "Xxqg", SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin";
+    }(SiteEnum || (SiteEnum = {})), Config = function() {
+        function Config() {}
+        return Object.defineProperty(Config, "env", {
+            get: function() {
+                return GM_info;
+            },
+            enumerable: !1,
+            configurable: !0
+        }), Config.get = function(key, defaultValue) {
+            var objStr, obj;
+            if (void 0 === defaultValue && (defaultValue = ""), objStr = GM_getValue(this.encode(key), null)) {
+                if (-1 == (obj = JSON.parse(objStr)).exp || obj.exp > (new Date).getTime()) return Logger.info("cache true:" + key + "," + obj.exp), 
+                obj.value;
+                GM_deleteValue(key);
+            }
+            return Logger.info("cache false"), defaultValue;
+        }, Config.set = function(key, v, exp) {
+            void 0 === exp && (exp = -1);
+            var obj = {
+                key: key,
+                value: v,
+                exp: -1 == exp ? exp : (new Date).getTime() + 1e3 * exp
+            };
+            Logger.debug(obj), GM_setValue(this.encode(key), JSON.stringify(obj));
+        }, Config.remember = function(key, exp, callback) {
+            var _this = this;
+            return new Promise((function(reso, reject) {
+                var v = _this.get(key, null);
+                null == v || "" === v ? callback().then((function(res) {
+                    _this.set(key, res, exp), reso(res);
+                })).catch((function(e) {
+                    reject(e);
+                })) : (Logger.debug(v), reso(v));
+            }));
+        }, Config.clear = function(key) {
+            GM_deleteValue(key);
+        }, Config.decode = function(str) {
+            return atob(str);
+        }, Config.encode = function(str) {
+            return btoa(str);
+        }, Config.inc = function(s) {
+            var v = Config.get(s, 0);
+            v++, Config.set(s, v);
+        }, Config;
+    }(), History = function History() {
+        this.max = 0, this.price_detail = [];
+    }, PriceDetail = function PriceDetail() {}, ListPriceItem = function ListPriceItem() {}, 
+    AjaxOption = function() {
         function AjaxOption(_url, _methodType, _data, _success, _header, timeOut) {
             void 0 === _methodType && (_methodType = "GET"), void 0 === _header && (_header = new Map), 
             void 0 === timeOut && (timeOut = 60), this.url = _url, this.methodType = _methodType, 
@@ -997,170 +1085,121 @@
         Route.bilidown = "https://api.bilibili.com/x/player/playurl", Route.coupons = "/tb/infos/", 
         Route.like = "/tb/guesslike", Route.jd_coupons = "/jd/info", Route.sn_coupons = "/sn/info", 
         Route.vp_coupons = "/vp/info", Route.kl_coupons = "/kl/info", Route;
-    }(), css_248z$8 = 'html .aside-nav {\n    -ms-text-size-adjust: 100%;\n    -webkit-text-size-adjust: 100%;\n    -webkit-font-smoothing: antialiased;\n    font-size: 62.5%\n}\n\nbody .aside-nav {\n    font-family: "Helvetica Neue", Helvetica, "Microsoft YaHei", Arial, sans-serif;\n    margin: 0;\n    font-size: 1.6rem;\n    color: #4e546b\n}\n\n.aside-nav {\n    position: fixed;\n    bottom: 0;\n    left: -47px;\n    width: 260px;\n    height: 260px;\n    -webkit-filter: url(#goo);\n    filter: url(#goo);\n    -ms-user-select: none;\n    -moz-user-select: none;\n    -webkit-user-select: none;\n    user-select: none;\n    opacity: .75;\n    z-index: 99999\n}\n\n.aside-nav.no-filter {\n    -webkit-filter: none;\n    filter: none\n}\n\n.aside-nav .aside-menu {\n    position: absolute;\n    width: 70px;\n    height: 70px;\n    -webkit-border-radius: 50%;\n    border-radius: 50%;\n    background: #f34444;\n    left: -95px;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    margin: auto;\n    text-align: center;\n    line-height: 70px;\n    color: #fff;\n    font-size: 20px;\n    z-index: 1;\n    cursor: move\n}\n\n.aside-nav .menu-item {\n    position: absolute;\n    width: 60px;\n    height: 60px;\n    background-color: #ff7676;\n    left: -95px;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    margin: auto;\n    line-height: 60px;\n    text-align: center;\n    -webkit-border-radius: 50%;\n    border-radius: 50%;\n    text-decoration: none;\n    color: #fff;\n    -webkit-transition: background .5s, -webkit-transform .6s;\n    transition: background .5s, -webkit-transform .6s;\n    -moz-transition: transform .6s, background .5s, -moz-transform .6s;\n    transition: transform .6s, background .5s;\n    transition: transform .6s, background .5s, -webkit-transform .6s, -moz-transform .6s;\n    font-size: 14px;\n    -webkit-box-sizing: border-box;\n    -moz-box-sizing: border-box;\n    box-sizing: border-box\n}\n\n.aside-nav .menu-item:hover {\n    background: #a9c734\n}\n\n.aside-nav .menu-line {\n    line-height: 20px;\n    padding-top: 10px\n}\n\n.aside-nav:hover {\n    opacity: 1\n}\n\n.aside-nav:hover .aside-menu {\n    -webkit-animation: jello 1s;\n    -moz-animation: jello 1s;\n    animation: jello 1s\n}\n\n.aside-nav:hover .menu-first {\n    -webkit-transform: translate3d(0, -135%, 0);\n    -moz-transform: translate3d(0, -135%, 0);\n    transform: translate3d(0, -135%, 0)\n}\n\n.aside-nav:hover .menu-second {\n    -webkit-transform: translate3d(120%, -70%, 0);\n    -moz-transform: translate3d(120%, -70%, 0);\n    transform: translate3d(120%, -70%, 0)\n}\n\n.aside-nav:hover .menu-third {\n    -webkit-transform: translate3d(120%, 70%, 0);\n    -moz-transform: translate3d(120%, 70%, 0);\n    transform: translate3d(120%, 70%, 0)\n}\n\n.aside-nav:hover .menu-fourth {\n    -webkit-transform: translate3d(0, 135%, 0);\n    -moz-transform: translate3d(0, 135%, 0);\n    transform: translate3d(0, 135%, 0)\n}\n\n@-webkit-keyframes jello {\n    from, 11.1%, to {\n        -webkit-transform: none;\n        transform: none\n    }\n    22.2% {\n        -webkit-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -webkit-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -webkit-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -webkit-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -webkit-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -webkit-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -webkit-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n@-moz-keyframes jello {\n    from, 11.1%, to {\n        -moz-transform: none;\n        transform: none\n    }\n    22.2% {\n        -moz-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -moz-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -moz-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -moz-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -moz-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -moz-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -moz-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n@keyframes jello {\n    from, 11.1%, to {\n        -webkit-transform: none;\n        -moz-transform: none;\n        transform: none\n    }\n    22.2% {\n        -webkit-transform: skewX(-12.5deg) skewY(-12.5deg);\n        -moz-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -webkit-transform: skewX(6.25deg) skewY(6.25deg);\n        -moz-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -webkit-transform: skewX(-3.125deg) skewY(-3.125deg);\n        -moz-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -webkit-transform: skewX(1.5625deg) skewY(1.5625deg);\n        -moz-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -webkit-transform: skewX(-.78125deg) skewY(-.78125deg);\n        -moz-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -webkit-transform: skewX(0.390625deg) skewY(0.390625deg);\n        -moz-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -webkit-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        -moz-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n.animated {\n    -webkit-animation-duration: 1s;\n    -moz-animation-duration: 1s;\n    animation-duration: 1s;\n    -webkit-animation-fill-mode: both;\n    -moz-animation-fill-mode: both;\n    animation-fill-mode: both\n}\n\n@-webkit-keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -webkit-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -webkit-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -webkit-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -webkit-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -webkit-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -webkit-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n@-moz-keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -moz-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -moz-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -moz-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -moz-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -moz-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -moz-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n@keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -webkit-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        -moz-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -webkit-transform: translate3d(0, 800px, 0);\n        -moz-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -webkit-transform: translate3d(0, -20px, 0);\n        -moz-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -webkit-transform: translate3d(0, 10px, 0);\n        -moz-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -webkit-transform: translate3d(0, -5px, 0);\n        -moz-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -webkit-transform: translate3d(0, 0, 0);\n        -moz-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n.bounceInUp {\n    -webkit-animation-name: bounceInUp;\n    -moz-animation-name: bounceInUp;\n    animation-name: bounceInUp;\n    -webkit-animation-delay: 1s;\n    -moz-animation-delay: 1s;\n    animation-delay: 1s\n}\n', 
-    styleInject(css_248z$8), function(Common) {
-        var Menu = function() {
-            function Menu() {
-                this.core = new Core, this.site = /tv.wandhi.com/i, this.userAgent = navigator.userAgent, 
-                this.menusClass = [ "first", "second", "third", "fourth", "fifth" ], this.menuSelecter = "#Wandhi-nav";
-            }
-            return Menu.prototype.loader = function() {}, Menu.prototype.getBody = function(option) {
-                return '<svg width="0" height="0"><defs><filter id="goo"><feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"></feGaussianBlur><feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo"></feColorMatrix><feComposite in="SourceGraphic" in2="goo" operator="atop"></feComposite></filter></defs></svg><div class="aside-nav bounceInUp animated" id="Wandhi-nav"><label for="" class="aside-menu" title="\u6309\u4f4f\u62d6\u52a8">VIP</label>' + option + "</div>";
-            }, Menu.prototype.Init = function(menus, callback, skipIframe) {
-                var that, str, drags, asideNav, _this = this;
-                void 0 === skipIframe && (skipIframe = !0), Core.inIframe() && skipIframe || (that = this, 
-                this.loader(), str = "", menus.forEach((function(element, index) {
-                    str += '<a href="javascript:void(0)" title="' + element.title + '" data-cat="' + element.type + '" class="menu-item menu-line menu-' + _this.menusClass[index] + '">' + element.show + "</a>";
-                })), Logger.info("\u8ffd\u52a0\u83dc\u5355"), Core.bodyAppend(this.getBody(str)), 
-                /Safari|iPhone/i.test(this.userAgent) && /chrome/i.test(this.userAgent) && $("#Wandhi-nav").addClass("no-filter"), 
-                drags = {
-                    down: !1,
-                    x: 0,
-                    y: 0,
-                    winWid: 0,
-                    winHei: 0,
-                    clientX: 0,
-                    clientY: 0
-                }, asideNav = $(this.menuSelecter)[0], $("body").on("mousedown", "" + that.menuSelecter, (function(a) {
-                    var getCss = function(a, e) {
-                        var _a, _b, _c;
-                        return null !== (_b = null === (_a = document.defaultView) || void 0 === _a ? void 0 : _a.getComputedStyle(a, null)[e]) && void 0 !== _b ? _b : null !== (_c = a.currentStyle) && void 0 !== _c ? _c : a.currentStyle[e];
-                    };
-                    drags.down = !0, drags.clientX = a.clientX, drags.clientY = a.clientY, drags.x = parseInt(getCss(this, "left")), 
-                    drags.y = parseInt(getCss(this, "top")), drags.winHei = $(window).height(), drags.winWid = $(window).width(), 
-                    $(document).on("mousemove", (function(a) {
-                        var e = a.clientX - drags.clientX, t = a.clientY - drags.clientY;
-                        (asideNav = asideNav || $("#Wandhi-nav")[0]).style.top = drags.y + t + "px", asideNav.style.left = drags.x + e + "px";
-                    }));
-                })).on("mouseup", "" + that.menuSelecter, (function() {
-                    drags.down = !1, $(document).off("mousemove");
-                })), callback.call(this));
-            }, Menu.close = function() {
-                $("#" + Menu.mainId).hide();
-            }, Menu.mainId = "Wandhi-nav", Menu;
-        }();
-        Common.Menu = Menu;
-    }(Common || (Common = {})), PluginBase = function() {
-        function PluginBase() {
-            var _this = this;
-            this._unique = !0, this.menu = new Common.Menu, this.Process = function() {
-                _this.loader(), _this.run();
-            }, this._appName = "base";
-        }
-        return PluginBase.prototype.unique = function() {
-            return this._unique;
-        }, PluginBase.prototype.linkTest = function(url) {
-            var flag, _this = this;
-            return url || (url = Core.currentUrl()), flag = !1, this.rules.forEach((function(v, k) {
-                return !v.test(url) || (flag = !0, _this.site = k, !1);
-            })), flag;
-        }, PluginBase.prototype.appName = function() {
-            return this._appName;
-        }, PluginBase;
-    }(), function(SiteEnum) {
-        SiteEnum.All = "All", SiteEnum.Settings = "Settings", SiteEnum.Settings_AutoJump = "Settings_AutoJump", 
-        SiteEnum.Settings_AutoJump_Opt = "Settings_AutoJump_Opt", SiteEnum.Settings_CSDN = "Settings_CSDN", 
-        SiteEnum.Settings_CSDN_Opt = "Settings_CSDN_Opt", SiteEnum.Settings_Search = "Settings_Search", 
-        SiteEnum.Settings_Search_Opt = "Settings_Search_Opt", SiteEnum.Settings_Bili_Pc_Opt = "Settings_Bili_Pc_Opt", 
-        SiteEnum.TaoBao = "TaoBao", SiteEnum.TMall = "TMall", SiteEnum.JingDong = "JingDong", 
-        SiteEnum.JingDongList = "JingDongList", SiteEnum.IQiYi = "IQiYi", SiteEnum.YouKu = "YouKu", 
-        SiteEnum.LeShi = "LeShi", SiteEnum.TuDou = "TuDou", SiteEnum.Tencent_V = "Tencent_V", 
-        SiteEnum.MangGuo = "MangGuo", SiteEnum.SoHu = "SoHu", SiteEnum.Acfun = "Acfun", 
-        SiteEnum.BiliBili = "BiliBili", SiteEnum.BiliMobile = "BiliMobile", SiteEnum.M1905 = "M1905", 
-        SiteEnum.PPTV = "PPTV", SiteEnum.YinYueTai = "YinYueTai", SiteEnum.WangYi = "WangYi", 
-        SiteEnum.Tencent_M = "Tencent_M", SiteEnum.KuGou = "KuGou", SiteEnum.KaoLa = "KaoLa", 
-        SiteEnum.KuWo = "KuWo", SiteEnum.XiaMi = "XiaMi", SiteEnum.TaiHe = "TaiHe", SiteEnum.QingTing = "QingTing", 
-        SiteEnum.LiZhi = "LiZhi", SiteEnum.MiGu = "MiGu", SiteEnum.XiMaLaYa = "XiMaLaYa", 
-        SiteEnum.WenKu = "WenKu", SiteEnum.YouTuBe = "YouTuBe", SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", 
-        SiteEnum.ALY = "ALY", SiteEnum.BDY1 = "BDY1", SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", 
-        SiteEnum.Steam = "Steam", SiteEnum.Vp = "Vp", SiteEnum.CSDN = "CSDN", SiteEnum.CSDN_Download = "CSDN_Download", 
-        SiteEnum.ZhiHu = "ZhiHu", SiteEnum.JianShu = "JianShu", SiteEnum.JueJin = "JueJin", 
-        SiteEnum.Gitee = "Gitee", SiteEnum.Weibo = "Weibo", SiteEnum.TuXiaoChao = "TuXiaoChao", 
-        SiteEnum.OsCh = "OsCh", SiteEnum.AiFaDian = "AiFaDian", SiteEnum.Baidu = "Baidu", 
-        SiteEnum.BaiduPanMain = "BaiduPanMain", SiteEnum.BaiduPanHome = "BaiduPanHome", 
-        SiteEnum.DouBan = "DouBan", SiteEnum.g17173 = "g17173", SiteEnum.Google = "Google", 
-        SiteEnum.SoGou = "SoGou", SiteEnum.KuaKeHome = "KuaKeHome", SiteEnum.TencentDoc = "TencentDoc", 
-        SiteEnum.TencentMail = "TencentMail", SiteEnum.SsPAi = "SsPai", SiteEnum.FeiShuDoc = "FeiShuDoc", 
-        SiteEnum.TencentQQ = "TencentQQ", SiteEnum.Shuma = "Shuma", SiteEnum.BD_DETAIL_OLD = "BD_DETAIL_OLD", 
-        SiteEnum.BD_DETAIL_NEW = "BD_DETAIL_NEW", SiteEnum.BD_DETAIL_Share = "BD_DETAIL_Share", 
-        SiteEnum.Gwd = "Gwd", SiteEnum.Xxqg = "Xxqg", SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin";
-    }(SiteEnum || (SiteEnum = {})), UpdateService = function(_super) {
-        function UpdateService() {
-            var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.All, /(.*)/i ] ]), _this._unique = !1, 
-            _this._appName = "update", _this;
-        }
-        return __extends(UpdateService, _super), UpdateService.prototype.loader = function() {}, 
-        UpdateService.prototype.run = function() {
-            if (!Config.get(update_key, !1)) {
-                var current = new VersionCompar(Config.env.script.version);
-                this.scriptCat(current);
-            }
-        }, UpdateService.prototype.scriptCat = function(current) {
-            Http.get(Route.update_api_script_cat, new Map, new Map, !1).then((function(r) {
-                var _a, _b, msg, version = new VersionCompar(null === (_b = null === (_a = null == r ? void 0 : r.data) || void 0 === _a ? void 0 : _a.script) || void 0 === _b ? void 0 : _b.version);
-                Logger.debug("\u5f53\u524d\u7248\u672c:[" + current.versionString + "],\u6700\u65b0\u7248\u672c:[" + version.versionString + "]"), 
-                version.compareTo(current) === VersionResult.greater && (msg = "\u65b0\u7248\u672c<span>" + version.versionString + '</span>\u5df2\u53d1\u5e03.<a class="link" target="_blank" href="' + Route.home_url_update + '">\u67e5\u770b</a><br><a id="new-version-link" class="link" href="' + Route.install_url_two + '" target="_blank">\u5b89\u88c5</a>', 
-                GM_addStyle(".swal2-popup{font-size: 16px !important}"), Swal__default.default.fire({
-                    toast: !0,
-                    position: "bottom-left",
-                    icon: "success",
-                    showConfirmButton: !0,
-                    confirmButtonText: "\u4eca\u5929\u5173\u95ed",
-                    showCancelButton: !0,
-                    cancelButtonText: "\u6c38\u4e45\u5173\u95ed",
-                    showCloseButton: !0,
-                    title: "\u68c0\u67e5\u66f4\u65b0",
-                    html: msg
-                }).then((function(result) {
-                    Logger.info(result), result.isConfirmed ? Config.set(update_key, !0, Day) : result.isDismissed && Config.set(update_key, !0, 365 * Day);
-                }))), Config.set(update_key, !0, Hour);
+    }(), css_248z$6 = ".one-key-vip-container { z-index: 99999!important }\n.one-key-vip-popup { font-size: 14px !important }\n.one-key-vip-setting-label { display: flex;align-items: center;justify-content: space-between;padding-top: 20px; }\n.one-key-vip-setting-checkbox { width: 16px;height: 16px; }\n", 
+    styleInject(css_248z$6), sAlert = function() {
+        function sAlert() {}
+        return sAlert.showMessage = function(title, html, toast, position, time) {
+            return Swal__default.default.fire({
+                title: title,
+                html: html,
+                position: position,
+                toast: toast,
+                timer: null == time ? void 0 : 1e3 * time
+            });
+        }, sAlert.toast = function(msg, icon, position, time) {
+            void 0 === icon && (icon = "success"), void 0 === position && (position = "top"), 
+            void 0 === time && (time = 2), Swal__default.default.fire({
+                toast: !0,
+                position: position,
+                showCancelButton: !1,
+                showConfirmButton: !1,
+                title: msg,
+                icon: icon,
+                timer: 1e3 * time,
+                customClass: this.customeCss
+            });
+        }, sAlert.warning = function(msg, position, time) {
+            void 0 === position && (position = "center"), void 0 === time && (time = 2), this.toast(msg, "warning", position, time);
+        }, sAlert.error = function(msg, time) {
+            void 0 === time && (time = 2), this.toast(msg, "error", "center", time);
+        }, sAlert.info = function(msg, icon, position, time) {
+            void 0 === icon && (icon = "success"), void 0 === position && (position = "top"), 
+            void 0 === time && (time = 2), Swal__default.default.fire({
+                toast: !0,
+                position: position,
+                showCancelButton: !1,
+                showConfirmButton: !1,
+                title: msg,
+                icon: icon,
+                timer: 1e3 * time,
+                customClass: this.customeCss
+            });
+        }, sAlert.msg = function(title, html) {
+            return Swal__default.default.fire({
+                title: "<strong>" + title + "</strong>",
+                html: html,
+                showCloseButton: !0
+            });
+        }, sAlert.html = function(title, html, cancel, cancelTxt, cancelColor, width, confirm, confirmTxt) {
+            return void 0 === cancel && (cancel = !1), void 0 === cancelTxt && (cancelTxt = ""), 
+            void 0 === cancelColor && (cancelColor = "#3085d6"), void 0 === width && (width = "32rem"), 
+            void 0 === confirm && (confirm = !1), void 0 === confirmTxt && (confirmTxt = ""), 
+            Swal__default.default.fire({
+                position: "center",
+                width: width,
+                html: html,
+                showCancelButton: cancel,
+                showConfirmButton: confirm,
+                cancelButtonColor: cancelColor,
+                title: title,
+                cancelButtonText: cancelTxt,
+                confirmButtonText: confirmTxt,
+                customClass: this.customeCss,
+                allowOutsideClick: !1,
+                allowEscapeKey: !1
+            });
+        }, sAlert.confirm = function(title, text, confirmText, cancelText, icon, denyText) {
+            void 0 === confirmText && (confirmText = "\u786e\u5b9a"), void 0 === cancelText && (cancelText = "\u53d6\u6d88"), 
+            void 0 === icon && (icon = "question"), void 0 === denyText && (denyText = "");
+            var option = {
+                title: title,
+                text: text,
+                icon: icon,
+                showCancelButton: !0,
+                allowOutsideClick: !1,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: confirmText,
+                cancelButtonText: cancelText
+            };
+            return "" != denyText && (option.denyButtonText = denyText), Swal__default.default.fire(option);
+        }, sAlert.showImg = function(image, title, text, alt) {
+            return Swal__default.default.fire({
+                title: title,
+                text: text,
+                imageUrl: image,
+                imageAlt: alt
+            });
+        }, sAlert.loading = function(time, target) {
+            void 0 === time && (time = -1), void 0 === target && (target = null), null == target ? Swal__default.default.showLoading() : Swal__default.default.showLoading(target), 
+            -1 != time && Core.sleep(time).then((function() {
+                Swal__default.default.hideLoading();
             }));
-        }, UpdateService.prototype.jsD = function(current) {
-            Http.get_text(Route.update_api).then((function(res) {
-                var msg, version = new VersionCompar(null == res ? void 0 : res.match(/@version[ ]*([\d\.]+)/)[1]);
-                version.compareTo(current) === VersionResult.greater && (msg = "\u65b0\u7248\u672c<span>" + version.versionString + '</span>\u5df2\u53d1\u5e03.<a id="new-version-link" class="link" href="' + Route.install_url_one + '">\u5b89\u88c5(\u7ebf\u8def\u4e00)</a><a id="new-version-link" class="link" href="' + Route.install_url_two + '">\u5b89\u88c5(\u7ebf\u8def\u4e8c)</a><a class="link" target="_blank" href="' + Route.home_url_update + '">\u67e5\u770b</a>', 
-                Swal__default.default.fire({
-                    toast: !0,
-                    position: "bottom-left",
-                    icon: "success",
-                    showConfirmButton: !1,
-                    title: "\u68c0\u67e5\u66f4\u65b0",
-                    html: msg
-                })), Config.set(update_key, !0, Hour);
-            }));
-        }, UpdateService;
-    }(PluginBase), VersionCompar = function() {
-        function VersionCompar(e) {
-            /^[\d\.]+$/.test(e) || Logger.error("Invalid version string"), this.parts = e.split(".").map((function(e) {
-                return parseInt(e);
-            })), this.versionString = e;
-        }
-        return VersionCompar.prototype.compareTo = function(e) {
-            for (var t = 0; t < this.parts.length; ++t) {
-                if (e.parts.length === t) return VersionResult.greater;
-                if (this.parts[t] !== e.parts[t]) return this.parts[t] > e.parts[t] ? VersionResult.greater : VersionResult.less;
-            }
-            return this.parts.length !== e.parts.length ? VersionResult.less : VersionResult.equal;
-        }, VersionCompar.prototype.greaterThan = function(e) {
-            return this.compareTo(e) === VersionResult.greater;
-        }, VersionCompar.prototype.lessThan = function(e) {
-            return this.compareTo(e) === VersionResult.less;
-        }, VersionCompar.prototype.equals = function(e) {
-            return this.compareTo(e) === VersionResult.equal;
-        }, VersionCompar;
-    }(), function(VersionResult) {
-        VersionResult[VersionResult.less = -1] = "less", VersionResult[VersionResult.equal = 0] = "equal", 
-        VersionResult[VersionResult.greater = 1] = "greater", VersionResult[VersionResult.incomparable = NaN] = "incomparable";
-    }(VersionResult || (VersionResult = {})), EventHelper = function() {
-        function EventHelper() {}
-        return EventHelper.bind_click = function(query, act) {
-            var _a;
-            null === (_a = document.querySelector(query)) || void 0 === _a || _a.addEventListener("click", (function(e) {
-                act();
-            }));
-        }, EventHelper;
-    }(), Runtime = function() {
+        }, sAlert.closeLoading = function() {
+            Swal__default.default.hideLoading();
+        }, sAlert.close = function(target) {
+            Swal__default.default.close(target);
+        }, sAlert.customeCss = {
+            container: "one-key-vip-container",
+            popup: "one-key-vip-popup",
+            header: "one-key-vip-header",
+            title: "one-key-vip-title",
+            closeButton: "one-key-vip-close",
+            icon: "one-key-vip-icon",
+            image: "one-key-vip-image",
+            content: "one-key-vip-content",
+            htmlContainer: "one-key-vip-html",
+            input: "one-key-vip-input",
+            validationMessage: "one-key-vip-validation",
+            actions: "one-key-vip-actions",
+            confirmButton: "one-key-vip-confirm",
+            denyButton: "one-key-vip-deny",
+            cancelButton: "one-key-vip-cancel",
+            loader: "one-key-vip-loader",
+            footer: "one-key-vip-footer"
+        }, sAlert;
+    }(), css_248z$5 = ".okv-btn {\n  display: inline-block;\n  padding: 6px 16px;\n  font-size: 12px;\n  outline: 0;\n  line-height: 1.5;\n  text-align: center;\n  white-space: nowrap;\n  border: 1px solid #c5d9e8;\n  border-top-color: #c5d9e8;\n  border-right-color: #c5d9e8;\n  border-bottom-color: #c5d9e8;\n  border-left-color: #c5d9e8;\n  border-radius: 0.7rem;\n  background-color: #fff;\n  -webkit-transition: background 0.2s;\n  transition: background 0.2s;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  cursor: pointer;\n}\n.okv-btn-primary {\n  border-color: #6190e8;\n  background-color: #6190e8;\n  color: #fff;\n}\n.okv-btn-primary :hover {\n  background-color: #79a1eb;\n  border-color: #79a1eb;\n}\n.okv-btn-primary :active {\n  background-color: #5782d1;\n  border-color: #5782d1;\n}\n.okv-btn-success {\n  border-color: #13ce66;\n  background-color: #13ce66;\n  color: #fff;\n}\n.okv-btn-success :hover {\n  background-color: #36d57d;\n  border-color: #36d57d;\n}\n.okv-btn-success :active {\n  background-color: #11b95c;\n  border-color: #11b95c;\n}\n.okv-btn-error {\n  border-color: #ff4949;\n  background-color: #ff4949;\n  color: #fff;\n}\n.okv-btn-error :hover {\n  background-color: #ff6464;\n  border-color: #ff6464;\n}\n.okv-btn-error :active {\n  background-color: #e64242;\n  border-color: #e64242;\n}\n.okv-bg-pink {\n  color: #fff;\n  border-color: #fff;\n  background-color: #fb7299;\n}\n.bili-top-button {\n  margin-left: 0.7rem;\n}\n.bili-table {\n  width: 100%;\n  border-collapse: separate;\n  border-spacing: 0;\n  text-align: left;\n  overflow: hidden;\n}\n.bili-table td,\n.bili-table th {\n  height: 40px;\n  text-align: left;\n  text-overflow: ellipsis;\n  vertical-align: middle;\n  border-bottom: 1px solid #ececec;\n}\n.bili-table-cell {\n  padding: 0 16px;\n  border-bottom: 1px solid #ececec;\n}\n.at-table-tbody > tr:hover {\n  background-color: #f6fafe;\n}\n.bili-table-small {\n  font-size: 11px;\n}\n.bili-table-head {\n  border-collapse: separate;\n  border-spacing: 0;\n  text-align: left;\n}\n.bili-table-head tr th {\n  font-weight: 700;\n  text-align: left;\n  background-color: #f7f7f7;\n  white-space: nowrap;\n}\n", 
+    styleInject(css_248z$5), Runtime = function() {
         function Runtime() {}
         return Object.defineProperty(Runtime, "url", {
             get: function() {
@@ -1169,6 +1208,310 @@
             enumerable: !1,
             configurable: !0
         }), Runtime;
+    }(), function(ConfigEnum) {
+        ConfigEnum.BiliPc_Cover = "bili_pc_cover", ConfigEnum.BiliPc_Video_Download = "bili_pc_video_download", 
+        ConfigEnum.BiliPc_Triple_Click = "bili_pc_triple_click", ConfigEnum.AutoJump_ZhiHu = "AutoJump_ZhiHu", 
+        ConfigEnum.AutoJump_CSDN = "AutoJump_CSDN", ConfigEnum.AutoJump_JianShu = "AutoJump_JianShu", 
+        ConfigEnum.AutoJump_Gitee = "AutoJump_Gitee", ConfigEnum.AutoJump_JueJin = "AutoJump_JueJin", 
+        ConfigEnum.AutoJump_Weibo = "AutoJump_Weibo", ConfigEnum.AutoJump_TuXiaoChao = "AutoJump_TuXiaoChao", 
+        ConfigEnum.AutoJump_OsCh = "AutoJump_OsCh", ConfigEnum.AutoJump_AiFaDian = "AutoJump_AiFaDian", 
+        ConfigEnum.AutoJump_Baidu = "AutoJump_Baidu", ConfigEnum.AutoJump_DouBan = "AutoJump_DouBan", 
+        ConfigEnum.AutoJump_g17173 = "AutoJump_g17173", ConfigEnum.AutoJump_TencentDoc = "AutoJump_TencentDoc", 
+        ConfigEnum.CSDN_OpImgLink = "csdn_op_img_link", ConfigEnum.CSDN_OpAdClean = "csdn_op_ad_clean", 
+        ConfigEnum.CSDN_OpArticleClean = "csdn_op_article_clean", ConfigEnum.CSDN_OpCommentClean = "csdn_op_comment_clean", 
+        ConfigEnum.CSDN_OpClipboardClean = "csdn_op_clipboard_clean", ConfigEnum.Search_Helper_Switch = "search_helper_switch", 
+        ConfigEnum.Search_OptMenuMethod = "search_opt_menu_method", ConfigEnum.Search_OptMenuPos = "search_opt_menu_pos";
+    }(ConfigEnum || (ConfigEnum = {})), BiliImgService = function(_super) {
+        function BiliImgService() {
+            var _this = _super.call(this) || this;
+            return _this.rules = new Map([ [ SiteEnum.BiliBili, /www\.bilibili\.com\/video\/[av|bv]*/i ] ]), 
+            _this._appName = "bilibili", _this;
+        }
+        return __extends(BiliImgService, _super), BiliImgService.listHtml = function(list) {
+            var rows = "";
+            return list.forEach((function(e) {
+                rows += '<tr>\n                        <td class="bili-table-cell">' + e.part + '</td>\n                        <td class="bili-table-cell"><button class="okv-btn okv-btn-primary bili-down-item" data-cid="' + e.cid + '" data-part-title="' + e.part + '">\u4e0b\u8f7d</button></td>\n                    </tr>';
+            })), '<div style="height: 30rem"><table class="bili-table bili-table-small">\n                    <thead class="bili-table-head">\n                        <tr>                        \n                            <th class="bili-table-cell">\u6807\u9898</th>\n                            <th class="bili-table-cell">\u64cd\u4f5c</th>\n                        </tr>\n                    </thead>\n                    <tbody class="at-table-tbody">                    \n                        ' + rows + "\n                    </tbody>    \n                </table></div>";
+        }, BiliImgService.getQuality = function(id) {
+            switch (id) {
+              case 16:
+                return "360P \u6d41\u7545";
+
+              case 32:
+                return "480P \u6e05\u6670";
+
+              case 64:
+                return "720P \u9ad8\u6e05";
+
+              case 80:
+                return "1080P \u9ad8\u6e05";
+
+              case 112:
+                return "1080P 60\u5e27";
+
+              case 30280:
+              case 30260:
+                return "320Kbps";
+
+              case 30259:
+                return "128Kbps";
+
+              case 30257:
+                return "64Kbps";
+
+              case 30255:
+                return "AUDIO";
+
+              case 30251:
+                return "FLAC";
+
+              case 30250:
+                return "ATMOS";
+
+              case 30232:
+                return "128Kbps";
+
+              case 30216:
+                return "64Kbps";
+
+              default:
+                return "\u672a\u77e5";
+            }
+        }, BiliImgService.videoListHtml = function(videoList, audioList, duration) {
+            var _this = this, sizeFormat = function(size) {
+                void 0 === size && (size = 0);
+                for (var unit = [ "B", "K", "M", "G" ], i = unit.length - 1, dex = Math.pow(1024, i), vor = Math.pow(1e3, i); dex > 1; ) {
+                    if (size >= vor) {
+                        size = Number((size / dex).toFixed(2));
+                        break;
+                    }
+                    dex /= 1024, vor /= 1e3, i--;
+                }
+                return size ? size + unit[i] : "N/A";
+            }, rows = "";
+            return videoList.forEach((function(e) {
+                rows += '<tr>\n                        <td class="bili-table-cell">\u89c6\u9891</td>\n                        <td class="bili-table-cell">' + _this.getQuality(e.id) + '</td>\n                        <td class="bili-table-cell">' + sizeFormat(e.bandwidth * duration / 8) + '</td>\n                        <td class="bili-table-cell">' + e.frameRate + '</td>\n                        <td class="bili-table-cell">' + e.codecs + '</td>\n                        <td class="bili-table-cell"><button class="okv-btn okv-btn-primary bili-down-video-item" data-url="' + e.baseUrl + '" data-type="1">\u4e0b\u8f7d</button></td>\n                    </tr>';
+            })), audioList.forEach((function(e) {
+                rows += '<tr>\n                        <td class="bili-table-cell">\u97f3\u9891</td>\n                        <td class="bili-table-cell">' + _this.getQuality(e.id) + '</td>\n                        <td class="bili-table-cell">' + sizeFormat(e.bandwidth * duration / 8) + '</td>\n                        <td class="bili-table-cell">' + e.frameRate + '</td>\n                        <td class="bili-table-cell">' + e.codecs + '</td>\n                        <td class="bili-table-cell"><button class="okv-btn okv-btn-primary bili-down-video-item" data-url="' + e.baseUrl + '" data-type="2">\u4e0b\u8f7d</button></td>\n                    </tr>';
+            })), '\n<div style="height: 30rem">\n    <div style="margin-bottom: 20px">\u6ce8\u610f:\u97f3\u89c6\u9891\u662f\u5206\u5f00\u7684,\u8bf7\u4e0b\u8f7d\u540e\u81ea\u884c\u5408\u5e76<a href="https://wiki.wandhi.com/zh-cn/Download.html">\u70b9\u6211\u4e0b\u8f7d\u5408\u5e76\u5de5\u5177</a></div>\n    <table class="bili-table bili-table-small">\n        <thead class="bili-table-head">\n            <tr>                        \n                <th class="bili-table-cell">\u7c7b\u578b</th>\n                <th class="bili-table-cell">\u54c1\u8d28</th>\n                <th class="bili-table-cell">\u5927\u5c0f</th>\n                <th class="bili-table-cell">\u7801\u7387</th>\n                <th class="bili-table-cell">\u7f16\u7801</th>\n                <th class="bili-table-cell">\u64cd\u4f5c</th>\n            </tr>\n        </thead>\n        <tbody class="at-table-tbody">                    \n            ' + rows + "\n        </tbody>    \n    </table>\n</div>";
+        }, BiliImgService.prototype.loader = function() {}, BiliImgService.prototype.run = function() {
+            this.init();
+        }, BiliImgService.prototype.init = function() {
+            Core.autoLazyload((function() {
+                var _a, _b;
+                return (null === (_a = $(".reply-box-textarea")) || void 0 === _a ? void 0 : _a.length) > 0 || (null === (_b = $(".comment-submit")) || void 0 === _b ? void 0 : _b.length) > 0;
+            }), (function() {
+                Config.get(ConfigEnum.BiliPc_Cover, !0) && BiliImgService.add_img_btn(), Config.get(ConfigEnum.BiliPc_Video_Download, !0) && BiliImgService.add_down_btn(), 
+                Config.get(ConfigEnum.BiliPc_Triple_Click, !0) && BiliImgService.add_triple_btn();
+            }), 1);
+        }, BiliImgService.add_img_btn = function() {
+            var that = this;
+            $(".video-data").last().append(BiliImgService.coverBtn), $("body").on("click", "#findimg", (function() {
+                var aid = unsafeWindow.__INITIAL_STATE__.videoData.aid;
+                that.getVideoInfo(aid).then((function(res) {
+                    res ? sAlert.showImg(res.pic, "\u662f\u5c01\u9762\u5566", "\u554a\u54c8\u54c8\u54c8\u3001\u5c01\u9762\u6765\u54af", "\u662f\u5c01\u9762\u9171\u5566>\u3002<") : sAlert.error("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f");
+                })).catch((function() {
+                    sAlert.info("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f", "error", "center");
+                }));
+            }));
+        }, BiliImgService.add_down_btn = function() {
+            var that = this;
+            $(".video-data").last().append(BiliImgService.downBtn), $("body").on("click", "#downvideo", (function() {
+                that.initDown();
+            }));
+        }, BiliImgService.initDown = function() {
+            var _this = this, aid = unsafeWindow.__INITIAL_STATE__.videoData.aid;
+            BiliImgService.getVideoInfo(aid).then((function(res) {
+                sAlert.html(res.title, _this.listHtml(res.pages), !0, "\u6211\u597d\u4e86", "#3085d6", "40%"), 
+                $(".bili-down-item").on("click", (function(e) {
+                    var cid = $(e.currentTarget).attr("data-cid"), title = $(e.currentTarget).attr("data-part-title");
+                    BiliImgService.downVideo(aid, cid, title);
+                }));
+            }));
+        }, BiliImgService.downVideo = function(aid, cid, title) {
+            var _this = this, key = "" + aid + cid + "MDD-NEW";
+            Config.remember(key, Min, (function() {
+                return new Promise((function(resolve, reject) {
+                    Route.queryBiliDown(aid, cid, (function(res) {
+                        var _a, _b, _c;
+                        (null === (_c = null === (_b = null === (_a = res.data) || void 0 === _a ? void 0 : _a.dash) || void 0 === _b ? void 0 : _b.video) || void 0 === _c ? void 0 : _c.length) > 0 ? resolve(res) : reject(res);
+                    }));
+                }));
+            })).then((function(res) {
+                sAlert.html(title, _this.videoListHtml(res.data.dash.video, res.data.dash.audio, res.data.dash.duration), !0, "\u6211\u597d\u4e86", "#3085d6", "40%").finally((function() {
+                    BiliImgService.initDown();
+                })), $(".bili-down-video-item").on("click", (function(e) {
+                    var url = $(e.currentTarget).attr("data-url"), type = $(e.currentTarget).attr("data-type");
+                    Swal__default.default.fire({
+                        title: "\u51c6\u5907\u4e0b\u8f7d",
+                        html: '<span id="bili-download-step">\u5f00\u59cb\u4e0b\u8f7d\u540e\u5f53\u524d\u9875\u9762\u5c06\u4e0d\u53ef\u64cd\u4f5c,\u662f\u5426\u5f00\u59cb\u4e0b\u8f7d\uff1f</span>',
+                        showCancelButton: !0,
+                        confirmButtonText: "\u597d\u7684\u5f00\u59cb",
+                        cancelButtonText: "\u8fd8\u662f\u7b97\u4e86",
+                        showLoaderOnConfirm: !0,
+                        preConfirm: function() {
+                            return new Promise((function(r, j) {
+                                GM_download({
+                                    url: url,
+                                    name: "\u3010" + ("1" == type ? "\u89c6\u9891" : "\u97f3\u9891") + "\u3011" + title + ".mp4",
+                                    headers: {
+                                        referer: Runtime.url
+                                    },
+                                    onerror: function(data) {
+                                        j(data);
+                                    },
+                                    onprogress: function(data) {
+                                        $("#bili-download-step").text("\u5f53\u524d\u8fdb\u5ea6" + Core.getPercent(data.done, data.total) + "%"), 
+                                        data.done == data.total && r();
+                                    }
+                                });
+                            }));
+                        },
+                        allowOutsideClick: function() {
+                            return !Swal__default.default.isLoading();
+                        }
+                    }).then((function(result) {
+                        result.isConfirmed && sAlert.info("\u4e0b\u8f7d\u7ed3\u675f");
+                    })).finally((function() {
+                        BiliImgService.downVideo(aid, cid, title);
+                    }));
+                }));
+            })).catch((function(e) {
+                Logger.error(e), sAlert.error("\u5565\u4e5f\u6ca1\u67e5\u7740,\u518d\u8bd5\u4e00\u4e0b\u6216\u8005\u5e26\u7740\u89c6\u9891\u5730\u5740\u7ed9\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\u5427~");
+            }));
+        }, BiliImgService.getVideoInfo = function(aid) {
+            return Config.remember("biliInfo-" + aid, Week, (function() {
+                return new Promise((function(resolve, reje) {
+                    Route.queryBiliImg(aid, (function(res) {
+                        0 === res.code ? resolve(res.data) : reje();
+                    }));
+                }));
+            }));
+        }, BiliImgService.add_triple_btn = function() {
+            $(".video-data").last().append(BiliImgService.tripleClickBtn), $("body").on("click", "#tripleClick", (function() {
+                [ ".like", ".coin", ".collect" ].forEach((function(item) {
+                    $(item).trigger("click");
+                }));
+            }));
+        }, BiliImgService.coverBtn = '<button class="okv-btn okv-btn-primary okv-bg-pink bili-top-button" id="findimg">\u83b7\u53d6\u5c01\u9762</button>', 
+        BiliImgService.downBtn = '<button id="downvideo" class="okv-btn okv-btn-primary okv-bg-pink bili-top-button">\u4e0b\u8f7d\u89c6\u9891</button>', 
+        BiliImgService.tripleClickBtn = '<button class="okv-btn okv-btn-primary okv-bg-pink bili-top-button" id="tripleClick">\u4e00\u4e0b\u70b9\u4ee8(\u70b9\u8d5e\u3001\u6295\u5e01\u3001\u6536\u85cf)</button>', 
+        BiliImgService;
+    }(PluginBase), Menu$1 = Common.Menu, MovieService = function(_super) {
+        function MovieService() {
+            var _this = _super.call(this) || this;
+            return _this.rules = new Map([ [ SiteEnum.YouKu, /youku\.com/i ], [ SiteEnum.IQiYi, /iqiyi|iq\.com/i ], [ SiteEnum.LeShi, /\.le\.com/i ], [ SiteEnum.Tencent_V, /v\.qq/i ], [ SiteEnum.TuDou, /tudou\.com/i ], [ SiteEnum.MangGuo, /mgtv\.com/i ], [ SiteEnum.SoHu, /sohu\.com/i ], [ SiteEnum.Acfun, /acfun\.com/i ], [ SiteEnum.BiliBili, /bilibili\.com/i ], [ SiteEnum.M1905, /1905\.com/i ], [ SiteEnum.PPTV, /pptv\.com/i ], [ SiteEnum.YinYueTai, /yinyuetai\.com/ ] ]), 
+            _this.menu = new Common.Menu, _this._unique = !1, _this;
+        }
+        return __extends(MovieService, _super), MovieService.prototype.loader = function() {
+            "undefined" == typeof $ && Core.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js");
+        }, MovieService.prototype.run = function() {
+            this.menu.Init([ {
+                title: "\u672c\u6b21\u5173\u95ed",
+                show: "\u672c\u6b21<br>\u5173\u95ed",
+                type: "search"
+            }, {
+                title: "\u89c6\u9891\u89e3\u6790",
+                show: "\u89c6\u9891<br>\u89e3\u6790",
+                type: "process"
+            }, {
+                title: "\u7edd\u4e16\u597d\u5238",
+                show: "\u7edd\u4e16<br>\u597d\u5238",
+                type: "tb"
+            }, {
+                title: "\u4eac\u4e1c\u597d\u5238",
+                show: "\u4eac\u4e1c<br>\u597d\u5238",
+                type: "jd"
+            } ], this._onClick), this.autoHide();
+        }, MovieService.prototype._onClick = function() {
+            $("body").on("click", "[data-cat=process]", (function() {
+                Core.open("http://tv.wandhi.com/go.html?url=" + encodeURIComponent(window.location.href));
+            })), $("body").on("click", "[data-cat=search]", (function() {
+                Menu$1.close();
+            })), $("body").on("click", "[data-cat=tb]", (function() {
+                Core.open("http://shop.huizhek.com");
+            })), $("body").on("click", "[data-cat=jd]", (function() {
+                Core.open("http://shop.huizhek.com");
+            }));
+        }, MovieService.prototype.autoHide = function() {
+            Logger.info("\u81ea\u52a8\u9690\u85cf"), this.site == SiteEnum.BiliBili && Core.background((function() {
+                var _a, modal;
+                $(".bpx-player-container").length > 0 && ("web" == (modal = null === (_a = $(".bpx-player-container")) || void 0 === _a ? void 0 : _a.attr("data-screen")) || "full" == modal ? $(".aside-nav").hide() : $(".aside-nav").show());
+            }), 1);
+        }, MovieService;
+    }(PluginBase), UrlHelper = function() {
+        function UrlHelper() {}
+        return UrlHelper.Bind = function(CssSelector, method, doc) {
+            $(CssSelector).click((function() {
+                Core.openUrl($(this).data("key"));
+            }));
+        }, UrlHelper.urlEncode = function(url) {
+            return encodeURIComponent(url);
+        }, UrlHelper.urlDecode = function(url) {
+            return decodeURIComponent(url);
+        }, UrlHelper;
+    }(), MusicService = function(_super) {
+        function MusicService() {
+            var _this = _super.call(this) || this;
+            return _this.rules = new Map([ [ SiteEnum.WangYi, /163(.*)song/i ], [ SiteEnum.Tencent_M, /y\.QQ(.*)song/i ], [ SiteEnum.KuGou, /kugou\.com\/song\/*/i ], [ SiteEnum.KuWo, /kuwo(.*)yinyue/i ], [ SiteEnum.XiaMi, /xiami/i ], [ SiteEnum.TaiHe, /taihe\.com/i ], [ SiteEnum.QingTing, /qingting\./i ], [ SiteEnum.LiZhi, /lizhi\./i ], [ SiteEnum.MiGu, /migu\./i ], [ SiteEnum.XiMaLaYa, /ximalaya\./i ] ]), 
+            _this.menu = new Common.Menu, _this._appName = "MusicService", _this._unique = !1, 
+            _this;
+        }
+        return __extends(MusicService, _super), MusicService.prototype.loader = function() {
+            Core.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
+        }, MusicService.prototype.run = function() {
+            this.menu.Init([ {
+                title: "\u7535\u5f71\u641c\u7d22",
+                show: "\u7535\u5f71<br>\u641c\u7d22",
+                type: "search"
+            }, {
+                title: "\u97f3\u4e50\u4e0b\u8f7d",
+                show: "\u97f3\u4e50<br>\u4e0b\u8f7d",
+                type: "process"
+            }, {
+                title: "\u7edd\u4e16\u597d\u5238",
+                show: "\u7edd\u4e16<br>\u597d\u5238",
+                type: "tb"
+            }, {
+                title: "\u4eac\u4e1c\u597d\u5238",
+                show: "\u4eac\u4e1c<br>\u597d\u5238",
+                type: "jd"
+            } ], this._OnClick, !1);
+        }, MusicService.prototype._OnClick = function() {
+            this.rules, $("body").on("click", "[data-cat=process]", (function() {
+                var _a, _b, i, html;
+                if (/ximalaya/i.test(Runtime.url)) {
+                    for (i = 0; i < unsafeWindow.document.scripts.length; i++) /window\.__INITIAL_STATE__ =/i.test(unsafeWindow.document.scripts[i].innerHTML) && (Logger.debug(unsafeWindow.document.scripts[i].innerHTML), 
+                    eval(unsafeWindow.document.scripts[i].innerHTML.replace("window.__INITIAL_STATE__", "unsafeWindow.__INITIAL_STATE__")));
+                    __INITIAL_STATE__ && (null === (_b = null === (_a = __INITIAL_STATE__.store) || void 0 === _a ? void 0 : _a.SoundDetailPage) || void 0 === _b ? void 0 : _b.trackId) ? Core.open("http://music.wandhi.com/?id=" + __INITIAL_STATE__.store.SoundDetailPage.trackId + "&type=ximalaya") : (layer.closeAll(), 
+                    html = '<div style="padding:0px 50px 0px 50px;"><ul class="sound-list dOi2">', $.each(__INITIAL_STATE__.store.AlbumDetailTrackList.tracksInfo.tracks, (function(index, item) {
+                        html += '<li class="d0i2"><a href="http://music.wandhi.com/?id=' + item.trackId + '&type=ximalaya" target="_blank">' + item.title + "</a></li>";
+                    })), html += "</ul></div>", layer.open({
+                        type: 1,
+                        area: [ "auto", "30%" ],
+                        title: "\u4e3a\u4f60\u627e\u5230\u4e86\u8fd9\u4e9b\u66f2\u76ee\u89e3\u6790\u2026\u2026",
+                        shade: .6,
+                        maxmin: !1,
+                        anim: 2,
+                        content: html
+                    }));
+                } else /taihe.com/i.test(Runtime.url) ? Core.open("http://music.wandhi.com/?url=" + UrlHelper.urlEncode(Runtime.url.replace("taihe", "baidu"))) : Core.open("http://music.wandhi.com/?url=" + UrlHelper.urlEncode(Runtime.url));
+            })), $("body").on("click", "[data-cat=search]", (function() {
+                Core.open("http://tv.wandhi.com/");
+            })), $("body").on("click", "[data-cat=tb]", (function() {
+                Core.open("https://shop.huizhek.com");
+            })), $("body").on("click", "[data-cat=jd]", (function() {
+                Core.open("https://shop.huizhek.com");
+            }));
+        }, MusicService;
+    }(PluginBase), EventHelper = function() {
+        function EventHelper() {}
+        return EventHelper.bind_click = function(query, act) {
+            var _a;
+            null === (_a = document.querySelector(query)) || void 0 === _a || _a.addEventListener("click", (function(e) {
+                act();
+            }));
+        }, EventHelper;
     }(), BaseCoupon = function() {
         function BaseCoupon() {}
         return BaseCoupon.prototype.init_qrcode = function(url) {
@@ -1312,8 +1655,8 @@
                 resolve(!1);
             }));
         }, DefCoupon.prototype.init_coupons = function() {}, DefCoupon;
-    }(BaseCoupon), LinesOption = function LinesOption() {}, css_248z$7 = "#vip-plugin-outside {\n    border: 1px solid #eee;\n    margin: 0 auto;\n    position: relative;\n    clear: both;\n    display: none\n}\n#vip-plugin-outside .vip-plugin-outside-toolbar{\n    position: absolute;\n    top: 5px;\n    right: 10px;\n    z-index: 10000;\n}\n#vip-plugin-outside .vip-plugin-outside-coupons {\n    width: 240px;\n    float: left\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode {\n    text-align: center;\n    min-height: 150px;\n    margin-top: 30px\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode canvas,\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode img,\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode svg\n{\n    margin: 0 auto;\n    height:150px;\n    width: 150px;\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-title {\n    margin-top: 20px;\n    color: #000;\n    font-size: 14px;\n    font-weight: 700;\n    text-align: center\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-title span {\n    color: #ff0036;\n    font-weight: 700\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action {\n    margin-top: 10px;\n    text-align: center\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action a {\n    text-decoration: none\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action .vip-plugin-outside-coupons-button {\n    min-width: 135px;\n    padding: 0 8px;\n    line-height: 35px;\n    color: #fff;\n    background: #ff0036;\n    font-size: 13px;\n    font-weight: 700;\n    letter-spacing: 1.5px;\n    margin: 0 auto;\n    text-align: center;\n    border-radius: 15px;\n    display: inline-block;\n    cursor: pointer\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action .vip-plugin-outside-coupons-button.quan-none {\n    color: #000;\n    background: #bec5c5\n}\n\n.vip-plugin-outside-coupons-date {\n    color: #233b3d;\n    font-weight: normal;\n    font-size: 12px;\n}\n\n#vip-plugin-outside .vip-plugin-outside-history .vip-plugin-outside-history-tip {\n    position: absolute;\n    margin: 0;\n    top: 50%;\n    left: 50%;\n    letter-spacing: 1px;\n    font-size: 15px;\n    transform: translateX(-50%) translateY(-50%)\n}\n\n#vip-plugin-outside .vip-plugin-outside-history, #vip-plugin-outside-chart-body {\n    height: 300px;\n    overflow: hidden;\n    position: relative\n}\n\n#vip-plugin-outside .vip-plugin-outside-history .vip-plugin-outside-chart-container,\n#vip-plugin-outside-chart-container-line {\n    width: 100%;\n    height: 100%\n}\n\n#vip-plugin-outside-similar {\n    width: 100%;\n    background: #fff;\n    z-index: 99999999;\n    height: 268px;\n    overflow: hidden;\n    left: -1px;\n    top: 36px;\n    border: 1px solid #edf1f2!important\n}\n\n.vip-plugin-outside-similar-buy-list {\n    width: 303px;\n    border-right: 1px solid rgb(237, 241, 242);\n    height: 270px;\n    padding: 0px;\n    overflow: hidden;\n    float: left;\n    margin: 0px;\n}\n.vip-plugin-outside-similar-buy-list-li-store{\n    float: left;\n    overflow: hidden;\n    margin: 8px 7px 4px 14px;\n    width: 16px;\n    height: 16px\n}\n.vip-plugin-outside-similar-buy-list li {\n    border-bottom: 1px solid #edf1f2;\n    overflow: hidden;\n    width: 100%;\n    height: 33px;\n    line-height: 33px\n}\n.vip-plugin-outside-similar-buy-list li:first-child b {\n    font-style: normal;\n    font-size: 14px;\n    margin-left: 14px;\n    font-weight: 700\n}\n.vip-plugin-outside-similar-buy-list-li-first {\n    top: 15px;\n    width: auto;\n    right: 51px;\n    padding: 0;\n    text-align: center;\n    font-size: 12px;\n    margin: 0;\n    height: auto\n}\n.vip-plugin-outside-similar-buy-list-li-title {\n    height: 33px;\n    margin: 0;\n    display: inline-block;\n    float: left;\n    font-size: 14px;\n    font-weight: 700;\n    padding: 0;\n    background: 0 0;\n    line-height: 33px;\n    max-width: 170px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    width: auto\n}\n.vip-plugin-outside-similar-buy-list-li-price {\n    color: #E4393C;\n    font-weight: 700;\n    line-height: 33px;\n    height: 33px;\n    width: auto;\n    float: right;\n    font-size: 14px;\n    margin-right: 14px;\n}\n", 
-    styleInject(css_248z$7), MsgInfo = function MsgInfo() {}, PromoInfo = function PromoInfo() {
+    }(BaseCoupon), LinesOption = function LinesOption() {}, css_248z$4 = "#vip-plugin-outside {\n    border: 1px solid #eee;\n    margin: 0 auto;\n    position: relative;\n    clear: both;\n    display: none\n}\n#vip-plugin-outside .vip-plugin-outside-toolbar{\n    position: absolute;\n    top: 5px;\n    right: 10px;\n    z-index: 10000;\n}\n#vip-plugin-outside .vip-plugin-outside-coupons {\n    width: 240px;\n    float: left\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode {\n    text-align: center;\n    min-height: 150px;\n    margin-top: 30px\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode canvas,\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode img,\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode svg\n{\n    margin: 0 auto;\n    height:150px;\n    width: 150px;\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-title {\n    margin-top: 20px;\n    color: #000;\n    font-size: 14px;\n    font-weight: 700;\n    text-align: center\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-title span {\n    color: #ff0036;\n    font-weight: 700\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action {\n    margin-top: 10px;\n    text-align: center\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action a {\n    text-decoration: none\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action .vip-plugin-outside-coupons-button {\n    min-width: 135px;\n    padding: 0 8px;\n    line-height: 35px;\n    color: #fff;\n    background: #ff0036;\n    font-size: 13px;\n    font-weight: 700;\n    letter-spacing: 1.5px;\n    margin: 0 auto;\n    text-align: center;\n    border-radius: 15px;\n    display: inline-block;\n    cursor: pointer\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action .vip-plugin-outside-coupons-button.quan-none {\n    color: #000;\n    background: #bec5c5\n}\n\n.vip-plugin-outside-coupons-date {\n    color: #233b3d;\n    font-weight: normal;\n    font-size: 12px;\n}\n\n#vip-plugin-outside .vip-plugin-outside-history .vip-plugin-outside-history-tip {\n    position: absolute;\n    margin: 0;\n    top: 50%;\n    left: 50%;\n    letter-spacing: 1px;\n    font-size: 15px;\n    transform: translateX(-50%) translateY(-50%)\n}\n\n#vip-plugin-outside .vip-plugin-outside-history, #vip-plugin-outside-chart-body {\n    height: 300px;\n    overflow: hidden;\n    position: relative\n}\n\n#vip-plugin-outside .vip-plugin-outside-history .vip-plugin-outside-chart-container,\n#vip-plugin-outside-chart-container-line {\n    width: 100%;\n    height: 100%\n}\n\n#vip-plugin-outside-similar {\n    width: 100%;\n    background: #fff;\n    z-index: 99999999;\n    height: 268px;\n    overflow: hidden;\n    left: -1px;\n    top: 36px;\n    border: 1px solid #edf1f2!important\n}\n\n.vip-plugin-outside-similar-buy-list {\n    width: 303px;\n    border-right: 1px solid rgb(237, 241, 242);\n    height: 270px;\n    padding: 0px;\n    overflow: hidden;\n    float: left;\n    margin: 0px;\n}\n.vip-plugin-outside-similar-buy-list-li-store{\n    float: left;\n    overflow: hidden;\n    margin: 8px 7px 4px 14px;\n    width: 16px;\n    height: 16px\n}\n.vip-plugin-outside-similar-buy-list li {\n    border-bottom: 1px solid #edf1f2;\n    overflow: hidden;\n    width: 100%;\n    height: 33px;\n    line-height: 33px\n}\n.vip-plugin-outside-similar-buy-list li:first-child b {\n    font-style: normal;\n    font-size: 14px;\n    margin-left: 14px;\n    font-weight: 700\n}\n.vip-plugin-outside-similar-buy-list-li-first {\n    top: 15px;\n    width: auto;\n    right: 51px;\n    padding: 0;\n    text-align: center;\n    font-size: 12px;\n    margin: 0;\n    height: auto\n}\n.vip-plugin-outside-similar-buy-list-li-title {\n    height: 33px;\n    margin: 0;\n    display: inline-block;\n    float: left;\n    font-size: 14px;\n    font-weight: 700;\n    padding: 0;\n    background: 0 0;\n    line-height: 33px;\n    max-width: 170px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    width: auto\n}\n.vip-plugin-outside-similar-buy-list-li-price {\n    color: #E4393C;\n    font-weight: 700;\n    line-height: 33px;\n    height: 33px;\n    width: auto;\n    float: right;\n    font-size: 14px;\n    margin-right: 14px;\n}\n", 
+    styleInject(css_248z$4), MsgInfo = function MsgInfo() {}, PromoInfo = function PromoInfo() {
         this.price = 0, this.time = 0;
     }, HistoryService = function(_super) {
         function HistoryService() {
@@ -1728,120 +2071,7 @@
                 }), 2e3);
             }));
         }, KaolaCoupon;
-    }(BaseCoupon), css_248z$6 = ".one-key-vip-container { z-index: 99999!important }\n.one-key-vip-popup { font-size: 14px !important }\n.one-key-vip-setting-label { display: flex;align-items: center;justify-content: space-between;padding-top: 20px; }\n.one-key-vip-setting-checkbox { width: 16px;height: 16px; }\n", 
-    styleInject(css_248z$6), sAlert = function() {
-        function sAlert() {}
-        return sAlert.showMessage = function(title, html, toast, position, time) {
-            return Swal__default.default.fire({
-                title: title,
-                html: html,
-                position: position,
-                toast: toast,
-                timer: null == time ? void 0 : 1e3 * time
-            });
-        }, sAlert.toast = function(msg, icon, position, time) {
-            void 0 === icon && (icon = "success"), void 0 === position && (position = "top"), 
-            void 0 === time && (time = 2), Swal__default.default.fire({
-                toast: !0,
-                position: position,
-                showCancelButton: !1,
-                showConfirmButton: !1,
-                title: msg,
-                icon: icon,
-                timer: 1e3 * time,
-                customClass: this.customeCss
-            });
-        }, sAlert.warning = function(msg, position, time) {
-            void 0 === position && (position = "center"), void 0 === time && (time = 2), this.toast(msg, "warning", position, time);
-        }, sAlert.error = function(msg, time) {
-            void 0 === time && (time = 2), this.toast(msg, "error", "center", time);
-        }, sAlert.info = function(msg, icon, position, time) {
-            void 0 === icon && (icon = "success"), void 0 === position && (position = "top"), 
-            void 0 === time && (time = 2), Swal__default.default.fire({
-                toast: !0,
-                position: position,
-                showCancelButton: !1,
-                showConfirmButton: !1,
-                title: msg,
-                icon: icon,
-                timer: 1e3 * time,
-                customClass: this.customeCss
-            });
-        }, sAlert.msg = function(title, html) {
-            return Swal__default.default.fire({
-                title: "<strong>" + title + "</strong>",
-                html: html,
-                showCloseButton: !0
-            });
-        }, sAlert.html = function(title, html, cancel, cancelTxt, cancelColor, width, confirm, confirmTxt) {
-            return void 0 === cancel && (cancel = !1), void 0 === cancelTxt && (cancelTxt = ""), 
-            void 0 === cancelColor && (cancelColor = "#3085d6"), void 0 === width && (width = "32rem"), 
-            void 0 === confirm && (confirm = !1), void 0 === confirmTxt && (confirmTxt = ""), 
-            Swal__default.default.fire({
-                position: "center",
-                width: width,
-                html: html,
-                showCancelButton: cancel,
-                showConfirmButton: confirm,
-                cancelButtonColor: cancelColor,
-                title: title,
-                cancelButtonText: cancelTxt,
-                confirmButtonText: confirmTxt,
-                customClass: this.customeCss,
-                allowOutsideClick: !1,
-                allowEscapeKey: !1
-            });
-        }, sAlert.confirm = function(title, text, confirmText, cancelText, icon, denyText) {
-            void 0 === confirmText && (confirmText = "\u786e\u5b9a"), void 0 === cancelText && (cancelText = "\u53d6\u6d88"), 
-            void 0 === icon && (icon = "question"), void 0 === denyText && (denyText = "");
-            var option = {
-                title: title,
-                text: text,
-                icon: icon,
-                showCancelButton: !0,
-                allowOutsideClick: !1,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: confirmText,
-                cancelButtonText: cancelText
-            };
-            return "" != denyText && (option.denyButtonText = denyText), Swal__default.default.fire(option);
-        }, sAlert.showImg = function(image, title, text, alt) {
-            return Swal__default.default.fire({
-                title: title,
-                text: text,
-                imageUrl: image,
-                imageAlt: alt
-            });
-        }, sAlert.loading = function(time, target) {
-            void 0 === time && (time = -1), void 0 === target && (target = null), null == target ? Swal__default.default.showLoading() : Swal__default.default.showLoading(target), 
-            -1 != time && Core.sleep(time).then((function() {
-                Swal__default.default.hideLoading();
-            }));
-        }, sAlert.closeLoading = function() {
-            Swal__default.default.hideLoading();
-        }, sAlert.close = function(target) {
-            Swal__default.default.close(target);
-        }, sAlert.customeCss = {
-            container: "one-key-vip-container",
-            popup: "one-key-vip-popup",
-            header: "one-key-vip-header",
-            title: "one-key-vip-title",
-            closeButton: "one-key-vip-close",
-            icon: "one-key-vip-icon",
-            image: "one-key-vip-image",
-            content: "one-key-vip-content",
-            htmlContainer: "one-key-vip-html",
-            input: "one-key-vip-input",
-            validationMessage: "one-key-vip-validation",
-            actions: "one-key-vip-actions",
-            confirmButton: "one-key-vip-confirm",
-            denyButton: "one-key-vip-deny",
-            cancelButton: "one-key-vip-cancel",
-            loader: "one-key-vip-loader",
-            footer: "one-key-vip-footer"
-        }, sAlert;
-    }(), GwdService = function(_super) {
+    }(BaseCoupon), GwdService = function(_super) {
         function GwdService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
             return _this.rules = new Map([ [ SiteEnum.TMall, /detail\.tmall\.com\/item\.htm/i ], [ SiteEnum.TaoBao, /item\.taobao\.com\//i ], [ SiteEnum.JingDong, /item\.(yiyaojd|jd)\.(com|hk)\/[0-9]*\.html/i ], [ SiteEnum.SuNing, /product\.suning\.com\//i ], [ SiteEnum.Vp, /detail\.vip\.com\//i ], [ SiteEnum.KaoLa, /goods\.kaola\.(com\.hk|com)/i ] ]), 
@@ -2354,576 +2584,6 @@
                 }
             };
         }, GwdService;
-    }(PluginBase), css_248z$5 = ".tb-prop .tb-img li a {\n    width: auto !important;\n    background-position-x: 5px !important;\n}\n\n.tb-prop .tb-img li span {\n    text-indent: 1em !important;\n    display: block !important;\n    padding: 0 5px !important;\n    margin-left: 35px;\n}\n", 
-    styleInject(css_248z$5), TaoBaoService = function(_super) {
-        function TaoBaoService() {
-            var _this = null !== _super && _super.apply(this, arguments) || this;
-            return _this._appName = "TaoBaoService", _this.rules = new Map([ [ SiteEnum.TaoBao, /taobao\.com\//i ], [ SiteEnum.TMall, /tmall\.(com|hk)\//i ] ]), 
-            _this.UrlTag = "Wandhi_qLink", _this.historyService = new GwdService, _this;
-        }
-        return __extends(TaoBaoService, _super), TaoBaoService.prototype.loader = function() {
-            Core.appendCss("//cdn.wandhi.com/style/extenstion/hui.style.css");
-        }, TaoBaoService.prototype.run = function() {
-            this.init(), this.historyService.linkTest() && this.historyService.Process();
-        }, TaoBaoService.prototype.init = function() {
-            var _a, itemId, key, d, _this = this, init = "<div id='wandhi_div'><table class='wandhi_tab' id='wandhi_table'><thead><tr><th><b style='cursor:pointer'>\u4f18\u60e0\u5238</b></th><th>\u5238\u540e</th><th>\u6709 \u6548 \u671f</th><th>\u64cd\u4f5c</th></tr></thead><tr><td colspan='4'>\u6b63\u5728\u67e5\u8be2\u4f18\u60e0\u4fe1\u606f\uff0c\u8bf7\u7a0d\u5019...</td></tr></table></div>";
-            $("#J_LinkBasket").parent().parent().prepend(init), $(".J_LinkAdd").parent().parent().prepend(init), 
-            $("[class*=BasicContent--actions]").prepend(init), (null === (_a = this.rules.get(SiteEnum.TaoBao)) || void 0 === _a ? void 0 : _a.test(Core.currentUrl())) ? $("#wandhi_table").addClass("wandhi_tab_taobao") : $("#wandhi_table").addClass("wandhi_tab_tmall"), 
-            itemId = Core.getPar("id"), key = "td_s_" + itemId, (d = Config.get(key, !1)) ? this.initElement(d) : Route.queryCoupons(itemId, (function(data) {
-                Config.set(key, data, 43200), _this.initElement(data);
-            }));
-        }, TaoBaoService.prototype.initElement = function(data) {
-            var _a, row;
-            $("#wandhi_table tbody tr").remove(), row = "", data.code && (null === (_a = data.data) || void 0 === _a ? void 0 : _a.length) > 0 && "string" != typeof data.data ? data.data.forEach((function(e) {
-                row += "<tr><td>" + e.quan_context + "</td><td>" + e.after_price + "</td><td>" + e.quan_time + "</td><td><b onclick=window.open(decodeURIComponent('" + e.quan_link + "')) style='cursor:pointer'>\u9886\u53d6</b></td></tr>";
-            })) : row = "<tr><td colspan='4'>\u8fd9\u4e2a\u5546\u54c1\u6ca1\u6709\u8d85\u503c\u4f18\u60e0\u5238</td></tr>", 
-            $("#wandhi_table tbody").append(row);
-        }, TaoBaoService;
-    }(PluginBase), container = new Map, Container = function() {
-        function Container() {}
-        return Container.Registe = function(type, args) {
-            var className = this.processName(type.name);
-            return container.has(className) ? container.get(className) : className ? (container.set(className, window.Reflect.construct(type, args)), 
-            container.get(className)) : void 0;
-        }, Container.processName = function(name) {
-            return name.toLowerCase();
-        }, Container.Require = function(type) {
-            return this.Registe(type, []);
-        }, Container;
-    }(), css_248z$4 = ".okv-btn {\n  display: inline-block;\n  padding: 6px 16px;\n  font-size: 12px;\n  outline: 0;\n  line-height: 1.5;\n  text-align: center;\n  white-space: nowrap;\n  border: 1px solid #c5d9e8;\n  border-top-color: #c5d9e8;\n  border-right-color: #c5d9e8;\n  border-bottom-color: #c5d9e8;\n  border-left-color: #c5d9e8;\n  border-radius: 0.7rem;\n  background-color: #fff;\n  -webkit-transition: background 0.2s;\n  transition: background 0.2s;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  cursor: pointer;\n}\n.okv-btn-primary {\n  border-color: #6190e8;\n  background-color: #6190e8;\n  color: #fff;\n}\n.okv-btn-primary :hover {\n  background-color: #79a1eb;\n  border-color: #79a1eb;\n}\n.okv-btn-primary :active {\n  background-color: #5782d1;\n  border-color: #5782d1;\n}\n.okv-btn-success {\n  border-color: #13ce66;\n  background-color: #13ce66;\n  color: #fff;\n}\n.okv-btn-success :hover {\n  background-color: #36d57d;\n  border-color: #36d57d;\n}\n.okv-btn-success :active {\n  background-color: #11b95c;\n  border-color: #11b95c;\n}\n.okv-btn-error {\n  border-color: #ff4949;\n  background-color: #ff4949;\n  color: #fff;\n}\n.okv-btn-error :hover {\n  background-color: #ff6464;\n  border-color: #ff6464;\n}\n.okv-btn-error :active {\n  background-color: #e64242;\n  border-color: #e64242;\n}\n.okv-bg-pink {\n  color: #fff;\n  border-color: #fff;\n  background-color: #fb7299;\n}\n.bili-top-button {\n  margin-left: 0.7rem;\n}\n.bili-table {\n  width: 100%;\n  border-collapse: separate;\n  border-spacing: 0;\n  text-align: left;\n  overflow: hidden;\n}\n.bili-table td,\n.bili-table th {\n  height: 40px;\n  text-align: left;\n  text-overflow: ellipsis;\n  vertical-align: middle;\n  border-bottom: 1px solid #ececec;\n}\n.bili-table-cell {\n  padding: 0 16px;\n  border-bottom: 1px solid #ececec;\n}\n.at-table-tbody > tr:hover {\n  background-color: #f6fafe;\n}\n.bili-table-small {\n  font-size: 11px;\n}\n.bili-table-head {\n  border-collapse: separate;\n  border-spacing: 0;\n  text-align: left;\n}\n.bili-table-head tr th {\n  font-weight: 700;\n  text-align: left;\n  background-color: #f7f7f7;\n  white-space: nowrap;\n}\n", 
-    styleInject(css_248z$4), function(ConfigEnum) {
-        ConfigEnum.BiliPc_Cover = "bili_pc_cover", ConfigEnum.BiliPc_Video_Download = "bili_pc_video_download", 
-        ConfigEnum.BiliPc_Triple_Click = "bili_pc_triple_click", ConfigEnum.AutoJump_ZhiHu = "AutoJump_ZhiHu", 
-        ConfigEnum.AutoJump_CSDN = "AutoJump_CSDN", ConfigEnum.AutoJump_JianShu = "AutoJump_JianShu", 
-        ConfigEnum.AutoJump_Gitee = "AutoJump_Gitee", ConfigEnum.AutoJump_JueJin = "AutoJump_JueJin", 
-        ConfigEnum.AutoJump_Weibo = "AutoJump_Weibo", ConfigEnum.AutoJump_TuXiaoChao = "AutoJump_TuXiaoChao", 
-        ConfigEnum.AutoJump_OsCh = "AutoJump_OsCh", ConfigEnum.AutoJump_AiFaDian = "AutoJump_AiFaDian", 
-        ConfigEnum.AutoJump_Baidu = "AutoJump_Baidu", ConfigEnum.AutoJump_DouBan = "AutoJump_DouBan", 
-        ConfigEnum.AutoJump_g17173 = "AutoJump_g17173", ConfigEnum.AutoJump_TencentDoc = "AutoJump_TencentDoc", 
-        ConfigEnum.CSDN_OpImgLink = "csdn_op_img_link", ConfigEnum.CSDN_OpAdClean = "csdn_op_ad_clean", 
-        ConfigEnum.CSDN_OpArticleClean = "csdn_op_article_clean", ConfigEnum.CSDN_OpCommentClean = "csdn_op_comment_clean", 
-        ConfigEnum.CSDN_OpClipboardClean = "csdn_op_clipboard_clean", ConfigEnum.Search_Helper_Switch = "search_helper_switch", 
-        ConfigEnum.Search_OptMenuMethod = "search_opt_menu_method", ConfigEnum.Search_OptMenuPos = "search_opt_menu_pos";
-    }(ConfigEnum || (ConfigEnum = {})), BiliImgService = function(_super) {
-        function BiliImgService() {
-            var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.BiliBili, /www\.bilibili\.com\/video\/[av|bv]*/i ] ]), 
-            _this._appName = "bilibili", _this;
-        }
-        return __extends(BiliImgService, _super), BiliImgService.listHtml = function(list) {
-            var rows = "";
-            return list.forEach((function(e) {
-                rows += '<tr>\n                        <td class="bili-table-cell">' + e.part + '</td>\n                        <td class="bili-table-cell"><button class="okv-btn okv-btn-primary bili-down-item" data-cid="' + e.cid + '" data-part-title="' + e.part + '">\u4e0b\u8f7d</button></td>\n                    </tr>';
-            })), '<div style="height: 30rem"><table class="bili-table bili-table-small">\n                    <thead class="bili-table-head">\n                        <tr>                        \n                            <th class="bili-table-cell">\u6807\u9898</th>\n                            <th class="bili-table-cell">\u64cd\u4f5c</th>\n                        </tr>\n                    </thead>\n                    <tbody class="at-table-tbody">                    \n                        ' + rows + "\n                    </tbody>    \n                </table></div>";
-        }, BiliImgService.getQuality = function(id) {
-            switch (id) {
-              case 16:
-                return "360P \u6d41\u7545";
-
-              case 32:
-                return "480P \u6e05\u6670";
-
-              case 64:
-                return "720P \u9ad8\u6e05";
-
-              case 80:
-                return "1080P \u9ad8\u6e05";
-
-              case 112:
-                return "1080P 60\u5e27";
-
-              case 30280:
-              case 30260:
-                return "320Kbps";
-
-              case 30259:
-                return "128Kbps";
-
-              case 30257:
-                return "64Kbps";
-
-              case 30255:
-                return "AUDIO";
-
-              case 30251:
-                return "FLAC";
-
-              case 30250:
-                return "ATMOS";
-
-              case 30232:
-                return "128Kbps";
-
-              case 30216:
-                return "64Kbps";
-
-              default:
-                return "\u672a\u77e5";
-            }
-        }, BiliImgService.videoListHtml = function(videoList, audioList, duration) {
-            var _this = this, sizeFormat = function(size) {
-                void 0 === size && (size = 0);
-                for (var unit = [ "B", "K", "M", "G" ], i = unit.length - 1, dex = Math.pow(1024, i), vor = Math.pow(1e3, i); dex > 1; ) {
-                    if (size >= vor) {
-                        size = Number((size / dex).toFixed(2));
-                        break;
-                    }
-                    dex /= 1024, vor /= 1e3, i--;
-                }
-                return size ? size + unit[i] : "N/A";
-            }, rows = "";
-            return videoList.forEach((function(e) {
-                rows += '<tr>\n                        <td class="bili-table-cell">\u89c6\u9891</td>\n                        <td class="bili-table-cell">' + _this.getQuality(e.id) + '</td>\n                        <td class="bili-table-cell">' + sizeFormat(e.bandwidth * duration / 8) + '</td>\n                        <td class="bili-table-cell">' + e.frameRate + '</td>\n                        <td class="bili-table-cell">' + e.codecs + '</td>\n                        <td class="bili-table-cell"><button class="okv-btn okv-btn-primary bili-down-video-item" data-url="' + e.baseUrl + '" data-type="1">\u4e0b\u8f7d</button></td>\n                    </tr>';
-            })), audioList.forEach((function(e) {
-                rows += '<tr>\n                        <td class="bili-table-cell">\u97f3\u9891</td>\n                        <td class="bili-table-cell">' + _this.getQuality(e.id) + '</td>\n                        <td class="bili-table-cell">' + sizeFormat(e.bandwidth * duration / 8) + '</td>\n                        <td class="bili-table-cell">' + e.frameRate + '</td>\n                        <td class="bili-table-cell">' + e.codecs + '</td>\n                        <td class="bili-table-cell"><button class="okv-btn okv-btn-primary bili-down-video-item" data-url="' + e.baseUrl + '" data-type="2">\u4e0b\u8f7d</button></td>\n                    </tr>';
-            })), '\n<div style="height: 30rem">\n    <div style="margin-bottom: 20px">\u6ce8\u610f:\u97f3\u89c6\u9891\u662f\u5206\u5f00\u7684,\u8bf7\u4e0b\u8f7d\u540e\u81ea\u884c\u5408\u5e76<a href="https://wiki.wandhi.com/zh-cn/Download.html">\u70b9\u6211\u4e0b\u8f7d\u5408\u5e76\u5de5\u5177</a></div>\n    <table class="bili-table bili-table-small">\n        <thead class="bili-table-head">\n            <tr>                        \n                <th class="bili-table-cell">\u7c7b\u578b</th>\n                <th class="bili-table-cell">\u54c1\u8d28</th>\n                <th class="bili-table-cell">\u5927\u5c0f</th>\n                <th class="bili-table-cell">\u7801\u7387</th>\n                <th class="bili-table-cell">\u7f16\u7801</th>\n                <th class="bili-table-cell">\u64cd\u4f5c</th>\n            </tr>\n        </thead>\n        <tbody class="at-table-tbody">                    \n            ' + rows + "\n        </tbody>    \n    </table>\n</div>";
-        }, BiliImgService.prototype.loader = function() {}, BiliImgService.prototype.run = function() {
-            this.init();
-        }, BiliImgService.prototype.init = function() {
-            Core.autoLazyload((function() {
-                var _a, _b;
-                return (null === (_a = $(".reply-box-textarea")) || void 0 === _a ? void 0 : _a.length) > 0 || (null === (_b = $(".comment-submit")) || void 0 === _b ? void 0 : _b.length) > 0;
-            }), (function() {
-                Config.get(ConfigEnum.BiliPc_Cover, !0) && BiliImgService.add_img_btn(), Config.get(ConfigEnum.BiliPc_Video_Download, !0) && BiliImgService.add_down_btn(), 
-                Config.get(ConfigEnum.BiliPc_Triple_Click, !0) && BiliImgService.add_triple_btn();
-            }), 1);
-        }, BiliImgService.add_img_btn = function() {
-            var that = this;
-            $(".video-data").last().append(BiliImgService.coverBtn), $("body").on("click", "#findimg", (function() {
-                var aid = unsafeWindow.__INITIAL_STATE__.videoData.aid;
-                that.getVideoInfo(aid).then((function(res) {
-                    res ? sAlert.showImg(res.pic, "\u662f\u5c01\u9762\u5566", "\u554a\u54c8\u54c8\u54c8\u3001\u5c01\u9762\u6765\u54af", "\u662f\u5c01\u9762\u9171\u5566>\u3002<") : sAlert.error("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f");
-                })).catch((function() {
-                    sAlert.info("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f", "error", "center");
-                }));
-            }));
-        }, BiliImgService.add_down_btn = function() {
-            var that = this;
-            $(".video-data").last().append(BiliImgService.downBtn), $("body").on("click", "#downvideo", (function() {
-                that.initDown();
-            }));
-        }, BiliImgService.initDown = function() {
-            var _this = this, aid = unsafeWindow.__INITIAL_STATE__.videoData.aid;
-            BiliImgService.getVideoInfo(aid).then((function(res) {
-                sAlert.html(res.title, _this.listHtml(res.pages), !0, "\u6211\u597d\u4e86", "#3085d6", "40%"), 
-                $(".bili-down-item").on("click", (function(e) {
-                    var cid = $(e.currentTarget).attr("data-cid"), title = $(e.currentTarget).attr("data-part-title");
-                    BiliImgService.downVideo(aid, cid, title);
-                }));
-            }));
-        }, BiliImgService.downVideo = function(aid, cid, title) {
-            var _this = this, key = "" + aid + cid + "MDD-NEW";
-            Config.remember(key, Min, (function() {
-                return new Promise((function(resolve, reject) {
-                    Route.queryBiliDown(aid, cid, (function(res) {
-                        var _a, _b, _c;
-                        (null === (_c = null === (_b = null === (_a = res.data) || void 0 === _a ? void 0 : _a.dash) || void 0 === _b ? void 0 : _b.video) || void 0 === _c ? void 0 : _c.length) > 0 ? resolve(res) : reject(res);
-                    }));
-                }));
-            })).then((function(res) {
-                sAlert.html(title, _this.videoListHtml(res.data.dash.video, res.data.dash.audio, res.data.dash.duration), !0, "\u6211\u597d\u4e86", "#3085d6", "40%").finally((function() {
-                    BiliImgService.initDown();
-                })), $(".bili-down-video-item").on("click", (function(e) {
-                    var url = $(e.currentTarget).attr("data-url"), type = $(e.currentTarget).attr("data-type");
-                    Swal__default.default.fire({
-                        title: "\u51c6\u5907\u4e0b\u8f7d",
-                        html: '<span id="bili-download-step">\u5f00\u59cb\u4e0b\u8f7d\u540e\u5f53\u524d\u9875\u9762\u5c06\u4e0d\u53ef\u64cd\u4f5c,\u662f\u5426\u5f00\u59cb\u4e0b\u8f7d\uff1f</span>',
-                        showCancelButton: !0,
-                        confirmButtonText: "\u597d\u7684\u5f00\u59cb",
-                        cancelButtonText: "\u8fd8\u662f\u7b97\u4e86",
-                        showLoaderOnConfirm: !0,
-                        preConfirm: function() {
-                            return new Promise((function(r, j) {
-                                GM_download({
-                                    url: url,
-                                    name: "\u3010" + ("1" == type ? "\u89c6\u9891" : "\u97f3\u9891") + "\u3011" + title + ".mp4",
-                                    headers: {
-                                        referer: Runtime.url
-                                    },
-                                    onerror: function(data) {
-                                        j(data);
-                                    },
-                                    onprogress: function(data) {
-                                        $("#bili-download-step").text("\u5f53\u524d\u8fdb\u5ea6" + Core.getPercent(data.done, data.total) + "%"), 
-                                        data.done == data.total && r();
-                                    }
-                                });
-                            }));
-                        },
-                        allowOutsideClick: function() {
-                            return !Swal__default.default.isLoading();
-                        }
-                    }).then((function(result) {
-                        result.isConfirmed && sAlert.info("\u4e0b\u8f7d\u7ed3\u675f");
-                    })).finally((function() {
-                        BiliImgService.downVideo(aid, cid, title);
-                    }));
-                }));
-            })).catch((function(e) {
-                Logger.error(e), sAlert.error("\u5565\u4e5f\u6ca1\u67e5\u7740,\u518d\u8bd5\u4e00\u4e0b\u6216\u8005\u5e26\u7740\u89c6\u9891\u5730\u5740\u7ed9\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\u5427~");
-            }));
-        }, BiliImgService.getVideoInfo = function(aid) {
-            return Config.remember("biliInfo-" + aid, Week, (function() {
-                return new Promise((function(resolve, reje) {
-                    Route.queryBiliImg(aid, (function(res) {
-                        0 === res.code ? resolve(res.data) : reje();
-                    }));
-                }));
-            }));
-        }, BiliImgService.add_triple_btn = function() {
-            $(".video-data").last().append(BiliImgService.tripleClickBtn), $("body").on("click", "#tripleClick", (function() {
-                [ ".like", ".coin", ".collect" ].forEach((function(item) {
-                    $(item).trigger("click");
-                }));
-            }));
-        }, BiliImgService.coverBtn = '<button class="okv-btn okv-btn-primary okv-bg-pink bili-top-button" id="findimg">\u83b7\u53d6\u5c01\u9762</button>', 
-        BiliImgService.downBtn = '<button id="downvideo" class="okv-btn okv-btn-primary okv-bg-pink bili-top-button">\u4e0b\u8f7d\u89c6\u9891</button>', 
-        BiliImgService.tripleClickBtn = '<button class="okv-btn okv-btn-primary okv-bg-pink bili-top-button" id="tripleClick">\u4e00\u4e0b\u70b9\u4ee8(\u70b9\u8d5e\u3001\u6295\u5e01\u3001\u6536\u85cf)</button>', 
-        BiliImgService;
-    }(PluginBase), Menu$1 = Common.Menu, MovieService = function(_super) {
-        function MovieService() {
-            var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.YouKu, /youku\.com/i ], [ SiteEnum.IQiYi, /iqiyi|iq\.com/i ], [ SiteEnum.LeShi, /\.le\.com/i ], [ SiteEnum.Tencent_V, /v\.qq/i ], [ SiteEnum.TuDou, /tudou\.com/i ], [ SiteEnum.MangGuo, /mgtv\.com/i ], [ SiteEnum.SoHu, /sohu\.com/i ], [ SiteEnum.Acfun, /acfun\.com/i ], [ SiteEnum.BiliBili, /bilibili\.com/i ], [ SiteEnum.M1905, /1905\.com/i ], [ SiteEnum.PPTV, /pptv\.com/i ], [ SiteEnum.YinYueTai, /yinyuetai\.com/ ] ]), 
-            _this.menu = new Common.Menu, _this._unique = !1, _this;
-        }
-        return __extends(MovieService, _super), MovieService.prototype.loader = function() {
-            "undefined" == typeof $ && Core.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js");
-        }, MovieService.prototype.run = function() {
-            this.menu.Init([ {
-                title: "\u672c\u6b21\u5173\u95ed",
-                show: "\u672c\u6b21<br>\u5173\u95ed",
-                type: "search"
-            }, {
-                title: "\u89c6\u9891\u89e3\u6790",
-                show: "\u89c6\u9891<br>\u89e3\u6790",
-                type: "process"
-            }, {
-                title: "\u7edd\u4e16\u597d\u5238",
-                show: "\u7edd\u4e16<br>\u597d\u5238",
-                type: "tb"
-            }, {
-                title: "\u4eac\u4e1c\u597d\u5238",
-                show: "\u4eac\u4e1c<br>\u597d\u5238",
-                type: "jd"
-            } ], this._onClick), this.autoHide();
-        }, MovieService.prototype._onClick = function() {
-            $("body").on("click", "[data-cat=process]", (function() {
-                Core.open("http://tv.wandhi.com/go.html?url=" + encodeURIComponent(window.location.href));
-            })), $("body").on("click", "[data-cat=search]", (function() {
-                Menu$1.close();
-            })), $("body").on("click", "[data-cat=tb]", (function() {
-                Core.open("http://shop.huizhek.com");
-            })), $("body").on("click", "[data-cat=jd]", (function() {
-                Core.open("http://shop.huizhek.com");
-            }));
-        }, MovieService.prototype.autoHide = function() {
-            Logger.info("\u81ea\u52a8\u9690\u85cf"), this.site == SiteEnum.BiliBili && Core.background((function() {
-                var _a, modal;
-                $(".bpx-player-container").length > 0 && ("web" == (modal = null === (_a = $(".bpx-player-container")) || void 0 === _a ? void 0 : _a.attr("data-screen")) || "full" == modal ? $(".aside-nav").hide() : $(".aside-nav").show());
-            }), 1);
-        }, MovieService;
-    }(PluginBase), JdService = function(_super) {
-        function JdService() {
-            var _this = _super.call(this) || this;
-            return _this._appName = "JdService", _this.rules = new Map([ [ SiteEnum.JingDong, /item\.(yiyaojd|jd)\.c/i ] ]), 
-            _this.historyService = new GwdService, _this;
-        }
-        return __extends(JdService, _super), JdService.prototype.loader = function() {
-            this.historyService.linkTest() && this.historyService.Process();
-        }, JdService.prototype.run = function() {
-            var btn = '<a href="javascript:;" class="btn-special1 btn-lg btn-yhj"><span class="">\u67e5\u8be2\u4f18\u60e0\u5238</span></a>', keywords = $(".sku-name").text().trim();
-            $("#choose-btns").prepend(btn), $(".btn-yhj").on("click", (function() {
-                Core.open("https://shop.huizhek.com/?r=/l/jdlist&kw=" + encodeURIComponent(keywords) + "&t=223");
-            }));
-        }, JdService;
-    }(PluginBase), UrlHelper = function() {
-        function UrlHelper() {}
-        return UrlHelper.Bind = function(CssSelector, method, doc) {
-            $(CssSelector).click((function() {
-                Core.openUrl($(this).data("key"));
-            }));
-        }, UrlHelper.urlEncode = function(url) {
-            return encodeURIComponent(url);
-        }, UrlHelper.urlDecode = function(url) {
-            return decodeURIComponent(url);
-        }, UrlHelper;
-    }(), MusicService = function(_super) {
-        function MusicService() {
-            var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.WangYi, /163(.*)song/i ], [ SiteEnum.Tencent_M, /y\.QQ(.*)song/i ], [ SiteEnum.KuGou, /kugou\.com\/song\/*/i ], [ SiteEnum.KuWo, /kuwo(.*)yinyue/i ], [ SiteEnum.XiaMi, /xiami/i ], [ SiteEnum.TaiHe, /taihe\.com/i ], [ SiteEnum.QingTing, /qingting\./i ], [ SiteEnum.LiZhi, /lizhi\./i ], [ SiteEnum.MiGu, /migu\./i ], [ SiteEnum.XiMaLaYa, /ximalaya\./i ] ]), 
-            _this.menu = new Common.Menu, _this._appName = "MusicService", _this._unique = !1, 
-            _this;
-        }
-        return __extends(MusicService, _super), MusicService.prototype.loader = function() {
-            Core.appendCss("//lib.baomitu.com/layer/3.1.1/theme/default/layer.css");
-        }, MusicService.prototype.run = function() {
-            this.menu.Init([ {
-                title: "\u7535\u5f71\u641c\u7d22",
-                show: "\u7535\u5f71<br>\u641c\u7d22",
-                type: "search"
-            }, {
-                title: "\u97f3\u4e50\u4e0b\u8f7d",
-                show: "\u97f3\u4e50<br>\u4e0b\u8f7d",
-                type: "process"
-            }, {
-                title: "\u7edd\u4e16\u597d\u5238",
-                show: "\u7edd\u4e16<br>\u597d\u5238",
-                type: "tb"
-            }, {
-                title: "\u4eac\u4e1c\u597d\u5238",
-                show: "\u4eac\u4e1c<br>\u597d\u5238",
-                type: "jd"
-            } ], this._OnClick, !1);
-        }, MusicService.prototype._OnClick = function() {
-            this.rules, $("body").on("click", "[data-cat=process]", (function() {
-                var _a, _b, i, html;
-                if (/ximalaya/i.test(Runtime.url)) {
-                    for (i = 0; i < unsafeWindow.document.scripts.length; i++) /window\.__INITIAL_STATE__ =/i.test(unsafeWindow.document.scripts[i].innerHTML) && (Logger.debug(unsafeWindow.document.scripts[i].innerHTML), 
-                    eval(unsafeWindow.document.scripts[i].innerHTML.replace("window.__INITIAL_STATE__", "unsafeWindow.__INITIAL_STATE__")));
-                    __INITIAL_STATE__ && (null === (_b = null === (_a = __INITIAL_STATE__.store) || void 0 === _a ? void 0 : _a.SoundDetailPage) || void 0 === _b ? void 0 : _b.trackId) ? Core.open("http://music.wandhi.com/?id=" + __INITIAL_STATE__.store.SoundDetailPage.trackId + "&type=ximalaya") : (layer.closeAll(), 
-                    html = '<div style="padding:0px 50px 0px 50px;"><ul class="sound-list dOi2">', $.each(__INITIAL_STATE__.store.AlbumDetailTrackList.tracksInfo.tracks, (function(index, item) {
-                        html += '<li class="d0i2"><a href="http://music.wandhi.com/?id=' + item.trackId + '&type=ximalaya" target="_blank">' + item.title + "</a></li>";
-                    })), html += "</ul></div>", layer.open({
-                        type: 1,
-                        area: [ "auto", "30%" ],
-                        title: "\u4e3a\u4f60\u627e\u5230\u4e86\u8fd9\u4e9b\u66f2\u76ee\u89e3\u6790\u2026\u2026",
-                        shade: .6,
-                        maxmin: !1,
-                        anim: 2,
-                        content: html
-                    }));
-                } else /taihe.com/i.test(Runtime.url) ? Core.open("http://music.wandhi.com/?url=" + UrlHelper.urlEncode(Runtime.url.replace("taihe", "baidu"))) : Core.open("http://music.wandhi.com/?url=" + UrlHelper.urlEncode(Runtime.url));
-            })), $("body").on("click", "[data-cat=search]", (function() {
-                Core.open("http://tv.wandhi.com/");
-            })), $("body").on("click", "[data-cat=tb]", (function() {
-                Core.open("https://shop.huizhek.com");
-            })), $("body").on("click", "[data-cat=jd]", (function() {
-                Core.open("https://shop.huizhek.com");
-            }));
-        }, MusicService;
-    }(PluginBase), function(ItemType) {
-        ItemType.TaoBao = "tb", ItemType.TMall = "tm", ItemType.JingDong = "jd", ItemType.JingDongChaoshi = "jdcs", 
-        ItemType.Suning = "sn";
-    }(ItemType || (ItemType = {})), Tao = function() {
-        function Tao() {}
-        return Tao.isVailidItemId = function(itemId) {
-            if (!itemId) return !1;
-            var itemIdInt = parseInt(itemId);
-            return itemIdInt.toString() == itemId && itemIdInt > 1e4;
-        }, Tao.isValidTaoId = function(itemId) {
-            return !!itemId && (!!Core.isNumber(itemId) || (!(itemId.indexOf("http") >= 0) || !(!this.isTaoBaoDetailPage(itemId) && !itemId.includes("//detail.ju.taobao.com/home.htm"))));
-        }, Tao.isTaoBaoDetailPage = function(url) {
-            return url.includes("//item.taobao.com/item.htm") || url.includes("//detail.tmall.com/item.htm") || url.includes("//chaoshi.detail.tmall.com/item.htm") || url.includes("//detail.tmall.hk/hk/item.htm");
-        }, Tao;
-    }(), ListService = function(_super) {
-        function ListService() {
-            var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.TaoBao, /s\.taobao\.com\/search/i ], [ SiteEnum.TMall, /list\.tmall\.com\/search_product\.htm/i ], [ SiteEnum.KaoLa, /search\.kaola\.com\/search\.html/i ], [ SiteEnum.JingDongList, /search\.jd\.com/i ], [ SiteEnum.SuNing, /search\.suning\.com/i ] ]), 
-            _this.selectorList = [], _this.selectora = [], _this.atrack = [], _this.key = "list_service_", 
-            _this._appName = "TaoList", _this;
-        }
-        return __extends(ListService, _super), ListService.prototype.loader = function() {}, 
-        Object.defineProperty(ListService, "style", {
-            get: function() {
-                return "    \n    .onekeyvip-tb-box-area {position: absolute;top: 10px;right: 5px;z-index: 9999;}\n    .onekeyvip-jd-box-area {position: absolute;top: 275px;right: 10px;z-index: 9999;}  \n    .onekeyvip-jdcs-box-area {position: absolute;top: 5px;right: 0px;z-index: 9999;}\n    .onekeyvip-box-info-translucent{opacity: .33;}\n    .onekeyvip-box-info, .onekeyvip-box-info:hover, .onekeyvip-box-info:visited {text-decoration: none!important;}\n    .onekeyvip-box-wait{cursor:pointer}\n    .onekeyvip-box-info {width: auto!important;height: auto!important;padding: 6px 8px!important;font-size: 12px;color: #fff!important;border-radius: 15px;cursor: pointer;font-weight:bold}\n    .onekeyvip-jd-box-info-default, .onekeyvip-tb-box-info-default, .onekeyvip-jdcs-box-info-default{background: #3186fd!important;}\n    .onekeyvip-box-info-empty {color: #000!important;background: #ccc!important;}\n    .onekeyvip-box-info-find {background: #ff0036!important;}\n    .onekeyvip-box-done{position:relative}\n    ";
-            },
-            enumerable: !1,
-            configurable: !0
-        }), ListService.prototype.run = function() {
-            switch (ListService.that = this, this.site) {
-              case SiteEnum.TaoBao:
-                this.selectorList.push(".items .item"), this.selectorList.push('a[class^="Card--doubleCardWrapper"]'), 
-                this.atrack.push(".pic a", ".title a"), this.itemType = ItemType.TaoBao;
-                break;
-
-              case SiteEnum.TMall:
-                this.selectorList.push(".product"), this.atrack.push(".productImg-wrap a", ".productTitle a"), 
-                this.itemType = ItemType.TaoBao;
-                break;
-
-              case SiteEnum.KaoLa:
-                return void this._initQuery();
-
-              case SiteEnum.JingDongList:
-                this.selectorList.push(".gl-warp .gl-item"), this.atrack.push(".p-img a", ".p-name a"), 
-                this.itemType = ItemType.JingDong;
-                break;
-
-              case SiteEnum.SuNing:
-                this.selectorList.push(".item-wrap"), this.atrack.push(".img-block a", ".title-selling-point a"), 
-                this.itemType = ItemType.Suning;
-            }
-            var that = this;
-            this.initStyle(), Core.autoLazyload((function() {
-                try {
-                    return null != $ && null != jQuery;
-                } catch (e) {
-                    return !1;
-                }
-            }), (function() {
-                return that.initSearchEvent();
-            }), 3), Core.background((function() {
-                return that.initSearch(that);
-            }), 3), Core.background((function() {
-                return that.initQuery();
-            }), 4);
-        }, ListService.prototype.initStyle = function() {
-            Core.appendCssContent(ListService.style), this.itemType == ItemType.Suning && Core.appendCssContent(".onekeyvip-sn-box-area{position: relative;}");
-        }, ListService.prototype.initSearchEvent = function() {
-            var that = this;
-            try {
-                $(document).on("click", ".onekeyvip-" + that.itemType + "-box-area", (function() {
-                    var $this = $(this);
-                    $this.hasClass("onekeyvip-box-wait") ? that.queryInfo(this) : $this.hasClass("onekeyvip-box-info-translucent") ? $this.removeClass("onekeyvip-box-info-translucent") : $this.addClass("onekeyvip-box-info-translucent");
-                }));
-            } catch (e) {
-                Core.background((function() {
-                    $(".onekeyvip-" + that.itemType + "-box-area").click((function() {
-                        var $this = $(this);
-                        $this.hasClass("onekeyvip-box-wait") ? that.queryInfo(this) : $this.hasClass("onekeyvip-box-info-translucent") ? $this.removeClass("onekeyvip-box-info-translucent") : $this.addClass("onekeyvip-box-info-translucent");
-                    }));
-                }));
-            }
-        }, ListService.prototype.initSearch = function(that) {
-            that.selectorList.forEach((function(e, i) {
-                $(e).each((function(index, ele) {
-                    that.initSearchItem(ele);
-                }));
-            }));
-        }, ListService.prototype.initSearchItem = function(selector) {
-            var _a, _b, _c, _d, _e, _f, _g, _h;
-            return __awaiter(this, void 0, Promise, (function() {
-                var $dom, itemId, $a, res;
-                return __generator(this, (function(_j) {
-                    switch (_j.label) {
-                      case 0:
-                        return ($dom = $(selector)).hasClass("onekeyvip-box-done") ? [ 2 ] : (itemId = null !== (_c = null !== (_b = null !== (_a = $dom.attr("data-id")) && void 0 !== _a ? _a : $dom.data("sku")) && void 0 !== _b ? _b : $dom.attr("id")) && void 0 !== _c ? _c : "", 
-                        Tao.isVailidItemId(itemId) || (itemId = null !== (_f = null !== (_e = null !== (_d = $dom.attr("data-itemid")) && void 0 !== _d ? _d : $dom.data("spu")) && void 0 !== _e ? _e : $dom.attr("id")) && void 0 !== _f ? _f : ""), 
-                        Tao.isVailidItemId(itemId) ? [ 3, 5 ] : $dom.attr("href") ? (itemId = location.protocol + $dom.attr("href"), 
-                        this.site != SiteEnum.TaoBao && this.site != SiteEnum.TMall ? [ 3, 3 ] : itemId.indexOf("click.simba.taobao.com") > -1 ? [ 4, Http.get302(itemId) ] : [ 3, 2 ]) : [ 3, 4 ]);
-
-                      case 1:
-                        itemId = _j.sent(), Logger.debug("302\u5904\u7406\u540eitemId:" + itemId), _j.label = 2;
-
-                      case 2:
-                        itemId = Core.getPar("id", itemId), _j.label = 3;
-
-                      case 3:
-                        return [ 3, 5 ];
-
-                      case 4:
-                        if (!($a = $dom.find("a")).length) return [ 2 ];
-                        itemId = null !== (_g = $a.attr("data-nid")) && void 0 !== _g ? _g : "", Tao.isVailidItemId(itemId) || (itemId = $a.hasClass("j_ReceiveCoupon") && $a.length > 1 ? location.protocol + $($a[1]).attr("href") : location.protocol + $a.attr("href")), 
-                        _j.label = 5;
-
-                      case 5:
-                        return !Tao.isVailidItemId(itemId) && itemId.indexOf("http") > -1 && (res = null !== (_h = /item.jd.com\/(.*?).html/i.exec(itemId)) && void 0 !== _h ? _h : [], 
-                        itemId = res.length > 0 ? res[1] : ""), Tao.isValidTaoId(itemId) || ListService.that.itemType != ItemType.Suning || (itemId = $dom.attr("id")).split("-").length > 1 && (itemId = itemId.split("-")[1] + "-" + itemId.split("-")[0]), 
-                        Tao.isValidTaoId(itemId) ? (this.initBoxHtml($dom, itemId), this.initTagClass($dom, itemId), 
-                        $dom.addClass("onekeyvip-box-done")) : Logger.debug("\u5546\u54c1\u5217\u8868id\u65e0\u6548:" + itemId), 
-                        [ 2 ];
-                    }
-                }));
-            }));
-        }, ListService.prototype.initTagClass = function(target, itemId) {
-            this.atrack.forEach((function(e) {
-                target.find(e).hasClass("onekeyvip-item-" + itemId) || target.find(e).addClass("onekeyvip-item-" + itemId);
-            }));
-        }, ListService.prototype.initBoxHtml = function(target, itemId) {
-            target.append('<div class="onekeyvip-' + this.itemType + '-box-area onekeyvip-box-wait" data-itemid="' + itemId + '"><a class="onekeyvip-box-info onekeyvip-' + this.itemType + '-box-info-default" title="\u70b9\u51fb\u67e5\u8be2">\u5f85\u67e5\u8be2</a></div>');
-        }, ListService.prototype.initQuery = function() {
-            var that = this;
-            $(".onekeyvip-box-wait").each((function(index, ele) {
-                var s = Core.random(1, 5);
-                Core.sleep(s).then((function() {
-                    that.queryInfo(ele);
-                }));
-            }));
-        }, ListService.prototype.queryInfo = function(target) {
-            return __awaiter(this, void 0, Promise, (function() {
-                var that, $this, itemId, k, render, couponInfo;
-                return __generator(this, (function(_a) {
-                    switch (_a.label) {
-                      case 0:
-                        return that = this, ($this = $(target)).removeClass("onekeyvip-box-wait"), itemId = $this.data("itemid"), 
-                        k = that.key + "_All2_" + ListService.that.itemType + "_" + itemId, render = function(res) {
-                            if (0 != (null == res ? void 0 : res.code)) {
-                                var couponInfo_1 = res.data;
-                                that.initCouponInfo(itemId, couponInfo_1, target);
-                            } else that.showQueryEmpty($this);
-                        }, (couponInfo = Config.get(k)) ? (render(couponInfo), [ 3, 3 ]) : [ 3, 1 ];
-
-                      case 1:
-                        return [ 4, Route.couponQuery(itemId, that.itemType, (function(couponInfoResult) {
-                            render(couponInfoResult), Config.set(k, couponInfo, 43200);
-                        })) ];
-
-                      case 2:
-                        _a.sent(), _a.label = 3;
-
-                      case 3:
-                        return [ 2 ];
-                    }
-                }));
-            }));
-        }, ListService.prototype.initCouponInfo = function(itemId, couponInfo, target) {
-            var _a, coupon, $this = $(target), that = this;
-            (null === (_a = null == couponInfo ? void 0 : couponInfo.coupons) || void 0 === _a ? void 0 : _a.length) > 0 && 0 != couponInfo.coupons[0].coupon_price && null != couponInfo.coupons[0].coupon_price ? (coupon = couponInfo.coupons[0], 
-            this.showQueryFind($this, coupon.coupon_price)) : that.showQueryEmpty($this), this.showItemUrl(itemId, null == couponInfo ? void 0 : couponInfo.item_url, that.site == SiteEnum.JingDong || that.site == SiteEnum.SuNing);
-        }, ListService.prototype.showItemUrl = function(itemId, itemUrl, flag) {
-            void 0 === flag && (flag = !1), flag ? $(".onekeyvip-item-" + itemId).each((function(i, ele) {
-                ele.onclick = function() {
-                    return !itemUrl || (Core.open(itemUrl), !1);
-                };
-            })) : $(".onekeyvip-item-" + itemId).each((function(i, ele) {
-                $(ele).on("click", (function() {
-                    return Logger.debug("\u52ab\u6301\u70b9\u51fb:" + itemUrl), !itemUrl || (Core.open(itemUrl), 
-                    !1);
-                }));
-            }));
-        }, ListService.prototype._initQuery = function() {
-            var _a, that = this;
-            null === (_a = $(".goods")) || void 0 === _a || _a.each((function(i, ele) {
-                var m = Core.random(1, 5);
-                Core.sleep(m).then((function() {
-                    that._queryCoupon(ele);
-                }));
-            }));
-        }, ListService.prototype._queryCoupon = function(target) {
-            var _a;
-            return __awaiter(this, void 0, void 0, (function() {
-                var href, itemIds, that, itemId, key_1, quan_1;
-                return __generator(this, (function(_b) {
-                    switch (_b.label) {
-                      case 0:
-                        return href = null === (_a = $(target).find("a")[0]) || void 0 === _a ? void 0 : _a.href, 
-                        itemIds = /kaola\.com\/product\/(.*?)\.html/.exec(href), that = this, null != itemIds && (null == itemIds ? void 0 : itemIds.length) > 1 ? (itemId = itemIds[1], 
-                        key_1 = "kol-" + itemId, (quan_1 = Config.get(key_1)) ? (this._showItemUrl(target, quan_1), 
-                        [ 3, 3 ]) : [ 3, 1 ]) : [ 3, 3 ];
-
-                      case 1:
-                        return Config.clear(key_1), [ 4, Route.queryKlCoupons(itemId).then((function(res) {
-                            (null == res ? void 0 : res.code) && (Config.set(key_1, res.data, 86400), that._showItemUrl(target, quan_1));
-                        })) ];
-
-                      case 2:
-                        _b.sent(), _b.label = 3;
-
-                      case 3:
-                        return [ 2 ];
-                    }
-                }));
-            }));
-        }, ListService.prototype._showItemUrl = function(target, quan) {
-            var _a;
-            null === (_a = $(target).find("a")) || void 0 === _a || _a.on("click", (function() {
-                return Logger.debug(quan), !quan.quan_link || (Core.open(quan.quan_link), !1);
-            }));
-        }, ListService.prototype.showQueryFind = function(selector, couponMoney) {
-            selector.html('<a target="_blank" class="onekeyvip-box-info onekeyvip-box-info-find" title="\u5207\u6362\u900f\u660e\u5ea6">' + couponMoney + "\u5143\u5238</a>");
-        }, ListService.prototype.showQueryEmpty = function(selector) {
-            selector.addClass("onekeyvip-box-info-translucent"), selector.html('<a href="javascript:void(0);" class="onekeyvip-box-info onekeyvip-box-info-empty" title="\u5207\u6362\u900f\u660e\u5ea6">\u6682\u65e0\u4f18\u60e0</a>');
-        }, ListService;
     }(PluginBase), css_248z$3 = "#content_views pre {\n    -webkit-touch-callout: auto !important;\n    -webkit-user-select: auto !important;\n    -khtml-user-select: auto !important;\n    -moz-user-select: auto !important;\n    -ms-user-select: auto !important;\n    user-select: auto !important;\n}\n\n#content_views pre code {\n    -webkit-touch-callout: auto !important;\n    -webkit-user-select: auto !important;\n    -khtml-user-select: auto !important;\n    -moz-user-select: auto !important;\n    -ms-user-select: auto !important;\n    user-select: auto !important;\n}\n\n.passport-login-container {\n    display: none !important;\n}\n", 
     styleInject(css_248z$3), CsdnAdService = function(_super) {
         function CsdnAdService() {
@@ -3516,12 +3176,74 @@
             var css = [ "ytm-item-section-renderer:has(a[href*='googleads'])", "#masthead-ad", "ytd-rich-item-renderer.style-scope.ytd-rich-grid-row #content:has(.ytd-display-ad-renderer)", "ytd-rich-section-renderer #dismissible", ".video-ads.ytp-ad-module", "tp-yt-paper-dialog:has(yt-mealbar-promo-renderer)", "#related #player-ads", "#related ytd-ad-slot-renderer", "ytd-ad-slot-renderer", "yt-mealbar-promo-renderer" ], cssText = css.join(",") + "{display:none!important;}";
             Core.appendCssContent(cssText), Logger.info("YoutubeMobile AdClearService loaded");
         }, AdClearService;
-    }(PluginBase), OneKeyVipInjection = function() {
-        function OneKeyVipInjection() {
-            this.plugins = new Array, this.plugins = [ Container.Require(AdClearService), Container.Require(ControlMenuService), Container.Require(SettingService), Container.Require(AutoExpandService), Container.Require(AliyunPanToken), Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(BiliMobileService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(GwdService), Container.Require(CsdnAdService), Container.Require(WenKuService), Container.Require(LinkJumpService), Container.Require(YoutubeService), Container.Require(_GwdService), Container.Require(SearchService), Container.Require(NetDiskDirectService) ], 
+    }(PluginBase), GfUpdateService = function(_super) {
+        function GfUpdateService() {
+            var _this = _super.call(this) || this;
+            return _this.rules = new Map([ [ SiteEnum.All, /(.*)/i ] ]), _this._unique = !1, 
+            _this._appName = "update", _this;
+        }
+        return __extends(GfUpdateService, _super), GfUpdateService.prototype.loader = function() {}, 
+        GfUpdateService.prototype.run = function() {
+            if (!Config.get(update_key, !1)) {
+                var current = new VersionCompar(Config.env.script.version);
+                this.scriptCat(current);
+            }
+        }, GfUpdateService.prototype.scriptCat = function(current) {
+            Http.get(Route.update_api_script_cat, new Map, new Map, !1).then((function(r) {
+                var _a, _b, msg, version = new VersionCompar(null === (_b = null === (_a = null == r ? void 0 : r.data) || void 0 === _a ? void 0 : _a.script) || void 0 === _b ? void 0 : _b.version);
+                Logger.debug("\u5f53\u524d\u7248\u672c:[" + current.versionString + "],\u6700\u65b0\u7248\u672c:[" + version.versionString + "]"), 
+                version.compareTo(current) === VersionResult.greater && (msg = "\u65b0\u7248\u672c<span>" + version.versionString + '</span>\u5df2\u53d1\u5e03.<a class="link" target="_blank" href="' + Route.home_url_update + '">\u67e5\u770b</a><br><a id="new-version-link" class="link" href="' + Route.install_url_two + '" target="_blank">\u5b89\u88c5</a>', 
+                GM_addStyle(".swal2-popup{font-size: 16px !important}"), Swal__default.default.fire({
+                    toast: !0,
+                    position: "bottom-left",
+                    icon: "success",
+                    showCloseButton: !0,
+                    title: "\u68c0\u67e5\u66f4\u65b0",
+                    html: msg
+                })), Config.set(update_key, !0, Hour);
+            }));
+        }, GfUpdateService.prototype.jsD = function(current) {
+            Http.get_text(Route.update_api).then((function(res) {
+                var msg, version = new VersionCompar(null == res ? void 0 : res.match(/@version[ ]*([\d\.]+)/)[1]);
+                version.compareTo(current) === VersionResult.greater && (msg = "\u65b0\u7248\u672c<span>" + version.versionString + '</span>\u5df2\u53d1\u5e03.<a id="new-version-link" class="link" href="' + Route.install_url_one + '">\u5b89\u88c5(\u7ebf\u8def\u4e00)</a><a id="new-version-link" class="link" href="' + Route.install_url_two + '">\u5b89\u88c5(\u7ebf\u8def\u4e8c)</a><a class="link" target="_blank" href="' + Route.home_url_update + '">\u67e5\u770b</a>', 
+                Swal__default.default.fire({
+                    toast: !0,
+                    position: "bottom-left",
+                    icon: "success",
+                    showConfirmButton: !1,
+                    title: "\u68c0\u67e5\u66f4\u65b0",
+                    html: msg
+                })), Config.set(update_key, !0, Hour);
+            }));
+        }, GfUpdateService;
+    }(PluginBase), VersionCompar = function() {
+        function VersionCompar(e) {
+            /^[\d\.]+$/.test(e) || Logger.error("Invalid version string"), this.parts = e.split(".").map((function(e) {
+                return parseInt(e);
+            })), this.versionString = e;
+        }
+        return VersionCompar.prototype.compareTo = function(e) {
+            for (var t = 0; t < this.parts.length; ++t) {
+                if (e.parts.length === t) return VersionResult.greater;
+                if (this.parts[t] !== e.parts[t]) return this.parts[t] > e.parts[t] ? VersionResult.greater : VersionResult.less;
+            }
+            return this.parts.length !== e.parts.length ? VersionResult.less : VersionResult.equal;
+        }, VersionCompar.prototype.greaterThan = function(e) {
+            return this.compareTo(e) === VersionResult.greater;
+        }, VersionCompar.prototype.lessThan = function(e) {
+            return this.compareTo(e) === VersionResult.less;
+        }, VersionCompar.prototype.equals = function(e) {
+            return this.compareTo(e) === VersionResult.equal;
+        }, VersionCompar;
+    }(), function(VersionResult) {
+        VersionResult[VersionResult.less = -1] = "less", VersionResult[VersionResult.equal = 0] = "equal", 
+        VersionResult[VersionResult.greater = 1] = "greater", VersionResult[VersionResult.incomparable = NaN] = "incomparable";
+    }(VersionResult || (VersionResult = {})), OneKeyVipGfInjection = function() {
+        function OneKeyVipGfInjection() {
+            this.plugins = new Array, this.plugins = [ Container.Require(AdClearService), Container.Require(ControlMenuService), Container.Require(SettingService), Container.Require(AutoExpandService), Container.Require(AliyunPanToken), Container.Require(GfUpdateService), Container.Require(BiliImgService), Container.Require(BiliMobileService), Container.Require(MovieService), Container.Require(MusicService), Container.Require(GwdService), Container.Require(CsdnAdService), Container.Require(WenKuService), Container.Require(LinkJumpService), Container.Require(YoutubeService), Container.Require(_GwdService), Container.Require(SearchService), Container.Require(NetDiskDirectService) ], 
             Logger.info("container loaded");
         }
-        return OneKeyVipInjection.prototype.Init = function() {
+        return OneKeyVipGfInjection.prototype.Init = function() {
             this.plugins.every((function(element) {
                 return element.linkTest() ? (new Promise((function(resolve) {
                     resolve(1);
@@ -3529,6 +3251,6 @@
                 !element.unique()) : (Logger.debug("element [" + element.appName() + "];not pass"), 
                 !0);
             }));
-        }, OneKeyVipInjection;
-    }(), Logger.level = LogLevel.info, Container.Require(OneKeyVipInjection).Init();
+        }, OneKeyVipGfInjection;
+    }(), Logger.level = LogLevel.info, Container.Require(OneKeyVipGfInjection).Init();
 }));
