@@ -65,9 +65,9 @@
 // @include      *://yun.baidu.com/share/link*
 // @include      *://wenku.baidu.com/view/*
 // @include      *blog.csdn.net/*
-// @match        *download.csdn.net/*
-// @match        *c.pc.qq.com/middlem*
-// @match        *pan.baidu.com/disk/main*
+// @include      *download.csdn.net/*
+// @include      *c.pc.qq.com/middlem*
+// @include      *pan.baidu.com/disk/main*
 // @include      *://link.csdn.net/*
 // @include      *://link.zhihu.com/*
 // @include      *://browser.gwdang.com/*

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,夸克网盘直链批量获取,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.9
+// @version      4.9.1
 // @homepage     https://wiki.wandhi.com/
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转 12、搜索引擎快速跳转
@@ -75,9 +75,9 @@
 // @include      *://yun.baidu.com/share/link*
 // @include      *://wenku.baidu.com/view/*
 // @include      *blog.csdn.net/*
-// @match        *download.csdn.net/*
-// @match        *c.pc.qq.com/middlem*
-// @match        *pan.baidu.com/disk/main*
+// @include      *download.csdn.net/*
+// @include      *c.pc.qq.com/middlem*
+// @include      *pan.baidu.com/disk/main*
 // @include      *://link.csdn.net/*
 // @include      *://link.zhihu.com/*
 // @include      *://browser.gwdang.com/*
