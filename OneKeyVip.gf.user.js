@@ -481,7 +481,11 @@
         }, Core.prototype.closeAll = function() {
             layer.closeAll();
         }, Core.open = function(url, loadInBackGround) {
-            void 0 === loadInBackGround && (loadInBackGround = !1), GM_openInTab(url, loadInBackGround);
+            if (void 0 === loadInBackGround && (loadInBackGround = !1), Core.getBrowser() == BrowerType.Safiri && "undefined" == typeof GM_openInTab) {
+                if (void 0 === (null === GM || void 0 === GM ? void 0 : GM.openInTab)) return void window.open(url, "_blank");
+                null === GM || void 0 === GM || GM.openInTab(url, loadInBackGround);
+            }
+            GM_openInTab(url, loadInBackGround);
         }, Core.click = function(selector, callback) {
             $(selector).on("click", callback);
         }, Core.uuid = function(len, split, radix) {
