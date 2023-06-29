@@ -1311,7 +1311,7 @@
             }), 1);
         }, BiliImgService.add_img_btn = function() {
             var that = this;
-            $(".video-data").last().append(BiliImgService.coverBtn), $("body").on("click", "#findimg", (function() {
+            $(this.hookSelector).last().append(BiliImgService.coverBtn), $("body").on("click", "#findimg", (function() {
                 var aid = unsafeWindow.__INITIAL_STATE__.videoData.aid;
                 that.getVideoInfo(aid).then((function(res) {
                     res ? sAlert.showImg(res.pic, "\u662f\u5c01\u9762\u5566", "\u554a\u54c8\u54c8\u54c8\u3001\u5c01\u9762\u6765\u54af", "\u662f\u5c01\u9762\u9171\u5566>\u3002<") : sAlert.error("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f");
@@ -1321,7 +1321,7 @@
             }));
         }, BiliImgService.add_down_btn = function() {
             var that = this;
-            $(".video-data").last().append(BiliImgService.downBtn), $("body").on("click", "#downvideo", (function() {
+            $(this.hookSelector).last().append(BiliImgService.downBtn), $("body").on("click", "#downvideo", (function() {
                 that.initDown();
             }));
         }, BiliImgService.initDown = function() {
@@ -1393,7 +1393,7 @@
                 }));
             }));
         }, BiliImgService.add_triple_btn = function() {
-            $(".video-data").last().append(BiliImgService.tripleClickBtn), $("body").on("click", "#tripleClick", (function() {
+            $(this.hookSelector).last().append(BiliImgService.tripleClickBtn), $("body").on("click", "#tripleClick", (function() {
                 [ ".like", ".coin", ".collect" ].forEach((function(item) {
                     $(item).trigger("click");
                 }));
@@ -1401,7 +1401,7 @@
         }, BiliImgService.coverBtn = '<button class="okv-btn okv-btn-primary okv-bg-pink bili-top-button" id="findimg">\u83b7\u53d6\u5c01\u9762</button>', 
         BiliImgService.downBtn = '<button id="downvideo" class="okv-btn okv-btn-primary okv-bg-pink bili-top-button">\u4e0b\u8f7d\u89c6\u9891</button>', 
         BiliImgService.tripleClickBtn = '<button class="okv-btn okv-btn-primary okv-bg-pink bili-top-button" id="tripleClick">\u4e00\u4e0b\u70b9\u4ee8(\u70b9\u8d5e\u3001\u6295\u5e01\u3001\u6536\u85cf)</button>', 
-        BiliImgService;
+        BiliImgService.hookSelector = ".video-info-detail-list", BiliImgService;
     }(PluginBase), Menu$1 = Common.Menu, MovieService = function(_super) {
         function MovieService() {
             var _this = _super.call(this) || this;

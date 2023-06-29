@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,夸克网盘直链批量获取,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.9.3
+// @version      4.9.4
 // @homepage     https://wiki.wandhi.com/
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转 12、搜索引擎快速跳转
@@ -2501,7 +2501,7 @@
             }), 1);
         }, BiliImgService.add_img_btn = function() {
             var that = this;
-            $(".video-data").last().append(BiliImgService.coverBtn), $("body").on("click", "#findimg", (function() {
+            $(this.hookSelector).last().append(BiliImgService.coverBtn), $("body").on("click", "#findimg", (function() {
                 var aid = unsafeWindow.__INITIAL_STATE__.videoData.aid;
                 that.getVideoInfo(aid).then((function(res) {
                     res ? sAlert.showImg(res.pic, "\u662f\u5c01\u9762\u5566", "\u554a\u54c8\u54c8\u54c8\u3001\u5c01\u9762\u6765\u54af", "\u662f\u5c01\u9762\u9171\u5566>\u3002<") : sAlert.error("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f");
@@ -2511,7 +2511,7 @@
             }));
         }, BiliImgService.add_down_btn = function() {
             var that = this;
-            $(".video-data").last().append(BiliImgService.downBtn), $("body").on("click", "#downvideo", (function() {
+            $(this.hookSelector).last().append(BiliImgService.downBtn), $("body").on("click", "#downvideo", (function() {
                 that.initDown();
             }));
         }, BiliImgService.initDown = function() {
@@ -2583,7 +2583,7 @@
                 }));
             }));
         }, BiliImgService.add_triple_btn = function() {
-            $(".video-data").last().append(BiliImgService.tripleClickBtn), $("body").on("click", "#tripleClick", (function() {
+            $(this.hookSelector).last().append(BiliImgService.tripleClickBtn), $("body").on("click", "#tripleClick", (function() {
                 [ ".like", ".coin", ".collect" ].forEach((function(item) {
                     $(item).trigger("click");
                 }));
@@ -2591,7 +2591,7 @@
         }, BiliImgService.coverBtn = '<button class="okv-btn okv-btn-primary okv-bg-pink bili-top-button" id="findimg">\u83b7\u53d6\u5c01\u9762</button>', 
         BiliImgService.downBtn = '<button id="downvideo" class="okv-btn okv-btn-primary okv-bg-pink bili-top-button">\u4e0b\u8f7d\u89c6\u9891</button>', 
         BiliImgService.tripleClickBtn = '<button class="okv-btn okv-btn-primary okv-bg-pink bili-top-button" id="tripleClick">\u4e00\u4e0b\u70b9\u4ee8(\u70b9\u8d5e\u3001\u6295\u5e01\u3001\u6536\u85cf)</button>', 
-        BiliImgService;
+        BiliImgService.hookSelector = ".video-info-detail-list", BiliImgService;
     }(PluginBase), Menu$1 = Common.Menu, MovieService = function(_super) {
         function MovieService() {
             var _this = _super.call(this) || this;
