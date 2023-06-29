@@ -13,10 +13,10 @@
 
 ## 💕京东、淘宝活动导购群 推荐
 
-👉[点我](https://qm.qq.com/cgi-bin/qm/qr?k=oPx93FEy2sZCnIRN74xSYbrFcU-p5D4W&jump_from=webapi&authKey=GSyv7KekSu7mHLKiB13u/E+XGxjJHn7vbEE2SUJZ4imN0uIixixS7qm1ZaFI/qpg)👈或使用手机QQ扫码加群(禁言)
+👉[点我](https://qm.qq.com/cgi-bin/qm/qr?k=oPx93FEy2sZCnIRN74xSYbrFcU-p5D4W&jump_from=webapi&authKey=GSyv7KekSu7mHLKiB13u/E+XGxjJHn7vbEE2SUJZ4imN0uIixixS7qm1ZaFI/qpg)
+👈或使用手机QQ扫码加群(禁言)
 
 <img src="https://i2.100024.xyz/2023/06/24/zdrlk4.webp" alt="垃圾佬" width="20%">
-
 
 ## 声明
 
@@ -34,13 +34,21 @@
 
 ### TG [猛击加入](//t.me/joinchat/fDZTZfGWE_9lYTFl)
 
-### 四群[**137750146**](http://qm.qq.com/cgi-bin/qm/qr?k=gUbyjh9xrnskBWGYm-9DbnJqWBZOpcva&jump_from=webapi&authKey=5ci2KE+i56fFxxCVrj2Wkj4D3D7aKphITW07QdHls771upOyVT/06ekBgrNUZKeF) [**一键加群**](http://qm.qq.com/cgi-bin/qm/qr?k=gUbyjh9xrnskBWGYm-9DbnJqWBZOpcva&jump_from=webapi&authKey=5ci2KE+i56fFxxCVrj2Wkj4D3D7aKphITW07QdHls771upOyVT/06ekBgrNUZKeF)
+### 四群[**137750146
+**](http://qm.qq.com/cgi-bin/qm/qr?k=gUbyjh9xrnskBWGYm-9DbnJqWBZOpcva&jump_from=webapi&authKey=5ci2KE+i56fFxxCVrj2Wkj4D3D7aKphITW07QdHls771upOyVT/06ekBgrNUZKeF) [
+**一键加群
+**](http://qm.qq.com/cgi-bin/qm/qr?k=gUbyjh9xrnskBWGYm-9DbnJqWBZOpcva&jump_from=webapi&authKey=5ci2KE+i56fFxxCVrj2Wkj4D3D7aKphITW07QdHls771upOyVT/06ekBgrNUZKeF)
 
-### 三群[**722457505**](//shang.qq.com/wpa/qunwpa?idkey=a12d43edc065daad3043ca272a0eb9332ecd878f2921683c51e9d4e02554c80f)
+### 三群[**722457505
+**](//shang.qq.com/wpa/qunwpa?idkey=a12d43edc065daad3043ca272a0eb9332ecd878f2921683c51e9d4e02554c80f)
 
-### 二群[**655341576**](https://shang.qq.com/wpa/qunwpa?idkey=dd0275fbf9149b71e4f2f4e44902b552c846e9a2234f68eaca35a442510f061b)**已满** [**一键加群**](https://shang.qq.com/wpa/qunwpa?idkey=dd0275fbf9149b71e4f2f4e44902b552c846e9a2234f68eaca35a442510f061b)
+### 二群[**655341576
+**](https://shang.qq.com/wpa/qunwpa?idkey=dd0275fbf9149b71e4f2f4e44902b552c846e9a2234f68eaca35a442510f061b)**已满** [*
+*一键加群**](https://shang.qq.com/wpa/qunwpa?idkey=dd0275fbf9149b71e4f2f4e44902b552c846e9a2234f68eaca35a442510f061b)
 
-### 一群[**340569308**](http://shang.qq.com/wpa/qunwpa?idkey=7fc3fef0db96421305e65c41cc081ffeca507fdc23cab93d731277be829985ec)**已满** [**一键加群**](http://shang.qq.com/wpa/qunwpa?idkey=7fc3fef0db96421305e65c41cc081ffeca507fdc23cab93d731277be829985ec)
+### 一群[**340569308
+**](http://shang.qq.com/wpa/qunwpa?idkey=7fc3fef0db96421305e65c41cc081ffeca507fdc23cab93d731277be829985ec)**已满** [*
+*一键加群**](http://shang.qq.com/wpa/qunwpa?idkey=7fc3fef0db96421305e65c41cc081ffeca507fdc23cab93d731277be829985ec)
 
 ### [**QQ频道**](https://qun.qq.com/qqweb/qunpro/share?_wv=3&_wwv=128&inviteCode=1U23Gb&from=181074&biz=ka)**推荐**
 
@@ -62,10 +70,12 @@
 * ✅ 阿里云盘refresh_token获取工具
 * ✅ YouTube视频下载
 * ✅ 搜索引擎快速跳转
+* ✅ 鼠标点击图片时放大图片
+    * ✅github
+    * ✅v2ex
 
 ## 🔥挖坑
 
-* ❎ 鼠标悬停图片时放大图片
 * ❎ 功能项单独的控制开关(部分实现)
 
 **插件有问题请及时反馈**
@@ -99,8 +109,6 @@
 ## 🔔 更新历史
 
 [**查看**](https://wiki.wandhi.com/zh-cn/Changelog)
-
-
 
 # 功能说明
 

@@ -610,7 +610,8 @@
         SiteEnum.TencentMail = "TencentMail", SiteEnum.SsPAi = "SsPai", SiteEnum.FeiShuDoc = "FeiShuDoc", 
         SiteEnum.TencentQQ = "TencentQQ", SiteEnum.Shuma = "Shuma", SiteEnum.BD_DETAIL_OLD = "BD_DETAIL_OLD", 
         SiteEnum.BD_DETAIL_NEW = "BD_DETAIL_NEW", SiteEnum.BD_DETAIL_Share = "BD_DETAIL_Share", 
-        SiteEnum.Gwd = "Gwd", SiteEnum.Xxqg = "Xxqg", SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin";
+        SiteEnum.Gwd = "Gwd", SiteEnum.Xxqg = "Xxqg", SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin", 
+        SiteEnum.V2EX = "V2EX", SiteEnum.Github = "Github";
     }(SiteEnum || (SiteEnum = {})), Config = function() {
         function Config() {}
         return Object.defineProperty(Config, "env", {
@@ -1668,13 +1669,13 @@
     }(PluginBase), LinkJumpService = function(_super) {
         function LinkJumpService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ], [ SiteEnum.Gitee, /gitee\.com\/link/i ], [ SiteEnum.JueJin, /juejin\.cn\/\?target/i ], [ SiteEnum.Weibo, /weibo\.cn\/sinaurl/i ], [ SiteEnum.TuXiaoChao, /support\.qq\.com\/products\/.*\/link-jump/i ], [ SiteEnum.OsCh, /oschina\.net\/action\/GoToLink/i ], [ SiteEnum.AiFaDian, /afdian\.net\/link\?target/i ], [ SiteEnum.Baidu, /jump(2?)\.bdimg\.com\/safecheck/i ], [ SiteEnum.DouBan, /www\.douban\.com\/link2\// ], [ SiteEnum.g17173, /link\.17173\.com\/\?target/i ], [ SiteEnum.TencentDoc, /docs\.qq\.com\/scenario\/link/i ], [ SiteEnum.TencentMail, /mail\.qq\.com\/cgi-bin\/readtemplate/i ], [ SiteEnum.TencentQQ, /c\.pc\.qq\.com\/middlem\.html/i ], [ SiteEnum.SsPAi, /sspai\.com\/link/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ], [ SiteEnum.Gitee, /gitee\.com\/link/i ], [ SiteEnum.JueJin, /juejin\.cn\/\?target/i ], [ SiteEnum.Weibo, /weibo\.cn\/sinaurl/i ], [ SiteEnum.TuXiaoChao, /support\.qq\.com\/products\/.*\/link-jump/i ], [ SiteEnum.OsCh, /oschina\.net\/action\/GoToLink/i ], [ SiteEnum.AiFaDian, /afdian\.net\/link\?target/i ], [ SiteEnum.Baidu, /jump(2?)\.bdimg\.com\/safecheck/i ], [ SiteEnum.DouBan, /www\.douban\.com\/link2\// ], [ SiteEnum.g17173, /link\.17173\.com\/\?target/i ], [ SiteEnum.TencentDoc, /docs\.qq\.com\/scenario\/link/i ], [ SiteEnum.TencentMail, /mail\.qq\.com\/cgi-bin\/readtemplate/i ], [ SiteEnum.TencentQQ, /c\.pc\.qq\.com\/(middlem|ios)\.html/i ], [ SiteEnum.SsPAi, /sspai\.com\/link/i ] ]), 
             _this.key = "", _this.selector = "", _this._unique = !1, _this._appName = "LinkJump", 
             _this;
         }
         return __extends(LinkJumpService, _super), LinkJumpService.prototype.loader = function() {}, 
         LinkJumpService.prototype.run = function() {
-            var url, config = "AutoJump_" + this.site.toString();
+            var url, keys, item, config = "AutoJump_" + this.site.toString();
             switch (this.site) {
               case SiteEnum.CSDN:
               case SiteEnum.ZhiHu:
@@ -1694,7 +1695,7 @@
                 break;
 
               case SiteEnum.TencentQQ:
-                this.key = "pfurl";
+                this.key = "pfurl,url";
                 break;
 
               case SiteEnum.Weibo:
@@ -1716,10 +1717,14 @@
               default:
                 this.key = "";
             }
-            Config.get(config, !0) ? (url = "", "" != this.key ? url = Core.getPar(this.key) : "" != this.selector && (url = $(this.selector).text()), 
-            null != url && "" != url ? (sAlert.info("\u94fe\u63a5\u5df2\u89e3\u6790,\u6b63\u5728\u8df3\u8f6c~"), 
-            this.jump(url)) : (sAlert.warning("\u672a\u80fd\u89e3\u6790\u5230\u94fe\u63a5,\u8bf7\u624b\u52a8\u8df3\u8f6c"), 
-            Logger.debug("\u89e3\u6790\u94fe\u63a5:" + url + ",key:" + this.key))) : sAlert.warning("\u5df2\u5173\u95ed\u672c\u7f51\u7ad9\u7684\u8df3\u8f6c\u529f\u80fd");
+            if (Config.get(config, !0)) {
+                if (url = "", "" != this.key) {
+                    for (item in keys = this.key.split(",")) if (null != (url = Core.getPar(keys[item])) && "" != url) break;
+                } else "" != this.selector && (url = $(this.selector).text());
+                null != url && "" != url ? ((url = decodeURIComponent(url)).endsWith("/") && (url = url.substr(0, url.length - 1)), 
+                sAlert.info("\u94fe\u63a5\u5df2\u89e3\u6790,\u6b63\u5728\u8df3\u8f6c~"), this.jump(url)) : (sAlert.warning("\u672a\u80fd\u89e3\u6790\u5230\u94fe\u63a5,\u8bf7\u624b\u52a8\u8df3\u8f6c"), 
+                Logger.debug("\u89e3\u6790\u94fe\u63a5:" + url + ",key:" + this.key));
+            } else sAlert.warning("\u5df2\u5173\u95ed\u672c\u7f51\u7ad9\u7684\u8df3\u8f6c\u529f\u80fd");
         }, LinkJumpService.prototype.jump = function(url) {
             url && (url = decodeURIComponent(url), Logger.debug(url), unsafeWindow.window.location.href = url);
         }, LinkJumpService;
