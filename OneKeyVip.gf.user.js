@@ -107,7 +107,6 @@
 // @connect shangxueba365.com
 // @connect api.wandhi.com
 // @connect cdn.jsdelivr.net
-// @connect tool.manmanbuy.com
 // @connect xbeibeix.com
 // @connect gwdang.com
 // @connect scriptcat.org
@@ -136,7 +135,7 @@
     "object" == typeof exports && "undefined" != typeof module ? factory(require("sweetalert2")) : "function" == typeof define && define.amd ? define([ "sweetalert2" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).Swal);
 })(this, (function(Swal) {
     "use strict";
-    var Swal__default, container, Container, Logger, LogLevel, extendStatics, BrowerType, Core, update_key, Min, Hour, Day, Week, css_248z$5, Common, PluginBase, SiteEnum, Config, History, PriceDetail, ListPriceItem, AjaxOption, Alert, Http, HttpHeaders, Convert, Result, HistoryResult, Route, css_248z$4, sAlert, css_248z$3, Runtime, ConfigEnum, BiliImgService, Menu$1, MovieService, UrlHelper, MusicService, css_248z$2, CsdnAdService, Menu, WenKuService, LinkJumpService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$1, css_248z, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, NetDiskDirectService, AdClearService, GfUpdateService, VersionCompar, VersionResult, OneKeyVipGfInjection;
+    var Swal__default, container, Container, Logger, LogLevel, extendStatics, BrowerType, Core, update_key, Min, Hour, Day, Week, css_248z$5, Common, PluginBase, SiteEnum, Config, AjaxOption, Alert, Http, HttpHeaders, Route, css_248z$4, sAlert, css_248z$3, Runtime, ConfigEnum, BiliImgService, Menu$1, MovieService, UrlHelper, MusicService, css_248z$2, CsdnAdService, Menu, WenKuService, LinkJumpService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$1, css_248z, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, NetDiskDirectService, AdClearService, GfUpdateService, VersionCompar, VersionResult, OneKeyVipGfInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
@@ -656,10 +655,7 @@
             var v = Config.get(s, 0);
             v++, Config.set(s, v);
         }, Config;
-    }(), History = function History() {
-        this.max = 0, this.price_detail = [];
-    }, PriceDetail = function PriceDetail() {}, ListPriceItem = function ListPriceItem() {}, 
-    AjaxOption = function() {
+    }(), AjaxOption = function() {
         function AjaxOption(_url, _methodType, _data, _success, _header, timeOut) {
             void 0 === _methodType && (_methodType = "GET"), void 0 === _header && (_header = new Map), 
             void 0 === timeOut && (timeOut = 60), this.url = _url, this.methodType = _methodType, 
@@ -885,98 +881,7 @@
                 });
             }));
         }, Http;
-    }(), HttpHeaders = function HttpHeaders() {}, Convert = function() {
-        function Convert() {}
-        return Convert.genterData = function(data) {
-            var temp_1, _data = new History;
-            return _data.date = Core.format(new Date(Number.parseInt(data.lowerDate.match(/[0-9]{13}/)[0]) + 800), "yyyy-MM-dd"), 
-            _data.min = data.lowerPrice, _data.max = _data.min, _data.max_date = _data.date, 
-            _data.current = data.currentPrice.toString(), _data.mark = "" == data.changPriceRemark ? "\u6682\u65e0" : data.changPriceRemark, 
-            0 != data.listPrice.length && data.listPrice || (temp_1 = [], data.datePrice.split("],[").forEach((function(v, n) {
-                var values, t = new ListPriceItem;
-                values = (v = v.replace(/\[|"|\]/g, "")).split(","), t.pr = Number.parseInt(values[1]), 
-                t.yh = 3 == values.length ? values[2] : v.substring(v.indexOf(values[2]), v.length), 
-                t.dt = values[0], temp_1.push(t);
-            })), data.listPrice = temp_1), data.listPrice.forEach((function(v, n) {
-                var detail = new PriceDetail;
-                detail.timestamp = Number.parseInt(v.dt.match(/[0-9]{13}/)[0]) + 800, detail.time = Core.format(new Date(detail.timestamp), "yyyy-MM-dd"), 
-                detail.price = v.pr, detail.mark = v.yh, _data.max < v.pr && (_data.max = v.pr, 
-                _data.max_date = detail.time), _data.price_detail.push(detail);
-            })), _data;
-        }, Convert.genterDataV2 = function(data) {
-            var _data, listPrice, temp_2;
-            return (_data = new History).date = Core.format(new Date(data.lowerDate), "yyyy-MM-dd"), 
-            _data.min = data.lowerPrice, _data.max = _data.min, _data.max_date = _data.date, 
-            _data.current = data.currentPrice.toString(), _data.mark = "" == data.changPriceRemark ? "\u6682\u65e0" : data.changPriceRemark, 
-            listPrice = [], 0 != data.datePrice.length && (temp_2 = [], data.datePrice.split("],[").forEach((function(v, n) {
-                var values, t = new ListPriceItem;
-                values = (v = v.replace(/\[|"|\]/g, "")).split(","), t.pr = Number.parseInt(values[1]), 
-                t.yh = 3 == values.length ? values[2] : v.substring(v.indexOf(values[2]), v.length), 
-                t.dt = values[0], temp_2.push(t);
-            })), listPrice = temp_2), listPrice.forEach((function(v, n) {
-                var detail = new PriceDetail;
-                detail.timestamp = Number.parseInt(v.dt.match(/[0-9]{13}/)[0]) + 800, detail.time = Core.format(new Date(detail.timestamp), "yyyy-MM-dd"), 
-                detail.price = v.pr, detail.mark = v.yh, _data.max < v.pr && (_data.max = v.pr, 
-                _data.max_date = detail.time), _data.price_detail.push(detail);
-            })), _data;
-        }, Convert.genterAuth = function() {
-            return __awaiter(this, void 0, Promise, (function() {
-                var _auth;
-                return __generator(this, (function(_a) {
-                    switch (_a.label) {
-                      case 0:
-                        return (_auth = Config.get("baseauth", "")) ? [ 4, _auth ] : [ 3, 2 ];
-
-                      case 1:
-                        return [ 2, _a.sent() ];
-
-                      case 2:
-                        return [ 4, Http.get_text(this.authApi).then((function(html) {
-                            var matchR = html.match(/id=\"ticket\" value=\"(.*)\"/i);
-                            return (_auth = null != matchR ? "" + matchR[1] : "").length > 4 && (_auth = "BasicAuth " + (_auth = _auth.substr(_auth.length - 4, 4) + _auth.substring(0, _auth.length - 4))), 
-                            Config.set("baseauth", _auth, 60), _auth;
-                        })) ];
-
-                      case 3:
-                        return [ 2, _auth = _a.sent() ];
-                    }
-                }));
-            }));
-        }, Convert.authApi = "https://tool.manmanbuy.com/HistoryLowest.aspx", Convert;
-    }(), Result = function() {
-        function Result() {}
-        return Result.prototype.constructorq = function() {}, Result;
-    }(), function(_super) {
-        function StuResult() {
-            return null !== _super && _super.apply(this, arguments) || this;
-        }
-        __extends(StuResult, _super);
-    }(Result), function(_super) {
-        function StrResult() {
-            return null !== _super && _super.apply(this, arguments) || this;
-        }
-        __extends(StrResult, _super);
-    }(Result), HistoryResult = function(_super) {
-        function HistoryResult() {
-            return null !== _super && _super.apply(this, arguments) || this;
-        }
-        return __extends(HistoryResult, _super), HistoryResult;
-    }(Result), function(_super) {
-        function HistoryQueryResult() {
-            return null !== _super && _super.apply(this, arguments) || this;
-        }
-        __extends(HistoryQueryResult, _super);
-    }(Result), function(_super) {
-        function HistoryV1Result() {
-            return null !== _super && _super.apply(this, arguments) || this;
-        }
-        __extends(HistoryV1Result, _super);
-    }(Result), function(_super) {
-        function HistoryV2Result() {
-            return null !== _super && _super.apply(this, arguments) || this;
-        }
-        __extends(HistoryV2Result, _super);
-    }(Result), Route = function() {
+    }(), HttpHeaders = function HttpHeaders() {}, Route = function() {
         function Route() {
             this.queryTao = "";
         }
@@ -1008,41 +913,6 @@
             this.baseApi(Route.config, new Map([ [ "key", key ] ]), callback);
         }, Route.queryHistory = function(url, siteType, callback) {
             this.baseApi(this.history, new Map([ [ "url", url ], [ "type", siteType ] ]), callback);
-        }, Route.queryHistoryv1 = function(url, siteType, callback) {
-            var _this = this, that = this;
-            this.baseApi(this.historyv1, new Map([ [ "url", url ] ]), (function(res) {
-                Logger.debug(res), res.code ? Http.get(res.data).then((function(prices) {
-                    var _res = new HistoryResult;
-                    _res.code = 1, _res.data = Convert.genterData(prices), Logger.debug(_res), callback(_res);
-                })).catch((function() {
-                    that.queryHistory(url, siteType, callback);
-                })) : _this.queryHistory(url, siteType, callback);
-            }), 60);
-        }, Route.queryHistoryv2 = function(url, siteType, callback) {
-            var _this = this, that = this;
-            this.baseApi(this.historyv2, new Map([ [ "url", url ] ]), (function(res) {
-                Logger.debug(res), res.code ? Http.getWithHead(res.data.url, new Map, new Map([ [ "Authorization", res.data.auth ] ])).then((function(prices) {
-                    var _res = new HistoryResult;
-                    0 == prices.code ? _res.code = 1 : _res.code = -1, _res.code = 1, _res.data = Convert.genterDataV2(prices.data), 
-                    Logger.debug(_res), callback(_res);
-                })).catch((function() {
-                    that.queryHistory(url, siteType, callback);
-                })) : _this.queryHistory(url, siteType, callback);
-            }), 60);
-        }, Route.queryHistoryv3 = function(url, siteType, callback) {
-            var _this = this, that = this;
-            this.baseApi(this.historyv3, new Map([ [ "url", url ] ]), (function(res) {
-                Logger.debug(res), res.code ? Convert.genterAuth().then((function(auth) {
-                    Http.postWithHead(res.data.url, new Map([ [ "token", res.data.token ], [ "t", res.data.t ], [ "key", res.data.key ], [ "method", res.data.method ] ]), new Map([ [ "Authorization", null != auth ? auth : res.data.auth ] ])).then((function(prices) {
-                        var _res = new HistoryResult;
-                        0 == prices.code ? _res.code = 1 : 2 == prices.code ? (Config.clear("baseauth"), 
-                        _this.queryHistoryv3(url, siteType, callback)) : _res.code = -1, _res.code = 1, 
-                        _res.data = Convert.genterDataV2(prices.data), Logger.debug(_res), callback(_res);
-                    })).catch((function() {
-                        that.queryHistory(url, siteType, callback);
-                    }));
-                })) : _this.queryHistory(url, siteType, callback);
-            }), 60);
         }, Route.queryHistoryV5 = function(url) {
             var _this = this;
             return new Promise((function(reso, reje) {

@@ -152,7 +152,7 @@
     "object" == typeof exports && "undefined" != typeof module ? factory(require("sweetalert2"), require("viewerjs")) : "function" == typeof define && define.amd ? define([ "sweetalert2", "viewerjs" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).Swal, global.Viewer);
 })(this, (function(Swal, Viewer) {
     "use strict";
-    var Swal__default, Viewer__default, extendStatics, update_key, Min, Hour, Day, Week, Logger, LogLevel, Config, History, PriceDetail, ListPriceItem, BrowerType, Core, AjaxOption, Alert, Http, HttpHeaders, Convert, Result, HistoryResult, Route, css_248z$9, Common, PluginBase, SiteEnum, UpdateService, VersionCompar, VersionResult, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$8, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$7, sAlert, GwdService, css_248z$6, TaoBaoService, container, Container, css_248z$5, ConfigEnum, BiliImgService, Menu$1, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$4, CsdnAdService, Menu, WenKuService, LinkJumpService, css_248z$3, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$2, css_248z$1, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, NetDiskDirectService, AdClearService, css_248z, ImgViewService, OneKeyVipInjection;
+    var Swal__default, Viewer__default, extendStatics, update_key, Min, Hour, Day, Week, BrowerType, Logger, LogLevel, Core, Config, AjaxOption, Alert, Http, HttpHeaders, Route, css_248z$9, Common, PluginBase, SiteEnum, UpdateService, VersionCompar, VersionResult, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$8, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$7, sAlert, GwdService, css_248z$6, TaoBaoService, container, Container, css_248z$5, ConfigEnum, BiliImgService, Menu$1, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$4, CsdnAdService, Menu, WenKuService, LinkJumpService, css_248z$3, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$2, css_248z$1, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, NetDiskDirectService, AdClearService, css_248z, ImgViewService, OneKeyVipInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
@@ -309,7 +309,15 @@
             for (var p in b) b.hasOwnProperty(p) && (d[p] = b[p]);
         })(d, b);
     }, update_key = "isUpdate", Min = 60, Hour = 60 * Min, Day = 24 * Hour, Week = 7 * Day, 
-    Logger = function() {
+    function(BrowerType) {
+        BrowerType[BrowerType.Edge = 0] = "Edge", BrowerType[BrowerType.Edg = 1] = "Edg", 
+        BrowerType[BrowerType.Chrome = 2] = "Chrome", BrowerType[BrowerType.Firefox = 3] = "Firefox", 
+        BrowerType[BrowerType.Safiri = 4] = "Safiri", BrowerType[BrowerType.Se360 = 5] = "Se360", 
+        BrowerType[BrowerType.Ie2345 = 6] = "Ie2345", BrowerType[BrowerType.Baidu = 7] = "Baidu", 
+        BrowerType[BrowerType.Liebao = 8] = "Liebao", BrowerType[BrowerType.UC = 9] = "UC", 
+        BrowerType[BrowerType.QQ = 10] = "QQ", BrowerType[BrowerType.Sogou = 11] = "Sogou", 
+        BrowerType[BrowerType.Opera = 12] = "Opera", BrowerType[BrowerType.Maxthon = 13] = "Maxthon";
+    }(BrowerType || (BrowerType = {})), Logger = function() {
         function Logger() {}
         return Logger.log = function(msg, group, level) {}, Logger.debug = function(msg, group) {
             void 0 === group && (group = "debug"), this.log(msg, group, LogLevel.debug);
@@ -323,62 +331,7 @@
     }(), function(LogLevel) {
         LogLevel[LogLevel.debug = 0] = "debug", LogLevel[LogLevel.info = 1] = "info", LogLevel[LogLevel.warn = 2] = "warn", 
         LogLevel[LogLevel.error = 3] = "error";
-    }(LogLevel || (LogLevel = {})), Config = function() {
-        function Config() {}
-        return Object.defineProperty(Config, "env", {
-            get: function() {
-                return GM_info;
-            },
-            enumerable: !1,
-            configurable: !0
-        }), Config.get = function(key, defaultValue) {
-            var objStr, obj;
-            if (void 0 === defaultValue && (defaultValue = ""), objStr = GM_getValue(this.encode(key), null)) {
-                if (-1 == (obj = JSON.parse(objStr)).exp || obj.exp > (new Date).getTime()) return Logger.info("cache true:" + key + "," + obj.exp), 
-                obj.value;
-                GM_deleteValue(key);
-            }
-            return Logger.info("cache false"), defaultValue;
-        }, Config.set = function(key, v, exp) {
-            void 0 === exp && (exp = -1);
-            var obj = {
-                key: key,
-                value: v,
-                exp: -1 == exp ? exp : (new Date).getTime() + 1e3 * exp
-            };
-            Logger.debug(obj), GM_setValue(this.encode(key), JSON.stringify(obj));
-        }, Config.remember = function(key, exp, callback) {
-            var _this = this;
-            return new Promise((function(reso, reject) {
-                var v = _this.get(key, null);
-                null == v || "" === v ? callback().then((function(res) {
-                    _this.set(key, res, exp), reso(res);
-                })).catch((function(e) {
-                    reject(e);
-                })) : (Logger.debug(v), reso(v));
-            }));
-        }, Config.clear = function(key) {
-            GM_deleteValue(key);
-        }, Config.decode = function(str) {
-            return atob(str);
-        }, Config.encode = function(str) {
-            return btoa(str);
-        }, Config.inc = function(s) {
-            var v = Config.get(s, 0);
-            v++, Config.set(s, v);
-        }, Config;
-    }(), History = function History() {
-        this.max = 0, this.price_detail = [];
-    }, PriceDetail = function PriceDetail() {}, ListPriceItem = function ListPriceItem() {}, 
-    function(BrowerType) {
-        BrowerType[BrowerType.Edge = 0] = "Edge", BrowerType[BrowerType.Edg = 1] = "Edg", 
-        BrowerType[BrowerType.Chrome = 2] = "Chrome", BrowerType[BrowerType.Firefox = 3] = "Firefox", 
-        BrowerType[BrowerType.Safiri = 4] = "Safiri", BrowerType[BrowerType.Se360 = 5] = "Se360", 
-        BrowerType[BrowerType.Ie2345 = 6] = "Ie2345", BrowerType[BrowerType.Baidu = 7] = "Baidu", 
-        BrowerType[BrowerType.Liebao = 8] = "Liebao", BrowerType[BrowerType.UC = 9] = "UC", 
-        BrowerType[BrowerType.QQ = 10] = "QQ", BrowerType[BrowerType.Sogou = 11] = "Sogou", 
-        BrowerType[BrowerType.Opera = 12] = "Opera", BrowerType[BrowerType.Maxthon = 13] = "Maxthon";
-    }(BrowerType || (BrowerType = {})), Core = function() {
+    }(LogLevel || (LogLevel = {})), Core = function() {
         function Core() {
             this.url = Core.currentUrl();
         }
@@ -577,6 +530,50 @@
             document.execCommand("copy") ? (document.body.removeChild(textArea), !0) : (document.body.removeChild(textArea), 
             !1);
         }, Core;
+    }(), Config = function() {
+        function Config() {}
+        return Object.defineProperty(Config, "env", {
+            get: function() {
+                return GM_info;
+            },
+            enumerable: !1,
+            configurable: !0
+        }), Config.get = function(key, defaultValue) {
+            var objStr, obj;
+            if (void 0 === defaultValue && (defaultValue = ""), objStr = GM_getValue(this.encode(key), null)) {
+                if (-1 == (obj = JSON.parse(objStr)).exp || obj.exp > (new Date).getTime()) return Logger.info("cache true:" + key + "," + obj.exp), 
+                obj.value;
+                GM_deleteValue(key);
+            }
+            return Logger.info("cache false"), defaultValue;
+        }, Config.set = function(key, v, exp) {
+            void 0 === exp && (exp = -1);
+            var obj = {
+                key: key,
+                value: v,
+                exp: -1 == exp ? exp : (new Date).getTime() + 1e3 * exp
+            };
+            Logger.debug(obj), GM_setValue(this.encode(key), JSON.stringify(obj));
+        }, Config.remember = function(key, exp, callback) {
+            var _this = this;
+            return new Promise((function(reso, reject) {
+                var v = _this.get(key, null);
+                null == v || "" === v ? callback().then((function(res) {
+                    _this.set(key, res, exp), reso(res);
+                })).catch((function(e) {
+                    reject(e);
+                })) : (Logger.debug(v), reso(v));
+            }));
+        }, Config.clear = function(key) {
+            GM_deleteValue(key);
+        }, Config.decode = function(str) {
+            return atob(str);
+        }, Config.encode = function(str) {
+            return btoa(str);
+        }, Config.inc = function(s) {
+            var v = Config.get(s, 0);
+            v++, Config.set(s, v);
+        }, Config;
     }(), AjaxOption = function() {
         function AjaxOption(_url, _methodType, _data, _success, _header, timeOut) {
             void 0 === _methodType && (_methodType = "GET"), void 0 === _header && (_header = new Map), 
@@ -803,98 +800,7 @@
                 });
             }));
         }, Http;
-    }(), HttpHeaders = function HttpHeaders() {}, Convert = function() {
-        function Convert() {}
-        return Convert.genterData = function(data) {
-            var temp_1, _data = new History;
-            return _data.date = Core.format(new Date(Number.parseInt(data.lowerDate.match(/[0-9]{13}/)[0]) + 800), "yyyy-MM-dd"), 
-            _data.min = data.lowerPrice, _data.max = _data.min, _data.max_date = _data.date, 
-            _data.current = data.currentPrice.toString(), _data.mark = "" == data.changPriceRemark ? "\u6682\u65e0" : data.changPriceRemark, 
-            0 != data.listPrice.length && data.listPrice || (temp_1 = [], data.datePrice.split("],[").forEach((function(v, n) {
-                var values, t = new ListPriceItem;
-                values = (v = v.replace(/\[|"|\]/g, "")).split(","), t.pr = Number.parseInt(values[1]), 
-                t.yh = 3 == values.length ? values[2] : v.substring(v.indexOf(values[2]), v.length), 
-                t.dt = values[0], temp_1.push(t);
-            })), data.listPrice = temp_1), data.listPrice.forEach((function(v, n) {
-                var detail = new PriceDetail;
-                detail.timestamp = Number.parseInt(v.dt.match(/[0-9]{13}/)[0]) + 800, detail.time = Core.format(new Date(detail.timestamp), "yyyy-MM-dd"), 
-                detail.price = v.pr, detail.mark = v.yh, _data.max < v.pr && (_data.max = v.pr, 
-                _data.max_date = detail.time), _data.price_detail.push(detail);
-            })), _data;
-        }, Convert.genterDataV2 = function(data) {
-            var _data, listPrice, temp_2;
-            return (_data = new History).date = Core.format(new Date(data.lowerDate), "yyyy-MM-dd"), 
-            _data.min = data.lowerPrice, _data.max = _data.min, _data.max_date = _data.date, 
-            _data.current = data.currentPrice.toString(), _data.mark = "" == data.changPriceRemark ? "\u6682\u65e0" : data.changPriceRemark, 
-            listPrice = [], 0 != data.datePrice.length && (temp_2 = [], data.datePrice.split("],[").forEach((function(v, n) {
-                var values, t = new ListPriceItem;
-                values = (v = v.replace(/\[|"|\]/g, "")).split(","), t.pr = Number.parseInt(values[1]), 
-                t.yh = 3 == values.length ? values[2] : v.substring(v.indexOf(values[2]), v.length), 
-                t.dt = values[0], temp_2.push(t);
-            })), listPrice = temp_2), listPrice.forEach((function(v, n) {
-                var detail = new PriceDetail;
-                detail.timestamp = Number.parseInt(v.dt.match(/[0-9]{13}/)[0]) + 800, detail.time = Core.format(new Date(detail.timestamp), "yyyy-MM-dd"), 
-                detail.price = v.pr, detail.mark = v.yh, _data.max < v.pr && (_data.max = v.pr, 
-                _data.max_date = detail.time), _data.price_detail.push(detail);
-            })), _data;
-        }, Convert.genterAuth = function() {
-            return __awaiter(this, void 0, Promise, (function() {
-                var _auth;
-                return __generator(this, (function(_a) {
-                    switch (_a.label) {
-                      case 0:
-                        return (_auth = Config.get("baseauth", "")) ? [ 4, _auth ] : [ 3, 2 ];
-
-                      case 1:
-                        return [ 2, _a.sent() ];
-
-                      case 2:
-                        return [ 4, Http.get_text(this.authApi).then((function(html) {
-                            var matchR = html.match(/id=\"ticket\" value=\"(.*)\"/i);
-                            return (_auth = null != matchR ? "" + matchR[1] : "").length > 4 && (_auth = "BasicAuth " + (_auth = _auth.substr(_auth.length - 4, 4) + _auth.substring(0, _auth.length - 4))), 
-                            Config.set("baseauth", _auth, 60), _auth;
-                        })) ];
-
-                      case 3:
-                        return [ 2, _auth = _a.sent() ];
-                    }
-                }));
-            }));
-        }, Convert.authApi = "https://tool.manmanbuy.com/HistoryLowest.aspx", Convert;
-    }(), Result = function() {
-        function Result() {}
-        return Result.prototype.constructorq = function() {}, Result;
-    }(), function(_super) {
-        function StuResult() {
-            return null !== _super && _super.apply(this, arguments) || this;
-        }
-        __extends(StuResult, _super);
-    }(Result), function(_super) {
-        function StrResult() {
-            return null !== _super && _super.apply(this, arguments) || this;
-        }
-        __extends(StrResult, _super);
-    }(Result), HistoryResult = function(_super) {
-        function HistoryResult() {
-            return null !== _super && _super.apply(this, arguments) || this;
-        }
-        return __extends(HistoryResult, _super), HistoryResult;
-    }(Result), function(_super) {
-        function HistoryQueryResult() {
-            return null !== _super && _super.apply(this, arguments) || this;
-        }
-        __extends(HistoryQueryResult, _super);
-    }(Result), function(_super) {
-        function HistoryV1Result() {
-            return null !== _super && _super.apply(this, arguments) || this;
-        }
-        __extends(HistoryV1Result, _super);
-    }(Result), function(_super) {
-        function HistoryV2Result() {
-            return null !== _super && _super.apply(this, arguments) || this;
-        }
-        __extends(HistoryV2Result, _super);
-    }(Result), Route = function() {
+    }(), HttpHeaders = function HttpHeaders() {}, Route = function() {
         function Route() {
             this.queryTao = "";
         }
@@ -926,41 +832,6 @@
             this.baseApi(Route.config, new Map([ [ "key", key ] ]), callback);
         }, Route.queryHistory = function(url, siteType, callback) {
             this.baseApi(this.history, new Map([ [ "url", url ], [ "type", siteType ] ]), callback);
-        }, Route.queryHistoryv1 = function(url, siteType, callback) {
-            var _this = this, that = this;
-            this.baseApi(this.historyv1, new Map([ [ "url", url ] ]), (function(res) {
-                Logger.debug(res), res.code ? Http.get(res.data).then((function(prices) {
-                    var _res = new HistoryResult;
-                    _res.code = 1, _res.data = Convert.genterData(prices), Logger.debug(_res), callback(_res);
-                })).catch((function() {
-                    that.queryHistory(url, siteType, callback);
-                })) : _this.queryHistory(url, siteType, callback);
-            }), 60);
-        }, Route.queryHistoryv2 = function(url, siteType, callback) {
-            var _this = this, that = this;
-            this.baseApi(this.historyv2, new Map([ [ "url", url ] ]), (function(res) {
-                Logger.debug(res), res.code ? Http.getWithHead(res.data.url, new Map, new Map([ [ "Authorization", res.data.auth ] ])).then((function(prices) {
-                    var _res = new HistoryResult;
-                    0 == prices.code ? _res.code = 1 : _res.code = -1, _res.code = 1, _res.data = Convert.genterDataV2(prices.data), 
-                    Logger.debug(_res), callback(_res);
-                })).catch((function() {
-                    that.queryHistory(url, siteType, callback);
-                })) : _this.queryHistory(url, siteType, callback);
-            }), 60);
-        }, Route.queryHistoryv3 = function(url, siteType, callback) {
-            var _this = this, that = this;
-            this.baseApi(this.historyv3, new Map([ [ "url", url ] ]), (function(res) {
-                Logger.debug(res), res.code ? Convert.genterAuth().then((function(auth) {
-                    Http.postWithHead(res.data.url, new Map([ [ "token", res.data.token ], [ "t", res.data.t ], [ "key", res.data.key ], [ "method", res.data.method ] ]), new Map([ [ "Authorization", null != auth ? auth : res.data.auth ] ])).then((function(prices) {
-                        var _res = new HistoryResult;
-                        0 == prices.code ? _res.code = 1 : 2 == prices.code ? (Config.clear("baseauth"), 
-                        _this.queryHistoryv3(url, siteType, callback)) : _res.code = -1, _res.code = 1, 
-                        _res.data = Convert.genterDataV2(prices.data), Logger.debug(_res), callback(_res);
-                    })).catch((function() {
-                        that.queryHistory(url, siteType, callback);
-                    }));
-                })) : _this.queryHistory(url, siteType, callback);
-            }), 60);
         }, Route.queryHistoryV5 = function(url) {
             var _this = this;
             return new Promise((function(reso, reje) {
@@ -1363,14 +1234,7 @@
                 res && _this.InitPriceHistory(), _this.factory.init_coupons && _this.factory.init_coupons();
             }));
         }, HistoryService.prototype.InitPriceHistory = function() {
-            var _this = this;
-            $("#vip-plugin-outside").show(), this.theme(), this.chartMsg("\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u4e2d"), 
-            Route.queryHistoryv3(Runtime.url, this.site.toString(), (function(data) {
-                var msg = "";
-                data.code ? ($(".vip-plugin-outside-chart-container").html('<div id="vip-plugin-outside-chart-container-line"></div>'), 
-                echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), _this.theme()).setOption(_this.getChartOption(data.data))) : msg = "\u672a\u67e5\u5230\u5386\u53f2\u6570\u636e", 
-                _this.chartMsg(msg);
-            }));
+            $("#vip-plugin-outside").show(), this.theme(), this.chartMsg("\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u4e2d");
         }, HistoryService.prototype.getHistoryHtml = function() {
             return '<div id="vip-plugin-outside">\n                    <div class="vip-plugin-outside-coupons">\n                        <div class="vip-plugin-outside-coupons-qrcode"><canvas id="vip-plugin-outside-coupons-qrcode-img"></canvas></div>\n                        <div class="vip-plugin-outside-coupons-title"></div>\n                        <div class="vip-plugin-outside-coupons-action"></div>\n                    </div>\n                    <div id="vip-plugin-outside-history" class="vip-plugin-outside-history">\n                        <div class="vip-plugin-outside-chart-container"></div>\n                        <p class="vip-plugin-outside-history-tip"></p>\n                    </div>    \n                </div>';
         }, HistoryService.prototype.chartMsg = function(msg) {
@@ -3546,25 +3410,35 @@
                 break;
 
               case SiteEnum.Github:
-                this.imgSelector.push(".markdown-body"), this.beforeAct = ImgViewService.clearParentA;
+                this.imgSelector.push(".markdown-body"), ImgViewService.EleAFilertHasAttr.set("rel", "noopener"), 
+                this.beforeAct = ImgViewService.clearParentA;
             }
         }, ImgViewService.clearParentA = function(ele) {
-            $(ele).find("img").each((function(index, element) {
-                $(element).parent("a").attr("href", "javascript:void(0)").removeAttr("target");
-            }));
+            var r = !1;
+            return $(ele).find("img").each((function(index, element) {
+                var _a, _b, isFilter_1, isFilter_2, a = $(element).parent("a");
+                (null === (_a = ImgViewService.EleAFilertHasClass) || void 0 === _a ? void 0 : _a.length) > 0 && (isFilter_1 = !1, 
+                ImgViewService.EleAFilertHasClass.forEach((function(item) {
+                    a.hasClass(item) && (isFilter_1 = !0);
+                })), !isFilter_1) || (null === (_b = ImgViewService.EleAFilertHasAttr) || void 0 === _b ? void 0 : _b.size) > 0 && (isFilter_2 = !1, 
+                ImgViewService.EleAFilertHasAttr.forEach((function(value, key) {
+                    a.attr(key) && a.attr(key).indexOf(value) > -1 && (isFilter_2 = !0);
+                })), !isFilter_2) || (a.attr("href", "javascript:void(0)").removeAttr("target"), 
+                r = !0);
+            })), r;
         }, ImgViewService.prototype.run = function() {
             var _this = this;
             Logger.debug("ImgViewService run,the selector is " + this.imgSelector), this.imgSelector.forEach((function(selector) {
                 $(selector).each((function(index, element) {
-                    _this.beforeAct(element);
-                    var viewer = new Viewer__default.default(element, {
+                    if (_this.beforeAct(element)) var viewer_1 = new Viewer__default.default(element, {
                         viewed: function() {
-                            viewer.zoomTo(.5);
+                            viewer_1.zoomTo(.5);
                         }
                     });
                 }));
             }));
-        }, ImgViewService;
+        }, ImgViewService.EleAFilertHasClass = [], ImgViewService.EleAFilertHasAttr = new Map, 
+        ImgViewService;
     }(PluginBase), OneKeyVipInjection = function() {
         function OneKeyVipInjection() {
             this.plugins = new Array, this.plugins = [ Container.Require(AdClearService), Container.Require(ControlMenuService), Container.Require(ImgViewService), Container.Require(SettingService), Container.Require(AutoExpandService), Container.Require(AliyunPanToken), Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(BiliMobileService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(GwdService), Container.Require(CsdnAdService), Container.Require(WenKuService), Container.Require(LinkJumpService), Container.Require(YoutubeService), Container.Require(_GwdService), Container.Require(SearchService), Container.Require(NetDiskDirectService) ], 
