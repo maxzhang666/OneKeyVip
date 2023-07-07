@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,夸克网盘直链批量获取,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.9.4
+// @version      4.9.5
 // @homepage     https://wiki.wandhi.com/
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转 12、搜索引擎快速跳转
@@ -690,9 +690,10 @@
                     (null === (_a = res.finalUrl) || void 0 === _a ? void 0 : _a.indexOf("adguard.org")) > 0 || (null === (_b = option.url) || void 0 === _b ? void 0 : _b.indexOf("jsdelivr")) > 0 ? option.onError(null) : null === (_c = option.onError) || void 0 === _c || _c.call(option, res);
                 }
             });
-        }, Http.ajaxNew = function(url, method, data, header) {
+        }, Http.ajaxNew = function(url, method, data, header, dataType) {
             var _a, _b, head, _getData, _data;
-            return void 0 === header && (header = new Map), head = new HttpHeaders, header.size > 0 && header.forEach((function(v, k) {
+            return void 0 === header && (header = new Map), void 0 === dataType && (dataType = void 0), 
+            head = new HttpHeaders, header.size > 0 && header.forEach((function(v, k) {
                 head[k] = v;
             })), url.indexOf("wandhi") > 0 && (head.version = Config.env.script.version, head.auth = null !== (_a = Config.env.script.author) && void 0 !== _a ? _a : "", 
             head.namespace = null !== (_b = Config.env.script.namespace) && void 0 !== _b ? _b : ""), 
@@ -701,11 +702,12 @@
                 if (data instanceof Map) {
                     var fd_1 = new FormData;
                     return _data.forEach((function(v, k) {
-                        fd_1.append(k, v);
+                        var _v;
+                        _v = "string" == typeof v ? v.toString() : JSON.stringify(v), fd_1.append(k, _v);
                     })), fd_1;
                 }
                 return JSON.stringify(_data);
-            }, _data = _getData(data), Logger.debug(_data), data instanceof FormData || data instanceof Map ? head["Content-Type"] = "application/x-www-form-urlencoded; charset=utf-8" : head["Content-Type"] = "application/json; charset=utf-8", 
+            }, _data = _getData(data), Logger.debug(_data), null != dataType ? "multipart/form-data" != dataType && (head["Content-Type"] = dataType) : data instanceof FormData || data instanceof Map ? head["Content-Type"] = "application/x-www-form-urlencoded; charset=utf-8" : head["Content-Type"] = "application/json; charset=utf-8", 
             new Promise((function(resolve, reject) {
                 GM_xmlhttpRequest({
                     url: url,
@@ -863,8 +865,9 @@
         }, Route.couponQuery = function(itemId, type, callback) {
             Route.baseApi("/coupons/info", new Map([ [ "id", itemId ], [ "type", type ] ]), callback);
         }, Route.baiduDriect = function(fids) {
-            var url = "https://pan.baidu.com/rest/2.0/xpan/multimedia?method=filemetas&dlink=1&fsids=" + fids;
-            return Http.ajaxNew(url, "GET", [], new Map([ [ "User-Agent", "netdisk;P2SP;" ] ]));
+            var url, data = new Map;
+            return data.set("method", "filemetas"), data.set("dlink", 1), data.set("fsids", fids), 
+            url = "https://pan.baidu.com/rest/2.0/xpan/multimedia", Http.ajaxNew(url, "POST", data, new Map, "multipart/form-data");
         }, Route.quarkDriect = function(fids) {
             return Http.ajaxNew("https://drive.quark.cn/1/clouddrive/file/download?pr=ucpro&fr=pc", "POST", {
                 fids: fids
@@ -3336,7 +3339,7 @@
                 var fidsStr, selectList = NetDiskDirectService.baiduSelectedList();
                 0 !== selectList.length ? 2 !== (fidsStr = "[" + selectList.map((function(item) {
                     return item.fs_id;
-                })).join(",") + "]").length ? Route.baiduDriect(encodeURIComponent(fidsStr)).then((function(res) {
+                })).join(",") + "]").length ? Route.baiduDriect(fidsStr).then((function(res) {
                     Logger.debug(res), 0 === res.errno ? sAlert.html("\u76f4\u94fe\u4fe1\u606f", NetDiskDirectService.generateDom(res.list.map((function(e) {
                         var obj = new QuarkFileResponse;
                         return obj.fid = e.fs_id.toString(), obj.file_name = e.filename, obj.download_url = e.dlink, 
