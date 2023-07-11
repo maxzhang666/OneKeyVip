@@ -1766,7 +1766,7 @@
             this.mfbMenu = new MfbMenu;
         }, YoutubeService.prototype.run = function() {
             var menus = [ new MfbModel("\u4e0b\u8f7d", "fa-download", (function() {
-                Core.open("http://ytv.wandhi.com/?url=" + encodeURIComponent(Runtime.url));
+                Core.open("http://ytv.ggnb.ml/?url=" + encodeURIComponent(Runtime.url));
             })) ];
             this.mfbMenu.Init(menus);
         }, YoutubeService;
