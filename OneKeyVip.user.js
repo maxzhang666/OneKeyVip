@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,夸克网盘直链批量获取,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.9.6
+// @version      4.9.7
 // @homepage     https://wiki.wandhi.com/
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转 12、搜索引擎快速跳转
@@ -106,6 +106,7 @@
 // @match        *://www.sogou.com/*
 // @match        *://www.so.com/s*
 // @match        *://sspai.com/link*
+// @match        *://tv.wandhi.com/go.html*
 // @exclude      *://tv.wandhi.com/*
 // @exclude      *://vip.wandhi.com/*
 // @include      *://settings.wandhi.com/*
@@ -944,33 +945,34 @@
             return this._appName;
         }, PluginBase;
     }(), function(SiteEnum) {
-        SiteEnum.All = "All", SiteEnum.Settings = "Settings", SiteEnum.Settings_AutoJump = "Settings_AutoJump", 
-        SiteEnum.Settings_AutoJump_Opt = "Settings_AutoJump_Opt", SiteEnum.Settings_CSDN = "Settings_CSDN", 
-        SiteEnum.Settings_CSDN_Opt = "Settings_CSDN_Opt", SiteEnum.Settings_Search = "Settings_Search", 
-        SiteEnum.Settings_Search_Opt = "Settings_Search_Opt", SiteEnum.Settings_Bili_Pc_Opt = "Settings_Bili_Pc_Opt", 
-        SiteEnum.TaoBao = "TaoBao", SiteEnum.TMall = "TMall", SiteEnum.JingDong = "JingDong", 
-        SiteEnum.JingDongList = "JingDongList", SiteEnum.IQiYi = "IQiYi", SiteEnum.YouKu = "YouKu", 
-        SiteEnum.LeShi = "LeShi", SiteEnum.TuDou = "TuDou", SiteEnum.Tencent_V = "Tencent_V", 
-        SiteEnum.MangGuo = "MangGuo", SiteEnum.SoHu = "SoHu", SiteEnum.Acfun = "Acfun", 
-        SiteEnum.BiliBili = "BiliBili", SiteEnum.BiliMobile = "BiliMobile", SiteEnum.M1905 = "M1905", 
-        SiteEnum.PPTV = "PPTV", SiteEnum.YinYueTai = "YinYueTai", SiteEnum.WangYi = "WangYi", 
-        SiteEnum.Tencent_M = "Tencent_M", SiteEnum.KuGou = "KuGou", SiteEnum.KaoLa = "KaoLa", 
-        SiteEnum.KuWo = "KuWo", SiteEnum.XiaMi = "XiaMi", SiteEnum.TaiHe = "TaiHe", SiteEnum.QingTing = "QingTing", 
-        SiteEnum.LiZhi = "LiZhi", SiteEnum.MiGu = "MiGu", SiteEnum.XiMaLaYa = "XiMaLaYa", 
-        SiteEnum.WenKu = "WenKu", SiteEnum.YouTuBe = "YouTuBe", SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", 
-        SiteEnum.ALY = "ALY", SiteEnum.BDY1 = "BDY1", SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", 
-        SiteEnum.Steam = "Steam", SiteEnum.Vp = "Vp", SiteEnum.CSDN = "CSDN", SiteEnum.CSDN_Download = "CSDN_Download", 
-        SiteEnum.ZhiHu = "ZhiHu", SiteEnum.JianShu = "JianShu", SiteEnum.JueJin = "JueJin", 
-        SiteEnum.Gitee = "Gitee", SiteEnum.Weibo = "Weibo", SiteEnum.TuXiaoChao = "TuXiaoChao", 
-        SiteEnum.OsCh = "OsCh", SiteEnum.AiFaDian = "AiFaDian", SiteEnum.Baidu = "Baidu", 
-        SiteEnum.BaiduPanMain = "BaiduPanMain", SiteEnum.BaiduPanHome = "BaiduPanHome", 
-        SiteEnum.DouBan = "DouBan", SiteEnum.g17173 = "g17173", SiteEnum.Google = "Google", 
-        SiteEnum.SoGou = "SoGou", SiteEnum.KuaKeHome = "KuaKeHome", SiteEnum.TencentDoc = "TencentDoc", 
-        SiteEnum.TencentMail = "TencentMail", SiteEnum.SsPAi = "SsPai", SiteEnum.FeiShuDoc = "FeiShuDoc", 
-        SiteEnum.TencentQQ = "TencentQQ", SiteEnum.Shuma = "Shuma", SiteEnum.BD_DETAIL_OLD = "BD_DETAIL_OLD", 
-        SiteEnum.BD_DETAIL_NEW = "BD_DETAIL_NEW", SiteEnum.BD_DETAIL_Share = "BD_DETAIL_Share", 
-        SiteEnum.Gwd = "Gwd", SiteEnum.Xxqg = "Xxqg", SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin", 
-        SiteEnum.V2EX = "V2EX", SiteEnum.Github = "Github", SiteEnum.NodeSeek = "NodeSeek";
+        SiteEnum.All = "All", SiteEnum.Settings = "Settings", SiteEnum.Settings_Jiexi_Opt = "Settings_Jiexi_Opt", 
+        SiteEnum.Settings_AutoJump = "Settings_AutoJump", SiteEnum.Settings_AutoJump_Opt = "Settings_AutoJump_Opt", 
+        SiteEnum.Settings_CSDN = "Settings_CSDN", SiteEnum.Settings_CSDN_Opt = "Settings_CSDN_Opt", 
+        SiteEnum.Settings_Search = "Settings_Search", SiteEnum.Settings_Search_Opt = "Settings_Search_Opt", 
+        SiteEnum.Settings_Bili_Pc_Opt = "Settings_Bili_Pc_Opt", SiteEnum.TaoBao = "TaoBao", 
+        SiteEnum.TMall = "TMall", SiteEnum.JingDong = "JingDong", SiteEnum.JingDongList = "JingDongList", 
+        SiteEnum.IQiYi = "IQiYi", SiteEnum.YouKu = "YouKu", SiteEnum.LeShi = "LeShi", SiteEnum.TuDou = "TuDou", 
+        SiteEnum.Tencent_V = "Tencent_V", SiteEnum.MangGuo = "MangGuo", SiteEnum.SoHu = "SoHu", 
+        SiteEnum.Acfun = "Acfun", SiteEnum.BiliBili = "BiliBili", SiteEnum.BiliMobile = "BiliMobile", 
+        SiteEnum.M1905 = "M1905", SiteEnum.PPTV = "PPTV", SiteEnum.YinYueTai = "YinYueTai", 
+        SiteEnum.WangYi = "WangYi", SiteEnum.Tencent_M = "Tencent_M", SiteEnum.KuGou = "KuGou", 
+        SiteEnum.KaoLa = "KaoLa", SiteEnum.KuWo = "KuWo", SiteEnum.XiaMi = "XiaMi", SiteEnum.TaiHe = "TaiHe", 
+        SiteEnum.QingTing = "QingTing", SiteEnum.LiZhi = "LiZhi", SiteEnum.MiGu = "MiGu", 
+        SiteEnum.XiMaLaYa = "XiMaLaYa", SiteEnum.WenKu = "WenKu", SiteEnum.YouTuBe = "YouTuBe", 
+        SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", SiteEnum.ALY = "ALY", SiteEnum.BDY1 = "BDY1", 
+        SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", SiteEnum.Steam = "Steam", SiteEnum.Vp = "Vp", 
+        SiteEnum.CSDN = "CSDN", SiteEnum.CSDN_Download = "CSDN_Download", SiteEnum.ZhiHu = "ZhiHu", 
+        SiteEnum.JianShu = "JianShu", SiteEnum.JueJin = "JueJin", SiteEnum.Gitee = "Gitee", 
+        SiteEnum.Weibo = "Weibo", SiteEnum.TuXiaoChao = "TuXiaoChao", SiteEnum.OsCh = "OsCh", 
+        SiteEnum.AiFaDian = "AiFaDian", SiteEnum.Baidu = "Baidu", SiteEnum.BaiduPanMain = "BaiduPanMain", 
+        SiteEnum.BaiduPanHome = "BaiduPanHome", SiteEnum.DouBan = "DouBan", SiteEnum.g17173 = "g17173", 
+        SiteEnum.Google = "Google", SiteEnum.SoGou = "SoGou", SiteEnum.KuaKeHome = "KuaKeHome", 
+        SiteEnum.TencentDoc = "TencentDoc", SiteEnum.TencentMail = "TencentMail", SiteEnum.SsPAi = "SsPai", 
+        SiteEnum.FeiShuDoc = "FeiShuDoc", SiteEnum.TencentQQ = "TencentQQ", SiteEnum.Shuma = "Shuma", 
+        SiteEnum.BD_DETAIL_OLD = "BD_DETAIL_OLD", SiteEnum.BD_DETAIL_NEW = "BD_DETAIL_NEW", 
+        SiteEnum.BD_DETAIL_Share = "BD_DETAIL_Share", SiteEnum.Gwd = "Gwd", SiteEnum.Xxqg = "Xxqg", 
+        SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin", SiteEnum.V2EX = "V2EX", 
+        SiteEnum.Github = "Github", SiteEnum.NodeSeek = "NodeSeek", SiteEnum.HiTv = "HiTv";
     }(SiteEnum || (SiteEnum = {})), UpdateService = function(_super) {
         function UpdateService() {
             var _this = _super.call(this) || this;
@@ -2272,18 +2274,20 @@
         }, Container;
     }(), css_248z$5 = ".okv-btn {\n  display: inline-block;\n  padding: 6px 16px;\n  font-size: 12px;\n  outline: 0;\n  line-height: 1.5;\n  text-align: center;\n  white-space: nowrap;\n  border: 1px solid #c5d9e8;\n  border-top-color: #c5d9e8;\n  border-right-color: #c5d9e8;\n  border-bottom-color: #c5d9e8;\n  border-left-color: #c5d9e8;\n  border-radius: 0.7rem;\n  background-color: #fff;\n  -webkit-transition: background 0.2s;\n  transition: background 0.2s;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  cursor: pointer;\n}\n.okv-btn-primary {\n  border-color: #6190e8;\n  background-color: #6190e8;\n  color: #fff;\n}\n.okv-btn-primary :hover {\n  background-color: #79a1eb;\n  border-color: #79a1eb;\n}\n.okv-btn-primary :active {\n  background-color: #5782d1;\n  border-color: #5782d1;\n}\n.okv-btn-success {\n  border-color: #13ce66;\n  background-color: #13ce66;\n  color: #fff;\n}\n.okv-btn-success :hover {\n  background-color: #36d57d;\n  border-color: #36d57d;\n}\n.okv-btn-success :active {\n  background-color: #11b95c;\n  border-color: #11b95c;\n}\n.okv-btn-error {\n  border-color: #ff4949;\n  background-color: #ff4949;\n  color: #fff;\n}\n.okv-btn-error :hover {\n  background-color: #ff6464;\n  border-color: #ff6464;\n}\n.okv-btn-error :active {\n  background-color: #e64242;\n  border-color: #e64242;\n}\n.okv-bg-pink {\n  color: #fff;\n  border-color: #fff;\n  background-color: #fb7299;\n}\n.bili-top-button {\n  margin-left: 0.7rem;\n}\n.bili-table {\n  width: 100%;\n  border-collapse: separate;\n  border-spacing: 0;\n  text-align: left;\n  overflow: hidden;\n}\n.bili-table td,\n.bili-table th {\n  height: 40px;\n  text-align: left;\n  text-overflow: ellipsis;\n  vertical-align: middle;\n  border-bottom: 1px solid #ececec;\n}\n.bili-table-cell {\n  padding: 0 16px;\n  border-bottom: 1px solid #ececec;\n}\n.at-table-tbody > tr:hover {\n  background-color: #f6fafe;\n}\n.bili-table-small {\n  font-size: 11px;\n}\n.bili-table-head {\n  border-collapse: separate;\n  border-spacing: 0;\n  text-align: left;\n}\n.bili-table-head tr th {\n  font-weight: 700;\n  text-align: left;\n  background-color: #f7f7f7;\n  white-space: nowrap;\n}\n", 
     styleInject(css_248z$5), function(ConfigEnum) {
-        ConfigEnum.BiliPc_Cover = "bili_pc_cover", ConfigEnum.BiliPc_Video_Download = "bili_pc_video_download", 
-        ConfigEnum.BiliPc_Triple_Click = "bili_pc_triple_click", ConfigEnum.AutoJump_ZhiHu = "AutoJump_ZhiHu", 
-        ConfigEnum.AutoJump_CSDN = "AutoJump_CSDN", ConfigEnum.AutoJump_JianShu = "AutoJump_JianShu", 
-        ConfigEnum.AutoJump_Gitee = "AutoJump_Gitee", ConfigEnum.AutoJump_JueJin = "AutoJump_JueJin", 
-        ConfigEnum.AutoJump_Weibo = "AutoJump_Weibo", ConfigEnum.AutoJump_TuXiaoChao = "AutoJump_TuXiaoChao", 
-        ConfigEnum.AutoJump_OsCh = "AutoJump_OsCh", ConfigEnum.AutoJump_AiFaDian = "AutoJump_AiFaDian", 
-        ConfigEnum.AutoJump_Baidu = "AutoJump_Baidu", ConfigEnum.AutoJump_DouBan = "AutoJump_DouBan", 
-        ConfigEnum.AutoJump_g17173 = "AutoJump_g17173", ConfigEnum.AutoJump_TencentDoc = "AutoJump_TencentDoc", 
-        ConfigEnum.CSDN_OpImgLink = "csdn_op_img_link", ConfigEnum.CSDN_OpAdClean = "csdn_op_ad_clean", 
-        ConfigEnum.CSDN_OpArticleClean = "csdn_op_article_clean", ConfigEnum.CSDN_OpCommentClean = "csdn_op_comment_clean", 
-        ConfigEnum.CSDN_OpClipboardClean = "csdn_op_clipboard_clean", ConfigEnum.Search_Helper_Switch = "search_helper_switch", 
-        ConfigEnum.Search_OptMenuMethod = "search_opt_menu_method", ConfigEnum.Search_OptMenuPos = "search_opt_menu_pos";
+        ConfigEnum.Jiexi_Cus_Interface = "Jiexi_Cus_Interface", ConfigEnum.Jiexi_Interface_Last_Play = "Jiexi_Interface_Last_Play", 
+        ConfigEnum.Jiexi_Interface_Last_Play_Url = "Jiexi_Interface_Last_Play_Url", ConfigEnum.BiliPc_Cover = "bili_pc_cover", 
+        ConfigEnum.BiliPc_Video_Download = "bili_pc_video_download", ConfigEnum.BiliPc_Triple_Click = "bili_pc_triple_click", 
+        ConfigEnum.AutoJump_ZhiHu = "AutoJump_ZhiHu", ConfigEnum.AutoJump_CSDN = "AutoJump_CSDN", 
+        ConfigEnum.AutoJump_JianShu = "AutoJump_JianShu", ConfigEnum.AutoJump_Gitee = "AutoJump_Gitee", 
+        ConfigEnum.AutoJump_JueJin = "AutoJump_JueJin", ConfigEnum.AutoJump_Weibo = "AutoJump_Weibo", 
+        ConfigEnum.AutoJump_TuXiaoChao = "AutoJump_TuXiaoChao", ConfigEnum.AutoJump_OsCh = "AutoJump_OsCh", 
+        ConfigEnum.AutoJump_AiFaDian = "AutoJump_AiFaDian", ConfigEnum.AutoJump_Baidu = "AutoJump_Baidu", 
+        ConfigEnum.AutoJump_DouBan = "AutoJump_DouBan", ConfigEnum.AutoJump_g17173 = "AutoJump_g17173", 
+        ConfigEnum.AutoJump_TencentDoc = "AutoJump_TencentDoc", ConfigEnum.CSDN_OpImgLink = "csdn_op_img_link", 
+        ConfigEnum.CSDN_OpAdClean = "csdn_op_ad_clean", ConfigEnum.CSDN_OpArticleClean = "csdn_op_article_clean", 
+        ConfigEnum.CSDN_OpCommentClean = "csdn_op_comment_clean", ConfigEnum.CSDN_OpClipboardClean = "csdn_op_clipboard_clean", 
+        ConfigEnum.Search_Helper_Switch = "search_helper_switch", ConfigEnum.Search_OptMenuMethod = "search_opt_menu_method", 
+        ConfigEnum.Search_OptMenuPos = "search_opt_menu_pos";
     }(ConfigEnum || (ConfigEnum = {})), BiliImgService = function(_super) {
         function BiliImgService() {
             var _this = _super.call(this) || this;
@@ -2463,29 +2467,49 @@
     }(PluginBase), Menu$1 = Common.Menu, MovieService = function(_super) {
         function MovieService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.YouKu, /youku\.com/i ], [ SiteEnum.IQiYi, /iqiyi|iq\.com/i ], [ SiteEnum.LeShi, /\.le\.com/i ], [ SiteEnum.Tencent_V, /v\.qq/i ], [ SiteEnum.TuDou, /tudou\.com/i ], [ SiteEnum.MangGuo, /mgtv\.com/i ], [ SiteEnum.SoHu, /sohu\.com/i ], [ SiteEnum.Acfun, /acfun\.com/i ], [ SiteEnum.BiliBili, /bilibili\.com/i ], [ SiteEnum.M1905, /1905\.com/i ], [ SiteEnum.PPTV, /pptv\.com/i ], [ SiteEnum.YinYueTai, /yinyuetai\.com/ ] ]), 
-            _this.menu = new Common.Menu, _this._unique = !1, _this;
+            return _this.rules = new Map([ [ SiteEnum.HiTv, /tv\.wandhi\.com\/go\.html/i ], [ SiteEnum.YouKu, /youku\.com/i ], [ SiteEnum.IQiYi, /iqiyi|iq\.com/i ], [ SiteEnum.LeShi, /\.le\.com/i ], [ SiteEnum.Tencent_V, /v\.qq/i ], [ SiteEnum.TuDou, /tudou\.com/i ], [ SiteEnum.MangGuo, /mgtv\.com/i ], [ SiteEnum.SoHu, /sohu\.com/i ], [ SiteEnum.Acfun, /acfun\.com/i ], [ SiteEnum.BiliBili, /bilibili\.com/i ], [ SiteEnum.M1905, /1905\.com/i ], [ SiteEnum.PPTV, /pptv\.com/i ], [ SiteEnum.YinYueTai, /yinyuetai\.com/ ] ]), 
+            _this.jkPre = "\u81ea\u5b9a\u4e49\u63a5\u53e3\uff1a", _this.menu = new Common.Menu, 
+            _this._unique = !1, _this._appName = "MovieService", _this;
         }
         return __extends(MovieService, _super), MovieService.prototype.loader = function() {
             "undefined" == typeof $ && Core.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js");
         }, MovieService.prototype.run = function() {
-            this.menu.Init([ {
-                title: "\u672c\u6b21\u5173\u95ed",
-                show: "\u672c\u6b21<br>\u5173\u95ed",
-                type: "search"
-            }, {
-                title: "\u89c6\u9891\u89e3\u6790",
-                show: "\u89c6\u9891<br>\u89e3\u6790",
-                type: "process"
-            }, {
-                title: "\u7edd\u4e16\u597d\u5238",
-                show: "\u7edd\u4e16<br>\u597d\u5238",
-                type: "tb"
-            }, {
-                title: "\u4eac\u4e1c\u597d\u5238",
-                show: "\u4eac\u4e1c<br>\u597d\u5238",
-                type: "jd"
-            } ], this._onClick), this.autoHide();
+            switch (this.site) {
+              case SiteEnum.HiTv:
+                this.cusInterFace(), this.lastPlay();
+                break;
+
+              default:
+                this.menu.Init([ {
+                    title: "\u672c\u6b21\u5173\u95ed",
+                    show: "\u672c\u6b21<br>\u5173\u95ed",
+                    type: "search"
+                }, {
+                    title: "\u89c6\u9891\u89e3\u6790",
+                    show: "\u89c6\u9891<br>\u89e3\u6790",
+                    type: "process"
+                }, {
+                    title: "\u7edd\u4e16\u597d\u5238",
+                    show: "\u7edd\u4e16<br>\u597d\u5238",
+                    type: "tb"
+                }, {
+                    title: "\u4eac\u4e1c\u597d\u5238",
+                    show: "\u4eac\u4e1c<br>\u597d\u5238",
+                    type: "jd"
+                } ], this._onClick), this.autoHide();
+            }
+        }, MovieService.prototype.cusInterFace = function() {
+            var h_1, _this = this, urls = Config.get(ConfigEnum.Jiexi_Cus_Interface);
+            urls && (h_1 = $("#jk").html(), urls.split("\n").forEach((function(e) {
+                var datas = e.split("||");
+                "https:" == unsafeWindow.location.protocol ? h_1 += '<option value="' + datas[0].replace("http:", "https:") + '" selected="">' + _this.jkPre + datas[1] + "</option>" : h_1 += '<option value="' + datas[0] + '" selected="">' + _this.jkPre + datas[1] + "</option>";
+            })), $("#jk").html(h_1)), Logger.debug(urls);
+        }, MovieService.prototype.lastPlay = function() {
+            var last, _this = this;
+            $("#bf").on("click", (function() {
+                var op = $("#jk option:selected"), url = op.val(), name = op.text().replace(_this.jkPre, "");
+                Config.set(ConfigEnum.Jiexi_Interface_Last_Play, name), Config.set(ConfigEnum.Jiexi_Interface_Last_Play_Url, url);
+            })), (last = Config.get(ConfigEnum.Jiexi_Interface_Last_Play_Url)) && $("#jk").val(last);
         }, MovieService.prototype._onClick = function() {
             $("body").on("click", "[data-cat=process]", (function() {
                 Core.open("http://tv.wandhi.com/go.html?url=" + encodeURIComponent(window.location.href));
@@ -3208,7 +3232,7 @@
     }(PluginBase), SettingService = function(_super) {
         function SettingService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
-            return _this.rules = new Map([ [ SiteEnum.Settings, /settings\.wandhi\.com\/index\/index\/page/i ], [ SiteEnum.Settings_AutoJump, /settings\.wandhi\.com\/tools\/autojump\/page/i ], [ SiteEnum.Settings_AutoJump_Opt, /settings\.wandhi\.com\/tools\/autojump-op\/page/i ], [ SiteEnum.Settings_CSDN, /settings\.wandhi\.com\/tools\/csdn\/page/i ], [ SiteEnum.Settings_CSDN_Opt, /settings\.wandhi\.com\/tools\/csdn-op\/page/i ], [ SiteEnum.Settings_Search, /settings\.wandhi\.com\/tools\/search-helper\/page/i ], [ SiteEnum.Settings_Search_Opt, /settings\.wandhi\.com\/tools\/search-helper-op\/page/i ], [ SiteEnum.Settings_Bili_Pc_Opt, /settings\.wandhi\.com\/tools\/bilibili-pc-op\/page/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.Settings, /settings\.wandhi\.com\/index\/index\/page/i ], [ SiteEnum.Settings_AutoJump, /settings\.wandhi\.com\/tools\/autojump\/page/i ], [ SiteEnum.Settings_AutoJump_Opt, /settings\.wandhi\.com\/tools\/autojump-op\/page/i ], [ SiteEnum.Settings_CSDN, /settings\.wandhi\.com\/tools\/csdn\/page/i ], [ SiteEnum.Settings_CSDN_Opt, /settings\.wandhi\.com\/tools\/csdn-op\/page/i ], [ SiteEnum.Settings_Search, /settings\.wandhi\.com\/tools\/search-helper\/page/i ], [ SiteEnum.Settings_Search_Opt, /settings\.wandhi\.com\/tools\/search-helper-op\/page/i ], [ SiteEnum.Settings_Bili_Pc_Opt, /settings\.wandhi\.com\/tools\/bilibili-pc-op\/page/i ], [ SiteEnum.Settings_Jiexi_Opt, /settings\.wandhi\.com\/tools\/jiexi\/page/i ] ]), 
             _this._unique = !1, _this._appName = "\u63a7\u5236\u9762\u677f", _this;
         }
         return __extends(SettingService, _super), SettingService.prototype.loader = function() {
@@ -3233,7 +3257,23 @@
 
               case SiteEnum.Settings_Bili_Pc_Opt:
                 this.biliPcOpt();
+                break;
+
+              case SiteEnum.Settings_Jiexi_Opt:
+                this.JiexiOpt();
             }
+        }, SettingService.prototype.JiexiOpt = function() {
+            var keys = new Map([ [ ConfigEnum.Jiexi_Cus_Interface, function(v) {
+                try {
+                    v.split("\n").forEach((function(e, i) {
+                        if (2 != e.split("||").length) throw new Error;
+                    }));
+                } catch (e) {
+                    return sAlert.error("\u81ea\u5b9a\u4e49\u63a5\u53e3\u683c\u5f0f\u9519\u8bef"), !1;
+                }
+                return !0;
+            } ] ]);
+            this.TextAreaInit(keys);
         }, SettingService.prototype.biliPcOpt = function() {
             var keys = [ ConfigEnum.BiliPc_Cover, ConfigEnum.BiliPc_Video_Download, ConfigEnum.BiliPc_Triple_Click ];
             this.checkBoxInit(keys);
@@ -3260,6 +3300,14 @@
                 var el = e.target;
                 Logger.debug("\u914d\u7f6e[" + e.target.id + "]\u53d1\u751f\u53d8\u66f4,\u6700\u7ec8\u503c:[" + $(e.target).prop("checked") + "]"), 
                 Config.set(el.id, $(el).prop("checked")), sAlert.info("\u4fdd\u5b58\u6210\u529f");
+            }));
+        }, SettingService.prototype.TextAreaInit = function(keys) {
+            $("textarea").removeProp("disabled"), keys.forEach((function(f, e) {
+                $("#" + e.toString()).val(Config.get(e.toString(), "")), $("#" + e.toString()).on("change", (function(el) {
+                    Logger.debug("\u914d\u7f6e[" + el.target.id + "]\u53d1\u751f\u53d8\u66f4,\u6700\u7ec8\u503c:[" + $(el.target).val() + "]"), 
+                    f.apply(el, [ $(el.target).val() ]) && (Config.set(el.target.id, $(el.target).val()), 
+                    sAlert.info("\u4fdd\u5b58\u6210\u529f"));
+                }));
             }));
         }, SettingService.prototype.initVer = function() {
             $("#currentVer").text(Config.env.script.version);
