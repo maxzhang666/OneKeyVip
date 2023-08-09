@@ -1628,7 +1628,8 @@
                 Logger.debug("\u89e3\u6790\u94fe\u63a5:" + url + ",key:" + this.key));
             } else sAlert.warning("\u5df2\u5173\u95ed\u672c\u7f51\u7ad9\u7684\u8df3\u8f6c\u529f\u80fd");
         }, LinkJumpService.prototype.jump = function(url) {
-            url && (url = decodeURIComponent(url), Logger.debug(url), unsafeWindow.window.location.href = url);
+            url && ((url = decodeURIComponent(url)).indexOf(":\\") < 1 && !url.startsWith("http://") && !url.startsWith("https://") && (url = "http://" + url), 
+            Logger.debug(url), unsafeWindow.window.location.href = url);
         }, LinkJumpService;
     }(PluginBase), AutoExpandService = function(_super) {
         function AutoExpandService() {

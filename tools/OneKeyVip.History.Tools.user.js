@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         【玩的嗨】淘宝、天猫、京东、唯品会隐藏优惠券查询，自动显示历史价格和比价，拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手,【玩的嗨】淘宝、天猫、京东、唯品会隐藏优惠券查询，自动显示历史价格和比价，拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手 长期更新,放心使用
+// @name         【玩的嗨】淘宝、天猫、京东、唯品会隐藏优惠券查询，自动显示历史价格和比价，拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手, 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
 // @version      4.8.8
 // @homepage     https://wiki.wandhi.com/
@@ -2258,7 +2258,7 @@
                 };
             })) : $(".onekeyvip-item-" + itemId).each((function(i, ele) {
                 $(ele).on("click", (function() {
-                    return Logger.debug("\u52ab\u6301\u70b9\u51fb:" + itemUrl), !itemUrl || (Core.open(itemUrl), 
+                    return Logger.debug("\u70b9\u51fb:" + itemUrl), !itemUrl || (Core.open(itemUrl), 
                     !1);
                 }));
             }));
