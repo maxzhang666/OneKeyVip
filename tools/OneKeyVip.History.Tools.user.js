@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name         【玩的嗨】淘宝、天猫、京东、唯品会隐藏优惠券查询，自动显示历史价格和比价，拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手, 长期更新,放心使用
+// @name         【玩的嗨】淘宝、天猫、京东、唯品会隐藏优惠券查询，自动显示历史价格和比价,拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      1
+// @version      1.0
 // @homepage     https://wiki.wandhi.com/
 // @supportURL   https://wiki.wandhi.com/
-// @description  
+// @description  拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手
 // @author       MaxZhang
 // @icon         https://www.wandhi.com//favicon.ico
 // @require      https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
