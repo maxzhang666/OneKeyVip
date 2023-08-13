@@ -852,8 +852,7 @@
             return Http.ajaxNew("https://drive.quark.cn/1/clouddrive/file/download?pr=ucpro&fr=pc", "POST", {
                 fids: fids
             }, new Map([ [ "User-Agent", "quark-cloud-drive" ] ]));
-        }, Route.update_api = "https://cdn.jsdelivr.net/gh/maxzhang666/OneKeyVip/OneKeyVip.user.js?t=" + Core.uuid(), 
-        Route.update_api_script_cat = "https://scriptcat.org/api/v2/scripts/72", Route.home_url = "https://wiki.wandhi.com", 
+        }, Route.update_api_script_cat = "https://scriptcat.org/api/v2/scripts/72", Route.home_url = "https://wiki.wandhi.com", 
         Route.home_url_update = "https://wiki.wandhi.com/zh-cn/Changelog.html", Route.install_url_one = "https://greasyfork.org/zh-CN/scripts/384538", 
         Route.install_url_two = "https://scriptcat.org/script-show-page/72", Route.sxb_anhao = "http://www.lelunwen.com/e/action/ListInfo/?classid=45", 
         Route.sxb_key = "sxb_anhao", Route.config = "/config/query", Route.history = "/history/", 
