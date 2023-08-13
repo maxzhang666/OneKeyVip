@@ -2052,19 +2052,6 @@
                     html: msg
                 })), Config.set(update_key, !0, Hour);
             }));
-        }, GfUpdateService.prototype.jsD = function(current) {
-            Http.get_text(Route.update_api).then((function(res) {
-                var msg, version = new VersionCompar(null == res ? void 0 : res.match(/@version[ ]*([\d\.]+)/)[1]);
-                version.compareTo(current) === VersionResult.greater && (msg = "\u65b0\u7248\u672c<span>" + version.versionString + '</span>\u5df2\u53d1\u5e03.<a id="new-version-link" class="link" href="' + Route.install_url_one + '">\u5b89\u88c5(\u7ebf\u8def\u4e00)</a><a id="new-version-link" class="link" href="' + Route.install_url_two + '">\u5b89\u88c5(\u7ebf\u8def\u4e8c)</a><a class="link" target="_blank" href="' + Route.home_url_update + '">\u67e5\u770b</a>', 
-                Swal__default.default.fire({
-                    toast: !0,
-                    position: "bottom-left",
-                    icon: "success",
-                    showConfirmButton: !1,
-                    title: "\u68c0\u67e5\u66f4\u65b0",
-                    html: msg
-                })), Config.set(update_key, !0, Hour);
-            }));
         }, GfUpdateService;
     }(PluginBase), VersionCompar = function() {
         function VersionCompar(e) {
