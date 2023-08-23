@@ -133,6 +133,7 @@
 // @grant unsafeWindow
 // @grant GM_xmlhttpRequest
 // @grant GM_info
+// @grant GM_cookie
 // @grant GM_addStyle
 // @grant GM_getValue
 // @grant GM_setValue
@@ -535,7 +536,7 @@
             !1);
         }, Core.getGmCookie = function(key) {
             return new Promise((function(resolve, reject) {
-                GM_cookie ? GM_cookie.list({
+                "undefined" != typeof GM_cookie ? GM_cookie.list({
                     name: key
                 }, (function(cookies) {
                     cookies.length > 0 ? resolve(cookies[0].value) : resolve("");

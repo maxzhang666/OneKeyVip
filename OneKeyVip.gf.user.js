@@ -525,7 +525,7 @@
             !1);
         }, Core.getGmCookie = function(key) {
             return new Promise((function(resolve, reject) {
-                GM_cookie ? GM_cookie.list({
+                "undefined" != typeof GM_cookie ? GM_cookie.list({
                     name: key
                 }, (function(cookies) {
                     cookies.length > 0 ? resolve(cookies[0].value) : resolve("");
