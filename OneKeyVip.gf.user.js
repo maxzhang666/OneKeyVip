@@ -1,10 +1,10 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,京东、淘宝、聚划算、天猫隐藏优惠券与历史价格,夸克网盘直链批量获取,全网VIP视频免费破解去广告,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
+// @name         【玩的嗨】VIP工具箱,夸克网盘直链批量获取,全网VIP视频免费破解去广告,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
 // @version      4.8.8
 // @homepage     https://wiki.wandhi.com/
 // @supportURL   https://wiki.wandhi.com/
-// @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转 12、搜索引擎快速跳转
+// @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转；🎉 12、搜索引擎快速跳转
 // @author       MaxZhang
 // @icon         https://www.wandhi.com//favicon.ico
 // @include      *://m.youku.com/v*
@@ -112,6 +112,7 @@
 // @connect gwdang.com
 // @connect scriptcat.org
 // @connect quark.cn
+// @connect openapi.baidu.com
 // @grant unsafeWindow
 // @grant GM_xmlhttpRequest
 // @grant GM_info
@@ -522,6 +523,18 @@
             textArea.value = text, document.body.appendChild(textArea), textArea.focus(), textArea.select(), 
             document.execCommand("copy") ? (document.body.removeChild(textArea), !0) : (document.body.removeChild(textArea), 
             !1);
+        }, Core.getGmCookie = function(key) {
+            return new Promise((function(resolve, reject) {
+                GM_cookie ? GM_cookie.list({
+                    name: key
+                }, (function(cookies) {
+                    cookies.length > 0 ? resolve(cookies[0].value) : resolve("");
+                })) : resolve("");
+            }));
+        }, Core.getCookie = function(key) {
+            var i, l, tempArr, arr = document.cookie.replace(/\s/g, "").split(";");
+            for (i = 0, l = arr.length; i < l; i++) if ((tempArr = arr[i].split("="))[0] == key) return decodeURIComponent(tempArr[1]);
+            return "";
         }, Core;
     }(), update_key = "isUpdate", Min = 60, Hour = 60 * Min, Day = 24 * Hour, Week = 7 * Day, 
     css_248z$5 = 'html .aside-nav {\n    -ms-text-size-adjust: 100%;\n    -webkit-text-size-adjust: 100%;\n    -webkit-font-smoothing: antialiased;\n    font-size: 62.5%\n}\n\nbody .aside-nav {\n    font-family: "Helvetica Neue", Helvetica, "Microsoft YaHei", Arial, sans-serif;\n    margin: 0;\n    font-size: 1.6rem;\n    color: #4e546b\n}\n\n.aside-nav {\n    position: fixed;\n    bottom: 0;\n    left: -47px;\n    width: 260px;\n    height: 260px;\n    -webkit-filter: url(#goo);\n    filter: url(#goo);\n    -ms-user-select: none;\n    -moz-user-select: none;\n    -webkit-user-select: none;\n    user-select: none;\n    opacity: .75;\n    z-index: 99999\n}\n\n.aside-nav.no-filter {\n    -webkit-filter: none;\n    filter: none\n}\n\n.aside-nav .aside-menu {\n    position: absolute;\n    width: 70px;\n    height: 70px;\n    -webkit-border-radius: 50%;\n    border-radius: 50%;\n    background: #f34444;\n    left: -95px;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    margin: auto;\n    text-align: center;\n    line-height: 70px;\n    color: #fff;\n    font-size: 20px;\n    z-index: 1;\n    cursor: move\n}\n\n.aside-nav .menu-item {\n    position: absolute;\n    width: 60px;\n    height: 60px;\n    background-color: #ff7676;\n    left: -95px;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    margin: auto;\n    line-height: 60px;\n    text-align: center;\n    -webkit-border-radius: 50%;\n    border-radius: 50%;\n    text-decoration: none;\n    color: #fff;\n    -webkit-transition: background .5s, -webkit-transform .6s;\n    transition: background .5s, -webkit-transform .6s;\n    -moz-transition: transform .6s, background .5s, -moz-transform .6s;\n    transition: transform .6s, background .5s;\n    transition: transform .6s, background .5s, -webkit-transform .6s, -moz-transform .6s;\n    font-size: 14px;\n    -webkit-box-sizing: border-box;\n    -moz-box-sizing: border-box;\n    box-sizing: border-box\n}\n\n.aside-nav .menu-item:hover {\n    background: #a9c734\n}\n\n.aside-nav .menu-line {\n    line-height: 20px;\n    padding-top: 10px\n}\n\n.aside-nav:hover {\n    opacity: 1\n}\n\n.aside-nav:hover .aside-menu {\n    -webkit-animation: jello 1s;\n    -moz-animation: jello 1s;\n    animation: jello 1s\n}\n\n.aside-nav:hover .menu-first {\n    -webkit-transform: translate3d(0, -135%, 0);\n    -moz-transform: translate3d(0, -135%, 0);\n    transform: translate3d(0, -135%, 0)\n}\n\n.aside-nav:hover .menu-second {\n    -webkit-transform: translate3d(120%, -70%, 0);\n    -moz-transform: translate3d(120%, -70%, 0);\n    transform: translate3d(120%, -70%, 0)\n}\n\n.aside-nav:hover .menu-third {\n    -webkit-transform: translate3d(120%, 70%, 0);\n    -moz-transform: translate3d(120%, 70%, 0);\n    transform: translate3d(120%, 70%, 0)\n}\n\n.aside-nav:hover .menu-fourth {\n    -webkit-transform: translate3d(0, 135%, 0);\n    -moz-transform: translate3d(0, 135%, 0);\n    transform: translate3d(0, 135%, 0)\n}\n\n@-webkit-keyframes jello {\n    from, 11.1%, to {\n        -webkit-transform: none;\n        transform: none\n    }\n    22.2% {\n        -webkit-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -webkit-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -webkit-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -webkit-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -webkit-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -webkit-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -webkit-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n@-moz-keyframes jello {\n    from, 11.1%, to {\n        -moz-transform: none;\n        transform: none\n    }\n    22.2% {\n        -moz-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -moz-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -moz-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -moz-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -moz-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -moz-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -moz-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n@keyframes jello {\n    from, 11.1%, to {\n        -webkit-transform: none;\n        -moz-transform: none;\n        transform: none\n    }\n    22.2% {\n        -webkit-transform: skewX(-12.5deg) skewY(-12.5deg);\n        -moz-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -webkit-transform: skewX(6.25deg) skewY(6.25deg);\n        -moz-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -webkit-transform: skewX(-3.125deg) skewY(-3.125deg);\n        -moz-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -webkit-transform: skewX(1.5625deg) skewY(1.5625deg);\n        -moz-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -webkit-transform: skewX(-.78125deg) skewY(-.78125deg);\n        -moz-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -webkit-transform: skewX(0.390625deg) skewY(0.390625deg);\n        -moz-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -webkit-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        -moz-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n.animated {\n    -webkit-animation-duration: 1s;\n    -moz-animation-duration: 1s;\n    animation-duration: 1s;\n    -webkit-animation-fill-mode: both;\n    -moz-animation-fill-mode: both;\n    animation-fill-mode: both\n}\n\n@-webkit-keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -webkit-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -webkit-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -webkit-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -webkit-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -webkit-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -webkit-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n@-moz-keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -moz-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -moz-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -moz-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -moz-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -moz-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -moz-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n@keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -webkit-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        -moz-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -webkit-transform: translate3d(0, 800px, 0);\n        -moz-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -webkit-transform: translate3d(0, -20px, 0);\n        -moz-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -webkit-transform: translate3d(0, 10px, 0);\n        -moz-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -webkit-transform: translate3d(0, -5px, 0);\n        -moz-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -webkit-transform: translate3d(0, 0, 0);\n        -moz-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n.bounceInUp {\n    -webkit-animation-name: bounceInUp;\n    -moz-animation-name: bounceInUp;\n    animation-name: bounceInUp;\n    -webkit-animation-delay: 1s;\n    -moz-animation-delay: 1s;\n    animation-delay: 1s\n}\n', 
@@ -612,7 +625,8 @@
         SiteEnum.BD_DETAIL_OLD = "BD_DETAIL_OLD", SiteEnum.BD_DETAIL_NEW = "BD_DETAIL_NEW", 
         SiteEnum.BD_DETAIL_Share = "BD_DETAIL_Share", SiteEnum.Gwd = "Gwd", SiteEnum.Xxqg = "Xxqg", 
         SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin", SiteEnum.V2EX = "V2EX", 
-        SiteEnum.Github = "Github", SiteEnum.NodeSeek = "NodeSeek", SiteEnum.HiTv = "HiTv";
+        SiteEnum.Github = "Github", SiteEnum.NodeSeek = "NodeSeek", SiteEnum.HiTv = "HiTv", 
+        SiteEnum.Settings_WangPan_Opt = "Settings_WangPan_Opt";
     }(SiteEnum || (SiteEnum = {})), Config = function() {
         function Config() {}
         return Object.defineProperty(Config, "env", {
@@ -947,10 +961,38 @@
             }));
         }, Route.couponQuery = function(itemId, type, callback) {
             Route.baseApi("/coupons/info", new Map([ [ "id", itemId ], [ "type", type ] ]), callback);
-        }, Route.baiduDriect = function(fids) {
-            var url, data = new Map;
-            return data.set("method", "filemetas"), data.set("dlink", 1), data.set("fsids", fids), 
-            url = "https://pan.baidu.com/rest/2.0/xpan/multimedia", Http.ajaxNew(url, "POST", data, new Map, "multipart/form-data");
+        }, Route._getSurl = function() {
+            var reg = /(?<=s\/|surl=)([a-zA-Z0-9_-]+)/g;
+            return reg.test(Core.url) ? Core.url.match(reg)[0] : "";
+        }, Route.baiduDriect = function(fids, accessToken) {
+            return __awaiter(this, void 0, Promise, (function() {
+                var url;
+                return __generator(this, (function(_a) {
+                    return url = "https://pan.baidu.com/rest/2.0/xpan/multimedia?method=filemetas&dlink=1&fsids=" + fids + "&access_token=" + accessToken, 
+                    [ 2, Http.ajaxNew(url, "GET", null, new Map([ [ "User-Agent", "pan.baidu.com" ] ])) ];
+                }));
+            }));
+        }, Route.baiduAccessToken = function() {
+            return Http.get302("https://openapi.baidu.com/oauth/2.0/authorize?client_id=IlLqBbU3GjQ0t46TRwFateTprHWl39zF&response_type=token&redirect_uri=oob&scope=basic,netdisk");
+        }, Route.baiduAccessTokenAuth = function() {
+            var _a, _b;
+            return __awaiter(this, void 0, void 0, (function() {
+                var url, html, data;
+                return __generator(this, (function(_c) {
+                    switch (_c.label) {
+                      case 0:
+                        return url = "https://openapi.baidu.com/oauth/2.0/authorize?client_id=IlLqBbU3GjQ0t46TRwFateTprHWl39zF&response_type=token&redirect_uri=oob&scope=basic,netdisk", 
+                        [ 4, Http.get_text(url) ];
+
+                      case 1:
+                        return html = _c.sent(), (data = new Map).set("grant_permissions_arr", "netdisk"), 
+                        data.set("bdstoken", null === (_a = html.match(/name="bdstoken"\s+value="([^"]+)"/)) || void 0 === _a ? void 0 : _a[1]), 
+                        data.set("client_id", null === (_b = html.match(/name="client_id"\s+value="([^"]+)"/)) || void 0 === _b ? void 0 : _b[1]), 
+                        data.set("response_type", "token"), data.set("display", "page"), data.set("grant_permissions", "basic,netdisk"), 
+                        [ 2, Http.ajaxNew(url, "POST", data, new Map, "multipart/form-data") ];
+                    }
+                }));
+            }));
         }, Route.quarkDriect = function(fids) {
             return Http.ajaxNew("https://drive.quark.cn/1/clouddrive/file/download?pr=ucpro&fr=pc", "POST", {
                 fids: fids
@@ -1013,6 +1055,7 @@
             return void 0 === cancel && (cancel = !1), void 0 === cancelTxt && (cancelTxt = ""), 
             void 0 === cancelColor && (cancelColor = "#3085d6"), void 0 === width && (width = "32rem"), 
             void 0 === confirm && (confirm = !1), void 0 === confirmTxt && (confirmTxt = ""), 
+            "auto" == width && (width = unsafeWindow.window.outerWidth < 900 ? "90%" : 800), 
             Swal__default.default.fire({
                 position: "center",
                 width: width,
@@ -1077,7 +1120,7 @@
             loader: "one-key-vip-loader",
             footer: "one-key-vip-footer"
         }, sAlert;
-    }(), css_248z$3 = ".okv-btn {\n  display: inline-block;\n  padding: 6px 16px;\n  font-size: 12px;\n  outline: 0;\n  line-height: 1.5;\n  text-align: center;\n  white-space: nowrap;\n  border: 1px solid #c5d9e8;\n  border-top-color: #c5d9e8;\n  border-right-color: #c5d9e8;\n  border-bottom-color: #c5d9e8;\n  border-left-color: #c5d9e8;\n  border-radius: 0.7rem;\n  background-color: #fff;\n  -webkit-transition: background 0.2s;\n  transition: background 0.2s;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  cursor: pointer;\n}\n.okv-btn-primary {\n  border-color: #6190e8;\n  background-color: #6190e8;\n  color: #fff;\n}\n.okv-btn-primary :hover {\n  background-color: #79a1eb;\n  border-color: #79a1eb;\n}\n.okv-btn-primary :active {\n  background-color: #5782d1;\n  border-color: #5782d1;\n}\n.okv-btn-success {\n  border-color: #13ce66;\n  background-color: #13ce66;\n  color: #fff;\n}\n.okv-btn-success :hover {\n  background-color: #36d57d;\n  border-color: #36d57d;\n}\n.okv-btn-success :active {\n  background-color: #11b95c;\n  border-color: #11b95c;\n}\n.okv-btn-error {\n  border-color: #ff4949;\n  background-color: #ff4949;\n  color: #fff;\n}\n.okv-btn-error :hover {\n  background-color: #ff6464;\n  border-color: #ff6464;\n}\n.okv-btn-error :active {\n  background-color: #e64242;\n  border-color: #e64242;\n}\n.okv-bg-pink {\n  color: #fff;\n  border-color: #fff;\n  background-color: #fb7299;\n}\n.okv-tools-bili {\n  padding-top: 5px;\n}\n.video-info-detail {\n  flex-wrap: wrap !important;\n  overflow: unset !important;\n}\n.video-info-container {\n  height: 124px !important;\n}\n.okv-btn {\n  padding: 2px 16px !important;\n}\n.bili-top-button {\n  margin-right: 0.7rem;\n}\n.bili-table {\n  width: 100%;\n  border-collapse: separate;\n  border-spacing: 0;\n  text-align: left;\n  overflow: hidden;\n}\n.bili-table td,\n.bili-table th {\n  height: 40px;\n  text-align: left;\n  text-overflow: ellipsis;\n  vertical-align: middle;\n  border-bottom: 1px solid #ececec;\n}\n.bili-table-cell {\n  padding: 0 16px;\n  border-bottom: 1px solid #ececec;\n}\n.at-table-tbody > tr:hover {\n  background-color: #f6fafe;\n}\n.bili-table-small {\n  font-size: 11px;\n}\n.bili-table-head {\n  border-collapse: separate;\n  border-spacing: 0;\n  text-align: left;\n}\n.bili-table-head tr th {\n  font-weight: 700;\n  text-align: left;\n  background-color: #f7f7f7;\n  white-space: nowrap;\n}\n", 
+    }(), css_248z$3 = ".okv-btn {\n  display: inline-block;\n  padding: 6px 16px;\n  font-size: 12px;\n  outline: 0;\n  line-height: 1.5;\n  text-align: center;\n  white-space: nowrap;\n  border: 1px solid #c5d9e8;\n  border-top-color: #c5d9e8;\n  border-right-color: #c5d9e8;\n  border-bottom-color: #c5d9e8;\n  border-left-color: #c5d9e8;\n  border-radius: 0.7rem;\n  background-color: #fff;\n  -webkit-transition: background 0.2s;\n  transition: background 0.2s;\n  -webkit-user-select: none;\n  -moz-user-select: none;\n  -ms-user-select: none;\n  user-select: none;\n  cursor: pointer;\n}\n.okv-btn-primary {\n  border-color: #6190e8;\n  background-color: #6190e8;\n  color: #fff;\n}\n.okv-btn-primary:hover {\n  background-color: #79a1eb;\n  border-color: #79a1eb;\n}\n.okv-btn-primary:active {\n  background-color: #5782d1;\n  border-color: #5782d1;\n}\n.okv-btn-success {\n  border-color: #13ce66;\n  background-color: #13ce66;\n  color: #fff;\n}\n.okv-btn-success:hover {\n  background-color: #36d57d;\n  border-color: #36d57d;\n}\n.okv-btn-success:active {\n  background-color: #11b95c;\n  border-color: #11b95c;\n}\n.okv-btn-error {\n  border-color: #ff4949;\n  background-color: #ff4949;\n  color: #fff;\n}\n.okv-btn-error:hover {\n  background-color: #ff6464;\n  border-color: #ff6464;\n}\n.okv-btn-error:active {\n  background-color: #e64242;\n  border-color: #e64242;\n}\n.okv-bg-pink {\n  color: #fff;\n  border-color: #fff;\n  background-color: #fb7299;\n}\n.okv-tools-bili {\n  padding-top: 5px;\n}\n.video-info-detail {\n  flex-wrap: wrap !important;\n  overflow: unset !important;\n}\n.video-info-container {\n  height: 124px !important;\n}\n.okv-btn {\n  padding: 2px 16px !important;\n}\n.bili-top-button {\n  margin-right: 0.7rem;\n}\n.bili-table {\n  width: 100%;\n  border-collapse: separate;\n  border-spacing: 0;\n  text-align: left;\n  overflow: hidden;\n}\n.bili-table td,\n.bili-table th {\n  height: 40px;\n  text-align: left;\n  text-overflow: ellipsis;\n  vertical-align: middle;\n  border-bottom: 1px solid #ececec;\n}\n.bili-table-cell {\n  padding: 0 16px;\n  border-bottom: 1px solid #ececec;\n}\n.at-table-tbody > tr:hover {\n  background-color: #f6fafe;\n}\n.bili-table-small {\n  font-size: 11px;\n}\n.bili-table-head {\n  border-collapse: separate;\n  border-spacing: 0;\n  text-align: left;\n}\n.bili-table-head tr th {\n  font-weight: 700;\n  text-align: left;\n  background-color: #f7f7f7;\n  white-space: nowrap;\n}\n", 
     styleInject(css_248z$3), Runtime = function() {
         function Runtime() {}
         return Object.defineProperty(Runtime, "url", {
@@ -1088,20 +1131,22 @@
             configurable: !0
         }), Runtime;
     }(), function(ConfigEnum) {
-        ConfigEnum.Jiexi_Cus_Interface = "Jiexi_Cus_Interface", ConfigEnum.Jiexi_Interface_Last_Play = "Jiexi_Interface_Last_Play", 
-        ConfigEnum.Jiexi_Interface_Last_Play_Url = "Jiexi_Interface_Last_Play_Url", ConfigEnum.BiliPc_Cover = "bili_pc_cover", 
-        ConfigEnum.BiliPc_Video_Download = "bili_pc_video_download", ConfigEnum.BiliPc_Triple_Click = "bili_pc_triple_click", 
-        ConfigEnum.AutoJump_ZhiHu = "AutoJump_ZhiHu", ConfigEnum.AutoJump_CSDN = "AutoJump_CSDN", 
-        ConfigEnum.AutoJump_JianShu = "AutoJump_JianShu", ConfigEnum.AutoJump_Gitee = "AutoJump_Gitee", 
-        ConfigEnum.AutoJump_JueJin = "AutoJump_JueJin", ConfigEnum.AutoJump_Weibo = "AutoJump_Weibo", 
-        ConfigEnum.AutoJump_TuXiaoChao = "AutoJump_TuXiaoChao", ConfigEnum.AutoJump_OsCh = "AutoJump_OsCh", 
-        ConfigEnum.AutoJump_AiFaDian = "AutoJump_AiFaDian", ConfigEnum.AutoJump_Baidu = "AutoJump_Baidu", 
-        ConfigEnum.AutoJump_DouBan = "AutoJump_DouBan", ConfigEnum.AutoJump_g17173 = "AutoJump_g17173", 
-        ConfigEnum.AutoJump_TencentDoc = "AutoJump_TencentDoc", ConfigEnum.CSDN_OpImgLink = "csdn_op_img_link", 
-        ConfigEnum.CSDN_OpAdClean = "csdn_op_ad_clean", ConfigEnum.CSDN_OpArticleClean = "csdn_op_article_clean", 
-        ConfigEnum.CSDN_OpCommentClean = "csdn_op_comment_clean", ConfigEnum.CSDN_OpClipboardClean = "csdn_op_clipboard_clean", 
-        ConfigEnum.Search_Helper_Switch = "search_helper_switch", ConfigEnum.Search_OptMenuMethod = "search_opt_menu_method", 
-        ConfigEnum.Search_OptMenuPos = "search_opt_menu_pos";
+        ConfigEnum.WangPan_Aria_Host = "WangPan_Aria_Host", ConfigEnum.WangPan_Aria_Port = "WangPan_Aria_Port", 
+        ConfigEnum.WangPan_Aria_Token = "WangPan_Aria_Token", ConfigEnum.WangPan_Aria_Path = "WangPan_Aria_Path", 
+        ConfigEnum.WangPan_Aria_Dir = "WangPan_Aria_Dir", ConfigEnum.Jiexi_Cus_Interface = "Jiexi_Cus_Interface", 
+        ConfigEnum.Jiexi_Interface_Last_Play = "Jiexi_Interface_Last_Play", ConfigEnum.Jiexi_Interface_Last_Play_Url = "Jiexi_Interface_Last_Play_Url", 
+        ConfigEnum.BiliPc_Cover = "bili_pc_cover", ConfigEnum.BiliPc_Video_Download = "bili_pc_video_download", 
+        ConfigEnum.BiliPc_Triple_Click = "bili_pc_triple_click", ConfigEnum.AutoJump_ZhiHu = "AutoJump_ZhiHu", 
+        ConfigEnum.AutoJump_CSDN = "AutoJump_CSDN", ConfigEnum.AutoJump_JianShu = "AutoJump_JianShu", 
+        ConfigEnum.AutoJump_Gitee = "AutoJump_Gitee", ConfigEnum.AutoJump_JueJin = "AutoJump_JueJin", 
+        ConfigEnum.AutoJump_Weibo = "AutoJump_Weibo", ConfigEnum.AutoJump_TuXiaoChao = "AutoJump_TuXiaoChao", 
+        ConfigEnum.AutoJump_OsCh = "AutoJump_OsCh", ConfigEnum.AutoJump_AiFaDian = "AutoJump_AiFaDian", 
+        ConfigEnum.AutoJump_Baidu = "AutoJump_Baidu", ConfigEnum.AutoJump_DouBan = "AutoJump_DouBan", 
+        ConfigEnum.AutoJump_g17173 = "AutoJump_g17173", ConfigEnum.AutoJump_TencentDoc = "AutoJump_TencentDoc", 
+        ConfigEnum.CSDN_OpImgLink = "csdn_op_img_link", ConfigEnum.CSDN_OpAdClean = "csdn_op_ad_clean", 
+        ConfigEnum.CSDN_OpArticleClean = "csdn_op_article_clean", ConfigEnum.CSDN_OpCommentClean = "csdn_op_comment_clean", 
+        ConfigEnum.CSDN_OpClipboardClean = "csdn_op_clipboard_clean", ConfigEnum.Search_Helper_Switch = "search_helper_switch", 
+        ConfigEnum.Search_OptMenuMethod = "search_opt_menu_method", ConfigEnum.Search_OptMenuPos = "search_opt_menu_pos";
     }(ConfigEnum || (ConfigEnum = {})), BiliImgService = function(_super) {
         function BiliImgService() {
             var _this = _super.call(this) || this;
@@ -1802,7 +1847,7 @@
     }(PluginBase), SettingService = function(_super) {
         function SettingService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
-            return _this.rules = new Map([ [ SiteEnum.Settings, /settings\.wandhi\.com\/index\/index\/page/i ], [ SiteEnum.Settings_AutoJump, /settings\.wandhi\.com\/tools\/autojump\/page/i ], [ SiteEnum.Settings_AutoJump_Opt, /settings\.wandhi\.com\/tools\/autojump-op\/page/i ], [ SiteEnum.Settings_CSDN, /settings\.wandhi\.com\/tools\/csdn\/page/i ], [ SiteEnum.Settings_CSDN_Opt, /settings\.wandhi\.com\/tools\/csdn-op\/page/i ], [ SiteEnum.Settings_Search, /settings\.wandhi\.com\/tools\/search-helper\/page/i ], [ SiteEnum.Settings_Search_Opt, /settings\.wandhi\.com\/tools\/search-helper-op\/page/i ], [ SiteEnum.Settings_Bili_Pc_Opt, /settings\.wandhi\.com\/tools\/bilibili-pc-op\/page/i ], [ SiteEnum.Settings_Jiexi_Opt, /settings\.wandhi\.com\/tools\/jiexi\/page/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.Settings, /settings\.wandhi\.com\/index\/index\/page/i ], [ SiteEnum.Settings_AutoJump, /settings\.wandhi\.com\/tools\/autojump\/page/i ], [ SiteEnum.Settings_AutoJump_Opt, /settings\.wandhi\.com\/tools\/autojump-op\/page/i ], [ SiteEnum.Settings_CSDN, /settings\.wandhi\.com\/tools\/csdn\/page/i ], [ SiteEnum.Settings_CSDN_Opt, /settings\.wandhi\.com\/tools\/csdn-op\/page/i ], [ SiteEnum.Settings_Search, /settings\.wandhi\.com\/tools\/search-helper\/page/i ], [ SiteEnum.Settings_Search_Opt, /settings\.wandhi\.com\/tools\/search-helper-op\/page/i ], [ SiteEnum.Settings_Bili_Pc_Opt, /settings\.wandhi\.com\/tools\/bilibili-pc-op\/page/i ], [ SiteEnum.Settings_Jiexi_Opt, /settings\.wandhi\.com\/tools\/jiexi\/page/i ], [ SiteEnum.Settings_WangPan_Opt, /settings\.wandhi\.com\/tools\/wangpan\/page/i ] ]), 
             _this._unique = !1, _this._appName = "\u63a7\u5236\u9762\u677f", _this;
         }
         return __extends(SettingService, _super), SettingService.prototype.loader = function() {
@@ -1831,7 +1876,26 @@
 
               case SiteEnum.Settings_Jiexi_Opt:
                 this.JiexiOpt();
+                break;
+
+              case SiteEnum.Settings_WangPan_Opt:
+                this.WangPanOpt();
             }
+        }, SettingService.prototype.WangPanOpt = function() {
+            var keys = new Map([ [ ConfigEnum.WangPan_Aria_Host, function(v) {
+                return !!/^(http|https):\/\/\w+/.test(v) || (sAlert.warning("Aria2\u5730\u5740\u683c\u5f0f\u9519\u8bef"), 
+                !1);
+            } ], [ ConfigEnum.WangPan_Aria_Port, function(v) {
+                return !!/^\d+$/.test(v) || (sAlert.warning("Aria2\u7aef\u53e3\u683c\u5f0f\u9519\u8bef"), 
+                !1);
+            } ], [ ConfigEnum.WangPan_Aria_Token, function(v) {
+                return !0;
+            } ], [ ConfigEnum.WangPan_Aria_Path, function(v) {
+                return !0;
+            } ], [ ConfigEnum.WangPan_Aria_Dir, function(v) {
+                return !0;
+            } ] ]);
+            this.InputInit(keys, "text");
         }, SettingService.prototype.JiexiOpt = function() {
             var keys = new Map([ [ ConfigEnum.Jiexi_Cus_Interface, function(v) {
                 try {
@@ -1863,13 +1927,26 @@
             var keys = [ ConfigEnum.CSDN_OpAdClean, ConfigEnum.CSDN_OpImgLink, ConfigEnum.CSDN_OpCommentClean, ConfigEnum.CSDN_OpArticleClean, ConfigEnum.CSDN_OpClipboardClean ];
             this.checkBoxInit(keys);
         }, SettingService.prototype.checkBoxInit = function(keys) {
-            var checkboxes = $("input[type=checkbox]");
-            checkboxes.removeProp("disabled"), keys.forEach((function(e, i) {
-                $("#" + e.toString()).prop("checked", Config.get(e.toString(), !0));
-            })), checkboxes.on("change", (function(e) {
+            var _keys = new Map(keys.map((function(e) {
+                return [ e, function(v) {
+                    return !0;
+                } ];
+            })));
+            this.InputInit(_keys, "checkbox");
+        }, SettingService.prototype.InputInit = function(keys, type) {
+            void 0 === type && (type = "checkbox");
+            var ele = $("input[type=" + type + "]");
+            ele.removeProp("disabled"), keys.forEach((function(f, e) {
+                if ("text" == type) {
+                    var v = Config.get(e.toString(), "");
+                    Logger.debug("\u914d\u7f6e[" + e.toString() + "]\u521d\u59cb\u5316,\u503c:[" + v + "]"), 
+                    $("#" + e.toString()).val(v);
+                } else "checkbox" == type && $("#" + e.toString()).prop("checked", Config.get(e.toString(), !0));
+            })), ele.on("change", (function(e) {
                 var el = e.target;
-                Logger.debug("\u914d\u7f6e[" + e.target.id + "]\u53d1\u751f\u53d8\u66f4,\u6700\u7ec8\u503c:[" + $(e.target).prop("checked") + "]"), 
-                Config.set(el.id, $(el).prop("checked")), sAlert.info("\u4fdd\u5b58\u6210\u529f");
+                "text" == type ? (Logger.debug("\u914d\u7f6e[" + e.target.id + "]\u53d1\u751f\u53d8\u66f4,\u6700\u7ec8\u503c:[" + $(e.target).val() + "]"), 
+                keys.get(el.id).apply(el, [ $(el).val() ]) && (Config.set(el.id, $(el).val()), sAlert.info("\u4fdd\u5b58\u6210\u529f"))) : "checkbox" == type && (Logger.debug("\u914d\u7f6e[" + e.target.id + "]\u53d1\u751f\u53d8\u66f4,\u6700\u7ec8\u503c:[" + $(e.target).prop("checked") + "]"), 
+                Config.set(el.id, $(el).prop("checked")), sAlert.info("\u4fdd\u5b58\u6210\u529f"));
             }));
         }, SettingService.prototype.TextAreaInit = function(keys) {
             $("textarea").removeProp("disabled"), keys.forEach((function(f, e) {
@@ -1958,17 +2035,98 @@
             } catch (e) {
                 return unsafeWindow.document.querySelector(".wp-s-core-pan").__vue__.selectedList;
             }
+        }, NetDiskDirectService.getLogid = function() {
+            return window.btoa(Core.getCookie("BAIDUID"));
+        }, NetDiskDirectService.getToken = function() {
+            var _a;
+            return __awaiter(this, void 0, void 0, (function() {
+                var token, res;
+                return __generator(this, (function(_b) {
+                    switch (_b.label) {
+                      case 0:
+                        return (token = Config.get("baiduToken") && Config.get("baiduToken").length > 0 && Config.get("baiduToken")) ? [ 2, token ] : [ 4, Route.baiduAccessToken() ];
+
+                      case 1:
+                        return -1 !== (res = _b.sent()).indexOf("access_token") ? [ 3, 4 ] : [ 4, Route.baiduAccessTokenAuth() ];
+
+                      case 2:
+                        return _b.sent(), [ 4, Route.baiduAccessToken() ];
+
+                      case 3:
+                        if (-1 === (res = _b.sent()).indexOf("access_token")) return sAlert.error("\u63d0\u793a\uff1a\u83b7\u53d6token\u5931\u8d25\uff01"), 
+                        [ 2, !1 ];
+                        _b.label = 4;
+
+                      case 4:
+                        return (token = null === (_a = res.match(/access_token=([^&]+)/)) || void 0 === _a ? void 0 : _a[1]) && Config.set("baiduToken", token), 
+                        [ 2, token ];
+                    }
+                }));
+            }));
+        }, NetDiskDirectService.sendLinkToRPC = function(filename, link, ua, cookie) {
+            return __awaiter(this, void 0, void 0, (function() {
+                var url, rpcData, e_1;
+                return __generator(this, (function(_a) {
+                    switch (_a.label) {
+                      case 0:
+                        url = Config.get(ConfigEnum.WangPan_Aria_Host, "http://localhost") + ":" + Config.get(ConfigEnum.WangPan_Aria_Port, 6800) + Config.get(ConfigEnum.WangPan_Aria_Path, "/jsonrpc"), 
+                        rpcData = {
+                            id: (new Date).getTime(),
+                            jsonrpc: "2.0",
+                            method: "aria2.addUri",
+                            params: [ "token:" + Config.get(ConfigEnum.WangPan_Aria_Token, ""), [ link ], {
+                                dir: Config.get(ConfigEnum.WangPan_Aria_Dir, "D:\\"),
+                                out: filename,
+                                header: [ "User-Agent: " + ua, "Cookie: " + cookie ]
+                            } ]
+                        }, _a.label = 1;
+
+                      case 1:
+                        return _a.trys.push([ 1, 3, , 4 ]), [ 4, Http.ajaxNew(url, "POST", rpcData, new Map([ [ "User-Agent", ua ] ])) ];
+
+                      case 2:
+                        return [ 2, !!_a.sent() ];
+
+                      case 3:
+                        return e_1 = _a.sent(), Logger.error(e_1), [ 2, !1 ];
+
+                      case 4:
+                        return [ 2 ];
+                    }
+                }));
+            }));
         }, NetDiskDirectService.baiduEvent = function() {
+            var _this = this;
             $(document).on("click", ".okv-btn-direct", (function(e) {
                 var fidsStr, selectList = NetDiskDirectService.baiduSelectedList();
                 0 !== selectList.length ? 2 !== (fidsStr = "[" + selectList.map((function(item) {
                     return item.fs_id;
-                })).join(",") + "]").length ? Route.baiduDriect(fidsStr).then((function(res) {
-                    Logger.debug(res), 0 === res.errno ? sAlert.html("\u76f4\u94fe\u4fe1\u606f", NetDiskDirectService.generateDom(res.list.map((function(e) {
-                        var obj = new QuarkFileResponse;
-                        return obj.fid = e.fs_id.toString(), obj.file_name = e.filename, obj.download_url = e.dlink, 
-                        obj.size = e.size, obj;
-                    }))), !0, "\u6211\u597d\u4e86", "#3085d6", "40%") : 112 === res.errno ? sAlert.error("\u63d0\u793a\uff1a\u9875\u9762\u8fc7\u671f\uff0c\u8bf7\u5237\u65b0\u91cd\u8bd5\uff01") : sAlert.error("\u63d0\u793a\uff1a\u83b7\u53d6\u4e0b\u8f7d\u94fe\u63a5\u5931\u8d25\uff01\u8bf7\u5237\u65b0\u7f51\u9875\u540e\u91cd\u8bd5\uff01");
+                })).join(",") + "]").length ? _this.getToken().then((function(token) {
+                    Route.baiduDriect(fidsStr, token).then((function(res) {
+                        return __awaiter(_this, void 0, void 0, (function() {
+                            var ck_1, _a;
+                            return __generator(this, (function(_b) {
+                                switch (_b.label) {
+                                  case 0:
+                                    return Logger.debug(res), 0 !== res.errno ? [ 3, 2 ] : (_a = "BDUSS=", [ 4, Core.getGmCookie("BDUSS") ]);
+
+                                  case 1:
+                                    return ck_1 = _a + _b.sent() + ";", sAlert.html("\u76f4\u94fe\u4fe1\u606f", NetDiskDirectService.generateDom(res.list.map((function(e) {
+                                        var obj = new QuarkFileResponse;
+                                        return obj.fid = e.fs_id.toString(), obj.file_name = e.filename, obj.download_url = e.dlink, 
+                                        obj.size = e.size, obj.ua = "pan.baidu.com", obj.cookie = ck_1, obj;
+                                    }))), !0, "\u6211\u597d\u4e86", "#3085d6", "auto"), [ 3, 3 ];
+
+                                  case 2:
+                                    112 === res.errno ? sAlert.error("\u63d0\u793a\uff1a\u9875\u9762\u8fc7\u671f\uff0c\u8bf7\u5237\u65b0\u91cd\u8bd5\uff01") : sAlert.error("\u63d0\u793a\uff1a\u83b7\u53d6\u4e0b\u8f7d\u94fe\u63a5\u5931\u8d25\uff01\u8bf7\u5237\u65b0\u7f51\u9875\u540e\u91cd\u8bd5\uff01"), 
+                                    _b.label = 3;
+
+                                  case 3:
+                                    return [ 2 ];
+                                }
+                            }));
+                        }));
+                    }));
                 })) : sAlert.error("\u63d0\u793a\uff1a\u8bf7\u6253\u5f00\u6587\u4ef6\u5939\u540e\u52fe\u9009\u6587\u4ef6\uff01") : sAlert.error("\u63d0\u793a\uff1a\u8bf7\u5148\u52fe\u9009\u8981\u4e0b\u8f7d\u7684\u6587\u4ef6\uff01");
             }));
         }, NetDiskDirectService.quarkEvent = function() {
@@ -1981,20 +2139,41 @@
                 })).map((function(e) {
                     return e.fid;
                 })), NetDiskDirectService._site == SiteEnum.KuaKeHome ? Route.quarkDriect(fids).then((function(res) {
-                    Logger.debug(res), 31001 != res.code ? 0 == res.code ? sAlert.html("\u76f4\u94fe\u4fe1\u606f", NetDiskDirectService.generateDom(res.data), !0, "\u6211\u597d\u4e86", "#3085d6", "40%") : sAlert.error("\u94fe\u63a5\u83b7\u53d6\u5931\u8d25,\u8bf7\u7a0d\u540e\u518d\u8bd5(" + res.code + ")") : sAlert.error("\u8bf7\u5148\u767b\u5f55\u7f51\u76d8");
+                    if (Logger.debug(res), 31001 != res.code) if (0 == res.code) {
+                        var data = res.data.map((function(e) {
+                            return e.cookie = unsafeWindow.document.cookie, e;
+                        }));
+                        sAlert.html("\u76f4\u94fe\u4fe1\u606f", NetDiskDirectService.generateDom(data), !0, "\u6211\u597d\u4e86", "#3085d6", "auto");
+                    } else sAlert.error("\u94fe\u63a5\u83b7\u53d6\u5931\u8d25,\u8bf7\u7a0d\u540e\u518d\u8bd5(" + res.code + ")"); else sAlert.error("\u8bf7\u5148\u767b\u5f55\u7f51\u76d8");
                 })) : sAlert.error("\u8bf7\u5148\u5c06\u6587\u4ef6\u4fdd\u5b58\u5230\u81ea\u5df1\u7684\u7f51\u76d8")) : sAlert.error("\u6682\u4e0d\u652f\u6301\u6587\u4ef6\u5939\u4e0b\u8f7d") : sAlert.error("\u8bf7\u5148\u52fe\u9009\u8981\u4e0b\u8f7d\u7684\u6587\u4ef6");
             }));
         }, NetDiskDirectService.commonEvent = function() {
+            var _this = this;
             $(document).on("click", ".quark-down-item", (function(e) {
                 Core.open(e.target.dataset.url, !0);
             })), $(document).on("click", ".quark-copy-item", (function(e) {
-                GM_setClipboard(e.target.dataset.url), sAlert.info("\u590d\u5236\u6210\u529f");
+                GM_setClipboard(e.target.dataset.url), e.target.innerText = "\u590d\u5236\u6210\u529f";
+            })), $(document).on("click", ".quark-send-item", (function(e) {
+                return __awaiter(_this, void 0, void 0, (function() {
+                    var url, filename, ua, ck, res;
+                    return __generator(this, (function(_a) {
+                        switch (_a.label) {
+                          case 0:
+                            return url = e.target.dataset.url, filename = e.target.dataset.filename, ua = e.target.dataset.ua, 
+                            ck = e.target.dataset.ck, [ 4, NetDiskDirectService.sendLinkToRPC(filename, url, ua, ck) ];
+
+                          case 1:
+                            return res = _a.sent(), e.target.innerText = res ? "\u53d1\u9001\u6210\u529f" : "\u53d1\u9001\u5931\u8d25(\u8bf7\u68c0\u67e5\u914d\u7f6e)", 
+                            [ 2 ];
+                        }
+                    }));
+                }));
             }));
         }, NetDiskDirectService.generateDom = function(list) {
             var rows = "";
             return list.forEach((function(e) {
-                rows += '<tr>\n                        <td class="bili-table-cell">' + e.file_name + '</td>\n                        <td class="bili-table-cell">' + Core.sizeFormat(e.size) + '</td>\n                        <td class="bili-table-cell">\n                        <button class="okv-btn okv-btn-primary quark-copy-item" data-url="' + e.download_url + '">\u590d\u5236\u94fe\u63a5</button>\n                        <button class="okv-btn okv-btn-primary quark-down-item" data-url="' + e.download_url + '">\u4e0b\u8f7d</button>\n                        </td>\n                    </tr>';
-            })), '<div style="height: 30rem"><table class="bili-table bili-table-small">\n                    <thead class="bili-table-head">\n                        <tr>                        \n                            <th class="bili-table-cell">\u6807\u9898</th>\n                            <th class="bili-table-cell">\u5927\u5c0f</th>\n                            <th class="bili-table-cell">\u64cd\u4f5c</th>\n                        </tr>\n                    </thead>\n                    <tbody class="at-table-tbody">                    \n                        ' + rows + "\n                    </tbody>    \n                </table></div>";
+                rows += '<tr>\n                        <td class="bili-table-cell">' + e.file_name + '</td>\n                        <td class="bili-table-cell">' + Core.sizeFormat(e.size) + '</td>\n                        <td class="bili-table-cell">\n                        <button class="okv-btn okv-btn-primary okv-btn-success quark-send-item" data-url="' + e.download_url + '" data-filename="' + e.file_name + '" data-ua="' + e.ua + '" data-ck="' + e.cookie + '">\u53d1\u9001Aria</button>\n                        <button class="okv-btn okv-btn-primary quark-copy-item" data-url="' + e.download_url + '">\u590d\u5236\u94fe\u63a5</button>\n                        <button class="okv-btn okv-btn-primary quark-down-item" data-url="' + e.download_url + '">\u4e0b\u8f7d</button>\n                        </td>\n                    </tr>';
+            })), '<div style="height: 30rem">\n                    <div style="padding-bottom: 25px;">\u5982\u679c\u51fa\u73b0403\u8bf7\u5c1d\u8bd5<a style="color: red" target="_blank" href="https://settings.wandhi.com/tools/wangpan/page.html">\u68c0\u67e5\u914d\u7f6e</a>\u6216\u5347\u7ea7<a target="_blank" href="' + Route.install_url_two + '">\u6700\u65b0\u7248\u672c</a></div>\n                    <table class="bili-table bili-table-small">\n                        <thead class="bili-table-head">\n                            <tr>                        \n                                <th class="bili-table-cell">\u6807\u9898</th>\n                                <th class="bili-table-cell">\u5927\u5c0f</th>\n                                <th class="bili-table-cell">\u64cd\u4f5c</th>\n                            </tr>\n                        </thead>\n                        <tbody class="at-table-tbody">                    \n                            ' + rows + "\n                        </tbody>    \n                    </table>\n                </div>";
         }, NetDiskDirectService.initButton = function() {
             Core.autoLazyload((function() {
                 return $(NetDiskDirectService.btnSelecotr).length > 0;
