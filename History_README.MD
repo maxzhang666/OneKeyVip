@@ -15,7 +15,7 @@
 👉[点我](https://qm.qq.com/cgi-bin/qm/qr?k=oPx93FEy2sZCnIRN74xSYbrFcU-p5D4W&jump_from=webapi&authKey=GSyv7KekSu7mHLKiB13u/E+XGxjJHn7vbEE2SUJZ4imN0uIixixS7qm1ZaFI/qpg)
 👈或使用手机QQ扫码加群(禁言)
 
-<img src="https://i2.100024.xyz/2023/06/24/zdrlk4.webp" alt="垃圾佬" width="20%">
+<img src="https://i2.100024.xyz/2023/08/25/xsjquk.webp" alt="垃圾佬" width="20%">
 
 ## 🔧 [插件功能(点我查看详情)](https://wiki.wandhi.com/zh-cn/Feature.html)
 
