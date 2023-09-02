@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,夸克网盘直链批量获取,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.9.10
+// @version      4.9.9
 // @homepage     https://wiki.wandhi.com/
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转；🎉 12、搜索引擎快速跳转
@@ -121,14 +121,15 @@
 // @license MIT
 // @grant GM_setClipboard
 // @run-at document-end
+// @connect shangxueba365.com
 // @connect api.wandhi.com
 // @connect cdn.jsdelivr.net
 // @connect tool.manmanbuy.com
+// @connect xbeibeix.com
 // @connect gwdang.com
 // @connect scriptcat.org
 // @connect quark.cn
 // @connect openapi.baidu.com
-// @connect localhost
 // @grant unsafeWindow
 // @grant GM_xmlhttpRequest
 // @grant GM_info
@@ -3592,7 +3593,7 @@
             var rows = "";
             return list.forEach((function(e) {
                 rows += '<tr>\n                        <td class="bili-table-cell">' + e.file_name + '</td>\n                        <td class="bili-table-cell">' + Core.sizeFormat(e.size) + '</td>\n                        <td class="bili-table-cell">\n                        <button class="okv-btn okv-btn-primary okv-btn-success quark-send-item" data-url="' + e.download_url + '" data-filename="' + e.file_name + '" data-ua="' + e.ua + '" data-ck="' + e.cookie + '">\u53d1\u9001Aria</button>\n                        <button class="okv-btn okv-btn-primary quark-copy-item" data-url="' + e.download_url + '">\u590d\u5236\u94fe\u63a5</button>\n                        <button class="okv-btn okv-btn-primary quark-down-item" data-url="' + e.download_url + '">\u4e0b\u8f7d</button>\n                        </td>\n                    </tr>';
-            })), '<div style="height: 30rem">\n                    <div style="padding-bottom: 25px;">\u5982\u679c\u51fa\u73b0403\u8bf7\u5c1d\u8bd5<a style="color: red" target="_blank" href="https://settings.wandhi.com/tools/wangpan/page.html">\u68c0\u67e5\u914d\u7f6e</a>\u6216\u5347\u7ea7<a target="_blank" href="' + Route.install_url_two + '">\u6700\u65b0\u7248\u672c</a>\n                    <p>\u76f4\u94fe<b style="color: red">\u5e76\u4e0d\u80fd</b> \u4ee3\u66ff\u7f51\u76d8VIP\u529f\u80fd\uff0c\u4e0d\u4f1a\u4f7f\u7528\u8bf7\u5148\u67e5\u770b<a href="https://wiki.wandhi.com" style="color: blue" target="_blank">Wiki</a></p>\n                    <p><b style="color: red">\u5927\u6587\u4ef6</b>\u8bf7\u4f18\u5148\u4f7f\u7528Aria\u4e4b\u7c7b\u7684\u4e0b\u8f7d\u5de5\u5177,\u76f4\u63a5\u70b9\u51fb\u4e0b\u8f7d\u5927\u6982\u7387\u4f1a\u6ca1\u6743\u9650</p>\n                    </div>\n                    <table class="bili-table bili-table-small">\n                        <thead class="bili-table-head">\n                            <tr>                        \n                                <th class="bili-table-cell">\u6807\u9898</th>\n                                <th class="bili-table-cell">\u5927\u5c0f</th>\n                                <th class="bili-table-cell">\u64cd\u4f5c</th>\n                            </tr>\n                        </thead>\n                        <tbody class="at-table-tbody">                    \n                            ' + rows + "\n                        </tbody>    \n                    </table>\n                </div>";
+            })), '<div style="height: 30rem">\n                    <div style="padding-bottom: 25px;">\u5982\u679c\u51fa\u73b0403\u8bf7\u5c1d\u8bd5<a style="color: red" target="_blank" href="https://settings.wandhi.com/tools/wangpan/page.html">\u68c0\u67e5\u914d\u7f6e</a>\u6216\u5347\u7ea7<a target="_blank" href="' + Route.install_url_two + '">\u6700\u65b0\u7248\u672c</a></div>\n                    <table class="bili-table bili-table-small">\n                        <thead class="bili-table-head">\n                            <tr>                        \n                                <th class="bili-table-cell">\u6807\u9898</th>\n                                <th class="bili-table-cell">\u5927\u5c0f</th>\n                                <th class="bili-table-cell">\u64cd\u4f5c</th>\n                            </tr>\n                        </thead>\n                        <tbody class="at-table-tbody">                    \n                            ' + rows + "\n                        </tbody>    \n                    </table>\n                </div>";
         }, NetDiskDirectService.initButton = function() {
             Core.autoLazyload((function() {
                 return $(NetDiskDirectService.btnSelecotr).length > 0;
