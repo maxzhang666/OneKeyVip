@@ -537,8 +537,9 @@
             return new Promise((function(resolve, reject) {
                 "undefined" != typeof GM_cookie ? GM_cookie.list({
                     name: key
-                }, (function(cookies) {
-                    cookies.length > 0 ? resolve(cookies[0].value) : resolve("");
+                }, (function(cookies, error) {
+                    (null == cookies ? void 0 : cookies.length) > 0 ? resolve(cookies[0].value) : (Logger.warn("get cookie [" + key + "] is error:" + error), 
+                    resolve(""));
                 })) : resolve("");
             }));
         }, Core.getCookie = function(key) {
@@ -916,9 +917,8 @@
             return Http.ajaxNew("https://drive.quark.cn/1/clouddrive/file/download?pr=ucpro&fr=pc", "POST", {
                 fids: fids
             }, new Map([ [ "User-Agent", "quark-cloud-drive" ] ]));
-        }, Route.update_api_script_cat = "https://scriptcat.org/api/v2/scripts/72", Route.home_url = "https://wiki.wandhi.com", 
-        Route.home_url_update = "https://wiki.wandhi.com/zh-cn/Changelog.html", Route.install_url_one = "https://greasyfork.org/zh-CN/scripts/384538", 
-        Route.install_url_two = "https://scriptcat.org/script-show-page/72", Route.sxb_anhao = "http://www.lelunwen.com/e/action/ListInfo/?classid=45", 
+        }, Route.home_url = "https://wiki.wandhi.com", Route.home_url_update = "https://wiki.wandhi.com/zh-cn/Changelog.html", 
+        Route.install_url_one = "https://greasyfork.org/zh-CN/scripts/384538", Route.sxb_anhao = "http://www.lelunwen.com/e/action/ListInfo/?classid=45", 
         Route.sxb_key = "sxb_anhao", Route.config = "/config/query", Route.history = "/history/", 
         Route.historyv1 = "/history/v1", Route.historyv2 = "/history/v2", Route.historyv3 = "/history/v3", 
         Route.bili = "/tools/bili", Route.biliInfo = "https://api.bilibili.com/x/web-interface/view", 
@@ -1028,10 +1028,10 @@
                 this.scriptCat(current);
             }
         }, UpdateService.prototype.scriptCat = function(current) {
-            Http.get(Route.update_api_script_cat, new Map, new Map, !1).then((function(r) {
+            Http.get("https://scriptcat.org/api/v2/scripts/72", new Map, new Map, !1).then((function(r) {
                 var _a, _b, msg, version = new VersionCompar(null === (_b = null === (_a = null == r ? void 0 : r.data) || void 0 === _a ? void 0 : _a.script) || void 0 === _b ? void 0 : _b.version);
                 Logger.debug("\u5f53\u524d\u7248\u672c:[" + current.versionString + "],\u6700\u65b0\u7248\u672c:[" + version.versionString + "]"), 
-                version.compareTo(current) === VersionResult.greater && (msg = "\u65b0\u7248\u672c<span>" + version.versionString + '</span>\u5df2\u53d1\u5e03.<a class="link" target="_blank" href="' + Route.home_url_update + '">\u67e5\u770b</a><br><a id="new-version-link" class="link" href="' + Route.install_url_two + '" target="_blank">\u5b89\u88c5</a>', 
+                version.compareTo(current) === VersionResult.greater && (msg = "\u65b0\u7248\u672c<span>" + version.versionString + '</span>\u5df2\u53d1\u5e03.<a class="link" target="_blank" href="' + Route.home_url_update + '">\u67e5\u770b</a><br><a id="new-version-link" class="link" href="' + UpdateService.install_url_two + '" target="_blank">\u5b89\u88c5</a>', 
                 GM_addStyle(".swal2-popup{font-size: 16px !important}"), Swal__default.default.fire({
                     toast: !0,
                     position: "bottom-left",
@@ -1047,7 +1047,8 @@
                     Logger.info(result), result.isConfirmed ? Config.set(update_key, !0, Day) : result.isDismissed && Config.set(update_key, !0, 365 * Day);
                 }))), Config.set(update_key, !0, Hour);
             }));
-        }, UpdateService;
+        }, UpdateService.install_url_two = "https://scriptcat.org/script-show-page/72", 
+        UpdateService;
     }(PluginBase), VersionCompar = function() {
         function VersionCompar(e) {
             /^[\d\.]+$/.test(e) || Logger.error("Invalid version string"), this.parts = e.split(".").map((function(e) {
@@ -3592,7 +3593,7 @@
             var rows = "";
             return list.forEach((function(e) {
                 rows += '<tr>\n                        <td class="bili-table-cell">' + e.file_name + '</td>\n                        <td class="bili-table-cell">' + Core.sizeFormat(e.size) + '</td>\n                        <td class="bili-table-cell">\n                        <button class="okv-btn okv-btn-primary okv-btn-success quark-send-item" data-url="' + e.download_url + '" data-filename="' + e.file_name + '" data-ua="' + e.ua + '" data-ck="' + e.cookie + '">\u53d1\u9001Aria</button>\n                        <button class="okv-btn okv-btn-primary quark-copy-item" data-url="' + e.download_url + '">\u590d\u5236\u94fe\u63a5</button>\n                        <button class="okv-btn okv-btn-primary quark-down-item" data-url="' + e.download_url + '">\u4e0b\u8f7d</button>\n                        </td>\n                    </tr>';
-            })), '<div style="height: 30rem">\n                    <div style="padding-bottom: 25px;">\u5982\u679c\u51fa\u73b0403\u8bf7\u5c1d\u8bd5<a style="color: red" target="_blank" href="https://settings.wandhi.com/tools/wangpan/page.html">\u68c0\u67e5\u914d\u7f6e</a>\u6216\u5347\u7ea7<a target="_blank" href="' + Route.install_url_two + '">\u6700\u65b0\u7248\u672c</a>\n                    <p>\u76f4\u94fe<b style="color: red">\u5e76\u4e0d\u80fd</b> \u4ee3\u66ff\u7f51\u76d8VIP\u529f\u80fd\uff0c\u4e0d\u4f1a\u4f7f\u7528\u8bf7\u5148\u67e5\u770b<a href="https://wiki.wandhi.com" style="color: blue" target="_blank">Wiki</a></p>\n                    <p><b style="color: red">\u5927\u6587\u4ef6</b>\u8bf7\u4f18\u5148\u4f7f\u7528Aria\u4e4b\u7c7b\u7684\u4e0b\u8f7d\u5de5\u5177,\u76f4\u63a5\u70b9\u51fb\u4e0b\u8f7d\u5927\u6982\u7387\u4f1a\u6ca1\u6743\u9650</p>\n                    </div>\n                    <table class="bili-table bili-table-small">\n                        <thead class="bili-table-head">\n                            <tr>                        \n                                <th class="bili-table-cell">\u6807\u9898</th>\n                                <th class="bili-table-cell">\u5927\u5c0f</th>\n                                <th class="bili-table-cell">\u64cd\u4f5c</th>\n                            </tr>\n                        </thead>\n                        <tbody class="at-table-tbody">                    \n                            ' + rows + "\n                        </tbody>    \n                    </table>\n                </div>";
+            })), '<div style="height: 30rem">\n                    <div style="padding-bottom: 25px;">\u5982\u679c\u51fa\u73b0403\u8bf7\u5c1d\u8bd5<a style="color: red" target="_blank" href="https://settings.wandhi.com/tools/wangpan/page.html">\u68c0\u67e5\u914d\u7f6e</a>\u6216\u5347\u7ea7<a target="_blank" href="https://scriptcat.org/script-show-page/72">\u6700\u65b0\u7248\u672c</a>\n                    <p>\u76f4\u94fe<b style="color: red">\u5e76\u4e0d\u80fd</b> \u4ee3\u66ff\u7f51\u76d8VIP\u529f\u80fd\uff0c\u4e0d\u4f1a\u4f7f\u7528\u8bf7\u5148\u67e5\u770b<a href="https://wiki.wandhi.com" style="color: blue" target="_blank">Wiki</a></p>\n                    <p><b style="color: red">\u5927\u6587\u4ef6</b>\u8bf7\u4f18\u5148\u4f7f\u7528Aria\u4e4b\u7c7b\u7684\u4e0b\u8f7d\u5de5\u5177,\u76f4\u63a5\u70b9\u51fb\u4e0b\u8f7d\u5927\u6982\u7387\u4f1a\u6ca1\u6743\u9650</p>\n                    </div>\n                    <table class="bili-table bili-table-small">\n                        <thead class="bili-table-head">\n                            <tr>                        \n                                <th class="bili-table-cell">\u6807\u9898</th>\n                                <th class="bili-table-cell">\u5927\u5c0f</th>\n                                <th class="bili-table-cell">\u64cd\u4f5c</th>\n                            </tr>\n                        </thead>\n                        <tbody class="at-table-tbody">                    \n                            ' + rows + "\n                        </tbody>    \n                    </table>\n                </div>";
         }, NetDiskDirectService.initButton = function() {
             Core.autoLazyload((function() {
                 return $(NetDiskDirectService.btnSelecotr).length > 0;

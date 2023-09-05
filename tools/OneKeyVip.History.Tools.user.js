@@ -424,8 +424,9 @@
             return new Promise((function(resolve, reject) {
                 "undefined" != typeof GM_cookie ? GM_cookie.list({
                     name: key
-                }, (function(cookies) {
-                    cookies.length > 0 ? resolve(cookies[0].value) : resolve("");
+                }, (function(cookies, error) {
+                    (null == cookies ? void 0 : cookies.length) > 0 ? resolve(cookies[0].value) : (Logger.warn("get cookie [" + key + "] is error:" + error), 
+                    resolve(""));
                 })) : resolve("");
             }));
         }, Core.getCookie = function(key) {
@@ -893,9 +894,8 @@
             return Http.ajaxNew("https://drive.quark.cn/1/clouddrive/file/download?pr=ucpro&fr=pc", "POST", {
                 fids: fids
             }, new Map([ [ "User-Agent", "quark-cloud-drive" ] ]));
-        }, Route.update_api_script_cat = "https://scriptcat.org/api/v2/scripts/72", Route.home_url = "https://wiki.wandhi.com", 
-        Route.home_url_update = "https://wiki.wandhi.com/zh-cn/Changelog.html", Route.install_url_one = "https://greasyfork.org/zh-CN/scripts/384538", 
-        Route.install_url_two = "https://scriptcat.org/script-show-page/72", Route.sxb_anhao = "http://www.lelunwen.com/e/action/ListInfo/?classid=45", 
+        }, Route.home_url = "https://wiki.wandhi.com", Route.home_url_update = "https://wiki.wandhi.com/zh-cn/Changelog.html", 
+        Route.install_url_one = "https://greasyfork.org/zh-CN/scripts/384538", Route.sxb_anhao = "http://www.lelunwen.com/e/action/ListInfo/?classid=45", 
         Route.sxb_key = "sxb_anhao", Route.config = "/config/query", Route.history = "/history/", 
         Route.historyv1 = "/history/v1", Route.historyv2 = "/history/v2", Route.historyv3 = "/history/v3", 
         Route.bili = "/tools/bili", Route.biliInfo = "https://api.bilibili.com/x/web-interface/view", 
