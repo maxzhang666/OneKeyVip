@@ -13,10 +13,10 @@
 
 ## 💕京东、淘宝活动导购群 推荐
 
-👉[点我](https://qm.qq.com/q/GbzZmprgY4)
+👉[点我](https://qm.qq.com/q/6c34zSGkuc)
 👈或使用手机QQ扫码加群(禁言)
 
-<img src="https://i2.100024.xyz/2023/09/02/112wan4.webp" alt="垃圾佬" width="20%">
+<img src="https://i2.100024.xyz/2023/09/10/j1dk77.webp" alt="垃圾佬" width="20%">
 <img src="https://i2.100024.xyz/2023/08/25/xsjquk.webp" alt="垃圾佬" width="20%">
 
 ## 声明
