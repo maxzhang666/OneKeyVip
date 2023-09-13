@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,夸克网盘直链批量获取,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.9.11
+// @version      4.9.12
 // @homepage     https://wiki.wandhi.com/
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转；🎉 12、搜索引擎快速跳转
@@ -158,7 +158,7 @@
     "object" == typeof exports && "undefined" != typeof module ? factory(require("sweetalert2"), require("viewerjs")) : "function" == typeof define && define.amd ? define([ "sweetalert2", "viewerjs" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).Swal, global.Viewer);
 })(this, (function(Swal, Viewer) {
     "use strict";
-    var Swal__default, Viewer__default, extendStatics, update_key, Min, Hour, Day, Week, BrowerType, Logger, LogLevel, Core, Config, AjaxOption, Alert, Http, HttpHeaders, Route, css_248z$a, Common, PluginBase, SiteEnum, UpdateService, VersionCompar, VersionResult, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$9, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$8, sAlert, GwdService, css_248z$7, TaoBaoService, container, Container, css_248z$6, ConfigEnum, BiliImgService, Menu$1, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$5, CsdnAdService, Menu, WenKuService, LinkJumpService, css_248z$4, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$3, css_248z$2, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, NetDiskDirectService, AdClearService, css_248z$1, ImgViewService, css_248z, ZhihuService, OneKeyVipInjection;
+    var Swal__default, Viewer__default, extendStatics, update_key, Min, Hour, Day, Week, BrowerType, Logger, LogLevel, Core, Config, AjaxOption, Alert, Http, HttpHeaders, Route, css_248z$a, Common, PluginBase, SiteEnum, UpdateService, VersionCompar, VersionResult, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$9, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$8, sAlert, GwdService, css_248z$7, TaoBaoService, container, Container, css_248z$6, ConfigEnum, BiliImgService, Menu$2, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$5, CsdnAdService, Menu$1, WenKuService, LinkJumpService, css_248z$4, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$3, css_248z$2, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, NetDiskDirectService, AdClearService, css_248z$1, ImgViewService, css_248z, ZhihuService, Menu, XhsService, OneKeyVipInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
@@ -2500,7 +2500,7 @@
         BiliImgService.downBtn = '<button id="downvideo" class="okv-btn okv-btn-primary okv-bg-pink bili-top-button">\u4e0b\u8f7d\u89c6\u9891</button>', 
         BiliImgService.tripleClickBtn = '<button class="okv-btn okv-btn-primary okv-bg-pink bili-top-button" id="tripleClick">\u4e00\u4e0b\u70b9\u4ee8(\u70b9\u8d5e\u3001\u6295\u5e01\u3001\u6536\u85cf)</button>', 
         BiliImgService.hookSelector = ".okv-tools-bili", BiliImgService;
-    }(PluginBase), Menu$1 = Common.Menu, MovieService = function(_super) {
+    }(PluginBase), Menu$2 = Common.Menu, MovieService = function(_super) {
         function MovieService() {
             var _this = _super.call(this) || this;
             return _this.rules = new Map([ [ SiteEnum.HiTv, /tv\.wandhi\.com\/go\.html/i ], [ SiteEnum.YouKu, /youku\.com/i ], [ SiteEnum.IQiYi, /iqiyi|iq\.com/i ], [ SiteEnum.LeShi, /\.le\.com/i ], [ SiteEnum.Tencent_V, /v\.qq/i ], [ SiteEnum.TuDou, /tudou\.com/i ], [ SiteEnum.MangGuo, /mgtv\.com/i ], [ SiteEnum.SoHu, /sohu\.com/i ], [ SiteEnum.Acfun, /acfun\.com/i ], [ SiteEnum.BiliBili, /bilibili\.com/i ], [ SiteEnum.M1905, /1905\.com/i ], [ SiteEnum.PPTV, /pptv\.com/i ], [ SiteEnum.YinYueTai, /yinyuetai\.com/ ] ]), 
@@ -2550,7 +2550,7 @@
             $("body").on("click", "[data-cat=process]", (function() {
                 Core.open("http://tv.wandhi.com/go.html?url=" + encodeURIComponent(window.location.href));
             })), $("body").on("click", "[data-cat=search]", (function() {
-                Menu$1.close();
+                Menu$2.close();
             })), $("body").on("click", "[data-cat=tb]", (function() {
                 Core.open("http://shop.huizhek.com");
             })), $("body").on("click", "[data-cat=jd]", (function() {
@@ -2912,7 +2912,7 @@
             }));
         }, CsdnAdService.adSelectors = [ "#footerRightAds", ".side-question-box", "div[id^='dmp_ad']", "div[class^='ad_']", "div[id^='floor-ad_']", ".adsbygoogle", "#recommendAdBox", "#asideNewNps", ".box-shadow" ], 
         CsdnAdService;
-    }(PluginBase), Menu = Common.Menu, WenKuService = function(_super) {
+    }(PluginBase), Menu$1 = Common.Menu, WenKuService = function(_super) {
         function WenKuService() {
             var _this = _super.call(this) || this;
             return _this.rules = new Map([ [ SiteEnum.WenKu, /wenku\.baidu\.com\/view/i ] ]), 
@@ -2973,7 +2973,7 @@
                             }));
                         }));
                     })), $("body").on("click", "[data-cat=search]", (function() {
-                        Menu.close();
+                        Menu$1.close();
                     })), $("body").on("click", "[data-cat=tb]", (function() {
                         Core.open("http://shop.huizhek.com");
                     })), $("body").on("click", "[data-cat=jd]", (function() {
@@ -3687,9 +3687,57 @@
                 $(authorItem).append(h), $(ele).addClass("okv-time-init");
             }));
         }, ZhihuService;
+    }(PluginBase), Menu = Common.Menu, XhsService = function(_super) {
+        function XhsService() {
+            var _this = null !== _super && _super.apply(this, arguments) || this;
+            return _this.rules = new Map([ [ SiteEnum.Xhs, /www\.xiaohongshu\.com\/explore/ ] ]), 
+            _this._appName = "xhs", _this._unique = !1, _this;
+        }
+        return __extends(XhsService, _super), XhsService.prototype.loader = function() {}, 
+        XhsService.prototype.run = function() {
+            Logger.debug("xhs service");
+            this.menu.Init([ {
+                title: "\u672c\u6b21\u5173\u95ed",
+                show: "\u672c\u6b21<br>\u5173\u95ed",
+                type: "search"
+            }, {
+                title: "\u6c34\u5370\u89e3\u6790",
+                show: "\u6c34\u5370<br>\u89e3\u6790",
+                type: "process"
+            }, {
+                title: "\u7edd\u4e16\u597d\u5238",
+                show: "\u7edd\u4e16<br>\u597d\u5238",
+                type: "tb"
+            }, {
+                title: "\u4eac\u4e1c\u597d\u5238",
+                show: "\u4eac\u4e1c<br>\u597d\u5238",
+                type: "jd"
+            } ], this._onClick);
+        }, XhsService.prototype._onClick = function() {
+            $("body").on("click", "[data-cat=process]", (function() {
+                XhsService.xhsPorcess();
+            })), $("body").on("click", "[data-cat=search]", (function() {
+                Menu.close();
+            })), $("body").on("click", "[data-cat=tb]", (function() {
+                Core.open("http://shop.huizhek.com");
+            })), $("body").on("click", "[data-cat=jd]", (function() {
+                Core.open("http://shop.huizhek.com");
+            }));
+        }, XhsService.xhsPorcess = function() {
+            var _a, _b, _c, _d, info, noteId, note, selectNum, n, num, code, url = Core.url, res = /https:\/\/www\.xiaohongshu\.com\/explore\/[a-zA-Z0-9_\-]{5,22}/i.test(url);
+            if (res) if (Core.getCookie("gid")) {
+                if (noteId = null === (_a = null == (info = unsafeWindow.window.__INITIAL_STATE__) ? void 0 : info.note) || void 0 === _a ? void 0 : _a.firstNoteId.value) {
+                    if (!(note = null === (_c = null === (_b = null == info ? void 0 : info.note) || void 0 === _b ? void 0 : _b.noteDetailMap[noteId]) || void 0 === _c ? void 0 : _c.note)) return void sAlert.error("\u5185\u5bb9\u4fe1\u606f\u83b7\u53d6\u5931\u8d25");
+                    Logger.debug(note), "video" == (null == note ? void 0 : note.type) ? sAlert.warning("\u6682\u4e0d\u652f\u6301\u89c6\u9891\u89e3\u6790") : "normal" == (null == note ? void 0 : note.type) ? (selectNum = $(".fraction").text(), 
+                    Logger.debug(selectNum), num = 0, null == (n = selectNum.match(/\d+/)) || n.length < 1 || (num = Number.parseInt(n[0])), 
+                    code = null === (_d = null == note ? void 0 : note.imageList[num > 0 ? num - 1 : num]) || void 0 === _d ? void 0 : _d.infoList[1].url, 
+                    Core.open("https://jx.wandhi.com?u=" + window.btoa(code) + "&t=xhsimg")) : sAlert.error("\u9519\u8bef\u7684\u6570\u636e\u7c7b\u578b,\u8bf7\u5411\u4f5c\u8005\u53cd\u9988(" + (null == note ? void 0 : note.type) + ")");
+                }
+            } else sAlert.warning("\u8bf7\u5148\u767b\u5f55\u5c0f\u7ea2\u4e66"); else sAlert.warning("\u8bf7\u5148\u9009\u62e9\u4e00\u7bc7\u5185\u5bb9");
+        }, XhsService;
     }(PluginBase), OneKeyVipInjection = function() {
         function OneKeyVipInjection() {
-            this.plugins = new Array, this.plugins = [ Container.Require(AdClearService), Container.Require(ControlMenuService), Container.Require(ImgViewService), Container.Require(SettingService), Container.Require(AutoExpandService), Container.Require(AliyunPanToken), Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(BiliMobileService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(GwdService), Container.Require(CsdnAdService), Container.Require(WenKuService), Container.Require(LinkJumpService), Container.Require(YoutubeService), Container.Require(_GwdService), Container.Require(SearchService), Container.Require(NetDiskDirectService), Container.Require(ZhihuService) ], 
+            this.plugins = new Array, this.plugins = [ Container.Require(AdClearService), Container.Require(ControlMenuService), Container.Require(ImgViewService), Container.Require(SettingService), Container.Require(AutoExpandService), Container.Require(AliyunPanToken), Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(BiliMobileService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(XhsService), Container.Require(GwdService), Container.Require(CsdnAdService), Container.Require(WenKuService), Container.Require(LinkJumpService), Container.Require(YoutubeService), Container.Require(_GwdService), Container.Require(SearchService), Container.Require(NetDiskDirectService), Container.Require(ZhihuService) ], 
             Logger.info("container loaded");
         }
         return OneKeyVipInjection.prototype.Init = function() {
