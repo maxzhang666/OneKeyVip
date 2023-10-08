@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【One】懒人神器,懒人福利,全新架构,性能更出众————只需一个脚本包揽所有功能 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      1.0.9
+// @version      1.1.0
 // @homepage     https://tools.wandhi.com/scripts
 // @supportURL   https://wiki.wandhi.com/
 // @description  功能介绍：1、ScriptsCat脚本猫脚本查询 2、CSDN页面清理 3、页面磁力链接提取
@@ -750,7 +750,7 @@
         function FeiShuDocApp() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
             return _this._unique = !1, _this.appName = "\u98de\u4e66\u6587\u6863\u590d\u5236", 
-            _this.rules = new Map([ [ SiteEnum.FeiShuDoc, [ /bytedance\.feishu\.cn/i ] ] ]), 
+            _this.rules = new Map([ [ SiteEnum.FeiShuDoc, [ /bytedance\.feishu\.cn/i, /feishu\.cn\/docx/i ] ] ]), 
             _this;
         }
         return __extends(FeiShuDocApp, _super), FeiShuDocApp.prototype.loader = function() {

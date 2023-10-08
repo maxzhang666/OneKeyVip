@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,夸克网盘直链批量获取,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.9.13
+// @version      4.9.14
 // @homepage     https://wiki.wandhi.com/
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转；🎉 12、搜索引擎快速跳转
@@ -1683,11 +1683,13 @@
                 timer: 1e3 * time,
                 customClass: this.customeCss
             });
-        }, sAlert.msg = function(title, html) {
-            return Swal__default.default.fire({
+        }, sAlert.msg = function(title, html, width) {
+            return void 0 === width && (width = "32rem"), "auto" == width && (width = unsafeWindow.window.outerWidth < 900 ? "90%" : 800), 
+            Swal__default.default.fire({
                 title: "<strong>" + title + "</strong>",
                 html: html,
-                showCloseButton: !0
+                showCloseButton: !0,
+                width: width
             });
         }, sAlert.html = function(title, html, cancel, cancelTxt, cancelColor, width, confirm, confirmTxt) {
             return void 0 === cancel && (cancel = !1), void 0 === cancelTxt && (cancelTxt = ""), 
@@ -1723,13 +1725,17 @@
                 cancelButtonText: cancelText
             };
             return "" != denyText && (option.denyButtonText = denyText), Swal__default.default.fire(option);
-        }, sAlert.showImg = function(image, title, text, alt) {
-            return Swal__default.default.fire({
+        }, sAlert.showImg = function(image, title, text, alt, btnTxt) {
+            void 0 === btnTxt && (btnTxt = "");
+            var opt = {
                 title: title,
                 text: text,
                 imageUrl: image,
-                imageAlt: alt
-            });
+                imageAlt: alt,
+                showConfirmButton: !1
+            };
+            return null != btnTxt && (opt.showConfirmButton = !0, opt.confirmButtonText = btnTxt), 
+            Swal__default.default.fire(opt);
         }, sAlert.loading = function(time, target) {
             void 0 === time && (time = -1), void 0 === target && (target = null), null == target ? Swal__default.default.showLoading() : Swal__default.default.showLoading(target), 
             -1 != time && Core.sleep(time).then((function() {
@@ -2414,7 +2420,9 @@
             $(this.hookSelector).last().append(BiliImgService.coverBtn), $("body").on("click", "#findimg", (function() {
                 var aid = unsafeWindow.__INITIAL_STATE__.videoData.aid;
                 that.getVideoInfo(aid).then((function(res) {
-                    res ? sAlert.showImg(res.pic, "\u662f\u5c01\u9762\u5566", "\u554a\u54c8\u54c8\u54c8\u3001\u5c01\u9762\u6765\u54af", "\u662f\u5c01\u9762\u9171\u5566>\u3002<") : sAlert.error("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f");
+                    res ? sAlert.showImg(res.pic, "\u662f\u5c01\u9762\u5566", "\u554a\u54c8\u54c8\u54c8\u3001\u5c01\u9762\u6765\u54af", "\u662f\u5c01\u9762\u9171\u5566>\u3002<", "\u4e0b\u8f7d").then((function() {
+                        Core.open(res.pic);
+                    })) : sAlert.error("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f");
                 })).catch((function() {
                     sAlert.info("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f", "error", "center");
                 }));
@@ -3179,7 +3187,7 @@
         function AliyunPanToken() {
             var _this = _super.call(this) || this;
             return _this.rules = new Map([ [ SiteEnum.ALY, /www\.aliyundrive\.com\/drive*/i ] ]), 
-            _this.html = '\n    <li class=" ant-dropdown-menu-item-divider"></li>\n    <li class="ant-dropdown-menu-item ant-dropdown-menu-item-only-child" role="menuitem">\n        <div class="outer-menu--ihDUR">\n            <div class="item--2ReU2" id="onekeyvip-token">\n                <span data-role="icon" data-render-as="svg" data-icon-type="PDSMoreCircle" class="item-icon--1ydoa icon--d-ejA "><svg viewBox="0 0 1024 1024"><use xlink:href="#PDSMoreCircle"></use></svg></span>\n                \u83b7\u53d6Token\n            </div>\n        </div>\n    </li>\n    ', 
+            _this.html = '\n    <li class=" ant-dropdown-menu-item-divider"></li>\n    <li class="ant-dropdown-menu-item ant-dropdown-menu-item-only-child" role="menuitem">\n        <div class="outer-menu--U5weH">\n            <div class="item--2ReU2" id="onekeyvip-token">\n                <span data-role="icon" data-render-as="svg" data-icon-type="PDSMoreCircle" class="item-icon--1ydoa icon--d-ejA "><svg viewBox="0 0 1024 1024"><use xlink:href="#PDSMoreCircle"></use></svg></span>\n                \u83b7\u53d6Token\n            </div>\n        </div>\n    </li>\n    ', 
             _this._unique = !1, _this._appName = "aliyunpan-token", _this;
         }
         return __extends(AliyunPanToken, _super), AliyunPanToken.prototype.loader = function() {
@@ -3195,7 +3203,7 @@
         }, AliyunPanToken.prototype.getToken = function() {
             var _a, tokenStr, tokenObj;
             if ($(".ant-dropdown").addClass("ant-dropdown-hidden"), tokenStr = null !== (_a = unsafeWindow.localStorage.token) && void 0 !== _a ? _a : "") try {
-                tokenObj = JSON.parse(tokenStr), sAlert.msg("token\u4fe1\u606f", "<textarea>" + tokenObj.refresh_token + "</textarea>");
+                tokenObj = JSON.parse(tokenStr), sAlert.msg("token\u4fe1\u606f", '<textarea style="width: 100%">' + tokenObj.refresh_token + "</textarea>", "auto");
             } catch (e) {
                 sAlert.info("Token\u5e8f\u5217\u5316\u9519\u8bef,\u8bf7\u5411\u4f5c\u8005\u53cd\u9988," + e.toString());
             } else sAlert.info("\u672a\u80fd\u83b7\u53d6\u5230Token\u4fe1\u606f,\u8bf7\u91cd\u65b0\u767b\u5f55\u540e\u518d\u8bd5");
@@ -3256,7 +3264,7 @@
     }, YoutubeService = function(_super) {
         function YoutubeService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
-            return _this.rules = new Map([ [ SiteEnum.YouTuBe, /www\.youtube\.com\/watch\?v=(.*?)/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.YouTuBe, /(www|m)\.youtube\.com\/watch\?v=(.*?)/i ] ]), 
             _this._unique = !1, _this._appName = "YouTuBe", _this;
         }
         return __extends(YoutubeService, _super), YoutubeService.prototype.loader = function() {

@@ -1511,11 +1511,13 @@
                 timer: 1e3 * time,
                 customClass: this.customeCss
             });
-        }, sAlert.msg = function(title, html) {
-            return Swal__default.default.fire({
+        }, sAlert.msg = function(title, html, width) {
+            return void 0 === width && (width = "32rem"), "auto" == width && (width = unsafeWindow.window.outerWidth < 900 ? "90%" : 800), 
+            Swal__default.default.fire({
                 title: "<strong>" + title + "</strong>",
                 html: html,
-                showCloseButton: !0
+                showCloseButton: !0,
+                width: width
             });
         }, sAlert.html = function(title, html, cancel, cancelTxt, cancelColor, width, confirm, confirmTxt) {
             return void 0 === cancel && (cancel = !1), void 0 === cancelTxt && (cancelTxt = ""), 
@@ -1551,13 +1553,17 @@
                 cancelButtonText: cancelText
             };
             return "" != denyText && (option.denyButtonText = denyText), Swal__default.default.fire(option);
-        }, sAlert.showImg = function(image, title, text, alt) {
-            return Swal__default.default.fire({
+        }, sAlert.showImg = function(image, title, text, alt, btnTxt) {
+            void 0 === btnTxt && (btnTxt = "");
+            var opt = {
                 title: title,
                 text: text,
                 imageUrl: image,
-                imageAlt: alt
-            });
+                imageAlt: alt,
+                showConfirmButton: !1
+            };
+            return null != btnTxt && (opt.showConfirmButton = !0, opt.confirmButtonText = btnTxt), 
+            Swal__default.default.fire(opt);
         }, sAlert.loading = function(time, target) {
             void 0 === time && (time = -1), void 0 === target && (target = null), null == target ? Swal__default.default.showLoading() : Swal__default.default.showLoading(target), 
             -1 != time && Core.sleep(time).then((function() {
