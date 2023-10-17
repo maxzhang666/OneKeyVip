@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,夸克网盘直链批量获取,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.9.15
+// @version      4.9.16
 // @homepage     https://wiki.wandhi.com/
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转；🎉 12、搜索引擎快速跳转
@@ -3475,11 +3475,11 @@
         }, NetDiskDirectService.getToken = function() {
             var _a;
             return __awaiter(this, void 0, void 0, (function() {
-                var token, res;
+                var k, token, res;
                 return __generator(this, (function(_b) {
                     switch (_b.label) {
                       case 0:
-                        return (token = Config.get("baiduToken") && Config.get("baiduToken").length > 0 && Config.get("baiduToken")) ? [ 2, token ] : [ 4, Route.baiduAccessToken() ];
+                        return k = "baidu_access_Token", (token = Config.get(k) && Config.get(k).length > 0 && Config.get(k)) ? [ 2, token ] : [ 4, Route.baiduAccessToken() ];
 
                       case 1:
                         return -1 !== (res = _b.sent()).indexOf("access_token") ? [ 3, 4 ] : [ 4, Route.baiduAccessTokenAuth() ];
@@ -3493,7 +3493,7 @@
                         _b.label = 4;
 
                       case 4:
-                        return (token = null === (_a = res.match(/access_token=([^&]+)/)) || void 0 === _a ? void 0 : _a[1]) && Config.set("baiduToken", token), 
+                        return (token = null === (_a = res.match(/access_token=([^&]+)/)) || void 0 === _a ? void 0 : _a[1]) && Config.set(k, token, 21600), 
                         [ 2, token ];
                     }
                 }));
