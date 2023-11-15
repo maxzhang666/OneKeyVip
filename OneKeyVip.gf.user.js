@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,夸克网盘直链批量获取,全网VIP视频免费破解去广告,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.8.14
+// @version      4.8.15
 // @homepage     https://wiki.wandhi.com/
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、CSDN页面、剪切板清理；🎉 7、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 8、YouTube视频下载🎉 9、中间页自动跳转；🎉 10、搜索引擎快速跳转
@@ -96,6 +96,7 @@
 // @match        *://sspai.com/link*
 // @match        *://*.nodeseek.com/jump*
 // @match        *://*.kdocs.cn/office/link*
+// @match        *://ispacesoft.com/*.html
 // @exclude      *://tv.wandhi.com/*
 // @exclude      *://vip.wandhi.com/*
 // @include      *://settings.wandhi.com/*
@@ -630,7 +631,8 @@
         SiteEnum.BD_DETAIL_Share = "BD_DETAIL_Share", SiteEnum.Gwd = "Gwd", SiteEnum.Xxqg = "Xxqg", 
         SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin", SiteEnum.V2EX = "V2EX", 
         SiteEnum.Github = "Github", SiteEnum.NodeSeek = "NodeSeek", SiteEnum.HiTv = "HiTv", 
-        SiteEnum.Xhs = "Xhs", SiteEnum.KingSoftDoc = "KingSoftDoc", SiteEnum.BingCn = "BingCn";
+        SiteEnum.Xhs = "Xhs", SiteEnum.KingSoftDoc = "KingSoftDoc", SiteEnum.BingCn = "BingCn", 
+        SiteEnum.SiChuang = "SiChuang";
     }(SiteEnum || (SiteEnum = {})), Config = function() {
         function Config() {}
         return Object.defineProperty(Config, "env", {
@@ -1689,7 +1691,7 @@
     }(PluginBase), AutoExpandService = function(_super) {
         function AutoExpandService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.CSDN, /blog\.csdn\.net\/*/i ], [ SiteEnum.CSDN_Download, /download\.csdn\.net\/download/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.CSDN, /blog\.csdn\.net\/*/i ], [ SiteEnum.CSDN_Download, /download\.csdn\.net\/download/i ], [ SiteEnum.SiChuang, /ispacesoft\.com\/.*?\.html/i ] ]), 
             _this.contentStyle = "{height: auto !important;max-height: none !important;}", _this.expandRules = [ {
                 site: [ SiteEnum.CSDN ],
                 selector: [ ".guide-box", ".wap-shadowbox", ".readall_box", ".btn_open_app_prompt_div" ],
@@ -1709,6 +1711,13 @@
                 content: [ ".detail.hidden.no-preview" ],
                 script: function() {},
                 clicker: [ "#download-detail .fl[role]" ]
+            }, {
+                site: [ SiteEnum.SiChuang ],
+                selector: [],
+                style: [],
+                clicker: [ ".entry-readmore-btn" ],
+                content: [],
+                script: function() {}
             } ], _this._appName = "autoExpand", _this._unique = !1, _this;
         }
         return __extends(AutoExpandService, _super), AutoExpandService.prototype.loader = function() {}, 
@@ -1718,7 +1727,9 @@
                 e.site.indexOf(that.site) > -1 && (e.selector.length > 0 && e.selector.forEach((function(selector) {
                     $(selector).remove();
                 })), e.clicker.length > 0 && e.clicker.forEach((function(clicker) {
-                    $(clicker).trigger("click");
+                    Core.lazyload((function() {
+                        $(clicker).trigger("click");
+                    }), 2), Logger.info("\u81ea\u52a8\u5c55\u5f00-\u70b9\u51fb:" + clicker);
                 })), e.style.length > 0 && e.style.forEach((function(style) {
                     Core.appendCssContent(style);
                 })), e.content.length > 0 && Core.appendCssContent("" + e.content.join(" ") + that.contentStyle), 
