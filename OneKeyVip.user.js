@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         【玩的嗨】VIP工具箱,夸克网盘直链批量获取,全网VIP视频免费破解去广告,一站式音乐搜索下载,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
 // @namespace    https://www.wandhi.com/
-// @version      4.9.17
+// @version      4.9.18
 // @homepage     https://wiki.wandhi.com/
 // @supportURL   https://wiki.wandhi.com/
 // @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转；🎉 12、搜索引擎快速跳转
@@ -104,6 +104,7 @@
 // @include      *://docs.qq.com/scenario/link*
 // @include      *://mail.qq.com/cgi-bin/readtemplate*
 // @include      *://cloud.tencent.com/developer/tools/blog-entry*
+// @include      *://link.uisdc.com/*
 // @match        *://www.baidu.com/*
 // @match        *://www.google.com/*
 // @match        *://www.sogou.com/*
@@ -161,7 +162,7 @@
     "object" == typeof exports && "undefined" != typeof module ? factory(require("sweetalert2"), require("viewerjs")) : "function" == typeof define && define.amd ? define([ "sweetalert2", "viewerjs" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).Swal, global.Viewer);
 })(this, (function(Swal, Viewer) {
     "use strict";
-    var Swal__default, Viewer__default, extendStatics, update_key, Min, Hour, Day, Week, BrowerType, Logger, LogLevel, Core, Config, AjaxOption, Alert, Http, HttpHeaders, Route, css_248z$a, Common, PluginBase, SiteEnum, UpdateService, VersionCompar, VersionResult, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$9, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$8, sAlert, GwdService, css_248z$7, TaoBaoService, container, Container, css_248z$6, ConfigEnum, BiliImgService, Menu$2, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$5, CsdnAdService, Menu$1, WenKuService, LinkJumpService, css_248z$4, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$3, css_248z$2, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, NetDiskDirectService, AdClearService, css_248z$1, ImgViewService, css_248z, ZhihuService, Menu, XhsService, OneKeyVipInjection;
+    var Swal__default, Viewer__default, extendStatics, update_key, Min, Hour, Day, Week, BrowerType, Logger, LogLevel, VersionResult, Core, VersionCompar, Config, AjaxOption, Alert, Http, HttpHeaders, Route, css_248z$a, Common, PluginBase, SiteEnum, UpdateService, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$9, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$8, sAlert, GwdService, css_248z$7, TaoBaoService, container, Container, css_248z$6, ConfigEnum, BiliImgService, Menu$2, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$5, CsdnAdService, Menu$1, WenKuService, LinkJumpService, css_248z$4, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$3, css_248z$2, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, NetDiskDirectService, AdClearService, css_248z$1, ImgViewService, css_248z, ZhihuService, Menu, XhsService, OneKeyVipInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
@@ -340,7 +341,10 @@
     }(), function(LogLevel) {
         LogLevel[LogLevel.debug = 0] = "debug", LogLevel[LogLevel.info = 1] = "info", LogLevel[LogLevel.warn = 2] = "warn", 
         LogLevel[LogLevel.error = 3] = "error";
-    }(LogLevel || (LogLevel = {})), Core = function() {
+    }(LogLevel || (LogLevel = {})), function(VersionResult) {
+        VersionResult[VersionResult.less = -1] = "less", VersionResult[VersionResult.equal = 0] = "equal", 
+        VersionResult[VersionResult.greater = 1] = "greater", VersionResult[VersionResult.incomparable = NaN] = "incomparable";
+    }(VersionResult || (VersionResult = {})), Core = function() {
         function Core() {
             this.url = Core.currentUrl();
         }
@@ -552,6 +556,25 @@
             for (i = 0, l = arr.length; i < l; i++) if ((tempArr = arr[i].split("="))[0] == key) return decodeURIComponent(tempArr[1]);
             return "";
         }, Core;
+    }(), VersionCompar = function() {
+        function VersionCompar(e) {
+            /^[\d\.]+$/.test(e) || Logger.error("Invalid version string"), this.parts = e.split(".").map((function(e) {
+                return parseInt(e);
+            })), this.versionString = e;
+        }
+        return VersionCompar.prototype.compareTo = function(e) {
+            for (var t = 0; t < this.parts.length; ++t) {
+                if (e.parts.length === t) return VersionResult.greater;
+                if (this.parts[t] !== e.parts[t]) return this.parts[t] > e.parts[t] ? VersionResult.greater : VersionResult.less;
+            }
+            return this.parts.length !== e.parts.length ? VersionResult.less : VersionResult.equal;
+        }, VersionCompar.prototype.greaterThan = function(e) {
+            return this.compareTo(e) === VersionResult.greater;
+        }, VersionCompar.prototype.lessThan = function(e) {
+            return this.compareTo(e) === VersionResult.less;
+        }, VersionCompar.prototype.equals = function(e) {
+            return this.compareTo(e) === VersionResult.equal;
+        }, VersionCompar;
     }(), Config = function() {
         function Config() {}
         return Object.defineProperty(Config, "env", {
@@ -922,6 +945,14 @@
             return Http.ajaxNew("https://drive.quark.cn/1/clouddrive/file/download?pr=ucpro&fr=pc", "POST", {
                 fids: fids
             }, new Map([ [ "User-Agent", "quark-cloud-drive" ] ]));
+        }, Route.RouteConfig = function() {
+            return new Promise((function(resolve) {
+                var config = Config.get("script_config", !1);
+                config ? resolve(config) : Route.baseApi("/config/script", new Map, (function(res) {
+                    var config = JSON.parse(Core.decode(res.data));
+                    Config.set("script_config", config, 2 * Hour), resolve(config);
+                }));
+            }));
         }, Route.home_url = "https://wiki.wandhi.com", Route.home_url_update = "https://wiki.wandhi.com/zh-cn/Changelog.html", 
         Route.install_url_one = "https://greasyfork.org/zh-CN/scripts/384538", Route.sxb_anhao = "http://www.lelunwen.com/e/action/ListInfo/?classid=45", 
         Route.sxb_key = "sxb_anhao", Route.config = "/config/query", Route.history = "/history/", 
@@ -1021,7 +1052,7 @@
         SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin", SiteEnum.V2EX = "V2EX", 
         SiteEnum.Github = "Github", SiteEnum.NodeSeek = "NodeSeek", SiteEnum.HiTv = "HiTv", 
         SiteEnum.Xhs = "Xhs", SiteEnum.KingSoftDoc = "KingSoftDoc", SiteEnum.BingCn = "BingCn", 
-        SiteEnum.SiChuang = "SiChuang";
+        SiteEnum.SiChuang = "SiChuang", SiteEnum.Uisdc = "Uisdc";
     }(SiteEnum || (SiteEnum = {})), UpdateService = function(_super) {
         function UpdateService() {
             var _this = _super.call(this) || this;
@@ -1035,50 +1066,44 @@
                 this.scriptCat(current);
             }
         }, UpdateService.prototype.scriptCat = function(current) {
+            var _this = this;
             Http.get("https://scriptcat.org/api/v2/scripts/72", new Map, new Map, !1).then((function(r) {
-                var _a, _b, msg, version = new VersionCompar(null === (_b = null === (_a = null == r ? void 0 : r.data) || void 0 === _a ? void 0 : _a.script) || void 0 === _b ? void 0 : _b.version);
-                Logger.debug("\u5f53\u524d\u7248\u672c:[" + current.versionString + "],\u6700\u65b0\u7248\u672c:[" + version.versionString + "]"), 
-                version.compareTo(current) === VersionResult.greater && (msg = "\u65b0\u7248\u672c<span>" + version.versionString + '</span>\u5df2\u53d1\u5e03.<a class="link" target="_blank" href="' + Route.home_url_update + '">\u67e5\u770b</a><br><a id="new-version-link" class="link" href="' + UpdateService.install_url_two + '" target="_blank">\u5b89\u88c5</a>', 
-                GM_addStyle(".swal2-popup{font-size: 16px !important}"), Swal__default.default.fire({
-                    toast: !0,
-                    position: "bottom-left",
-                    icon: "success",
-                    showConfirmButton: !0,
-                    confirmButtonText: "\u4eca\u5929\u5173\u95ed",
-                    showCancelButton: !0,
-                    cancelButtonText: "\u6c38\u4e45\u5173\u95ed",
-                    showCloseButton: !0,
-                    title: "\u68c0\u67e5\u66f4\u65b0",
-                    html: msg
-                }).then((function(result) {
-                    Logger.info(result), result.isConfirmed ? Config.set(update_key, !0, Day) : result.isDismissed && Config.set(update_key, !0, 365 * Day);
-                }))), Config.set(update_key, !0, Hour);
+                return __awaiter(_this, void 0, void 0, (function() {
+                    var version, msg, _a, _b, _c;
+                    return __generator(this, (function(_d) {
+                        switch (_d.label) {
+                          case 0:
+                            return version = new VersionCompar(null === (_c = null === (_b = null == r ? void 0 : r.data) || void 0 === _b ? void 0 : _b.script) || void 0 === _c ? void 0 : _c.version), 
+                            Logger.debug("\u5f53\u524d\u7248\u672c:[" + current.versionString + "],\u6700\u65b0\u7248\u672c:[" + version.versionString + "]"), 
+                            version.compareTo(current) !== VersionResult.greater ? [ 3, 2 ] : (_a = "\u65b0\u7248\u672c<span>" + version.versionString + '</span>\u5df2\u53d1\u5e03.<a class="link" target="_blank" href="', 
+                            [ 4, Route.RouteConfig() ]);
+
+                          case 1:
+                            msg = _a + _d.sent().home_url_update + '">\u67e5\u770b</a><br><a id="new-version-link" class="link" href="' + UpdateService.install_url_two + '" target="_blank">\u5b89\u88c5</a>', 
+                            GM_addStyle(".swal2-popup{font-size: 16px !important}"), Swal__default.default.fire({
+                                toast: !0,
+                                position: "bottom-left",
+                                icon: "success",
+                                showConfirmButton: !0,
+                                confirmButtonText: "\u4eca\u5929\u5173\u95ed",
+                                showCancelButton: !0,
+                                cancelButtonText: "\u6c38\u4e45\u5173\u95ed",
+                                showCloseButton: !0,
+                                title: "\u68c0\u67e5\u66f4\u65b0",
+                                html: msg
+                            }).then((function(result) {
+                                Logger.info(result), result.isConfirmed ? Config.set(update_key, !0, Day) : result.isDismissed && Config.set(update_key, !0, 365 * Day);
+                            })), _d.label = 2;
+
+                          case 2:
+                            return Config.set(update_key, !0, Hour), [ 2 ];
+                        }
+                    }));
+                }));
             }));
         }, UpdateService.install_url_two = "https://scriptcat.org/script-show-page/72", 
         UpdateService;
-    }(PluginBase), VersionCompar = function() {
-        function VersionCompar(e) {
-            /^[\d\.]+$/.test(e) || Logger.error("Invalid version string"), this.parts = e.split(".").map((function(e) {
-                return parseInt(e);
-            })), this.versionString = e;
-        }
-        return VersionCompar.prototype.compareTo = function(e) {
-            for (var t = 0; t < this.parts.length; ++t) {
-                if (e.parts.length === t) return VersionResult.greater;
-                if (this.parts[t] !== e.parts[t]) return this.parts[t] > e.parts[t] ? VersionResult.greater : VersionResult.less;
-            }
-            return this.parts.length !== e.parts.length ? VersionResult.less : VersionResult.equal;
-        }, VersionCompar.prototype.greaterThan = function(e) {
-            return this.compareTo(e) === VersionResult.greater;
-        }, VersionCompar.prototype.lessThan = function(e) {
-            return this.compareTo(e) === VersionResult.less;
-        }, VersionCompar.prototype.equals = function(e) {
-            return this.compareTo(e) === VersionResult.equal;
-        }, VersionCompar;
-    }(), function(VersionResult) {
-        VersionResult[VersionResult.less = -1] = "less", VersionResult[VersionResult.equal = 0] = "equal", 
-        VersionResult[VersionResult.greater = 1] = "greater", VersionResult[VersionResult.incomparable = NaN] = "incomparable";
-    }(VersionResult || (VersionResult = {})), EventHelper = function() {
+    }(PluginBase), EventHelper = function() {
         function EventHelper() {}
         return EventHelper.bind_click = function(query, act) {
             var _a;
@@ -3035,7 +3060,7 @@
     }(PluginBase), LinkJumpService = function(_super) {
         function LinkJumpService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ], [ SiteEnum.Gitee, /gitee\.com\/link/i ], [ SiteEnum.JueJin, /juejin\.cn\/\?target/i ], [ SiteEnum.Weibo, /weibo\.cn\/sinaurl/i ], [ SiteEnum.TuXiaoChao, /support\.qq\.com\/products\/.*\/link-jump/i ], [ SiteEnum.OsCh, /oschina\.net\/action\/GoToLink/i ], [ SiteEnum.AiFaDian, /afdian\.net\/link\?target/i ], [ SiteEnum.Baidu, /jump(2?)\.bdimg\.com\/safecheck/i ], [ SiteEnum.DouBan, /www\.douban\.com\/link2\// ], [ SiteEnum.g17173, /link\.17173\.com\/\?target/i ], [ SiteEnum.TencentDoc, /docs\.qq\.com\/scenario\/link/i ], [ SiteEnum.TencentMail, /mail\.qq\.com\/cgi-bin\/readtemplate/i ], [ SiteEnum.TencentQQ, /c\.pc\.qq\.com\/(middlem|ios)\.html/i ], [ SiteEnum.SsPAi, /sspai\.com\/link/i ], [ SiteEnum.NodeSeek, /nodeseek\.com\/jump/i ], [ SiteEnum.KingSoftDoc, /p\.kdocs\.cn\/office\/link/i ], [ SiteEnum.TencentCloudBlog, /cloud\.tencent\.com\/developer\/tools\/blog-entry/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ], [ SiteEnum.Gitee, /gitee\.com\/link/i ], [ SiteEnum.JueJin, /juejin\.cn\/\?target/i ], [ SiteEnum.Weibo, /weibo\.cn\/sinaurl/i ], [ SiteEnum.TuXiaoChao, /support\.qq\.com\/products\/.*\/link-jump/i ], [ SiteEnum.OsCh, /oschina\.net\/action\/GoToLink/i ], [ SiteEnum.AiFaDian, /afdian\.net\/link\?target/i ], [ SiteEnum.Baidu, /jump(2?)\.bdimg\.com\/safecheck/i ], [ SiteEnum.DouBan, /www\.douban\.com\/link2\// ], [ SiteEnum.g17173, /link\.17173\.com\/\?target/i ], [ SiteEnum.TencentDoc, /docs\.qq\.com\/scenario\/link/i ], [ SiteEnum.TencentMail, /mail\.qq\.com\/cgi-bin\/readtemplate/i ], [ SiteEnum.TencentQQ, /c\.pc\.qq\.com\/(middlem|ios)\.html/i ], [ SiteEnum.SsPAi, /sspai\.com\/link/i ], [ SiteEnum.NodeSeek, /nodeseek\.com\/jump/i ], [ SiteEnum.KingSoftDoc, /p\.kdocs\.cn\/office\/link/i ], [ SiteEnum.TencentCloudBlog, /cloud\.tencent\.com\/developer\/tools\/blog-entry/i ], [ SiteEnum.Uisdc, /link\.uisdc\.com\/\?redirect/i ] ]), 
             _this.key = "", _this.selector = "", _this._unique = !1, _this._appName = "LinkJump", 
             _this;
         }
@@ -3084,6 +3109,10 @@
 
               case SiteEnum.NodeSeek:
                 this.key = "to";
+                break;
+
+              case SiteEnum.Uisdc:
+                this.key = "redirect";
                 break;
 
               default:

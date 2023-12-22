@@ -57,7 +57,7 @@
     "object" == typeof exports && "undefined" != typeof module ? factory(require("sweetalert2")) : "function" == typeof define && define.amd ? define([ "sweetalert2" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).Swal);
 })(this, (function(Swal) {
     "use strict";
-    var Swal__default, container, Container, Logger, LogLevel, extendStatics, BrowerType, Core, Common, PluginBase, SiteEnum, Config, AjaxOption, Alert, Http, HttpHeaders, Route, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, sAlert, GwdService, TaoBaoService, JdService, ItemType, Tao, ListService, _GwdService, OneKeyVipHistoryToolsInjection;
+    var Swal__default, container, Container, Logger, LogLevel, extendStatics, BrowerType, VersionResult, Core, Common, PluginBase, SiteEnum, Config, AjaxOption, Alert, Http, HttpHeaders, Hour, Route, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, sAlert, GwdService, TaoBaoService, JdService, ItemType, Tao, ListService, _GwdService, OneKeyVipHistoryToolsInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
@@ -222,7 +222,10 @@
         BrowerType[BrowerType.Liebao = 8] = "Liebao", BrowerType[BrowerType.UC = 9] = "UC", 
         BrowerType[BrowerType.QQ = 10] = "QQ", BrowerType[BrowerType.Sogou = 11] = "Sogou", 
         BrowerType[BrowerType.Opera = 12] = "Opera", BrowerType[BrowerType.Maxthon = 13] = "Maxthon";
-    }(BrowerType || (BrowerType = {})), Core = function() {
+    }(BrowerType || (BrowerType = {})), function(VersionResult) {
+        VersionResult[VersionResult.less = -1] = "less", VersionResult[VersionResult.equal = 0] = "equal", 
+        VersionResult[VersionResult.greater = 1] = "greater", VersionResult[VersionResult.incomparable = NaN] = "incomparable";
+    }(VersionResult || (VersionResult = {})), Core = function() {
         function Core() {
             this.url = Core.currentUrl();
         }
@@ -525,7 +528,7 @@
         SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin", SiteEnum.V2EX = "V2EX", 
         SiteEnum.Github = "Github", SiteEnum.NodeSeek = "NodeSeek", SiteEnum.HiTv = "HiTv", 
         SiteEnum.Xhs = "Xhs", SiteEnum.KingSoftDoc = "KingSoftDoc", SiteEnum.BingCn = "BingCn", 
-        SiteEnum.SiChuang = "SiChuang";
+        SiteEnum.SiChuang = "SiChuang", SiteEnum.Uisdc = "Uisdc";
     }(SiteEnum || (SiteEnum = {})), Config = function() {
         function Config() {}
         return Object.defineProperty(Config, "env", {
@@ -798,7 +801,7 @@
                 });
             }));
         }, Http;
-    }(), HttpHeaders = function HttpHeaders() {}, Route = function() {
+    }(), HttpHeaders = function HttpHeaders() {}, Hour = 60 * 60, Route = function() {
         function Route() {
             this.queryTao = "";
         }
@@ -896,6 +899,14 @@
             return Http.ajaxNew("https://drive.quark.cn/1/clouddrive/file/download?pr=ucpro&fr=pc", "POST", {
                 fids: fids
             }, new Map([ [ "User-Agent", "quark-cloud-drive" ] ]));
+        }, Route.RouteConfig = function() {
+            return new Promise((function(resolve) {
+                var config = Config.get("script_config", !1);
+                config ? resolve(config) : Route.baseApi("/config/script", new Map, (function(res) {
+                    var config = JSON.parse(Core.decode(res.data));
+                    Config.set("script_config", config, 2 * Hour), resolve(config);
+                }));
+            }));
         }, Route.home_url = "https://wiki.wandhi.com", Route.home_url_update = "https://wiki.wandhi.com/zh-cn/Changelog.html", 
         Route.install_url_one = "https://greasyfork.org/zh-CN/scripts/384538", Route.sxb_anhao = "http://www.lelunwen.com/e/action/ListInfo/?classid=45", 
         Route.sxb_key = "sxb_anhao", Route.config = "/config/query", Route.history = "/history/", 
