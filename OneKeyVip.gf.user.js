@@ -3,7 +3,7 @@
 // @namespace      https://www.wandhi.com/
 // @description    🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、CSDN页面、剪切板清理；🎉 7、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 8、YouTube视频下载🎉 9、中间页自动跳转；🎉 10、搜索引擎快速跳转
 // @license        MIT
-// @version        4.9.19
+// @version        4.9.20
 // @author         MaxZhang
 // @include        *://settings.wandhi.com/*
 // @include        *://m.youku.com/v*
@@ -123,8 +123,8 @@
 // @require        https://lib.baomitu.com/qrcode-generator/1.4.4/qrcode.min.js
 // @require        https://lib.baomitu.com/FileSaver.js/2.0.5/FileSaver.min.js
 // @require        https://lib.baomitu.com/viewerjs/1.11.3/viewer.min.js
-// @require        https://registry.npmmirror.com/react/18.2.0/files/cjs/react.production.min.js
-// @require        https://registry.npmmirror.com/react-dom/18.2.0/files/cjs/react-dom.production.min.js
+// @require        https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/react/18.2.0/umd/react.production.min.js
+// @require        https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/react-dom/18.2.0/umd/react-dom.production.min.js
 // @require        https://registry.npmmirror.com/@douyinfe/semi-ui/2.51.0/files/dist/umd/semi-ui.min.js
 // @grant          GM_setClipboard
 // @grant          unsafeWindow
