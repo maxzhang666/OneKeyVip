@@ -646,7 +646,7 @@
         function PluginBase() {
             var _this = this;
             this._unique = !0, this.semiui = !1, this.menu = new Common.Menu, this.Process = function() {
-                _this.semiui && Core.appendCss("https://unpkg.com/@douyinfe/semi-ui@2.49.2/dist/css/semi.css"), 
+                _this.semiui && Core.appendCss("https://registry.npmmirror.com/@douyinfe/semi-ui/2.51.0/files/dist/css/semi.min.css"), 
                 _this.loader(), _this.run();
             }, this._appName = "base";
         }
