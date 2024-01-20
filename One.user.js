@@ -1,39 +1,43 @@
 // ==UserScript==
-// @name         【One】懒人神器,懒人福利,全新架构,性能更出众————只需一个脚本包揽所有功能 长期更新,放心使用
-// @namespace    https://www.wandhi.com/
-// @version      1.1.0
-// @homepage     https://tools.wandhi.com/scripts
-// @supportURL   https://wiki.wandhi.com/
-// @description  功能介绍：1、ScriptsCat脚本猫脚本查询 2、CSDN页面清理 3、页面磁力链接提取
-// @author       MaxZhang
-// @icon         https://cdn.wandhi.com/image/One.ico
-// @include      *://*
-// @require      https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
-// @require      https://lib.baomitu.com/limonte-sweetalert2/11.4.7/sweetalert2.all.min.js
-// @license      MIT
-// @grant        GM_setClipboard
-// @connect      api.wandhi.com
-// @connect      cdn.jsdelivr.net
-// @connect      gwdang.com
-// @connect      scriptcat.org
-// @connect      taobao.com
-// @grant        unsafeWindow
-// @grant        GM_xmlhttpRequest
-// @grant        GM_info
-// @grant        GM_addStyle
-// @grant        GM_getValue
-// @grant        GM_setValue
-// @grant        GM_notification
-// @grant        GM_openInTab
-// @grant        GM_deleteValue
-// @grant        GM_registerMenuCommand
-// @grant        GM_unregisterMenuCommand
-// @compatible   firefox
-// @compatible   chrome
-// @compatible   opera safari edge
-// @compatible   safari
-// @compatible   edge
-// @antifeature  referral-link 此提示为GreasyFork代码规范要求添加，实际使用无任何强制跳转，代码可查，请知悉。
+// @name           【One】懒人神器,懒人福利,全新架构,性能更出众————只需一个脚本包揽所有功能 长期更新,放心食用
+// @namespace      https://www.wandhi.com/
+// @description    功能介绍：1、ScriptsCat脚本猫脚本查询 2、CSDN页面清理 3、页面磁力链接提取
+// @license        MIT
+// @version        1.1.1
+// @author         MaxZhang
+// @include        *://*
+// @require        https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
+// @require        https://lib.baomitu.com/limonte-sweetalert2/11.4.7/sweetalert2.all.min.js
+// @grant          GM_setClipboard
+// @grant          unsafeWindow
+// @grant          GM_xmlhttpRequest
+// @grant          GM_info
+// @grant          GM_cookie
+// @grant          GM_addStyle
+// @grant          GM.addStyle
+// @grant          GM_getValue
+// @grant          GM_setValue
+// @grant          GM.getValue
+// @grant          GM.setValue
+// @grant          GM_notification
+// @grant          GM_openInTab
+// @grant          GM_deleteValue
+// @grant          GM_registerMenuCommand
+// @grant          GM_unregisterMenuCommand
+// @grant          GM_download
+// @connect        api.wandhi.com
+// @connect        cdn.jsdelivr.net
+// @connect        tool.manmanbuy.com
+// @connect        gwdang.com
+// @connect        scriptcat.org
+// @connect        quark.cn
+// @compatible     firefox
+// @compatible     chrome
+// @compatible     opera safari edge
+// @compatible     safari
+// @compatible     edge
+// @run-at         document-end
+// @antifeature    referral-link 此提示为GreasyFork代码规范要求含有查券功能的脚本必须添加，实际使用无任何强制跳转，代码可查，请知悉。
 // ==/UserScript==
 
 !function(global, factory) {
@@ -750,7 +754,7 @@
         function FeiShuDocApp() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
             return _this._unique = !1, _this.appName = "\u98de\u4e66\u6587\u6863\u590d\u5236", 
-            _this.rules = new Map([ [ SiteEnum.FeiShuDoc, [ /bytedance\.feishu\.cn/i, /feishu\.cn\/docx/i ] ] ]), 
+            _this.rules = new Map([ [ SiteEnum.FeiShuDoc, [ /bytedance\.feishu\.cn/i, /feishu\.cn\/docx/i, /feishu\.cn\/wiki/i ] ] ]), 
             _this;
         }
         return __extends(FeiShuDocApp, _super), FeiShuDocApp.prototype.loader = function() {

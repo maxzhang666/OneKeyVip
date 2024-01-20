@@ -1,148 +1,172 @@
 // ==UserScript==
-// @name         【玩的嗨】VIP工具箱,夸克网盘直链批量获取,全网VIP视频免费破解去广告,获取B站封面,下载B站视频等众多功能聚合 长期更新,放心使用
-// @namespace    https://www.wandhi.com/
-// @version      4.8.16
-// @homepage     https://wiki.wandhi.com/
-// @supportURL   https://wiki.wandhi.com/
-// @description  🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、CSDN页面、剪切板清理；🎉 7、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 8、YouTube视频下载🎉 9、中间页自动跳转；🎉 10、搜索引擎快速跳转
-// @author       MaxZhang
-// @icon         https://www.wandhi.com//favicon.ico
-// @include      *://m.youku.com/v*
-// @include      *://m.youku.com/a*
-// @include      *://v.youku.com/v_*
-// @include      *://v.youku.com/pad_show*
-// @include      *://*.iqiyi.com/v_*
-// @include      *://*.iqiyi.com/w_*
-// @include      *://*.iqiyi.com/a_*
-// @include      *://*.iqiyi.com/adv*
-// @include      *.iq.com/play/*
-// @include      *://*.le.com/ptv/vplay/*
-// @include      *v.qq.com/x/cover/*
-// @include      *v.qq.com/x/page/*
-// @include      *v.qq.com/*play*
-// @include      *v.qq.com/cover*
-// @include      *://*.tudou.com/listplay/*
-// @include      *://*.tudou.com/albumplay/*
-// @include      *://*.tudou.com/programs/view/*
-// @include      *://*.tudou.com/v*
-// @include      *://*.mgtv.com/b/*
-// @include      *://film.sohu.com/album/*
-// @include      *://tv.sohu.com/v/*
-// @include      *://*.acfun.cn/v/*
-// @include      *://*.bilibili.com/video/*
-// @include      *://*.bilibili.com/anime/*
-// @include      *://*.bilibili.com/bangumi/play/*
-// @include      *://*.pptv.com/show/*
-// @include      *://*.baofeng.com/play/*
-// @include      *://*.wasu.cn/Play/show*
-// @include      *://v.yinyuetai.com/video/*
-// @include      *://v.yinyuetai.com/playlist/*
-// @include      *://*.wasu.cn/Play/show/*
-// @include      *://music.taihe.com/song*
-// @include      *://search.kaola.com/*
-// @include      *://goods.kaola.com*
-// @include      *://detail.vip.com/detail-*
-// @include      *://product.suning.com/*
-// @include      *://music.163.com/song*
-// @include      *://music.163.com/m/song*
-// @include      *://y.qq.com/*
-// @include      *://*.kugou.com/*
-// @include      *://*.kuwo.cn/*
-// @include      *://*.xiami.com/*
-// @include      *://music.taihe.com/*
-// @include      *://*.1ting.com/player*
-// @include      *://www.qingting.fm/*
-// @include      *://www.lizhi.fm/*
-// @include      *://music.migu.cn/*
-// @include      *://www.shangxueba.com/ask/*.html
-// @include      *://www.ximalaya.com/*
-// @include      *://www.shangxueba.com/ask/*.html
-// @include      *://pan.baidu.com/disk/home*
-// @include      *://yun.baidu.com/disk/home*
-// @include      *://pan.baidu.com/s/*
-// @include      *://yun.baidu.com/s/*
-// @include      *://pan.baidu.com/share/link*
-// @include      *://yun.baidu.com/share/link*
-// @include      *://wenku.baidu.com/view/*
-// @include      *blog.csdn.net/*
-// @include      *download.csdn.net/*
-// @include      *c.pc.qq.com/middlem*
-// @include      *pan.baidu.com/disk/main*
-// @include      *://link.csdn.net/*
-// @include      *://link.zhihu.com/*
-// @include      *://browser.gwdang.com/*
-// @include      *www.jianshu.com/go-wild*
-// @include      *://*gitee.com/link*
-// @include      *://*juejin.cn/?target*
-// @include      *://www.aliyundrive.com/drive*
-// @include      *://*.youtube.com/watch?v=*
-// @include      *://support.qq.com/products*
-// @include      *://weibo.cn/sinaurl*
-// @include      *://afdian.net/link*
-// @include      *://*oschina.net/action/GoToLink*
-// @include      *://jump2.bdimg.com/safecheck*
-// @include      *://www.douban.com/link2/?url*
-// @include      *://link.17173.com*
-// @include      *://search.suning.com/*
-// @include      *://pan.quark.cn/*
-// @include      *://docs.qq.com/scenario/link*
-// @include      *://mail.qq.com/cgi-bin/readtemplate*
-// @include      *://cloud.tencent.com/developer/tools/blog-entry*
-// @include      *://link.uisdc.com/*
-// @match        *://www.baidu.com/*
-// @match        *://www.google.com/*
-// @match        *://www.sogou.com/*
-// @match        *://www.so.com/s*
-// @match        *://cn.bing.com/search*
-// @match        *://sspai.com/link*
-// @match        *://*.nodeseek.com/jump*
-// @match        *://*.kdocs.cn/office/link*
-// @match        *://ispacesoft.com/*.html
-// @exclude      *://tv.wandhi.com/*
-// @exclude      *://vip.wandhi.com/*
-// @include      *://settings.wandhi.com/*
-// @require      https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
-// @require      https://lib.baomitu.com/limonte-sweetalert2/11.4.7/sweetalert2.all.min.js
-// @require      https://lib.baomitu.com/echarts/4.6.0/echarts.min.js
-// @require      https://lib.baomitu.com/layer/2.3/layer.js
-// @require      https://lib.baomitu.com/qrcode-generator/1.4.4/qrcode.min.js
-// @require      https://lib.baomitu.com/FileSaver.js/2.0.5/FileSaver.min.js
-// @license MIT
-// @grant GM_setClipboard
-// @run-at document-end
-// @connect api.wandhi.com
-// @connect cdn.jsdelivr.net
-// @connect tool.manmanbuy.com
-// @connect gwdang.com
-// @connect scriptcat.org
-// @connect quark.cn
-// @connect openapi.baidu.com
-// @connect localhost
-// @grant unsafeWindow
-// @grant GM_xmlhttpRequest
-// @grant GM_info
-// @grant GM_addStyle
-// @grant GM_getValue
-// @grant GM_setValue
-// @grant GM_notification
-// @grant GM_openInTab
-// @grant GM_deleteValue
-// @grant GM_registerMenuCommand
-// @grant GM_unregisterMenuCommand
-// @grant GM_download
-// @compatible firefox
-// @compatible chrome
-// @compatible opera safari edge
-// @compatible safari
-// @compatible edge
-// @antifeature referral-link 此提示为GreasyFork代码规范要求含有查券功能的脚本必须添加，实际使用无任何强制跳转，代码可查，请知悉。
+// @name           【玩的嗨】VIP工具箱,夸克网盘直链批量获取,全网VIP视频免费破解去广告,获取B站封面,下载B站视频等众多功能聚合 长期更新，放心使用
+// @namespace      https://www.wandhi.com/
+// @description    🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、CSDN页面、剪切板清理；🎉 7、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 8、YouTube视频下载🎉 9、中间页自动跳转；🎉 10、搜索引擎快速跳转
+// @license        MIT
+// @version        4.9.19
+// @author         MaxZhang
+// @include        *://settings.wandhi.com/*
+// @include        *://m.youku.com/v*
+// @include        *://m.youku.com/a*
+// @include        *://v.youku.com/v_*
+// @include        *://v.youku.com/pad_show*
+// @include        *://*.iqiyi.com/v_*
+// @include        *://*.iqiyi.com/w_*
+// @include        *://*.iqiyi.com/a_*
+// @include        *://*.iqiyi.com/adv*
+// @include        *.iq.com/play/*
+// @include        *://*.le.com/ptv/vplay/*
+// @include        *v.qq.com/x/cover/*
+// @include        *v.qq.com/x/page/*
+// @include        *v.qq.com/*play*
+// @include        *v.qq.com/cover*
+// @include        *://*.tudou.com/listplay/*
+// @include        *://*.tudou.com/albumplay/*
+// @include        *://*.tudou.com/programs/view/*
+// @include        *://*.tudou.com/v*
+// @include        *://*.mgtv.com/b/*
+// @include        *://film.sohu.com/album/*
+// @include        *://tv.sohu.com/v/*
+// @include        *://*.acfun.cn/v/*
+// @include        *://*.bilibili.com/video/*
+// @include        *://*.bilibili.com/anime/*
+// @include        *://*.bilibili.com/bangumi/play/*
+// @include        *://*.pptv.com/show/*
+// @include        *://*.baofeng.com/play/*
+// @include        *://*.wasu.cn/Play/show*
+// @include        *://v.yinyuetai.com/video/*
+// @include        *://v.yinyuetai.com/playlist/*
+// @include        *://*.wasu.cn/Play/show/*
+// @include        *://music.taihe.com/song*
+// @include        *://music.163.com/song*
+// @include        *://music.163.com/m/song*
+// @include        *://y.qq.com/*
+// @include        *://*.kugou.com/*
+// @include        *://*.kuwo.cn/*
+// @include        *://*.xiami.com/*
+// @include        *://music.taihe.com/*
+// @include        *://*.1ting.com/player*
+// @include        *://www.qingting.fm/*
+// @include        *://www.lizhi.fm/*
+// @include        *://music.migu.cn/*
+// @include        *://www.shangxueba.com/ask/*.html
+// @include        *://www.ximalaya.com/*
+// @include        *://www.shangxueba.com/ask/*.html
+// @include        *://pan.baidu.com/disk/home*
+// @include        *://yun.baidu.com/disk/home*
+// @include        *://pan.baidu.com/s/*
+// @include        *://yun.baidu.com/s/*
+// @include        *://pan.baidu.com/share/link*
+// @include        *://yun.baidu.com/share/link*
+// @include        *://wenku.baidu.com/view/*
+// @include        *blog.csdn.net/*
+// @include        *download.csdn.net/*
+// @include        *c.pc.qq.com/middlem*
+// @include        *pan.baidu.com/disk/main*
+// @include        *://link.csdn.net/*
+// @include        *://link.zhihu.com/*
+// @include        *://browser.gwdang.com/*
+// @include        *www.jianshu.com/go-wild*
+// @include        *://*gitee.com/link*
+// @include        *://*juejin.cn/?target*
+// @include        *://www.aliyundrive.com/drive*
+// @include        *://www.alipan.com/drive/*
+// @include        *://*.youtube.com/watch?v=*
+// @include        *://support.qq.com/products*
+// @include        *://weibo.cn/sinaurl*
+// @include        *://afdian.net/link*
+// @include        *://*oschina.net/action/GoToLink*
+// @include        *://jump2.bdimg.com/safecheck*
+// @include        *://www.douban.com/link2/?url*
+// @include        *://link.17173.com*
+// @include        *://search.suning.com/*
+// @include        *://pan.quark.cn/*
+// @include        *://docs.qq.com/scenario/link*
+// @include        *://mail.qq.com/cgi-bin/readtemplate*
+// @include        *://cloud.tencent.com/developer/tools/blog-entry*
+// @include        *://link.uisdc.com/*
+// @include        *://item.taobao.com/*
+// @include        *://s.taobao.com/search*
+// @include        *://list.tmall.com/search_product.htm*
+// @include        *://detail.tmall.com/*
+// @include        *://chaoshi.detail.tmall.com/*
+// @include        *://detail.tmall.hk/*
+// @include        *://item.yiyaojd.com/*
+// @include        *://item.jd.com/*
+// @include        *://search.jd.com/*
+// @include        *://item.jd.hk/*
+// @include        *://search.kaola.com/*
+// @include        *://goods.kaola.com*
+// @include        *://detail.vip.com/detail-*
+// @include        *://product.suning.com/*
+// @exclude        *://tv.wandhi.com/*
+// @exclude        *://vip.wandhi.com/*
+// @match          *://c.pc.qq.com/ios*
+// @match          *://www.v2ex.com/t/*
+// @match          *://github.com/*
+// @match          *://*.nodeseek.com/jump*
+// @match          *://*.zhihu.com/question*
+// @match          *://www.baidu.com/*
+// @match          *://www.google.com/*
+// @match          *://www.sogou.com/*
+// @match          *://www.so.com/s*
+// @match          *://cn.bing.com/search*
+// @match          *://sspai.com/link*
+// @match          *://*.kdocs.cn/office/link*
+// @match          *://ispacesoft.com/*.html
+// @match          *://tv.wandhi.com/go.html*
+// @match          *://*.xiaohongshu.com/explore*
+// @require        https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
+// @require        https://lib.baomitu.com/limonte-sweetalert2/11.4.7/sweetalert2.all.min.js
+// @require        https://lib.baomitu.com/echarts/4.6.0/echarts.min.js
+// @require        https://lib.baomitu.com/layer/2.3/layer.js
+// @require        https://lib.baomitu.com/qrcode-generator/1.4.4/qrcode.min.js
+// @require        https://lib.baomitu.com/FileSaver.js/2.0.5/FileSaver.min.js
+// @require        https://lib.baomitu.com/viewerjs/1.11.3/viewer.min.js
+// @require        https://cdn.staticfile.net/react/18.2.0/umd/react.production.min.js
+// @require        https://cdn.staticfile.net/react-dom/18.2.0/umd/react-dom.production.min.js
+// @require        https://registry.npmmirror.com/@douyinfe/semi-ui/2.51.0/files/dist/umd/semi-ui.min.js
+// @grant          GM_setClipboard
+// @grant          unsafeWindow
+// @grant          GM_xmlhttpRequest
+// @grant          GM_info
+// @grant          GM_cookie
+// @grant          GM_addStyle
+// @grant          GM.addStyle
+// @grant          GM_getValue
+// @grant          GM_setValue
+// @grant          GM.getValue
+// @grant          GM.setValue
+// @grant          GM_notification
+// @grant          GM_openInTab
+// @grant          GM_deleteValue
+// @grant          GM_registerMenuCommand
+// @grant          GM_unregisterMenuCommand
+// @grant          GM_download
+// @connect        api.wandhi.com
+// @connect        api.huizhek.com
+// @connect        cdn.jsdelivr.net
+// @connect        tool.manmanbuy.com
+// @connect        gwdang.com
+// @connect        scriptcat.org
+// @connect        quark.cn
+// @connect        openapi.baidu.com
+// @connect        localhost
+// @connect        pan.baidu.com
+// @compatible     firefox
+// @compatible     chrome
+// @compatible     opera safari edge
+// @compatible     safari
+// @compatible     edge
+// @run-at         document-end
+// @antifeature    referral-link 此提示为GreasyFork代码规范要求含有查券功能的脚本必须添加，实际使用无任何强制跳转，代码可查，请知悉。
 // ==/UserScript==
 
 (function(global, factory) {
-    "object" == typeof exports && "undefined" != typeof module ? factory(require("sweetalert2")) : "function" == typeof define && define.amd ? define([ "sweetalert2" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).Swal);
-})(this, (function(Swal) {
+    "object" == typeof exports && "undefined" != typeof module ? factory(require("react-dom"), require("sweetalert2"), require("@douyinfe/semi-ui"), require("react")) : "function" == typeof define && define.amd ? define([ "react-dom", "sweetalert2", "@douyinfe/semi-ui", "react" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).ReactDOM, global.Swal, global.SemiUI, global.React);
+})(this, (function(ReactDOM, Swal, semiUi, React) {
     "use strict";
-    var Swal__default, container, Container, Logger, LogLevel, extendStatics, BrowerType, VersionResult, Core, VersionCompar, update_key, Min, Hour, Day, Week, css_248z$5, Common, PluginBase, SiteEnum, Config, AjaxOption, Alert, Http, HttpHeaders, Route, css_248z$4, sAlert, css_248z$3, Runtime, ConfigEnum, BiliImgService, Menu$2, MovieService, UrlHelper, MusicService, css_248z$2, CsdnAdService, Menu$1, WenKuService, LinkJumpService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$1, css_248z, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, NetDiskDirectService, AdClearService, Menu, XhsService, GfUpdateService, OneKeyVipGfInjection;
+    var ReactDOM__default, Swal__default, React__default, container, Container, Logger, LogLevel, extendStatics, BrowerType, VersionResult, Core, VersionCompar, update_key, Min, Hour, Day, Week, css_248z$5, Common, PluginBase, SiteEnum, Config, AjaxOption, Alert, Http, HttpHeaders, Route, css_248z$4, sAlert, css_248z$3, Runtime, ConfigEnum, Toast, BiliImgService, Menu$2, MovieService, UrlHelper, MusicService, css_248z$2, CsdnAdService, Menu$1, WenKuService, LinkJumpService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$1, css_248z, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, NetDiskDirectService, AdClearService, Menu, XhsService, GfUpdateService, SettingUI, SettingUIService, OneKeyVipGfInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
@@ -289,7 +313,8 @@
         (style = document.createElement("style")).type = "text/css", "top" === insertAt && head.firstChild ? head.insertBefore(style, head.firstChild) : head.appendChild(style), 
         style.styleSheet ? style.styleSheet.cssText = css : style.appendChild(document.createTextNode(css)));
     }
-    Swal__default = _interopDefaultLegacy(Swal), container = new Map, Container = function() {
+    ReactDOM__default = _interopDefaultLegacy(ReactDOM), Swal__default = _interopDefaultLegacy(Swal), 
+    React__default = _interopDefaultLegacy(React), container = new Map, Container = function() {
         function Container() {}
         return Container.Registe = function(type, args) {
             var className = this.processName(type.name);
@@ -337,7 +362,12 @@
         function Core() {
             this.url = Core.currentUrl();
         }
-        return Core.appendTo = function(selector, html) {
+        return Core.Render = function(element, id) {
+            var script, container = document.getElementById(id);
+            container || ((script = unsafeWindow.window.document.createElement("div")).id = id, 
+            unsafeWindow.window.document.head.append(script), container = document.getElementById(id)), 
+            ReactDOM__default.default.render(element, container);
+        }, Core.appendTo = function(selector, html) {
             $(selector).append(html);
         }, Core.prepend = function(selector, html) {
             $(selector).prepend(html);
@@ -531,14 +561,18 @@
             textArea.value = text, document.body.appendChild(textArea), textArea.focus(), textArea.select(), 
             document.execCommand("copy") ? (document.body.removeChild(textArea), !0) : (document.body.removeChild(textArea), 
             !1);
-        }, Core.getGmCookie = function(key) {
-            return new Promise((function(resolve, reject) {
-                "undefined" != typeof GM_cookie ? GM_cookie.list({
-                    name: key
-                }, (function(cookies, error) {
-                    (null == cookies ? void 0 : cookies.length) > 0 ? resolve(cookies[0].value) : (Logger.warn("get cookie [" + key + "] is error:" + error), 
-                    resolve(""));
-                })) : resolve("");
+        }, Core.getGmCookie = function(key, domain) {
+            return void 0 === domain && (domain = ""), new Promise((function(resolve, reject) {
+                if ("undefined" != typeof GM_cookie) {
+                    var obj = {
+                        name: key,
+                        url: Core.url
+                    };
+                    domain && (obj.domain = domain), GM_cookie.list(obj, (function(cookies, error) {
+                        (null == cookies ? void 0 : cookies.length) > 0 ? resolve(cookies[0].value) : (Logger.warn("get cookie [" + key + "] is error:" + error), 
+                        resolve(""));
+                    }));
+                } else resolve("");
             }));
         }, Core.getCookie = function(key) {
             var i, l, tempArr, arr = document.cookie.replace(/\s/g, "").split(";");
@@ -611,7 +645,8 @@
     }(Common || (Common = {})), PluginBase = function() {
         function PluginBase() {
             var _this = this;
-            this._unique = !0, this.menu = new Common.Menu, this.Process = function() {
+            this._unique = !0, this.semiui = !1, this.menu = new Common.Menu, this.Process = function() {
+                _this.semiui && Core.appendCss("https://unpkg.com/@douyinfe/semi-ui@2.49.2/dist/css/semi.css"), 
                 _this.loader(), _this.run();
             }, this._appName = "base";
         }
@@ -641,12 +676,12 @@
         SiteEnum.KuWo = "KuWo", SiteEnum.XiaMi = "XiaMi", SiteEnum.TaiHe = "TaiHe", SiteEnum.QingTing = "QingTing", 
         SiteEnum.LiZhi = "LiZhi", SiteEnum.MiGu = "MiGu", SiteEnum.XiMaLaYa = "XiMaLaYa", 
         SiteEnum.WenKu = "WenKu", SiteEnum.YouTuBe = "YouTuBe", SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", 
-        SiteEnum.ALY = "ALY", SiteEnum.BDY1 = "BDY1", SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", 
-        SiteEnum.Steam = "Steam", SiteEnum.Vp = "Vp", SiteEnum.CSDN = "CSDN", SiteEnum.CSDN_Download = "CSDN_Download", 
-        SiteEnum.ZhiHu = "ZhiHu", SiteEnum.JianShu = "JianShu", SiteEnum.JueJin = "JueJin", 
-        SiteEnum.Gitee = "Gitee", SiteEnum.Weibo = "Weibo", SiteEnum.TuXiaoChao = "TuXiaoChao", 
-        SiteEnum.OsCh = "OsCh", SiteEnum.AiFaDian = "AiFaDian", SiteEnum.Baidu = "Baidu", 
-        SiteEnum.BaiduPanMain = "BaiduPanMain", SiteEnum.BaiduPanHome = "BaiduPanHome", 
+        SiteEnum.ALY = "ALY", SiteEnum.ALY_P = "ALY_P", SiteEnum.BDY1 = "BDY1", SiteEnum.LZY = "LZY", 
+        SiteEnum.SuNing = "SuNing", SiteEnum.Steam = "Steam", SiteEnum.Vp = "Vp", SiteEnum.CSDN = "CSDN", 
+        SiteEnum.CSDN_Download = "CSDN_Download", SiteEnum.ZhiHu = "ZhiHu", SiteEnum.JianShu = "JianShu", 
+        SiteEnum.JueJin = "JueJin", SiteEnum.Gitee = "Gitee", SiteEnum.Weibo = "Weibo", 
+        SiteEnum.TuXiaoChao = "TuXiaoChao", SiteEnum.OsCh = "OsCh", SiteEnum.AiFaDian = "AiFaDian", 
+        SiteEnum.Baidu = "Baidu", SiteEnum.BaiduPanMain = "BaiduPanMain", SiteEnum.BaiduPanHome = "BaiduPanHome", 
         SiteEnum.DouBan = "DouBan", SiteEnum.g17173 = "g17173", SiteEnum.Google = "Google", 
         SiteEnum.SoGou = "SoGou", SiteEnum.KuaKeHome = "KuaKeHome", SiteEnum.TencentDoc = "TencentDoc", 
         SiteEnum.TencentMail = "TencentMail", SiteEnum.TencentCloudBlog = "TencentCloudBlog", 
@@ -935,7 +970,7 @@
         }
         return Object.defineProperty(Route, "apiRoot", {
             get: function() {
-                return "https://api.wandhi.com/api";
+                return "https://api.huizhek.com/api";
             },
             enumerable: !1,
             configurable: !0
@@ -1046,15 +1081,7 @@
     }(), css_248z$4 = ".one-key-vip-container { z-index: 99999!important }\n.one-key-vip-popup { font-size: 14px !important }\n.one-key-vip-setting-label { display: flex;align-items: center;justify-content: space-between;padding-top: 20px; }\n.one-key-vip-setting-checkbox { width: 16px;height: 16px; }\n", 
     styleInject(css_248z$4), sAlert = function() {
         function sAlert() {}
-        return sAlert.showMessage = function(title, html, toast, position, time) {
-            return Swal__default.default.fire({
-                title: title,
-                html: html,
-                position: position,
-                toast: toast,
-                timer: null == time ? void 0 : 1e3 * time
-            });
-        }, sAlert.toast = function(msg, icon, position, time) {
+        return sAlert.toast = function(msg, icon, position, time) {
             void 0 === icon && (icon = "success"), void 0 === position && (position = "top"), 
             void 0 === time && (time = 2), Swal__default.default.fire({
                 toast: !0,
@@ -1066,8 +1093,6 @@
                 timer: 1e3 * time,
                 customClass: this.customeCss
             });
-        }, sAlert.warning = function(msg, position, time) {
-            void 0 === position && (position = "center"), void 0 === time && (time = 2), this.toast(msg, "warning", position, time);
         }, sAlert.error = function(msg, time) {
             void 0 === time && (time = 2), this.toast(msg, "error", "center", time);
         }, sAlert.info = function(msg, icon, position, time) {
@@ -1190,7 +1215,29 @@
         ConfigEnum.CSDN_OpArticleClean = "csdn_op_article_clean", ConfigEnum.CSDN_OpCommentClean = "csdn_op_comment_clean", 
         ConfigEnum.CSDN_OpClipboardClean = "csdn_op_clipboard_clean", ConfigEnum.Search_Helper_Switch = "search_helper_switch", 
         ConfigEnum.Search_OptMenuMethod = "search_opt_menu_method", ConfigEnum.Search_OptMenuPos = "search_opt_menu_pos";
-    }(ConfigEnum || (ConfigEnum = {})), BiliImgService = function(_super) {
+    }(ConfigEnum || (ConfigEnum = {})), Toast = function() {
+        function Toast() {}
+        return Toast.success = function(str, time, position) {
+            void 0 === time && (time = 3), void 0 === position && (position = "top"), semiUi.Notification.success({
+                content: str,
+                duration: time,
+                position: position
+            });
+        }, Toast.warning = function(str, time, position) {
+            void 0 === time && (time = 3), void 0 === position && (position = "top"), semiUi.Notification.warning({
+                content: str,
+                duration: time,
+                position: position,
+                zIndex: 999999
+            });
+        }, Toast.error = function(str, time, position) {
+            void 0 === time && (time = 3), void 0 === position && (position = "top"), semiUi.Notification.error({
+                content: str,
+                duration: time,
+                position: position
+            });
+        }, Toast;
+    }(), BiliImgService = function(_super) {
         function BiliImgService() {
             var _this = _super.call(this) || this;
             return _this.rules = new Map([ [ SiteEnum.BiliBili, /www\.bilibili\.com\/video\/[av|bv]*/i ] ]), 
@@ -1281,9 +1328,9 @@
                 that.getVideoInfo(aid).then((function(res) {
                     res ? sAlert.showImg(res.pic, "\u662f\u5c01\u9762\u5566", "\u554a\u54c8\u54c8\u54c8\u3001\u5c01\u9762\u6765\u54af", "\u662f\u5c01\u9762\u9171\u5566>\u3002<", "\u4e0b\u8f7d").then((function() {
                         Core.open(res.pic);
-                    })) : sAlert.error("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f");
+                    })) : Toast.error("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f");
                 })).catch((function() {
-                    sAlert.info("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f", "error", "center");
+                    Toast.error("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f", 5);
                 }));
             }));
         }, BiliImgService.add_down_btn = function() {
@@ -1475,7 +1522,7 @@
                     for (i = 0; i < unsafeWindow.document.scripts.length; i++) /window\.__INITIAL_STATE__ =/i.test(unsafeWindow.document.scripts[i].innerHTML) && (Logger.debug(unsafeWindow.document.scripts[i].innerHTML), 
                     eval(unsafeWindow.document.scripts[i].innerHTML.replace("window.__INITIAL_STATE__", "unsafeWindow.__INITIAL_STATE__")));
                     __INITIAL_STATE__ && (null === (_b = null === (_a = __INITIAL_STATE__.store) || void 0 === _a ? void 0 : _a.SoundDetailPage) || void 0 === _b ? void 0 : _b.trackId) ? Core.open("http://music.wandhi.com/?id=" + __INITIAL_STATE__.store.SoundDetailPage.trackId + "&type=ximalaya") : (layer.closeAll(), 
-                    html = '<div style="padding:0px 50px 0px 50px;"><ul class="sound-list dOi2">', $.each(__INITIAL_STATE__.store.AlbumDetailTrackList.tracksInfo.tracks, (function(index, item) {
+                    html = '<div style="padding:0px 50px 0px 50px;"><ul class="sound-list dOi2">', $.each(__INITIAL_STATE__.store.AlbumDetailTrackListV2.tracksInfo.tracks, (function(index, item) {
                         html += '<li class="d0i2"><a href="http://music.wandhi.com/?id=' + item.trackId + '&type=ximalaya" target="_blank">' + item.title + "</a></li>";
                     })), html += "</ul></div>", layer.open({
                         type: 1,
@@ -1486,7 +1533,7 @@
                         anim: 2,
                         content: html
                     }));
-                } else /taihe.com/i.test(Runtime.url) ? Core.open("http://music.wandhi.com/?url=" + UrlHelper.urlEncode(Runtime.url.replace("taihe", "baidu"))) : Core.open("http://music.wandhi.com/?url=" + UrlHelper.urlEncode(Runtime.url));
+                } else /kugou\.com\/song/i.test(Runtime.url) && $("#myAudio") ? Core.open("http://music.wandhi.com/?type=kugou&id=" + $("#myAudio").attr("data-hash")) : /taihe.com/i.test(Runtime.url) ? Core.open("http://music.wandhi.com/?url=" + UrlHelper.urlEncode(Runtime.url.replace("taihe", "baidu"))) : Core.open("http://music.wandhi.com/?url=" + UrlHelper.urlEncode(Runtime.url));
             })), $("body").on("click", "[data-cat=search]", (function() {
                 Core.open("http://tv.wandhi.com/");
             })), $("body").on("click", "[data-cat=tb]", (function() {
@@ -1656,7 +1703,7 @@
             var _this = _super.call(this) || this;
             return _this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ], [ SiteEnum.Gitee, /gitee\.com\/link/i ], [ SiteEnum.JueJin, /juejin\.cn\/\?target/i ], [ SiteEnum.Weibo, /weibo\.cn\/sinaurl/i ], [ SiteEnum.TuXiaoChao, /support\.qq\.com\/products\/.*\/link-jump/i ], [ SiteEnum.OsCh, /oschina\.net\/action\/GoToLink/i ], [ SiteEnum.AiFaDian, /afdian\.net\/link\?target/i ], [ SiteEnum.Baidu, /jump(2?)\.bdimg\.com\/safecheck/i ], [ SiteEnum.DouBan, /www\.douban\.com\/link2\// ], [ SiteEnum.g17173, /link\.17173\.com\/\?target/i ], [ SiteEnum.TencentDoc, /docs\.qq\.com\/scenario\/link/i ], [ SiteEnum.TencentMail, /mail\.qq\.com\/cgi-bin\/readtemplate/i ], [ SiteEnum.TencentQQ, /c\.pc\.qq\.com\/(middlem|ios)\.html/i ], [ SiteEnum.SsPAi, /sspai\.com\/link/i ], [ SiteEnum.NodeSeek, /nodeseek\.com\/jump/i ], [ SiteEnum.KingSoftDoc, /p\.kdocs\.cn\/office\/link/i ], [ SiteEnum.TencentCloudBlog, /cloud\.tencent\.com\/developer\/tools\/blog-entry/i ], [ SiteEnum.Uisdc, /link\.uisdc\.com\/\?redirect/i ] ]), 
             _this.key = "", _this.selector = "", _this._unique = !1, _this._appName = "LinkJump", 
-            _this;
+            _this.semiui = !0, _this;
         }
         return __extends(LinkJumpService, _super), LinkJumpService.prototype.loader = function() {}, 
         LinkJumpService.prototype.run = function() {
@@ -1717,9 +1764,9 @@
                     for (item in keys = this.key.split(",")) if (null != (url = Core.getPar(keys[item])) && "" != url) break;
                 } else "" != this.selector && (url = $(this.selector).text());
                 null != url && "" != url ? ((url = decodeURIComponent(url)).endsWith("/") && (url = url.substr(0, url.length - 1)), 
-                sAlert.info("\u94fe\u63a5\u5df2\u89e3\u6790,\u6b63\u5728\u8df3\u8f6c~"), this.jump(url)) : (sAlert.warning("\u672a\u80fd\u89e3\u6790\u5230\u94fe\u63a5,\u8bf7\u624b\u52a8\u8df3\u8f6c"), 
+                Toast.success("\u94fe\u63a5\u5df2\u89e3\u6790,\u6b63\u5728\u8df3\u8f6c~"), this.jump(url)) : (Toast.warning("\u672a\u80fd\u89e3\u6790\u5230\u94fe\u63a5,\u8bf7\u624b\u52a8\u8df3\u8f6c"), 
                 Logger.debug("\u89e3\u6790\u94fe\u63a5:" + url + ",key:" + this.key));
-            } else sAlert.warning("\u5df2\u5173\u95ed\u672c\u7f51\u7ad9\u7684\u8df3\u8f6c\u529f\u80fd");
+            } else Toast.warning("\u5df2\u5173\u95ed\u672c\u7f51\u7ad9\u7684\u8df3\u8f6c\u529f\u80fd");
         }, LinkJumpService.prototype.jump = function(url) {
             url && ((url = decodeURIComponent(url)).indexOf(":\\") < 1 && !url.startsWith("http://") && !url.startsWith("https://") && (url = "http://" + url), 
             Logger.debug(url), unsafeWindow.window.location.href = url);
@@ -1813,7 +1860,7 @@
     }(PluginBase), AliyunPanToken = function(_super) {
         function AliyunPanToken() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.ALY, /www\.aliyundrive\.com\/drive*/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.ALY, /www\.aliyundrive\.com\/drive*/i ], [ SiteEnum.ALY_P, /www\.alipan\.com\/drive*/i ] ]), 
             _this.html = '\n    <li class=" ant-dropdown-menu-item-divider"></li>\n    <li class="ant-dropdown-menu-item ant-dropdown-menu-item-only-child" role="menuitem">\n        <div class="outer-menu--U5weH">\n            <div class="item--2ReU2" id="onekeyvip-token">\n                <span data-role="icon" data-render-as="svg" data-icon-type="PDSMoreCircle" class="item-icon--1ydoa icon--d-ejA "><svg viewBox="0 0 1024 1024"><use xlink:href="#PDSMoreCircle"></use></svg></span>\n                \u83b7\u53d6Token\n            </div>\n        </div>\n    </li>\n    ', 
             _this._unique = !1, _this._appName = "aliyunpan-token", _this;
         }
@@ -1906,7 +1953,8 @@
         function SettingService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
             return _this.rules = new Map([ [ SiteEnum.Settings, /settings\.wandhi\.com\/index\/index\/page/i ], [ SiteEnum.Settings_AutoJump, /settings\.wandhi\.com\/tools\/autojump\/page/i ], [ SiteEnum.Settings_AutoJump_Opt, /settings\.wandhi\.com\/tools\/autojump-op\/page/i ], [ SiteEnum.Settings_CSDN, /settings\.wandhi\.com\/tools\/csdn\/page/i ], [ SiteEnum.Settings_CSDN_Opt, /settings\.wandhi\.com\/tools\/csdn-op\/page/i ], [ SiteEnum.Settings_Search, /settings\.wandhi\.com\/tools\/search-helper\/page/i ], [ SiteEnum.Settings_Search_Opt, /settings\.wandhi\.com\/tools\/search-helper-op\/page/i ], [ SiteEnum.Settings_Bili_Pc_Opt, /settings\.wandhi\.com\/tools\/bilibili-pc-op\/page/i ], [ SiteEnum.Settings_Jiexi_Opt, /settings\.wandhi\.com\/tools\/jiexi\/page/i ], [ SiteEnum.Settings_WangPan_Opt, /settings\.wandhi\.com\/tools\/wangpan\/page/i ] ]), 
-            _this._unique = !1, _this._appName = "\u63a7\u5236\u9762\u677f", _this;
+            _this._unique = !1, _this._appName = "\u63a7\u5236\u9762\u677f", _this.semiui = !0, 
+            _this;
         }
         return __extends(SettingService, _super), SettingService.prototype.loader = function() {
             this.removeAlert();
@@ -1941,10 +1989,10 @@
             }
         }, SettingService.prototype.WangPanOpt = function() {
             var keys = new Map([ [ ConfigEnum.WangPan_Aria_Host, function(v) {
-                return !!/^(http|https):\/\/\w+/.test(v) || (sAlert.warning("Aria2\u5730\u5740\u683c\u5f0f\u9519\u8bef"), 
+                return !!/^(http|https):\/\/\w+/.test(v) || (Toast.warning("Aria2\u5730\u5740\u683c\u5f0f\u9519\u8bef"), 
                 !1);
             } ], [ ConfigEnum.WangPan_Aria_Port, function(v) {
-                return !!/^\d+$/.test(v) || (sAlert.warning("Aria2\u7aef\u53e3\u683c\u5f0f\u9519\u8bef"), 
+                return !!/^\d+$/.test(v) || (Toast.warning("Aria2\u7aef\u53e3\u683c\u5f0f\u9519\u8bef"), 
                 !1);
             } ], [ ConfigEnum.WangPan_Aria_Token, function(v) {
                 return !0;
@@ -1961,7 +2009,7 @@
                         if (2 != e.split("||").length) throw new Error;
                     }));
                 } catch (e) {
-                    return sAlert.error("\u81ea\u5b9a\u4e49\u63a5\u53e3\u683c\u5f0f\u9519\u8bef"), !1;
+                    return Toast.error("\u81ea\u5b9a\u4e49\u63a5\u53e3\u683c\u5f0f\u9519\u8bef"), !1;
                 }
                 return !0;
             } ] ]);
@@ -1979,7 +2027,7 @@
             })), checkboxes.on("change", (function(e) {
                 var el = e.target;
                 Logger.debug("\u914d\u7f6e[" + e.target.id + "]\u53d1\u751f\u53d8\u66f4,\u6700\u7ec8\u503c:[" + $(e.target).prop("checked") + "]"), 
-                Config.set(el.id, $(el).prop("checked")), sAlert.info("\u4fdd\u5b58\u6210\u529f");
+                Config.set(el.id, $(el).prop("checked")), Toast.success("\u4fdd\u5b58\u6210\u529f");
             }));
         }, SettingService.prototype.csdnOpt = function() {
             var keys = [ ConfigEnum.CSDN_OpAdClean, ConfigEnum.CSDN_OpImgLink, ConfigEnum.CSDN_OpCommentClean, ConfigEnum.CSDN_OpArticleClean, ConfigEnum.CSDN_OpClipboardClean ];
@@ -2003,15 +2051,15 @@
             })), ele.on("change", (function(e) {
                 var el = e.target;
                 "text" == type ? (Logger.debug("\u914d\u7f6e[" + e.target.id + "]\u53d1\u751f\u53d8\u66f4,\u6700\u7ec8\u503c:[" + $(e.target).val() + "]"), 
-                keys.get(el.id).apply(el, [ $(el).val() ]) && (Config.set(el.id, $(el).val()), sAlert.info("\u4fdd\u5b58\u6210\u529f"))) : "checkbox" == type && (Logger.debug("\u914d\u7f6e[" + e.target.id + "]\u53d1\u751f\u53d8\u66f4,\u6700\u7ec8\u503c:[" + $(e.target).prop("checked") + "]"), 
-                Config.set(el.id, $(el).prop("checked")), sAlert.info("\u4fdd\u5b58\u6210\u529f"));
+                keys.get(el.id).apply(el, [ $(el).val() ]) && (Config.set(el.id, $(el).val()), Toast.success("\u4fdd\u5b58\u6210\u529f"))) : "checkbox" == type && (Logger.debug("\u914d\u7f6e[" + e.target.id + "]\u53d1\u751f\u53d8\u66f4,\u6700\u7ec8\u503c:[" + $(e.target).prop("checked") + "]"), 
+                Config.set(el.id, $(el).prop("checked")), Toast.success("\u4fdd\u5b58\u6210\u529f"));
             }));
         }, SettingService.prototype.TextAreaInit = function(keys) {
             $("textarea").removeProp("disabled"), keys.forEach((function(f, e) {
                 $("#" + e.toString()).val(Config.get(e.toString(), "")), $("#" + e.toString()).on("change", (function(el) {
                     Logger.debug("\u914d\u7f6e[" + el.target.id + "]\u53d1\u751f\u53d8\u66f4,\u6700\u7ec8\u503c:[" + $(el.target).val() + "]"), 
                     f.apply(el, [ $(el.target).val() ]) && (Config.set(el.target.id, $(el.target).val()), 
-                    sAlert.info("\u4fdd\u5b58\u6210\u529f"));
+                    Toast.success("\u4fdd\u5b58\u6210\u529f"));
                 }));
             }));
         }, SettingService.prototype.initVer = function() {
@@ -2063,7 +2111,7 @@
         function NetDiskDirectService() {
             var _this = _super.call(this) || this;
             return _this.rules = new Map([ [ SiteEnum.KuaKeHome, /pan\.quark\.cn\/list/ ], [ SiteEnum.BaiduPanMain, /pan\.baidu\.com\/disk\/main/i ] ]), 
-            _this._appName = "NetDiskDirect", _this;
+            _this._appName = "NetDiskDirect", _this.semiui = !0, _this;
         }
         return __extends(NetDiskDirectService, _super), NetDiskDirectService.prototype.loader = function() {}, 
         NetDiskDirectService.prototype.run = function() {
@@ -2113,7 +2161,7 @@
                         return _b.sent(), [ 4, Route.baiduAccessToken() ];
 
                       case 3:
-                        if (-1 === (res = _b.sent()).indexOf("access_token")) return sAlert.error("\u63d0\u793a\uff1a\u83b7\u53d6token\u5931\u8d25\uff01"), 
+                        if (-1 === (res = _b.sent()).indexOf("access_token")) return Toast.error("\u63d0\u793a\uff1a\u83b7\u53d6token\u5931\u8d25\uff01"), 
                         [ 2, !1 ];
                         _b.label = 4;
 
@@ -2178,7 +2226,7 @@
                                     }))), !0, "\u6211\u597d\u4e86", "#3085d6", "auto"), [ 3, 3 ];
 
                                   case 2:
-                                    112 === res.errno ? sAlert.error("\u63d0\u793a\uff1a\u9875\u9762\u8fc7\u671f\uff0c\u8bf7\u5237\u65b0\u91cd\u8bd5\uff01") : sAlert.error("\u63d0\u793a\uff1a\u83b7\u53d6\u4e0b\u8f7d\u94fe\u63a5\u5931\u8d25\uff01\u8bf7\u5237\u65b0\u7f51\u9875\u540e\u91cd\u8bd5\uff01"), 
+                                    112 === res.errno ? Toast.error("\u63d0\u793a\uff1a\u9875\u9762\u8fc7\u671f\uff0c\u8bf7\u5237\u65b0\u91cd\u8bd5\uff01") : Toast.error("\u63d0\u793a\uff1a\u83b7\u53d6\u4e0b\u8f7d\u94fe\u63a5\u5931\u8d25\uff01\u8bf7\u5237\u65b0\u7f51\u9875\u540e\u91cd\u8bd5\uff01"), 
                                     _b.label = 3;
 
                                   case 3:
@@ -2187,7 +2235,7 @@
                             }));
                         }));
                     }));
-                })) : sAlert.error("\u63d0\u793a\uff1a\u8bf7\u6253\u5f00\u6587\u4ef6\u5939\u540e\u52fe\u9009\u6587\u4ef6\uff01") : sAlert.error("\u63d0\u793a\uff1a\u8bf7\u5148\u52fe\u9009\u8981\u4e0b\u8f7d\u7684\u6587\u4ef6\uff01");
+                })) : Toast.error("\u63d0\u793a\uff1a\u8bf7\u6253\u5f00\u6587\u4ef6\u5939\u540e\u52fe\u9009\u6587\u4ef6\uff01") : Toast.error("\u63d0\u793a\uff1a\u8bf7\u5148\u52fe\u9009\u8981\u4e0b\u8f7d\u7684\u6587\u4ef6\uff01");
             }));
         }, NetDiskDirectService.quarkEvent = function() {
             $(document).on("click", ".okv-btn-direct", (function(e) {
@@ -2204,8 +2252,8 @@
                             return e.cookie = unsafeWindow.document.cookie, e;
                         }));
                         sAlert.html("\u76f4\u94fe\u4fe1\u606f", NetDiskDirectService.generateDom(data), !0, "\u6211\u597d\u4e86", "#3085d6", "auto");
-                    } else sAlert.error("\u94fe\u63a5\u83b7\u53d6\u5931\u8d25,\u8bf7\u7a0d\u540e\u518d\u8bd5(" + res.code + ")"); else sAlert.error("\u8bf7\u5148\u767b\u5f55\u7f51\u76d8");
-                })) : sAlert.error("\u8bf7\u5148\u5c06\u6587\u4ef6\u4fdd\u5b58\u5230\u81ea\u5df1\u7684\u7f51\u76d8")) : sAlert.error("\u6682\u4e0d\u652f\u6301\u6587\u4ef6\u5939\u4e0b\u8f7d") : sAlert.error("\u8bf7\u5148\u52fe\u9009\u8981\u4e0b\u8f7d\u7684\u6587\u4ef6");
+                    } else Toast.error("\u94fe\u63a5\u83b7\u53d6\u5931\u8d25,\u8bf7\u7a0d\u540e\u518d\u8bd5(" + res.code + ")"); else Toast.error("\u8bf7\u5148\u767b\u5f55\u7f51\u76d8");
+                })) : sAlert.error("\u8bf7\u5148\u5c06\u6587\u4ef6\u4fdd\u5b58\u5230\u81ea\u5df1\u7684\u7f51\u76d8")) : Toast.error("\u6682\u4e0d\u652f\u6301\u6587\u4ef6\u5939\u4e0b\u8f7d") : Toast.error("\u8bf7\u5148\u52fe\u9009\u8981\u4e0b\u8f7d\u7684\u6587\u4ef6");
             }));
         }, NetDiskDirectService.commonEvent = function() {
             var _this = this;
@@ -2220,7 +2268,8 @@
                         switch (_a.label) {
                           case 0:
                             return url = e.target.dataset.url, filename = e.target.dataset.filename, ua = e.target.dataset.ua, 
-                            ck = e.target.dataset.ck, [ 4, NetDiskDirectService.sendLinkToRPC(filename, url, ua, ck) ];
+                            "BDUSS=;" == (ck = e.target.dataset.ck) && Toast.warning("cookie\u83b7\u53d6\u5f02\u5e38,\u4e0b\u8f7d\u53ef\u80fd\u4f1a\u5931\u8d25,\u53ef\u5c1d\u8bd5\u4f7f\u7528\u811a\u672c\u732b\u907f\u514d\u8be5\u95ee\u9898"), 
+                            [ 4, NetDiskDirectService.sendLinkToRPC(filename, url, ua, ck) ];
 
                           case 1:
                             return res = _a.sent(), e.target.innerText = res ? "\u53d1\u9001\u6210\u529f" : "\u53d1\u9001\u5931\u8d25(\u8bf7\u68c0\u67e5\u914d\u7f6e)", 
@@ -2269,7 +2318,7 @@
         function XhsService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
             return _this.rules = new Map([ [ SiteEnum.Xhs, /www\.xiaohongshu\.com\/explore/ ] ]), 
-            _this._appName = "xhs", _this._unique = !1, _this;
+            _this._appName = "xhs", _this._unique = !1, _this.semiui = !0, _this;
         }
         return __extends(XhsService, _super), XhsService.prototype.loader = function() {}, 
         XhsService.prototype.run = function() {
@@ -2305,13 +2354,13 @@
             var _a, _b, _c, _d, info, noteId, note, selectNum, n, num, code, url = Core.url, res = /https:\/\/www\.xiaohongshu\.com\/explore\/[a-zA-Z0-9_\-]{5,22}/i.test(url);
             if (res) if (Core.getCookie("gid")) {
                 if (noteId = null === (_a = null == (info = unsafeWindow.window.__INITIAL_STATE__) ? void 0 : info.note) || void 0 === _a ? void 0 : _a.firstNoteId.value) {
-                    if (!(note = null === (_c = null === (_b = null == info ? void 0 : info.note) || void 0 === _b ? void 0 : _b.noteDetailMap[noteId]) || void 0 === _c ? void 0 : _c.note)) return void sAlert.error("\u5185\u5bb9\u4fe1\u606f\u83b7\u53d6\u5931\u8d25");
-                    Logger.debug(note), "video" == (null == note ? void 0 : note.type) ? sAlert.warning("\u6682\u4e0d\u652f\u6301\u89c6\u9891\u89e3\u6790") : "normal" == (null == note ? void 0 : note.type) ? (selectNum = $(".fraction").text(), 
+                    if (!(note = null === (_c = null === (_b = null == info ? void 0 : info.note) || void 0 === _b ? void 0 : _b.noteDetailMap[noteId]) || void 0 === _c ? void 0 : _c.note)) return void Toast.error("\u5185\u5bb9\u4fe1\u606f\u83b7\u53d6\u5931\u8d25");
+                    Logger.debug(note), "video" == (null == note ? void 0 : note.type) ? Toast.warning("\u6682\u4e0d\u652f\u6301\u89c6\u9891\u89e3\u6790") : "normal" == (null == note ? void 0 : note.type) ? (selectNum = $(".fraction").text(), 
                     Logger.debug(selectNum), num = 0, null == (n = selectNum.match(/\d+/)) || n.length < 1 || (num = Number.parseInt(n[0])), 
                     code = null === (_d = null == note ? void 0 : note.imageList[num > 0 ? num - 1 : num]) || void 0 === _d ? void 0 : _d.infoList[1].url, 
-                    Core.open("https://jx.wandhi.com?u=" + window.btoa(code) + "&t=xhsimg")) : sAlert.error("\u9519\u8bef\u7684\u6570\u636e\u7c7b\u578b,\u8bf7\u5411\u4f5c\u8005\u53cd\u9988(" + (null == note ? void 0 : note.type) + ")");
+                    Core.open("https://jx.wandhi.com?u=" + window.btoa(code) + "&t=xhsimg")) : Toast.error("\u9519\u8bef\u7684\u6570\u636e\u7c7b\u578b,\u8bf7\u5411\u4f5c\u8005\u53cd\u9988(" + (null == note ? void 0 : note.type) + ")");
                 }
-            } else sAlert.warning("\u8bf7\u5148\u767b\u5f55\u5c0f\u7ea2\u4e66"); else sAlert.warning("\u8bf7\u5148\u9009\u62e9\u4e00\u7bc7\u5185\u5bb9");
+            } else Toast.warning("\u8bf7\u5148\u767b\u5f55\u5c0f\u7ea2\u4e66"); else Toast.warning("\u8bf7\u5148\u9009\u62e9\u4e00\u7bc7\u5185\u5bb9");
         }, XhsService;
     }(PluginBase), GfUpdateService = function(_super) {
         function GfUpdateService() {
@@ -2343,9 +2392,57 @@
                 }));
             }));
         }, GfUpdateService;
+    }(PluginBase), SettingUI = function(_super) {
+        function SettingUI(p) {
+            var _this = _super.call(this, p) || this;
+            return _this.handOk = function(e) {
+                _this.setState({
+                    visible: !1
+                });
+            }, _this.handCancel = function(e) {
+                _this.setState({
+                    visible: !1
+                });
+            }, _this.state = {
+                visible: !0
+            }, _this.handCancel = _this.handCancel.bind(_this), _this;
+        }
+        return __extends(SettingUI, _super), SettingUI.prototype.render = function() {
+            return React__default.default.createElement(React__default.default.Fragment, null, React__default.default.createElement(semiUi.Modal, {
+                title: "\u63d2\u4ef6\u8bbe\u7f6e",
+                visible: this.state.visible,
+                onOk: this.handOk,
+                onCancel: this.handCancel
+            }, React__default.default.createElement(semiUi.Tabs, {
+                tabPosition: "left",
+                type: "line"
+            }, React__default.default.createElement(semiUi.TabPane, {
+                tab: React__default.default.createElement("span", null, "\u63a7\u5236\u9762\u677f"),
+                itemKey: "1"
+            }, React__default.default.createElement("div", {
+                style: {
+                    padding: "0 24px"
+                }
+            }, React__default.default.createElement("h3", null, "\u65bd\u5de5\u4e2d...."))))));
+        }, SettingUI;
+    }(React__default.default.Component), SettingUIService = function(_super) {
+        function SettingUIService() {
+            var _this = null !== _super && _super.apply(this, arguments) || this;
+            return _this.rules = new Map([ [ SiteEnum.All, /.*?/i ] ]), _this._unique = !1, 
+            _this.semiui = !0, _this._appName = "SettingUI", _this;
+        }
+        return __extends(SettingUIService, _super), SettingUIService.prototype.loader = function() {}, 
+        SettingUIService.prototype.run = function() {
+            var _this = this;
+            GM_registerMenuCommand("\u63d2\u4ef6\u8bbe\u7f6e", (function() {
+                return Core.Render(React__default.default.createElement(SettingUI, {
+                    key: (new Date).getTime()
+                }), _this._appName);
+            }));
+        }, SettingUIService;
     }(PluginBase), OneKeyVipGfInjection = function() {
         function OneKeyVipGfInjection() {
-            this.plugins = new Array, this.plugins = [ Container.Require(AdClearService), Container.Require(GfUpdateService), Container.Require(ControlMenuService), Container.Require(SettingService), Container.Require(AutoExpandService), Container.Require(AliyunPanToken), Container.Require(BiliImgService), Container.Require(BiliMobileService), Container.Require(MovieService), Container.Require(MusicService), Container.Require(CsdnAdService), Container.Require(WenKuService), Container.Require(LinkJumpService), Container.Require(YoutubeService), Container.Require(XhsService), Container.Require(SearchService), Container.Require(NetDiskDirectService) ], 
+            this.plugins = new Array, this.plugins = [ Container.Require(AdClearService), Container.Require(GfUpdateService), Container.Require(ControlMenuService), Container.Require(SettingUIService), Container.Require(SettingService), Container.Require(AutoExpandService), Container.Require(AliyunPanToken), Container.Require(BiliImgService), Container.Require(BiliMobileService), Container.Require(MovieService), Container.Require(MusicService), Container.Require(CsdnAdService), Container.Require(WenKuService), Container.Require(LinkJumpService), Container.Require(YoutubeService), Container.Require(XhsService), Container.Require(SearchService), Container.Require(NetDiskDirectService) ], 
             Logger.info("container loaded");
         }
         return OneKeyVipGfInjection.prototype.Init = function() {

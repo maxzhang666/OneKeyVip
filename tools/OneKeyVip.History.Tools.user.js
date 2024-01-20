@@ -1,63 +1,75 @@
 // ==UserScript==
-// @name         【玩的嗨】淘宝、天猫、京东、唯品会隐藏优惠券查询，自动显示历史价格和比价,拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手 长期更新,放心使用
-// @namespace    https://www.wandhi.com/
-// @version      1.0
-// @homepage     https://wiki.wandhi.com/
-// @supportURL   https://wiki.wandhi.com/
-// @description  拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手
-// @author       MaxZhang
-// @icon         https://www.wandhi.com//favicon.ico
-// @require      https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
-// @require      https://lib.baomitu.com/limonte-sweetalert2/11.4.7/sweetalert2.all.min.js
-// @require      https://lib.baomitu.com/echarts/4.6.0/echarts.min.js
-// @require      https://lib.baomitu.com/layer/2.3/layer.js
-// @require      https://lib.baomitu.com/qrcode-generator/1.4.4/qrcode.min.js
-// @license MIT
-// @include      *://item.taobao.com/*
-// @include      *://s.taobao.com/search*
-// @include      *://list.tmall.com/search_product.htm*
-// @include      *://detail.tmall.com/*
-// @include      *://chaoshi.detail.tmall.com/*
-// @include      *://detail.tmall.hk/*
-// @include      *://item.yiyaojd.com/*
-// @include      *://item.jd.com/*
-// @include      *://search.jd.com/*
-// @include      *://item.jd.hk/*
-// @include      *://search.kaola.com/*
-// @include      *://goods.kaola.com*
-// @include      *://detail.vip.com/detail-*
-// @include      *://product.suning.com/*
-// @grant GM_setClipboard
-// @run-at document-end
-// @connect api.wandhi.com
-// @connect cdn.jsdelivr.net
-// @connect gwdang.com
-// @connect scriptcat.org
-// @grant unsafeWindow
-// @grant GM_xmlhttpRequest
-// @grant GM_info
-// @grant GM_addStyle
-// @grant GM_getValue
-// @grant GM_setValue
-// @grant GM_notification
-// @grant GM_openInTab
-// @grant GM_deleteValue
-// @grant GM_registerMenuCommand
-// @grant GM_unregisterMenuCommand
-// @grant GM_download
-// @compatible firefox
-// @compatible chrome
-// @compatible opera safari edge
-// @compatible safari
-// @compatible edge
-// @antifeature referral-link 此提示为GreasyFork代码规范要求含有查券功能的脚本必须添加，实际使用无任何强制跳转，代码可查，请知悉。
+// @name           【玩的嗨】VIP工具箱,拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手 长期更新，放心使用
+// @namespace      https://www.wandhi.com/
+// @version        1.1
+// @homepage       https://wiki.wandhi.com
+// @support        https:://wiki.wandhi.com
+// @description    拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手
+// @author         MaxZhang
+// @icon           https://www.wandhi.com//favicon.ico
+// @require        https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
+// @require        https://lib.baomitu.com/limonte-sweetalert2/11.4.7/sweetalert2.all.min.js
+// @require        https://lib.baomitu.com/echarts/4.6.0/echarts.min.js
+// @require        https://lib.baomitu.com/layer/2.3/layer.js
+// @require        https://lib.baomitu.com/qrcode-generator/1.4.4/qrcode.min.js
+// @require        https://lib.baomitu.com/FileSaver.js/2.0.5/FileSaver.min.js
+// @require        https://lib.baomitu.com/viewerjs/1.11.3/viewer.min.js
+// @require        https://unpkg.com/react@18.2.0/umd/react.production.min.js
+// @require        https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js
+// @require        https://unpkg.com/@douyinfe/semi-ui@2.49.2/dist/umd/semi-ui.min.js
+// @include        *://item.taobao.com/*
+// @include        *://s.taobao.com/search*
+// @include        *://list.tmall.com/search_product.htm*
+// @include        *://detail.tmall.com/*
+// @include        *://chaoshi.detail.tmall.com/*
+// @include        *://detail.tmall.hk/*
+// @include        *://item.yiyaojd.com/*
+// @include        *://item.jd.com/*
+// @include        *://search.jd.com/*
+// @include        *://item.jd.hk/*
+// @include        *://search.kaola.com/*
+// @include        *://goods.kaola.com*
+// @include        *://detail.vip.com/detail-*
+// @include        *://product.suning.com/*
+// @grant          GM_setClipboard
+// @grant          unsafeWindow
+// @grant          GM_xmlhttpRequest
+// @grant          GM_info
+// @grant          GM_cookie
+// @grant          GM_addStyle
+// @grant          GM_getValue
+// @grant          GM_setValue
+// @grant          GM.getValue
+// @grant          GM.setValue
+// @grant          GM_notification
+// @grant          GM_openInTab
+// @grant          GM_deleteValue
+// @grant          GM_registerMenuCommand
+// @grant          GM_unregisterMenuCommand
+// @grant          GM_download
+// @connect        api.wandhi.com
+// @connect        api.huizhek.com
+// @connect        cdn.jsdelivr.net
+// @connect        tool.manmanbuy.com
+// @connect        gwdang.com
+// @connect        scriptcat.org
+// @connect        quark.cn
+// @connect        openapi.baidu.com
+// @connect        localhost
+// @compatible     firefox
+// @compatible     chrome
+// @compatible     opera safari edge
+// @compatible     safari
+// @compatible     edge
+// @run-at         document-end
+// @antifeature    referral-link 此提示为GreasyFork代码规范要求含有查券功能的脚本必须添加，实际使用无任何强制跳转，代码可查，请知悉。
 // ==/UserScript==
 
 (function(global, factory) {
-    "object" == typeof exports && "undefined" != typeof module ? factory(require("sweetalert2")) : "function" == typeof define && define.amd ? define([ "sweetalert2" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).Swal);
-})(this, (function(Swal) {
+    "object" == typeof exports && "undefined" != typeof module ? factory(require("react-dom"), require("sweetalert2")) : "function" == typeof define && define.amd ? define([ "react-dom", "sweetalert2" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).ReactDOM, global.Swal);
+})(this, (function(ReactDOM, Swal) {
     "use strict";
-    var Swal__default, container, Container, Logger, LogLevel, extendStatics, BrowerType, VersionResult, Core, Common, PluginBase, SiteEnum, Config, AjaxOption, Alert, Http, HttpHeaders, Hour, Route, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, sAlert, GwdService, TaoBaoService, JdService, ItemType, Tao, ListService, _GwdService, OneKeyVipHistoryToolsInjection;
+    var ReactDOM__default, Swal__default, container, Container, Logger, LogLevel, extendStatics, BrowerType, VersionResult, Core, Common, PluginBase, SiteEnum, Config, AjaxOption, Alert, Http, HttpHeaders, Hour, Route, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, sAlert, GwdService, TaoBaoService, JdService, ItemType, Tao, ListService, _GwdService, OneKeyVipHistoryToolsInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
@@ -181,7 +193,8 @@
         (style = document.createElement("style")).type = "text/css", "top" === insertAt && head.firstChild ? head.insertBefore(style, head.firstChild) : head.appendChild(style), 
         style.styleSheet ? style.styleSheet.cssText = css : style.appendChild(document.createTextNode(css)));
     }
-    Swal__default = _interopDefaultLegacy(Swal), container = new Map, Container = function() {
+    ReactDOM__default = _interopDefaultLegacy(ReactDOM), Swal__default = _interopDefaultLegacy(Swal), 
+    container = new Map, Container = function() {
         function Container() {}
         return Container.Registe = function(type, args) {
             var className = this.processName(type.name);
@@ -229,7 +242,12 @@
         function Core() {
             this.url = Core.currentUrl();
         }
-        return Core.appendTo = function(selector, html) {
+        return Core.Render = function(element, id) {
+            var script, container = document.getElementById(id);
+            container || ((script = unsafeWindow.window.document.createElement("div")).id = id, 
+            unsafeWindow.window.document.head.append(script), container = document.getElementById(id)), 
+            ReactDOM__default.default.render(element, container);
+        }, Core.appendTo = function(selector, html) {
             $(selector).append(html);
         }, Core.prepend = function(selector, html) {
             $(selector).prepend(html);
@@ -423,14 +441,18 @@
             textArea.value = text, document.body.appendChild(textArea), textArea.focus(), textArea.select(), 
             document.execCommand("copy") ? (document.body.removeChild(textArea), !0) : (document.body.removeChild(textArea), 
             !1);
-        }, Core.getGmCookie = function(key) {
-            return new Promise((function(resolve, reject) {
-                "undefined" != typeof GM_cookie ? GM_cookie.list({
-                    name: key
-                }, (function(cookies, error) {
-                    (null == cookies ? void 0 : cookies.length) > 0 ? resolve(cookies[0].value) : (Logger.warn("get cookie [" + key + "] is error:" + error), 
-                    resolve(""));
-                })) : resolve("");
+        }, Core.getGmCookie = function(key, domain) {
+            return void 0 === domain && (domain = ""), new Promise((function(resolve, reject) {
+                if ("undefined" != typeof GM_cookie) {
+                    var obj = {
+                        name: key,
+                        url: Core.url
+                    };
+                    domain && (obj.domain = domain), GM_cookie.list(obj, (function(cookies, error) {
+                        (null == cookies ? void 0 : cookies.length) > 0 ? resolve(cookies[0].value) : (Logger.warn("get cookie [" + key + "] is error:" + error), 
+                        resolve(""));
+                    }));
+                } else resolve("");
             }));
         }, Core.getCookie = function(key) {
             var i, l, tempArr, arr = document.cookie.replace(/\s/g, "").split(";");
@@ -483,7 +505,8 @@
     }(Common || (Common = {})), PluginBase = function() {
         function PluginBase() {
             var _this = this;
-            this._unique = !0, this.menu = new Common.Menu, this.Process = function() {
+            this._unique = !0, this.semiui = !1, this.menu = new Common.Menu, this.Process = function() {
+                _this.semiui && Core.appendCss("https://unpkg.com/@douyinfe/semi-ui@2.49.2/dist/css/semi.css"), 
                 _this.loader(), _this.run();
             }, this._appName = "base";
         }
@@ -513,12 +536,12 @@
         SiteEnum.KuWo = "KuWo", SiteEnum.XiaMi = "XiaMi", SiteEnum.TaiHe = "TaiHe", SiteEnum.QingTing = "QingTing", 
         SiteEnum.LiZhi = "LiZhi", SiteEnum.MiGu = "MiGu", SiteEnum.XiMaLaYa = "XiMaLaYa", 
         SiteEnum.WenKu = "WenKu", SiteEnum.YouTuBe = "YouTuBe", SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", 
-        SiteEnum.ALY = "ALY", SiteEnum.BDY1 = "BDY1", SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", 
-        SiteEnum.Steam = "Steam", SiteEnum.Vp = "Vp", SiteEnum.CSDN = "CSDN", SiteEnum.CSDN_Download = "CSDN_Download", 
-        SiteEnum.ZhiHu = "ZhiHu", SiteEnum.JianShu = "JianShu", SiteEnum.JueJin = "JueJin", 
-        SiteEnum.Gitee = "Gitee", SiteEnum.Weibo = "Weibo", SiteEnum.TuXiaoChao = "TuXiaoChao", 
-        SiteEnum.OsCh = "OsCh", SiteEnum.AiFaDian = "AiFaDian", SiteEnum.Baidu = "Baidu", 
-        SiteEnum.BaiduPanMain = "BaiduPanMain", SiteEnum.BaiduPanHome = "BaiduPanHome", 
+        SiteEnum.ALY = "ALY", SiteEnum.ALY_P = "ALY_P", SiteEnum.BDY1 = "BDY1", SiteEnum.LZY = "LZY", 
+        SiteEnum.SuNing = "SuNing", SiteEnum.Steam = "Steam", SiteEnum.Vp = "Vp", SiteEnum.CSDN = "CSDN", 
+        SiteEnum.CSDN_Download = "CSDN_Download", SiteEnum.ZhiHu = "ZhiHu", SiteEnum.JianShu = "JianShu", 
+        SiteEnum.JueJin = "JueJin", SiteEnum.Gitee = "Gitee", SiteEnum.Weibo = "Weibo", 
+        SiteEnum.TuXiaoChao = "TuXiaoChao", SiteEnum.OsCh = "OsCh", SiteEnum.AiFaDian = "AiFaDian", 
+        SiteEnum.Baidu = "Baidu", SiteEnum.BaiduPanMain = "BaiduPanMain", SiteEnum.BaiduPanHome = "BaiduPanHome", 
         SiteEnum.DouBan = "DouBan", SiteEnum.g17173 = "g17173", SiteEnum.Google = "Google", 
         SiteEnum.SoGou = "SoGou", SiteEnum.KuaKeHome = "KuaKeHome", SiteEnum.TencentDoc = "TencentDoc", 
         SiteEnum.TencentMail = "TencentMail", SiteEnum.TencentCloudBlog = "TencentCloudBlog", 
@@ -807,7 +830,7 @@
         }
         return Object.defineProperty(Route, "apiRoot", {
             get: function() {
-                return "https://api.wandhi.com/api";
+                return "https://api.huizhek.com/api";
             },
             enumerable: !1,
             configurable: !0
@@ -1487,15 +1510,7 @@
     }(BaseCoupon), styleInject(".one-key-vip-container { z-index: 99999!important }\n.one-key-vip-popup { font-size: 14px !important }\n.one-key-vip-setting-label { display: flex;align-items: center;justify-content: space-between;padding-top: 20px; }\n.one-key-vip-setting-checkbox { width: 16px;height: 16px; }\n"), 
     sAlert = function() {
         function sAlert() {}
-        return sAlert.showMessage = function(title, html, toast, position, time) {
-            return Swal__default.default.fire({
-                title: title,
-                html: html,
-                position: position,
-                toast: toast,
-                timer: null == time ? void 0 : 1e3 * time
-            });
-        }, sAlert.toast = function(msg, icon, position, time) {
+        return sAlert.toast = function(msg, icon, position, time) {
             void 0 === icon && (icon = "success"), void 0 === position && (position = "top"), 
             void 0 === time && (time = 2), Swal__default.default.fire({
                 toast: !0,
@@ -1507,8 +1522,6 @@
                 timer: 1e3 * time,
                 customClass: this.customeCss
             });
-        }, sAlert.warning = function(msg, position, time) {
-            void 0 === position && (position = "center"), void 0 === time && (time = 2), this.toast(msg, "warning", position, time);
         }, sAlert.error = function(msg, time) {
             void 0 === time && (time = 2), this.toast(msg, "error", "center", time);
         }, sAlert.info = function(msg, icon, position, time) {
