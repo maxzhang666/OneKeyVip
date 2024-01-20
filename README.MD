@@ -117,5 +117,5 @@
 ## 💕 友情捐助
 
 <p align="center">
-<img src="https://i.loli.net/2019/05/14/5cda672add6f594934.jpg" alt="友情捐助">
+<img src="https://registry.npmmirror.com/wandhi_cdn/1.0.1/files/image/qr.jpg" alt="友情捐助">
 </p>
