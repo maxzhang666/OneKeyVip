@@ -2317,7 +2317,7 @@
             _this.UrlTag = "Wandhi_qLink", _this.historyService = new GwdService, _this;
         }
         return __extends(TaoBaoService, _super), TaoBaoService.prototype.loader = function() {
-            Core.appendCss("//cdn.wandhi.com/style/extenstion/hui.style.css");
+            Core.appendCss("//cdn.huizhek.com/style/extenstion/hui.style.css");
         }, TaoBaoService.prototype.run = function() {
             this.init(), this.historyService.linkTest() && this.historyService.Process();
         }, TaoBaoService.prototype.init = function() {
