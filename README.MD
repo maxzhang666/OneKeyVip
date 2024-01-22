@@ -46,7 +46,7 @@
 
 ### [**QQ频道**](https://qun.qq.com/qqweb/qunpro/share?_wv=3&_wwv=128&inviteCode=1U23Gb&from=181074&biz=ka)**推荐**
 
-## 🔧 [插件功能(点我查看详情)](https://wiki.wandhi.com/zh-cn/Feature.html)
+## 🔧 [插件功能(点我查看详情)](https://wikie.wandhi.com/zh-cn/Feature.html)
 
 * ✅ 视频解析
 * ✅ 音乐下载
@@ -100,11 +100,11 @@
 
 ## 📖 常见问题
 
-[**点我查看**](https://wiki.wandhi.com/zh-cn/Faq.html)
+[**点我查看**](https://wikie.wandhi.com/zh-cn/Faq.html)
 
 ## 🔔 更新历史
 
-[**查看**](https://wiki.wandhi.com/zh-cn/Changelog)
+[**查看**](https://wikie.wandhi.com/zh-cn/Changelog)
 
 # 功能说明
 
@@ -112,7 +112,7 @@
 
 > 功能介绍由于篇幅过长不再此处展示，请点击下方文字查看
 
-## [插件功能(点我查看详情)](https://wiki.wandhi.com/zh-cn/Feature.html)
+## [插件功能(点我查看详情)](https://wikie.wandhi.com/zh-cn/Feature.html)
 
 ## 💕 友情捐助
 
