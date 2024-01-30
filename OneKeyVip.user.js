@@ -126,6 +126,7 @@
 // @require        https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/react/18.2.0/umd/react.production.min.js
 // @require        https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/react-dom/18.2.0/umd/react-dom.production.min.js
 // @require        https://registry.npmmirror.com/@douyinfe/semi-ui/2.51.0/files/dist/umd/semi-ui.min.js
+// @require        https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/fingerprintjs2/2.1.5/fingerprint2.js
 // @grant          GM_setClipboard
 // @grant          unsafeWindow
 // @grant          GM_xmlhttpRequest
