@@ -3,7 +3,7 @@
 // @namespace      https://www.wandhi.com/
 // @description    🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转；🎉 12、搜索引擎快速跳转
 // @license        MIT
-// @version        4.9.20
+// @version        4.9.21
 // @author         MaxZhang
 // @include        *://settings.wandhi.com/*
 // @include        *://m.youku.com/v*
@@ -166,7 +166,7 @@
     "object" == typeof exports && "undefined" != typeof module ? factory(require("react-dom"), require("sweetalert2"), require("@douyinfe/semi-ui"), require("viewerjs")) : "function" == typeof define && define.amd ? define([ "react-dom", "sweetalert2", "@douyinfe/semi-ui", "viewerjs" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).ReactDOM, global.Swal, global.SemiUI, global.Viewer);
 })(this, (function(ReactDOM, Swal, semiUi, Viewer) {
     "use strict";
-    var ReactDOM__default, Swal__default, Viewer__default, extendStatics, update_key, Min, Hour, Day, Week, BrowerType, Logger, LogLevel, VersionResult, Core, VersionCompar, Config, AjaxOption, Alert, Http, HttpHeaders, Route, css_248z$a, Common, PluginBase, SiteEnum, UpdateService, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$9, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$8, sAlert, GwdService, css_248z$7, TaoBaoService, container, Container, css_248z$6, ConfigEnum, Toast, BiliImgService, Menu$2, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$5, CsdnAdService, Menu$1, WenKuService, LinkJumpService, css_248z$4, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$3, css_248z$2, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, NetDiskDirectService, AdClearService, css_248z$1, ImgViewService, css_248z, ZhihuService, Menu, XhsService, OneKeyVipInjection;
+    var ReactDOM__default, Swal__default, Viewer__default, extendStatics, update_key, Min, Hour, Day, Week, BrowerType, Logger, LogLevel, VersionResult, Core, VersionCompar, Config, AjaxOption, Alert, Http, HttpHeaders, Route, css_248z$a, Common, PluginBase, SiteEnum, UpdateService, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$9, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$8, sAlert, commonjsGlobal, fingerprint2, GwdService, GwdHelper, css_248z$7, TaoBaoService, container, Container, css_248z$6, ConfigEnum, Toast, BiliImgService, Menu$2, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$5, CsdnAdService, Menu$1, WenKuService, LinkJumpService, css_248z$4, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$3, css_248z$2, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, NetDiskDirectService, AdClearService, css_248z$1, ImgViewService, css_248z, ZhihuService, Menu, XhsService, OneKeyVipInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
@@ -312,6 +312,11 @@
         void 0 === ref && (ref = {}), insertAt = ref.insertAt, css && "undefined" != typeof document && (head = document.head || document.getElementsByTagName("head")[0], 
         (style = document.createElement("style")).type = "text/css", "top" === insertAt && head.firstChild ? head.insertBefore(style, head.firstChild) : head.appendChild(style), 
         style.styleSheet ? style.styleSheet.cssText = css : style.appendChild(document.createTextNode(css)));
+    }
+    function createCommonjsModule(fn, module) {
+        return fn(module = {
+            exports: {}
+        }, module.exports), module.exports;
     }
     ReactDOM__default = _interopDefaultLegacy(ReactDOM), Swal__default = _interopDefaultLegacy(Swal), 
     Viewer__default = _interopDefaultLegacy(Viewer), extendStatics = function(d, b) {
@@ -899,9 +904,8 @@
                     res.code ? reso(res) : reje(res);
                 }));
             }));
-        }, Route.queryHistoryV4 = function(url, siteType, fp, dfp, callback) {
-            var root = "https://browser.gwdang.com/extension/price_towards?url=" + encodeURIComponent(url) + "&ver=1&format=json&fp=" + fp + "&dfp=" + dfp + "&union=union_gwdang&from_device=chrome&version=" + (new Date).getTime();
-            Http.JqGet(root, callback, new Map([ [ "cookie", Core.decode("Z3dkYW5nX3Blcm1hbmVudF9pZA==") + "=" + Core.randStr(34) + ";fp=" + fp + ";dfp=" + dfp + ";" ] ]));
+        }, Route.queryHistoryV4 = function(url, callback) {
+            Http.JqGet(url, callback);
         }, Route.queryBiliImg = function(aid, callback) {
             Http.getData(this.biliInfo + "?aid=" + aid, callback);
         }, Route.queryBiliDown = function(aid, cid, callback) {
@@ -1796,22 +1800,745 @@
             loader: "one-key-vip-loader",
             footer: "one-key-vip-footer"
         }, sAlert;
-    }(), GwdService = function(_super) {
+    }(), commonjsGlobal = "undefined" != typeof globalThis ? globalThis : "undefined" != typeof window ? window : "undefined" != typeof global ? global : "undefined" != typeof self ? self : {}, 
+    fingerprint2 = createCommonjsModule((function(module) {
+        var context, definition;
+        context = commonjsGlobal, definition = function() {
+            var x64Add, x64Multiply, x64Rotl, x64LeftShift, x64Xor, x64Fmix, x64hash128, defaultOptions, each, map, extendSoft, enumerateDevicesKey, isEnumerateDevicesSupported, screenResolutionKey, getScreenResolution, availableScreenResolutionKey, getAvailableScreenResolution, sessionStorageKey, localStorageKey, indexedDbKey, cpuClassKey, platformKey, doNotTrackKey, canvasKey, webglKey, webglVendorAndRendererKey, adBlockKey, hasLiedLanguagesKey, hasLiedResolutionKey, hasLiedOsKey, hasLiedBrowserKey, flashFontsKey, pluginsComponent, getRegularPlugins, getIEPlugins, pluginsShouldBeSorted, touchSupportKey, hardwareConcurrencyKey, hasSessionStorage, hasLocalStorage, hasIndexedDB, getHardwareConcurrency, getNavigatorCpuClass, getNavigatorPlatform, getDoNotTrack, getTouchSupport, getCanvasFp, getWebglFp, getWebglVendorAndRenderer, getAdBlock, getHasLiedLanguages, getHasLiedResolution, getHasLiedOs, getHasLiedBrowser, isCanvasSupported, isWebGlSupported, isIE, isIEOrOldEdge, hasSwfObjectLoaded, hasMinFlashInstalled, addFlashDivNode, loadSwfAndDetectFonts, getWebglCanvas, loseWebglContext, components, Fingerprint2;
+            return void 0 === Array.isArray && (Array.isArray = function(obj) {
+                return "[object Array]" === Object.prototype.toString.call(obj);
+            }), x64Add = function x64Add(m, n) {
+                m = [ m[0] >>> 16, 65535 & m[0], m[1] >>> 16, 65535 & m[1] ], n = [ n[0] >>> 16, 65535 & n[0], n[1] >>> 16, 65535 & n[1] ];
+                var o = [ 0, 0, 0, 0 ];
+                return o[3] += m[3] + n[3], o[2] += o[3] >>> 16, o[3] &= 65535, o[2] += m[2] + n[2], 
+                o[1] += o[2] >>> 16, o[2] &= 65535, o[1] += m[1] + n[1], o[0] += o[1] >>> 16, o[1] &= 65535, 
+                o[0] += m[0] + n[0], o[0] &= 65535, [ o[0] << 16 | o[1], o[2] << 16 | o[3] ];
+            }, x64Multiply = function x64Multiply(m, n) {
+                m = [ m[0] >>> 16, 65535 & m[0], m[1] >>> 16, 65535 & m[1] ], n = [ n[0] >>> 16, 65535 & n[0], n[1] >>> 16, 65535 & n[1] ];
+                var o = [ 0, 0, 0, 0 ];
+                return o[3] += m[3] * n[3], o[2] += o[3] >>> 16, o[3] &= 65535, o[2] += m[2] * n[3], 
+                o[1] += o[2] >>> 16, o[2] &= 65535, o[2] += m[3] * n[2], o[1] += o[2] >>> 16, o[2] &= 65535, 
+                o[1] += m[1] * n[3], o[0] += o[1] >>> 16, o[1] &= 65535, o[1] += m[2] * n[2], o[0] += o[1] >>> 16, 
+                o[1] &= 65535, o[1] += m[3] * n[1], o[0] += o[1] >>> 16, o[1] &= 65535, o[0] += m[0] * n[3] + m[1] * n[2] + m[2] * n[1] + m[3] * n[0], 
+                o[0] &= 65535, [ o[0] << 16 | o[1], o[2] << 16 | o[3] ];
+            }, x64Rotl = function x64Rotl(m, n) {
+                return 32 == (n %= 64) ? [ m[1], m[0] ] : n < 32 ? [ m[0] << n | m[1] >>> 32 - n, m[1] << n | m[0] >>> 32 - n ] : (n -= 32, 
+                [ m[1] << n | m[0] >>> 32 - n, m[0] << n | m[1] >>> 32 - n ]);
+            }, x64LeftShift = function x64LeftShift(m, n) {
+                return 0 == (n %= 64) ? m : n < 32 ? [ m[0] << n | m[1] >>> 32 - n, m[1] << n ] : [ m[1] << n - 32, 0 ];
+            }, x64Xor = function x64Xor(m, n) {
+                return [ m[0] ^ n[0], m[1] ^ n[1] ];
+            }, x64Fmix = function x64Fmix(h) {
+                return h = x64Xor(h, [ 0, h[0] >>> 1 ]), h = x64Multiply(h, [ 4283543511, 3981806797 ]), 
+                h = x64Xor(h, [ 0, h[0] >>> 1 ]), h = x64Multiply(h, [ 3301882366, 444984403 ]), 
+                h = x64Xor(h, [ 0, h[0] >>> 1 ]);
+            }, x64hash128 = function x64hash128(key, seed) {
+                var remainder, bytes, h1, h2, k1, k2, c1, c2, i;
+                for (seed = seed || 0, remainder = (key = key || "").length % 16, bytes = key.length - remainder, 
+                h1 = [ 0, seed ], h2 = [ 0, seed ], k1 = [ 0, 0 ], k2 = [ 0, 0 ], c1 = [ 2277735313, 289559509 ], 
+                c2 = [ 1291169091, 658871167 ], i = 0; i < bytes; i += 16) k1 = [ 255 & key.charCodeAt(i + 4) | (255 & key.charCodeAt(i + 5)) << 8 | (255 & key.charCodeAt(i + 6)) << 16 | (255 & key.charCodeAt(i + 7)) << 24, 255 & key.charCodeAt(i) | (255 & key.charCodeAt(i + 1)) << 8 | (255 & key.charCodeAt(i + 2)) << 16 | (255 & key.charCodeAt(i + 3)) << 24 ], 
+                k2 = [ 255 & key.charCodeAt(i + 12) | (255 & key.charCodeAt(i + 13)) << 8 | (255 & key.charCodeAt(i + 14)) << 16 | (255 & key.charCodeAt(i + 15)) << 24, 255 & key.charCodeAt(i + 8) | (255 & key.charCodeAt(i + 9)) << 8 | (255 & key.charCodeAt(i + 10)) << 16 | (255 & key.charCodeAt(i + 11)) << 24 ], 
+                k1 = x64Multiply(k1, c1), k1 = x64Rotl(k1, 31), k1 = x64Multiply(k1, c2), h1 = x64Xor(h1, k1), 
+                h1 = x64Rotl(h1, 27), h1 = x64Add(h1, h2), h1 = x64Add(x64Multiply(h1, [ 0, 5 ]), [ 0, 1390208809 ]), 
+                k2 = x64Multiply(k2, c2), k2 = x64Rotl(k2, 33), k2 = x64Multiply(k2, c1), h2 = x64Xor(h2, k2), 
+                h2 = x64Rotl(h2, 31), h2 = x64Add(h2, h1), h2 = x64Add(x64Multiply(h2, [ 0, 5 ]), [ 0, 944331445 ]);
+                switch (k1 = [ 0, 0 ], k2 = [ 0, 0 ], remainder) {
+                  case 15:
+                    k2 = x64Xor(k2, x64LeftShift([ 0, key.charCodeAt(i + 14) ], 48));
+
+                  case 14:
+                    k2 = x64Xor(k2, x64LeftShift([ 0, key.charCodeAt(i + 13) ], 40));
+
+                  case 13:
+                    k2 = x64Xor(k2, x64LeftShift([ 0, key.charCodeAt(i + 12) ], 32));
+
+                  case 12:
+                    k2 = x64Xor(k2, x64LeftShift([ 0, key.charCodeAt(i + 11) ], 24));
+
+                  case 11:
+                    k2 = x64Xor(k2, x64LeftShift([ 0, key.charCodeAt(i + 10) ], 16));
+
+                  case 10:
+                    k2 = x64Xor(k2, x64LeftShift([ 0, key.charCodeAt(i + 9) ], 8));
+
+                  case 9:
+                    k2 = x64Xor(k2, [ 0, key.charCodeAt(i + 8) ]), k2 = x64Multiply(k2, c2), k2 = x64Rotl(k2, 33), 
+                    k2 = x64Multiply(k2, c1), h2 = x64Xor(h2, k2);
+
+                  case 8:
+                    k1 = x64Xor(k1, x64LeftShift([ 0, key.charCodeAt(i + 7) ], 56));
+
+                  case 7:
+                    k1 = x64Xor(k1, x64LeftShift([ 0, key.charCodeAt(i + 6) ], 48));
+
+                  case 6:
+                    k1 = x64Xor(k1, x64LeftShift([ 0, key.charCodeAt(i + 5) ], 40));
+
+                  case 5:
+                    k1 = x64Xor(k1, x64LeftShift([ 0, key.charCodeAt(i + 4) ], 32));
+
+                  case 4:
+                    k1 = x64Xor(k1, x64LeftShift([ 0, key.charCodeAt(i + 3) ], 24));
+
+                  case 3:
+                    k1 = x64Xor(k1, x64LeftShift([ 0, key.charCodeAt(i + 2) ], 16));
+
+                  case 2:
+                    k1 = x64Xor(k1, x64LeftShift([ 0, key.charCodeAt(i + 1) ], 8));
+
+                  case 1:
+                    k1 = x64Xor(k1, [ 0, key.charCodeAt(i) ]), k1 = x64Multiply(k1, c1), k1 = x64Rotl(k1, 31), 
+                    k1 = x64Multiply(k1, c2), h1 = x64Xor(h1, k1);
+                }
+                return h1 = x64Xor(h1, [ 0, key.length ]), h2 = x64Xor(h2, [ 0, key.length ]), h1 = x64Add(h1, h2), 
+                h2 = x64Add(h2, h1), h1 = x64Fmix(h1), h2 = x64Fmix(h2), h1 = x64Add(h1, h2), h2 = x64Add(h2, h1), 
+                ("00000000" + (h1[0] >>> 0).toString(16)).slice(-8) + ("00000000" + (h1[1] >>> 0).toString(16)).slice(-8) + ("00000000" + (h2[0] >>> 0).toString(16)).slice(-8) + ("00000000" + (h2[1] >>> 0).toString(16)).slice(-8);
+            }, defaultOptions = {
+                preprocessor: null,
+                audio: {
+                    timeout: 1e3,
+                    excludeIOS11: !0
+                },
+                fonts: {
+                    swfContainerId: "fingerprintjs2",
+                    swfPath: "flash/compiled/FontList.swf",
+                    userDefinedFonts: [],
+                    extendedJsFonts: !1
+                },
+                screen: {
+                    detectScreenOrientation: !0
+                },
+                plugins: {
+                    sortPluginsFor: [ /palemoon/i ],
+                    excludeIE: !1
+                },
+                extraComponents: [],
+                excludes: {
+                    enumerateDevices: !0,
+                    pixelRatio: !0,
+                    doNotTrack: !0,
+                    fontsFlash: !0,
+                    adBlock: !0
+                },
+                NOT_AVAILABLE: "not available",
+                ERROR: "error",
+                EXCLUDED: "excluded"
+            }, each = function each(obj, iterator) {
+                var i, l, key;
+                if (Array.prototype.forEach && obj.forEach === Array.prototype.forEach) obj.forEach(iterator); else if (obj.length === +obj.length) for (i = 0, 
+                l = obj.length; i < l; i++) iterator(obj[i], i, obj); else for (key in obj) obj.hasOwnProperty(key) && iterator(obj[key], key, obj);
+            }, map = function map(obj, iterator) {
+                var results = [];
+                return null == obj ? results : Array.prototype.map && obj.map === Array.prototype.map ? obj.map(iterator) : (each(obj, (function(value, index, list) {
+                    results.push(iterator(value, index, list));
+                })), results);
+            }, extendSoft = function extendSoft(target, source) {
+                var value, key;
+                if (null == source) return target;
+                for (key in source) null == (value = source[key]) || Object.prototype.hasOwnProperty.call(target, key) || (target[key] = value);
+                return target;
+            }, enumerateDevicesKey = function enumerateDevicesKey(done, options) {
+                if (!isEnumerateDevicesSupported()) return done(options.NOT_AVAILABLE);
+                navigator.mediaDevices.enumerateDevices().then((function(devices) {
+                    done(devices.map((function(device) {
+                        return "id=" + device.deviceId + ";gid=" + device.groupId + ";" + device.kind + ";" + device.label;
+                    })));
+                })).catch((function(error) {
+                    done(error);
+                }));
+            }, isEnumerateDevicesSupported = function isEnumerateDevicesSupported() {
+                return navigator.mediaDevices && navigator.mediaDevices.enumerateDevices;
+            }, screenResolutionKey = function screenResolutionKey(done, options) {
+                done(getScreenResolution(options));
+            }, getScreenResolution = function getScreenResolution(options) {
+                var resolution = [ window.screen.width, window.screen.height ];
+                return options.screen.detectScreenOrientation && resolution.sort().reverse(), resolution;
+            }, availableScreenResolutionKey = function availableScreenResolutionKey(done, options) {
+                done(getAvailableScreenResolution(options));
+            }, getAvailableScreenResolution = function getAvailableScreenResolution(options) {
+                if (window.screen.availWidth && window.screen.availHeight) {
+                    var available = [ window.screen.availHeight, window.screen.availWidth ];
+                    return options.screen.detectScreenOrientation && available.sort().reverse(), available;
+                }
+                return options.NOT_AVAILABLE;
+            }, sessionStorageKey = function sessionStorageKey(done, options) {
+                done(hasSessionStorage(options));
+            }, localStorageKey = function localStorageKey(done, options) {
+                done(hasLocalStorage(options));
+            }, indexedDbKey = function indexedDbKey(done, options) {
+                done(hasIndexedDB(options));
+            }, cpuClassKey = function cpuClassKey(done, options) {
+                done(getNavigatorCpuClass(options));
+            }, platformKey = function platformKey(done, options) {
+                done(getNavigatorPlatform(options));
+            }, doNotTrackKey = function doNotTrackKey(done, options) {
+                done(getDoNotTrack(options));
+            }, canvasKey = function canvasKey(done, options) {
+                isCanvasSupported() ? done(getCanvasFp(options)) : done(options.NOT_AVAILABLE);
+            }, webglKey = function webglKey(done, options) {
+                isWebGlSupported() ? done(getWebglFp()) : done(options.NOT_AVAILABLE);
+            }, webglVendorAndRendererKey = function webglVendorAndRendererKey(done) {
+                isWebGlSupported() ? done(getWebglVendorAndRenderer()) : done();
+            }, adBlockKey = function adBlockKey(done) {
+                done(getAdBlock());
+            }, hasLiedLanguagesKey = function hasLiedLanguagesKey(done) {
+                done(getHasLiedLanguages());
+            }, hasLiedResolutionKey = function hasLiedResolutionKey(done) {
+                done(getHasLiedResolution());
+            }, hasLiedOsKey = function hasLiedOsKey(done) {
+                done(getHasLiedOs());
+            }, hasLiedBrowserKey = function hasLiedBrowserKey(done) {
+                done(getHasLiedBrowser());
+            }, flashFontsKey = function flashFontsKey(done, options) {
+                return hasSwfObjectLoaded() ? hasMinFlashInstalled() ? options.fonts.swfPath ? void loadSwfAndDetectFonts((function(fonts) {
+                    done(fonts);
+                }), options) : done("missing options.fonts.swfPath") : done("flash not installed") : done("swf object not loaded");
+            }, pluginsComponent = function pluginsComponent(done, options) {
+                isIE() ? options.plugins.excludeIE ? done(options.EXCLUDED) : done(getIEPlugins(options)) : done(getRegularPlugins(options));
+            }, getRegularPlugins = function getRegularPlugins(options) {
+                var plugins, i, l;
+                if (null == navigator.plugins) return options.NOT_AVAILABLE;
+                for (plugins = [], i = 0, l = navigator.plugins.length; i < l; i++) navigator.plugins[i] && plugins.push(navigator.plugins[i]);
+                return pluginsShouldBeSorted(options) && (plugins = plugins.sort((function(a, b) {
+                    return a.name > b.name ? 1 : a.name < b.name ? -1 : 0;
+                }))), map(plugins, (function(p) {
+                    var mimeTypes = map(p, (function(mt) {
+                        return [ mt.type, mt.suffixes ];
+                    }));
+                    return [ p.name, p.description, mimeTypes ];
+                }));
+            }, getIEPlugins = function getIEPlugins(options) {
+                var result = [];
+                return Object.getOwnPropertyDescriptor && Object.getOwnPropertyDescriptor(window, "ActiveXObject") || "ActiveXObject" in window ? result = map([ "AcroPDF.PDF", "Adodb.Stream", "AgControl.AgControl", "DevalVRXCtrl.DevalVRXCtrl.1", "MacromediaFlashPaper.MacromediaFlashPaper", "Msxml2.DOMDocument", "Msxml2.XMLHTTP", "PDF.PdfCtrl", "QuickTime.QuickTime", "QuickTimeCheckObject.QuickTimeCheck.1", "RealPlayer", "RealPlayer.RealPlayer(tm) ActiveX Control (32-bit)", "RealVideo.RealVideo(tm) ActiveX Control (32-bit)", "Scripting.Dictionary", "SWCtl.SWCtl", "Shell.UIHelper", "ShockwaveFlash.ShockwaveFlash", "Skype.Detection", "TDCCtl.TDCCtl", "WMPlayer.OCX", "rmocx.RealPlayer G2 Control", "rmocx.RealPlayer G2 Control.1" ], (function(name) {
+                    try {
+                        return new window.ActiveXObject(name), name;
+                    } catch (e) {
+                        return options.ERROR;
+                    }
+                })) : result.push(options.NOT_AVAILABLE), navigator.plugins && (result = result.concat(getRegularPlugins(options))), 
+                result;
+            }, pluginsShouldBeSorted = function pluginsShouldBeSorted(options) {
+                var i, l, re, should = !1;
+                for (i = 0, l = options.plugins.sortPluginsFor.length; i < l; i++) if (re = options.plugins.sortPluginsFor[i], 
+                navigator.userAgent.match(re)) {
+                    should = !0;
+                    break;
+                }
+                return should;
+            }, touchSupportKey = function touchSupportKey(done) {
+                done(getTouchSupport());
+            }, hardwareConcurrencyKey = function hardwareConcurrencyKey(done, options) {
+                done(getHardwareConcurrency(options));
+            }, hasSessionStorage = function hasSessionStorage(options) {
+                try {
+                    return !!window.sessionStorage;
+                } catch (e) {
+                    return options.ERROR;
+                }
+            }, hasLocalStorage = function hasLocalStorage(options) {
+                try {
+                    return !!window.localStorage;
+                } catch (e) {
+                    return options.ERROR;
+                }
+            }, hasIndexedDB = function hasIndexedDB(options) {
+                if (isIEOrOldEdge()) return options.EXCLUDED;
+                try {
+                    return !!window.indexedDB;
+                } catch (e) {
+                    return options.ERROR;
+                }
+            }, getHardwareConcurrency = function getHardwareConcurrency(options) {
+                return navigator.hardwareConcurrency ? navigator.hardwareConcurrency : options.NOT_AVAILABLE;
+            }, getNavigatorCpuClass = function getNavigatorCpuClass(options) {
+                return navigator.cpuClass || options.NOT_AVAILABLE;
+            }, getNavigatorPlatform = function getNavigatorPlatform(options) {
+                return navigator.platform ? navigator.platform : options.NOT_AVAILABLE;
+            }, getDoNotTrack = function getDoNotTrack(options) {
+                return navigator.doNotTrack ? navigator.doNotTrack : navigator.msDoNotTrack ? navigator.msDoNotTrack : window.doNotTrack ? window.doNotTrack : options.NOT_AVAILABLE;
+            }, getTouchSupport = function getTouchSupport() {
+                var touchEvent, maxTouchPoints = 0;
+                void 0 !== navigator.maxTouchPoints ? maxTouchPoints = navigator.maxTouchPoints : void 0 !== navigator.msMaxTouchPoints && (maxTouchPoints = navigator.msMaxTouchPoints);
+                try {
+                    document.createEvent("TouchEvent"), touchEvent = !0;
+                } catch (_) {
+                    touchEvent = !1;
+                }
+                return [ maxTouchPoints, touchEvent, "ontouchstart" in window ];
+            }, getCanvasFp = function getCanvasFp(options) {
+                var ctx, result = [], canvas = document.createElement("canvas");
+                return canvas.width = 2e3, canvas.height = 200, canvas.style.display = "inline", 
+                (ctx = canvas.getContext("2d")).rect(0, 0, 10, 10), ctx.rect(2, 2, 6, 6), result.push("canvas winding:" + (!1 === ctx.isPointInPath(5, 5, "evenodd") ? "yes" : "no")), 
+                ctx.textBaseline = "alphabetic", ctx.fillStyle = "#f60", ctx.fillRect(125, 1, 62, 20), 
+                ctx.fillStyle = "#069", options.dontUseFakeFontInCanvas ? ctx.font = "11pt Arial" : ctx.font = "11pt no-real-font-123", 
+                ctx.fillText("Cwm fjordbank glyphs vext quiz, \ud83d\ude03", 2, 15), ctx.fillStyle = "rgba(102, 204, 0, 0.2)", 
+                ctx.font = "18pt Arial", ctx.fillText("Cwm fjordbank glyphs vext quiz, \ud83d\ude03", 4, 45), 
+                ctx.globalCompositeOperation = "multiply", ctx.fillStyle = "rgb(255,0,255)", ctx.beginPath(), 
+                ctx.arc(50, 50, 50, 0, 2 * Math.PI, !0), ctx.closePath(), ctx.fill(), ctx.fillStyle = "rgb(0,255,255)", 
+                ctx.beginPath(), ctx.arc(100, 50, 50, 0, 2 * Math.PI, !0), ctx.closePath(), ctx.fill(), 
+                ctx.fillStyle = "rgb(255,255,0)", ctx.beginPath(), ctx.arc(75, 100, 50, 0, 2 * Math.PI, !0), 
+                ctx.closePath(), ctx.fill(), ctx.fillStyle = "rgb(255,0,255)", ctx.arc(75, 75, 75, 0, 2 * Math.PI, !0), 
+                ctx.arc(75, 75, 25, 0, 2 * Math.PI, !0), ctx.fill("evenodd"), canvas.toDataURL && result.push("canvas fp:" + canvas.toDataURL()), 
+                result;
+            }, getWebglFp = function getWebglFp() {
+                var result, vShaderTemplate, fShaderTemplate, vertexPosBuffer, vertices, program, vshader, fshader, extensionDebugRendererInfo, fa2s = function fa2s(fa) {
+                    return gl.clearColor(0, 0, 0, 1), gl.enable(gl.DEPTH_TEST), gl.depthFunc(gl.LEQUAL), 
+                    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT), "[" + fa[0] + ", " + fa[1] + "]";
+                }, maxAnisotropy = function maxAnisotropy(gl) {
+                    var anisotropy, ext = gl.getExtension("EXT_texture_filter_anisotropic") || gl.getExtension("WEBKIT_EXT_texture_filter_anisotropic") || gl.getExtension("MOZ_EXT_texture_filter_anisotropic");
+                    return ext ? (0 === (anisotropy = gl.getParameter(ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT)) && (anisotropy = 2), 
+                    anisotropy) : null;
+                }, gl = getWebglCanvas();
+                if (!gl) return null;
+                try {
+                    result = [], vShaderTemplate = "attribute vec2 attrVertex;varying vec2 varyinTexCoordinate;uniform vec2 uniformOffset;void main(){varyinTexCoordinate=attrVertex+uniformOffset;gl_Position=vec4(attrVertex,0,1);}", 
+                    fShaderTemplate = "precision mediump float;varying vec2 varyinTexCoordinate;void main() {gl_FragColor=vec4(varyinTexCoordinate,0,1);}", 
+                    vertexPosBuffer = gl.createBuffer(), gl.bindBuffer(gl.ARRAY_BUFFER, vertexPosBuffer), 
+                    vertices = new Float32Array([ -.2, -.9, 0, .4, -.26, 0, 0, .732134444, 0 ]), gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW), 
+                    vertexPosBuffer.itemSize = 3, vertexPosBuffer.numItems = 3, program = gl.createProgram(), 
+                    vshader = gl.createShader(gl.VERTEX_SHADER), gl.shaderSource(vshader, vShaderTemplate), 
+                    gl.compileShader(vshader), fshader = gl.createShader(gl.FRAGMENT_SHADER), gl.shaderSource(fshader, fShaderTemplate), 
+                    gl.compileShader(fshader), gl.attachShader(program, vshader), gl.attachShader(program, fshader), 
+                    gl.linkProgram(program), gl.useProgram(program), program.vertexPosAttrib = gl.getAttribLocation(program, "attrVertex"), 
+                    program.offsetUniform = gl.getUniformLocation(program, "uniformOffset"), gl.enableVertexAttribArray(program.vertexPosArray), 
+                    gl.vertexAttribPointer(program.vertexPosAttrib, vertexPosBuffer.itemSize, gl.FLOAT, !1, 0, 0), 
+                    gl.uniform2f(program.offsetUniform, 1, 1), gl.drawArrays(gl.TRIANGLE_STRIP, 0, vertexPosBuffer.numItems);
+                    try {
+                        result.push(gl.canvas.toDataURL());
+                    } catch (e) {}
+                    result.push("extensions:" + (gl.getSupportedExtensions() || []).join(";")), result.push("webgl aliased line width range:" + fa2s(gl.getParameter(gl.ALIASED_LINE_WIDTH_RANGE))), 
+                    result.push("webgl aliased point size range:" + fa2s(gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE))), 
+                    result.push("webgl alpha bits:" + gl.getParameter(gl.ALPHA_BITS)), result.push("webgl antialiasing:" + (gl.getContextAttributes().antialias ? "yes" : "no")), 
+                    result.push("webgl blue bits:" + gl.getParameter(gl.BLUE_BITS)), result.push("webgl depth bits:" + gl.getParameter(gl.DEPTH_BITS)), 
+                    result.push("webgl green bits:" + gl.getParameter(gl.GREEN_BITS)), result.push("webgl max anisotropy:" + maxAnisotropy(gl)), 
+                    result.push("webgl max combined texture image units:" + gl.getParameter(gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS)), 
+                    result.push("webgl max cube map texture size:" + gl.getParameter(gl.MAX_CUBE_MAP_TEXTURE_SIZE)), 
+                    result.push("webgl max fragment uniform vectors:" + gl.getParameter(gl.MAX_FRAGMENT_UNIFORM_VECTORS)), 
+                    result.push("webgl max render buffer size:" + gl.getParameter(gl.MAX_RENDERBUFFER_SIZE)), 
+                    result.push("webgl max texture image units:" + gl.getParameter(gl.MAX_TEXTURE_IMAGE_UNITS)), 
+                    result.push("webgl max texture size:" + gl.getParameter(gl.MAX_TEXTURE_SIZE)), result.push("webgl max varying vectors:" + gl.getParameter(gl.MAX_VARYING_VECTORS)), 
+                    result.push("webgl max vertex attribs:" + gl.getParameter(gl.MAX_VERTEX_ATTRIBS)), 
+                    result.push("webgl max vertex texture image units:" + gl.getParameter(gl.MAX_VERTEX_TEXTURE_IMAGE_UNITS)), 
+                    result.push("webgl max vertex uniform vectors:" + gl.getParameter(gl.MAX_VERTEX_UNIFORM_VECTORS)), 
+                    result.push("webgl max viewport dims:" + fa2s(gl.getParameter(gl.MAX_VIEWPORT_DIMS))), 
+                    result.push("webgl red bits:" + gl.getParameter(gl.RED_BITS)), result.push("webgl renderer:" + gl.getParameter(gl.RENDERER)), 
+                    result.push("webgl shading language version:" + gl.getParameter(gl.SHADING_LANGUAGE_VERSION)), 
+                    result.push("webgl stencil bits:" + gl.getParameter(gl.STENCIL_BITS)), result.push("webgl vendor:" + gl.getParameter(gl.VENDOR)), 
+                    result.push("webgl version:" + gl.getParameter(gl.VERSION));
+                    try {
+                        (extensionDebugRendererInfo = gl.getExtension("WEBGL_debug_renderer_info")) && (result.push("webgl unmasked vendor:" + gl.getParameter(extensionDebugRendererInfo.UNMASKED_VENDOR_WEBGL)), 
+                        result.push("webgl unmasked renderer:" + gl.getParameter(extensionDebugRendererInfo.UNMASKED_RENDERER_WEBGL)));
+                    } catch (e) {}
+                    return gl.getShaderPrecisionFormat ? (each([ "FLOAT", "INT" ], (function(numType) {
+                        each([ "VERTEX", "FRAGMENT" ], (function(shader) {
+                            each([ "HIGH", "MEDIUM", "LOW" ], (function(numSize) {
+                                each([ "precision", "rangeMin", "rangeMax" ], (function(key) {
+                                    var line, format = gl.getShaderPrecisionFormat(gl[shader + "_SHADER"], gl[numSize + "_" + numType])[key];
+                                    "precision" !== key && (key = "precision " + key), line = [ "webgl ", shader.toLowerCase(), " shader ", numSize.toLowerCase(), " ", numType.toLowerCase(), " ", key, ":", format ].join(""), 
+                                    result.push(line);
+                                }));
+                            }));
+                        }));
+                    })), result) : result;
+                } finally {
+                    try {
+                        loseWebglContext(gl);
+                    } catch (e) {}
+                }
+            }, getWebglVendorAndRenderer = function getWebglVendorAndRenderer() {
+                var glContext, extensionDebugRendererInfo;
+                try {
+                    return extensionDebugRendererInfo = (glContext = getWebglCanvas()).getExtension("WEBGL_debug_renderer_info"), 
+                    glContext.getParameter(extensionDebugRendererInfo.UNMASKED_VENDOR_WEBGL) + "~" + glContext.getParameter(extensionDebugRendererInfo.UNMASKED_RENDERER_WEBGL);
+                } catch (e) {
+                    return null;
+                } finally {
+                    try {
+                        loseWebglContext(glContext);
+                    } catch (e) {}
+                }
+            }, getAdBlock = function getAdBlock() {
+                var result, ads = document.createElement("div");
+                ads.innerHTML = "&nbsp;", ads.className = "adsbox", result = !1;
+                try {
+                    document.body.appendChild(ads), result = 0 === document.getElementsByClassName("adsbox")[0].offsetHeight, 
+                    document.body.removeChild(ads);
+                } catch (e) {
+                    result = !1;
+                }
+                return result;
+            }, getHasLiedLanguages = function getHasLiedLanguages() {
+                if (void 0 !== navigator.languages) try {
+                    if (navigator.languages[0].substr(0, 2) !== navigator.language.substr(0, 2)) return !0;
+                } catch (err) {
+                    return !0;
+                }
+                return !1;
+            }, getHasLiedResolution = function getHasLiedResolution() {
+                return window.screen.width < window.screen.availWidth || window.screen.height < window.screen.availHeight;
+            }, getHasLiedOs = function getHasLiedOs() {
+                var os, userAgent = navigator.userAgent.toLowerCase(), oscpu = navigator.oscpu, platform = navigator.platform.toLowerCase();
+                if (os = userAgent.indexOf("windows phone") >= 0 ? "Windows Phone" : userAgent.indexOf("windows") >= 0 || userAgent.indexOf("win16") >= 0 || userAgent.indexOf("win32") >= 0 || userAgent.indexOf("win64") >= 0 || userAgent.indexOf("win95") >= 0 || userAgent.indexOf("win98") >= 0 || userAgent.indexOf("winnt") >= 0 || userAgent.indexOf("wow64") >= 0 ? "Windows" : userAgent.indexOf("android") >= 0 ? "Android" : userAgent.indexOf("linux") >= 0 || userAgent.indexOf("cros") >= 0 || userAgent.indexOf("x11") >= 0 ? "Linux" : userAgent.indexOf("iphone") >= 0 || userAgent.indexOf("ipad") >= 0 || userAgent.indexOf("ipod") >= 0 || userAgent.indexOf("crios") >= 0 || userAgent.indexOf("fxios") >= 0 ? "iOS" : userAgent.indexOf("macintosh") >= 0 || userAgent.indexOf("mac_powerpc)") >= 0 ? "Mac" : "Other", 
+                ("ontouchstart" in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0) && "Windows" !== os && "Windows Phone" !== os && "Android" !== os && "iOS" !== os && "Other" !== os && -1 === userAgent.indexOf("cros")) return !0;
+                if (void 0 !== oscpu) {
+                    if ((oscpu = oscpu.toLowerCase()).indexOf("win") >= 0 && "Windows" !== os && "Windows Phone" !== os) return !0;
+                    if (oscpu.indexOf("linux") >= 0 && "Linux" !== os && "Android" !== os) return !0;
+                    if (oscpu.indexOf("mac") >= 0 && "Mac" !== os && "iOS" !== os) return !0;
+                    if ((-1 === oscpu.indexOf("win") && -1 === oscpu.indexOf("linux") && -1 === oscpu.indexOf("mac")) != ("Other" === os)) return !0;
+                }
+                return platform.indexOf("win") >= 0 && "Windows" !== os && "Windows Phone" !== os || (platform.indexOf("linux") >= 0 || platform.indexOf("android") >= 0 || platform.indexOf("pike") >= 0) && "Linux" !== os && "Android" !== os || (platform.indexOf("mac") >= 0 || platform.indexOf("ipad") >= 0 || platform.indexOf("ipod") >= 0 || platform.indexOf("iphone") >= 0) && "Mac" !== os && "iOS" !== os || !(platform.indexOf("arm") >= 0 && "Windows Phone" === os) && !(platform.indexOf("pike") >= 0 && userAgent.indexOf("opera mini") >= 0) && ((platform.indexOf("win") < 0 && platform.indexOf("linux") < 0 && platform.indexOf("mac") < 0 && platform.indexOf("iphone") < 0 && platform.indexOf("ipad") < 0 && platform.indexOf("ipod") < 0) != ("Other" === os) || void 0 === navigator.plugins && "Windows" !== os && "Windows Phone" !== os);
+            }, getHasLiedBrowser = function getHasLiedBrowser() {
+                var browser, tempRes, errFirefox, userAgent = navigator.userAgent.toLowerCase(), productSub = navigator.productSub;
+                if (userAgent.indexOf("edge/") >= 0 || userAgent.indexOf("iemobile/") >= 0) return !1;
+                if (userAgent.indexOf("opera mini") >= 0) return !1;
+                if (("Chrome" == (browser = userAgent.indexOf("firefox/") >= 0 ? "Firefox" : userAgent.indexOf("opera/") >= 0 || userAgent.indexOf(" opr/") >= 0 ? "Opera" : userAgent.indexOf("chrome/") >= 0 ? "Chrome" : userAgent.indexOf("safari/") >= 0 ? userAgent.indexOf("android 1.") >= 0 || userAgent.indexOf("android 2.") >= 0 || userAgent.indexOf("android 3.") >= 0 || userAgent.indexOf("android 4.") >= 0 ? "AOSP" : "Safari" : userAgent.indexOf("trident/") >= 0 ? "Internet Explorer" : "Other") || "Safari" === browser || "Opera" === browser) && "20030107" !== productSub) return !0;
+                if (37 === (tempRes = eval.toString().length) && "Safari" !== browser && "Firefox" !== browser && "Other" !== browser) return !0;
+                if (39 === tempRes && "Internet Explorer" !== browser && "Other" !== browser) return !0;
+                if (33 === tempRes && "Chrome" !== browser && "AOSP" !== browser && "Opera" !== browser && "Other" !== browser) return !0;
+                try {
+                    throw "a";
+                } catch (err) {
+                    try {
+                        err.toSource(), errFirefox = !0;
+                    } catch (errOfErr) {
+                        errFirefox = !1;
+                    }
+                }
+                return errFirefox && "Firefox" !== browser && "Other" !== browser;
+            }, isCanvasSupported = function isCanvasSupported() {
+                var elem = document.createElement("canvas");
+                return !(!elem.getContext || !elem.getContext("2d"));
+            }, isWebGlSupported = function isWebGlSupported() {
+                if (!isCanvasSupported() || !window.WebGLRenderingContext) return !1;
+                var glContext = getWebglCanvas();
+                if (glContext) {
+                    try {
+                        loseWebglContext(glContext);
+                    } catch (e) {}
+                    return !0;
+                }
+                return !1;
+            }, isIE = function isIE() {
+                return "Microsoft Internet Explorer" === navigator.appName || !("Netscape" !== navigator.appName || !/Trident/.test(navigator.userAgent));
+            }, isIEOrOldEdge = function isIEOrOldEdge() {
+                return ("msWriteProfilerMark" in window) + ("msLaunchUri" in navigator) + ("msSaveBlob" in navigator) >= 2;
+            }, hasSwfObjectLoaded = function hasSwfObjectLoaded() {
+                return void 0 !== window.swfobject;
+            }, hasMinFlashInstalled = function hasMinFlashInstalled() {
+                return window.swfobject.hasFlashPlayerVersion("9.0.0");
+            }, addFlashDivNode = function addFlashDivNode(options) {
+                var node = document.createElement("div");
+                node.setAttribute("id", options.fonts.swfContainerId), document.body.appendChild(node);
+            }, loadSwfAndDetectFonts = function loadSwfAndDetectFonts(done, options) {
+                var id, flashvars, flashparams, hiddenCallback = "___fp_swf_loaded";
+                window[hiddenCallback] = function(fonts) {
+                    done(fonts);
+                }, id = options.fonts.swfContainerId, addFlashDivNode(), flashvars = {
+                    onReady: hiddenCallback
+                }, flashparams = {
+                    allowScriptAccess: "always",
+                    menu: "false"
+                }, window.swfobject.embedSWF(options.fonts.swfPath, id, "1", "1", "9.0.0", !1, flashvars, flashparams, {});
+            }, getWebglCanvas = function getWebglCanvas() {
+                var canvas = document.createElement("canvas"), gl = null;
+                try {
+                    gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+                } catch (e) {}
+                return gl || (gl = null), gl;
+            }, loseWebglContext = function loseWebglContext(context) {
+                var loseContextExtension = context.getExtension("WEBGL_lose_context");
+                null != loseContextExtension && loseContextExtension.loseContext();
+            }, components = [ {
+                key: "userAgent",
+                getData: function UserAgent(done) {
+                    done(navigator.userAgent);
+                }
+            }, {
+                key: "webdriver",
+                getData: function webdriver(done, options) {
+                    done(null == navigator.webdriver ? options.NOT_AVAILABLE : navigator.webdriver);
+                }
+            }, {
+                key: "language",
+                getData: function languageKey(done, options) {
+                    done(navigator.language || navigator.userLanguage || navigator.browserLanguage || navigator.systemLanguage || options.NOT_AVAILABLE);
+                }
+            }, {
+                key: "colorDepth",
+                getData: function colorDepthKey(done, options) {
+                    done(window.screen.colorDepth || options.NOT_AVAILABLE);
+                }
+            }, {
+                key: "deviceMemory",
+                getData: function deviceMemoryKey(done, options) {
+                    done(navigator.deviceMemory || options.NOT_AVAILABLE);
+                }
+            }, {
+                key: "pixelRatio",
+                getData: function pixelRatioKey(done, options) {
+                    done(window.devicePixelRatio || options.NOT_AVAILABLE);
+                }
+            }, {
+                key: "hardwareConcurrency",
+                getData: hardwareConcurrencyKey
+            }, {
+                key: "screenResolution",
+                getData: screenResolutionKey
+            }, {
+                key: "availableScreenResolution",
+                getData: availableScreenResolutionKey
+            }, {
+                key: "timezoneOffset",
+                getData: function timezoneOffset(done) {
+                    done((new Date).getTimezoneOffset());
+                }
+            }, {
+                key: "timezone",
+                getData: function timezone(done, options) {
+                    window.Intl && window.Intl.DateTimeFormat ? done((new window.Intl.DateTimeFormat).resolvedOptions().timeZone || options.NOT_AVAILABLE) : done(options.NOT_AVAILABLE);
+                }
+            }, {
+                key: "sessionStorage",
+                getData: sessionStorageKey
+            }, {
+                key: "localStorage",
+                getData: localStorageKey
+            }, {
+                key: "indexedDb",
+                getData: indexedDbKey
+            }, {
+                key: "addBehavior",
+                getData: function addBehaviorKey(done) {
+                    done(!!window.HTMLElement.prototype.addBehavior);
+                }
+            }, {
+                key: "openDatabase",
+                getData: function openDatabaseKey(done) {
+                    done(!!window.openDatabase);
+                }
+            }, {
+                key: "cpuClass",
+                getData: cpuClassKey
+            }, {
+                key: "platform",
+                getData: platformKey
+            }, {
+                key: "doNotTrack",
+                getData: doNotTrackKey
+            }, {
+                key: "plugins",
+                getData: pluginsComponent
+            }, {
+                key: "canvas",
+                getData: canvasKey
+            }, {
+                key: "webgl",
+                getData: webglKey
+            }, {
+                key: "webglVendorAndRenderer",
+                getData: webglVendorAndRendererKey
+            }, {
+                key: "adBlock",
+                getData: adBlockKey
+            }, {
+                key: "hasLiedLanguages",
+                getData: hasLiedLanguagesKey
+            }, {
+                key: "hasLiedResolution",
+                getData: hasLiedResolutionKey
+            }, {
+                key: "hasLiedOs",
+                getData: hasLiedOsKey
+            }, {
+                key: "hasLiedBrowser",
+                getData: hasLiedBrowserKey
+            }, {
+                key: "touchSupport",
+                getData: touchSupportKey
+            }, {
+                key: "fonts",
+                getData: function jsFontsKey(done, options) {
+                    var extendedFontList, testString, testSize, h, baseFontsDiv, fontsDiv, defaultWidth, defaultHeight, createSpan, createSpanWithFonts, initializeFontsSpans, isFontAvailable, baseFontsSpans, index, length, fontsSpans, available, i, l, baseFonts = [ "monospace", "sans-serif", "serif" ], fontList = [ "Andale Mono", "Arial", "Arial Black", "Arial Hebrew", "Arial MT", "Arial Narrow", "Arial Rounded MT Bold", "Arial Unicode MS", "Bitstream Vera Sans Mono", "Book Antiqua", "Bookman Old Style", "Calibri", "Cambria", "Cambria Math", "Century", "Century Gothic", "Century Schoolbook", "Comic Sans", "Comic Sans MS", "Consolas", "Courier", "Courier New", "Geneva", "Georgia", "Helvetica", "Helvetica Neue", "Impact", "Lucida Bright", "Lucida Calligraphy", "Lucida Console", "Lucida Fax", "LUCIDA GRANDE", "Lucida Handwriting", "Lucida Sans", "Lucida Sans Typewriter", "Lucida Sans Unicode", "Microsoft Sans Serif", "Monaco", "Monotype Corsiva", "MS Gothic", "MS Outlook", "MS PGothic", "MS Reference Sans Serif", "MS Sans Serif", "MS Serif", "MYRIAD", "MYRIAD PRO", "Palatino", "Palatino Linotype", "Segoe Print", "Segoe Script", "Segoe UI", "Segoe UI Light", "Segoe UI Semibold", "Segoe UI Symbol", "Tahoma", "Times", "Times New Roman", "Times New Roman PS", "Trebuchet MS", "Verdana", "Wingdings", "Wingdings 2", "Wingdings 3" ];
+                    for (options.fonts.extendedJsFonts && (extendedFontList = [ "Abadi MT Condensed Light", "Academy Engraved LET", "ADOBE CASLON PRO", "Adobe Garamond", "ADOBE GARAMOND PRO", "Agency FB", "Aharoni", "Albertus Extra Bold", "Albertus Medium", "Algerian", "Amazone BT", "American Typewriter", "American Typewriter Condensed", "AmerType Md BT", "Andalus", "Angsana New", "AngsanaUPC", "Antique Olive", "Aparajita", "Apple Chancery", "Apple Color Emoji", "Apple SD Gothic Neo", "Arabic Typesetting", "ARCHER", "ARNO PRO", "Arrus BT", "Aurora Cn BT", "AvantGarde Bk BT", "AvantGarde Md BT", "AVENIR", "Ayuthaya", "Bandy", "Bangla Sangam MN", "Bank Gothic", "BankGothic Md BT", "Baskerville", "Baskerville Old Face", "Batang", "BatangChe", "Bauer Bodoni", "Bauhaus 93", "Bazooka", "Bell MT", "Bembo", "Benguiat Bk BT", "Berlin Sans FB", "Berlin Sans FB Demi", "Bernard MT Condensed", "BernhardFashion BT", "BernhardMod BT", "Big Caslon", "BinnerD", "Blackadder ITC", "BlairMdITC TT", "Bodoni 72", "Bodoni 72 Oldstyle", "Bodoni 72 Smallcaps", "Bodoni MT", "Bodoni MT Black", "Bodoni MT Condensed", "Bodoni MT Poster Compressed", "Bookshelf Symbol 7", "Boulder", "Bradley Hand", "Bradley Hand ITC", "Bremen Bd BT", "Britannic Bold", "Broadway", "Browallia New", "BrowalliaUPC", "Brush Script MT", "Californian FB", "Calisto MT", "Calligrapher", "Candara", "CaslonOpnface BT", "Castellar", "Centaur", "Cezanne", "CG Omega", "CG Times", "Chalkboard", "Chalkboard SE", "Chalkduster", "Charlesworth", "Charter Bd BT", "Charter BT", "Chaucer", "ChelthmITC Bk BT", "Chiller", "Clarendon", "Clarendon Condensed", "CloisterBlack BT", "Cochin", "Colonna MT", "Constantia", "Cooper Black", "Copperplate", "Copperplate Gothic", "Copperplate Gothic Bold", "Copperplate Gothic Light", "CopperplGoth Bd BT", "Corbel", "Cordia New", "CordiaUPC", "Cornerstone", "Coronet", "Cuckoo", "Curlz MT", "DaunPenh", "Dauphin", "David", "DB LCD Temp", "DELICIOUS", "Denmark", "DFKai-SB", "Didot", "DilleniaUPC", "DIN", "DokChampa", "Dotum", "DotumChe", "Ebrima", "Edwardian Script ITC", "Elephant", "English 111 Vivace BT", "Engravers MT", "EngraversGothic BT", "Eras Bold ITC", "Eras Demi ITC", "Eras Light ITC", "Eras Medium ITC", "EucrosiaUPC", "Euphemia", "Euphemia UCAS", "EUROSTILE", "Exotc350 Bd BT", "FangSong", "Felix Titling", "Fixedsys", "FONTIN", "Footlight MT Light", "Forte", "FrankRuehl", "Fransiscan", "Freefrm721 Blk BT", "FreesiaUPC", "Freestyle Script", "French Script MT", "FrnkGothITC Bk BT", "Fruitger", "FRUTIGER", "Futura", "Futura Bk BT", "Futura Lt BT", "Futura Md BT", "Futura ZBlk BT", "FuturaBlack BT", "Gabriola", "Galliard BT", "Gautami", "Geeza Pro", "Geometr231 BT", "Geometr231 Hv BT", "Geometr231 Lt BT", "GeoSlab 703 Lt BT", "GeoSlab 703 XBd BT", "Gigi", "Gill Sans", "Gill Sans MT", "Gill Sans MT Condensed", "Gill Sans MT Ext Condensed Bold", "Gill Sans Ultra Bold", "Gill Sans Ultra Bold Condensed", "Gisha", "Gloucester MT Extra Condensed", "GOTHAM", "GOTHAM BOLD", "Goudy Old Style", "Goudy Stout", "GoudyHandtooled BT", "GoudyOLSt BT", "Gujarati Sangam MN", "Gulim", "GulimChe", "Gungsuh", "GungsuhChe", "Gurmukhi MN", "Haettenschweiler", "Harlow Solid Italic", "Harrington", "Heather", "Heiti SC", "Heiti TC", "HELV", "Herald", "High Tower Text", "Hiragino Kaku Gothic ProN", "Hiragino Mincho ProN", "Hoefler Text", "Humanst 521 Cn BT", "Humanst521 BT", "Humanst521 Lt BT", "Imprint MT Shadow", "Incised901 Bd BT", "Incised901 BT", "Incised901 Lt BT", "INCONSOLATA", "Informal Roman", "Informal011 BT", "INTERSTATE", "IrisUPC", "Iskoola Pota", "JasmineUPC", "Jazz LET", "Jenson", "Jester", "Jokerman", "Juice ITC", "Kabel Bk BT", "Kabel Ult BT", "Kailasa", "KaiTi", "Kalinga", "Kannada Sangam MN", "Kartika", "Kaufmann Bd BT", "Kaufmann BT", "Khmer UI", "KodchiangUPC", "Kokila", "Korinna BT", "Kristen ITC", "Krungthep", "Kunstler Script", "Lao UI", "Latha", "Leelawadee", "Letter Gothic", "Levenim MT", "LilyUPC", "Lithograph", "Lithograph Light", "Long Island", "Lydian BT", "Magneto", "Maiandra GD", "Malayalam Sangam MN", "Malgun Gothic", "Mangal", "Marigold", "Marion", "Marker Felt", "Market", "Marlett", "Matisse ITC", "Matura MT Script Capitals", "Meiryo", "Meiryo UI", "Microsoft Himalaya", "Microsoft JhengHei", "Microsoft New Tai Lue", "Microsoft PhagsPa", "Microsoft Tai Le", "Microsoft Uighur", "Microsoft YaHei", "Microsoft Yi Baiti", "MingLiU", "MingLiU_HKSCS", "MingLiU_HKSCS-ExtB", "MingLiU-ExtB", "Minion", "Minion Pro", "Miriam", "Miriam Fixed", "Mistral", "Modern", "Modern No. 20", "Mona Lisa Solid ITC TT", "Mongolian Baiti", "MONO", "MoolBoran", "Mrs Eaves", "MS LineDraw", "MS Mincho", "MS PMincho", "MS Reference Specialty", "MS UI Gothic", "MT Extra", "MUSEO", "MV Boli", "Nadeem", "Narkisim", "NEVIS", "News Gothic", "News GothicMT", "NewsGoth BT", "Niagara Engraved", "Niagara Solid", "Noteworthy", "NSimSun", "Nyala", "OCR A Extended", "Old Century", "Old English Text MT", "Onyx", "Onyx BT", "OPTIMA", "Oriya Sangam MN", "OSAKA", "OzHandicraft BT", "Palace Script MT", "Papyrus", "Parchment", "Party LET", "Pegasus", "Perpetua", "Perpetua Titling MT", "PetitaBold", "Pickwick", "Plantagenet Cherokee", "Playbill", "PMingLiU", "PMingLiU-ExtB", "Poor Richard", "Poster", "PosterBodoni BT", "PRINCETOWN LET", "Pristina", "PTBarnum BT", "Pythagoras", "Raavi", "Rage Italic", "Ravie", "Ribbon131 Bd BT", "Rockwell", "Rockwell Condensed", "Rockwell Extra Bold", "Rod", "Roman", "Sakkal Majalla", "Santa Fe LET", "Savoye LET", "Sceptre", "Script", "Script MT Bold", "SCRIPTINA", "Serifa", "Serifa BT", "Serifa Th BT", "ShelleyVolante BT", "Sherwood", "Shonar Bangla", "Showcard Gothic", "Shruti", "Signboard", "SILKSCREEN", "SimHei", "Simplified Arabic", "Simplified Arabic Fixed", "SimSun", "SimSun-ExtB", "Sinhala Sangam MN", "Sketch Rockwell", "Skia", "Small Fonts", "Snap ITC", "Snell Roundhand", "Socket", "Souvenir Lt BT", "Staccato222 BT", "Steamer", "Stencil", "Storybook", "Styllo", "Subway", "Swis721 BlkEx BT", "Swiss911 XCm BT", "Sylfaen", "Synchro LET", "System", "Tamil Sangam MN", "Technical", "Teletype", "Telugu Sangam MN", "Tempus Sans ITC", "Terminal", "Thonburi", "Traditional Arabic", "Trajan", "TRAJAN PRO", "Tristan", "Tubular", "Tunga", "Tw Cen MT", "Tw Cen MT Condensed", "Tw Cen MT Condensed Extra Bold", "TypoUpright BT", "Unicorn", "Univers", "Univers CE 55 Medium", "Univers Condensed", "Utsaah", "Vagabond", "Vani", "Vijaya", "Viner Hand ITC", "VisualUI", "Vivaldi", "Vladimir Script", "Vrinda", "Westminster", "WHITNEY", "Wide Latin", "ZapfEllipt BT", "ZapfHumnst BT", "ZapfHumnst Dm BT", "Zapfino", "Zurich BlkEx BT", "Zurich Ex BT", "ZWAdobeF" ], 
+                    fontList = fontList.concat(extendedFontList)), fontList = (fontList = fontList.concat(options.fonts.userDefinedFonts)).filter((function(font, position) {
+                        return fontList.indexOf(font) === position;
+                    })), testString = "mmmmmmmmmmlli", testSize = "72px", h = document.getElementsByTagName("body")[0], 
+                    baseFontsDiv = document.createElement("div"), fontsDiv = document.createElement("div"), 
+                    defaultWidth = {}, defaultHeight = {}, createSpan = function createSpan() {
+                        var s = document.createElement("span");
+                        return s.style.position = "absolute", s.style.left = "-9999px", s.style.fontSize = testSize, 
+                        s.style.fontStyle = "normal", s.style.fontWeight = "normal", s.style.letterSpacing = "normal", 
+                        s.style.lineBreak = "auto", s.style.lineHeight = "normal", s.style.textTransform = "none", 
+                        s.style.textAlign = "left", s.style.textDecoration = "none", s.style.textShadow = "none", 
+                        s.style.whiteSpace = "normal", s.style.wordBreak = "normal", s.style.wordSpacing = "normal", 
+                        s.innerHTML = testString, s;
+                    }, createSpanWithFonts = function createSpanWithFonts(fontToDetect, baseFont) {
+                        var s = createSpan();
+                        return s.style.fontFamily = "'" + fontToDetect + "'," + baseFont, s;
+                    }, initializeFontsSpans = function initializeFontsSpans() {
+                        var i, l, fontSpans, j, numDefaultFonts, s, spans = {};
+                        for (i = 0, l = fontList.length; i < l; i++) {
+                            for (fontSpans = [], j = 0, numDefaultFonts = baseFonts.length; j < numDefaultFonts; j++) s = createSpanWithFonts(fontList[i], baseFonts[j]), 
+                            fontsDiv.appendChild(s), fontSpans.push(s);
+                            spans[fontList[i]] = fontSpans;
+                        }
+                        return spans;
+                    }, isFontAvailable = function isFontAvailable(fontSpans) {
+                        var i, detected = !1;
+                        for (i = 0; i < baseFonts.length; i++) if (detected = fontSpans[i].offsetWidth !== defaultWidth[baseFonts[i]] || fontSpans[i].offsetHeight !== defaultHeight[baseFonts[i]]) return detected;
+                        return detected;
+                    }, baseFontsSpans = function initializeBaseFontsSpans() {
+                        var index, length, s, spans = [];
+                        for (index = 0, length = baseFonts.length; index < length; index++) (s = createSpan()).style.fontFamily = baseFonts[index], 
+                        baseFontsDiv.appendChild(s), spans.push(s);
+                        return spans;
+                    }(), h.appendChild(baseFontsDiv), index = 0, length = baseFonts.length; index < length; index++) defaultWidth[baseFonts[index]] = baseFontsSpans[index].offsetWidth, 
+                    defaultHeight[baseFonts[index]] = baseFontsSpans[index].offsetHeight;
+                    for (fontsSpans = initializeFontsSpans(), h.appendChild(fontsDiv), available = [], 
+                    i = 0, l = fontList.length; i < l; i++) isFontAvailable(fontsSpans[fontList[i]]) && available.push(fontList[i]);
+                    h.removeChild(fontsDiv), h.removeChild(baseFontsDiv), done(available);
+                },
+                pauseBefore: !0
+            }, {
+                key: "fontsFlash",
+                getData: flashFontsKey,
+                pauseBefore: !0
+            }, {
+                key: "audio",
+                getData: function audioKey(done, options) {
+                    var AudioContext, context, oscillator, compressor, audioTimeoutId, audioOptions = options.audio;
+                    return audioOptions.excludeIOS11 && navigator.userAgent.match(/OS 11.+Version\/11.+Safari/) ? done(options.EXCLUDED) : null == (AudioContext = window.OfflineAudioContext || window.webkitOfflineAudioContext) ? done(options.NOT_AVAILABLE) : (context = new AudioContext(1, 44100, 44100), 
+                    (oscillator = context.createOscillator()).type = "triangle", oscillator.frequency.setValueAtTime(1e4, context.currentTime), 
+                    compressor = context.createDynamicsCompressor(), each([ [ "threshold", -50 ], [ "knee", 40 ], [ "ratio", 12 ], [ "reduction", -20 ], [ "attack", 0 ], [ "release", .25 ] ], (function(item) {
+                        void 0 !== compressor[item[0]] && "function" == typeof compressor[item[0]].setValueAtTime && compressor[item[0]].setValueAtTime(item[1], context.currentTime);
+                    })), oscillator.connect(compressor), compressor.connect(context.destination), oscillator.start(0), 
+                    context.startRendering(), audioTimeoutId = setTimeout((function() {
+                        return context.oncomplete = function() {}, context = null, done("audioTimeout");
+                    }), audioOptions.timeout), void (context.oncomplete = function(event) {
+                        var fingerprint;
+                        try {
+                            clearTimeout(audioTimeoutId), fingerprint = event.renderedBuffer.getChannelData(0).slice(4500, 5e3).reduce((function(acc, val) {
+                                return acc + Math.abs(val);
+                            }), 0).toString(), oscillator.disconnect(), compressor.disconnect();
+                        } catch (error) {
+                            return void done(error);
+                        }
+                        done(fingerprint);
+                    }));
+                }
+            }, {
+                key: "enumerateDevices",
+                getData: enumerateDevicesKey
+            } ], (Fingerprint2 = function Fingerprint2(options) {
+                throw new Error("'new Fingerprint()' is deprecated, see https://github.com/fingerprintjs/fingerprintjs#upgrade-guide-from-182-to-200");
+            }).get = function(options, callback) {
+                var keys, i;
+                callback ? options || (options = {}) : (callback = options, options = {}), extendSoft(options, defaultOptions), 
+                options.components = options.extraComponents.concat(components), keys = {
+                    data: [],
+                    addPreprocessedComponent: function addPreprocessedComponent(key, value) {
+                        "function" == typeof options.preprocessor && (value = options.preprocessor(key, value)), 
+                        keys.data.push({
+                            key: key,
+                            value: value
+                        });
+                    }
+                }, i = -1, function chainComponents(alreadyWaited) {
+                    if ((i += 1) >= options.components.length) callback(keys.data); else {
+                        var component = options.components[i];
+                        if (options.excludes[component.key]) chainComponents(!1); else {
+                            if (!alreadyWaited && component.pauseBefore) return i -= 1, void setTimeout((function() {
+                                chainComponents(!0);
+                            }), 1);
+                            try {
+                                component.getData((function(value) {
+                                    keys.addPreprocessedComponent(component.key, value), chainComponents(!1);
+                                }), options);
+                            } catch (error) {
+                                keys.addPreprocessedComponent(component.key, String(error)), chainComponents(!1);
+                            }
+                        }
+                    }
+                }(!1);
+            }, Fingerprint2.getPromise = function(options) {
+                return new Promise((function(resolve, reject) {
+                    Fingerprint2.get(options, resolve);
+                }));
+            }, Fingerprint2.getV18 = function(options, callback) {
+                return null == callback && (callback = options, options = {}), Fingerprint2.get(options, (function(components) {
+                    var i, component, murmur, newComponents = [];
+                    for (i = 0; i < components.length; i++) if ((component = components[i]).value === (options.NOT_AVAILABLE || "not available")) newComponents.push({
+                        key: component.key,
+                        value: "unknown"
+                    }); else if ("plugins" === component.key) newComponents.push({
+                        key: "plugins",
+                        value: map(component.value, (function(p) {
+                            var mimeTypes = map(p[2], (function(mt) {
+                                return mt.join ? mt.join("~") : mt;
+                            })).join(",");
+                            return [ p[0], p[1], mimeTypes ].join("::");
+                        }))
+                    }); else if (-1 !== [ "canvas", "webgl" ].indexOf(component.key) && Array.isArray(component.value)) newComponents.push({
+                        key: component.key,
+                        value: component.value.join("~")
+                    }); else if (-1 !== [ "sessionStorage", "localStorage", "indexedDb", "addBehavior", "openDatabase" ].indexOf(component.key)) {
+                        if (!component.value) continue;
+                        newComponents.push({
+                            key: component.key,
+                            value: 1
+                        });
+                    } else component.value ? newComponents.push(component.value.join ? {
+                        key: component.key,
+                        value: component.value.join(";")
+                    } : component) : newComponents.push({
+                        key: component.key,
+                        value: component.value
+                    });
+                    murmur = x64hash128(map(newComponents, (function(component) {
+                        return component.value;
+                    })).join("~~~"), 31), callback(murmur, newComponents);
+                }));
+            }, Fingerprint2.x64hash128 = x64hash128, Fingerprint2.VERSION = "2.1.5", Fingerprint2;
+        }, module.exports ? module.exports = definition() : context.exports ? context.exports = definition() : context.Fingerprint2 = definition();
+    })), GwdService = function(_super) {
         function GwdService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
             return _this.rules = new Map([ [ SiteEnum.TMall, /detail\.tmall\.com\/item\.htm/i ], [ SiteEnum.TaoBao, /item\.taobao\.com\//i ], [ SiteEnum.JingDong, /item\.(yiyaojd|jd)\.(com|hk)\/[0-9]*\.html/i ], [ SiteEnum.SuNing, /product\.suning\.com\//i ], [ SiteEnum.Vp, /detail\.vip\.com\//i ], [ SiteEnum.KaoLa, /goods\.kaola\.(com\.hk|com)/i ] ]), 
             _this._appName = "GwdService", _this.historyService = new HistoryService, _this.factory = new DefCoupon, 
             _this.dfp = function() {
-                var dfp = Config.get("gwd_dfp");
-                return dfp || (dfp = Core.randStr(60), Config.set("gwd_dfp", dfp, 259200), dfp);
+                var dfp = Config.get(GwdHelper.gwd_dfp_key);
+                return dfp || (dfp = Core.randStr(60), Config.set(GwdHelper.gwd_dfp_key, dfp, 7200), 
+                dfp);
             }, _this.fp = function() {
-                var fp = Config.get("gwd_fp");
-                return fp || (fp = Core.randStr(30), Config.set("gwd_fp", fp, 259200), fp);
+                var fp = Config.get(GwdHelper.gwd_fp_key);
+                return fp || (fingerprint2.get({
+                    fonts: {
+                        extendedJsFonts: !1
+                    },
+                    excludes: {
+                        userAgent: !0,
+                        enumerateDevices: !0,
+                        pixelRatio: !0,
+                        doNotTrack: !0,
+                        fontsFlash: !0
+                    }
+                }, (function(components) {
+                    var values = components.map((function(component) {
+                        return component.value;
+                    })), murmur = fingerprint2.x64hash128(values.join(""), 31);
+                    fp = murmur, Config.set(GwdHelper.gwd_fp_key, fp, 7200);
+                })), fp);
             }, _this.itemUrl = "", _this;
         }
-        return __extends(GwdService, _super), GwdService.prototype.loader = function() {}, 
-        GwdService.prototype.run = function() {
+        return __extends(GwdService, _super), GwdService.prototype.loader = function() {
+            this.dfp(), this.fp(), this.paraPre();
+        }, GwdService.prototype.run = function() {
             this.injectHistory();
+        }, GwdService.prototype.paraPre = function() {
+            var url = "https://browser.gwdang.com/brwext/permanent_id?version=2&default_style=bottom&referrer=" + encodeURIComponent(unsafeWindow.window.document.referrer);
+            Http.JqGet(url, (function(res) {
+                res && Logger.debug(res);
+            }));
         }, GwdService.prototype.injectHistory = function() {
             var _a, _b, _this = this;
             switch (Logger.debug(this.site), this.site) {
@@ -1850,7 +2577,7 @@
                 echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), _this.theme()).setOption(that.getChartOption(res.data)), 
                 _this.chartMsg("");
             })).catch((function() {
-                Route.queryHistoryV4(Core.url, _this.site.toString(), that.fp(), that.dfp(), (function(data) {
+                Route.queryHistoryV4(GwdHelper.get("https://browser.gwdang.com/extension/price_towards?url=" + encodeURIComponent(Core.url) + "&ver=1"), (function(data) {
                     var slContainer, msg = "";
                     Logger.debug(data), "price_status" in data ? ($(".vip-plugin-outside-chart-container").html('<div id="vip-plugin-outside-chart-container-line"></div>'), 
                     echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), _this.theme()).setOption(that.getChartOptionGwd(data)), 
@@ -1959,8 +2686,15 @@
                 start: 0,
                 end: 100
             } ], chartOption;
+        }, GwdService.prototype.getMinPrice = function(data) {
+            var min, min_1, minDate_1, analysisTxt = data.analysis.tip;
+            return data.analysis.promo_days.length > 0 ? analysisTxt = analysisTxt + "\uff1a{red|\uffe5" + (min = data.analysis.promo_days[data.analysis.promo_days.length - 1]).price + "} ( {red|" + min.date + "} )" : (min_1 = Number.MIN_VALUE, 
+            minDate_1 = 0, data.nopuzzle_promo.forEach((function(el) {
+                el.price < min_1 && (min_1 = el.price, minDate_1 = el.time);
+            })), Core.format(new Date(1e3 * minDate_1), "yyyy-MM-dd"), analysisTxt = analysisTxt + "\uff1a{red|" + min_1 + "} ( {red|" + minDate_1 + "} )"), 
+            analysisTxt;
         }, GwdService.prototype.getChartOptionGwd = function(data) {
-            var _a, _b, chartOption, step, line, analysisTxt = data.analysis.tip, min = data.analysis.promo_days[data.analysis.promo_days.length - 1], text = analysisTxt + "\uff1a{red|\uffe5" + min.price + "} ( {red|" + min.date + "} )", maxData = new PromoInfo, minData = new PromoInfo;
+            var _a, _b, chartOption, step, line, text = this.getMinPrice(data), maxData = new PromoInfo, minData = new PromoInfo;
             return minData.price = Number.MAX_SAFE_INTEGER, minData.humanPrice = Number.MAX_SAFE_INTEGER, 
             maxData.humanPrice = Number.MIN_SAFE_INTEGER, chartOption = new LinesOption, step = 10, 
             (chartOption = {
@@ -2309,7 +3043,22 @@
                 }
             };
         }, GwdService;
-    }(PluginBase), css_248z$7 = ".tb-prop .tb-img li a {\n    width: auto !important;\n    background-position-x: 5px !important;\n}\n\n.tb-prop .tb-img li span {\n    text-indent: 1em !important;\n    display: block !important;\n    padding: 0 5px !important;\n    margin-left: 35px;\n}\n", 
+    }(PluginBase), GwdHelper = function() {
+        function GwdHelper() {}
+        return GwdHelper.get = function(url) {
+            var from_type = "", G = GwdHelper;
+            return GwdHelper.from_type && (from_type = "&from_type=" + GwdHelper.from_type), 
+            (url = GwdHelper.wrap(url) + "version=" + (new Date).getTime() + "&from_device=" + G.from_device + from_type).includes("union=") || (url += "&union=" + G.union), 
+            G.crc64 && (url += "&crc64=1"), url;
+        }, GwdHelper.wrap = function(url) {
+            var start, callback, format, fp, G = GwdHelper;
+            return url ? (start = "?", callback = "callback=?&", url.indexOf("?") > -1 && (start = "&"), 
+            format = "format=jsonp&", callback = "", format = "format=json&", fp = "", localStorage.getItem("gwdang-fp") && (fp = "fp=" + Config.get(G.gwd_fp_key) + "&dfp=" + Config.get(G.gwd_dfp_key) + "&"), 
+            "" + url + start + callback + format + fp) : url;
+        }, GwdHelper.version = "", GwdHelper.from_device = "default", GwdHelper.from_type = "", 
+        GwdHelper.union = "union_gwdang", GwdHelper.crc64 = !0, GwdHelper.gwd_fp_key = "gwd_fp_key", 
+        GwdHelper.gwd_dfp_key = "gwd_dfp_key", GwdHelper;
+    }(), css_248z$7 = ".tb-prop .tb-img li a {\n    width: auto !important;\n    background-position-x: 5px !important;\n}\n\n.tb-prop .tb-img li span {\n    text-indent: 1em !important;\n    display: block !important;\n    padding: 0 5px !important;\n    margin-left: 35px;\n}\n", 
     styleInject(css_248z$7), TaoBaoService = function(_super) {
         function TaoBaoService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;

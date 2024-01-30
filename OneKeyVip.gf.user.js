@@ -989,9 +989,8 @@
                     res.code ? reso(res) : reje(res);
                 }));
             }));
-        }, Route.queryHistoryV4 = function(url, siteType, fp, dfp, callback) {
-            var root = "https://browser.gwdang.com/extension/price_towards?url=" + encodeURIComponent(url) + "&ver=1&format=json&fp=" + fp + "&dfp=" + dfp + "&union=union_gwdang&from_device=chrome&version=" + (new Date).getTime();
-            Http.JqGet(root, callback, new Map([ [ "cookie", Core.decode("Z3dkYW5nX3Blcm1hbmVudF9pZA==") + "=" + Core.randStr(34) + ";fp=" + fp + ";dfp=" + dfp + ";" ] ]));
+        }, Route.queryHistoryV4 = function(url, callback) {
+            Http.JqGet(url, callback);
         }, Route.queryBiliImg = function(aid, callback) {
             Http.getData(this.biliInfo + "?aid=" + aid, callback);
         }, Route.queryBiliDown = function(aid, cid, callback) {
@@ -2374,7 +2373,7 @@
                         showConfirmButton: !1,
                         title: "\u68c0\u67e5\u66f4\u65b0",
                         html: msg
-                    })), Config.set(update_key, !0, Hour);
+                    })), Config.set(update_key, !0, 2 * Day);
                 }));
             }));
         }, GfUpdateService;

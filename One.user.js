@@ -3,7 +3,7 @@
 // @namespace      https://www.wandhi.com/
 // @description    功能介绍：1、ScriptsCat脚本猫脚本查询 2、CSDN页面清理 3、页面磁力链接提取
 // @license        MIT
-// @version        1.1.1
+// @version        1.1.2
 // @author         MaxZhang
 // @include        *://*
 // @require        https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
