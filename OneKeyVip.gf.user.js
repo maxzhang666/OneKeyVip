@@ -590,7 +590,7 @@
         var Menu = function() {
             function Menu() {
                 this.core = new Core, this.site = /tv.wandhi.com/i, this.userAgent = navigator.userAgent, 
-                this.menusClass = [ "first", "second", "third", "fourth", "fifth" ], this.menuSelecter = "#Wandhi-nav";
+                this.menusClass = [ "first", "second", "third", "fourth", "fifth" ], this.menuSelector = "#Wandhi-nav";
             }
             return Menu.prototype.loader = function() {}, Menu.prototype.getBody = function(option) {
                 return '<svg width="0" height="0"><defs><filter id="goo"><feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"></feGaussianBlur><feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo"></feColorMatrix><feComposite in="SourceGraphic" in2="goo" operator="atop"></feComposite></filter></defs></svg><div class="aside-nav bounceInUp animated" id="Wandhi-nav"><label for="" class="aside-menu" title="\u6309\u4f4f\u62d6\u52a8">VIP</label>' + option + "</div>";
@@ -609,7 +609,7 @@
                     winHei: 0,
                     clientX: 0,
                     clientY: 0
-                }, asideNav = $(this.menuSelecter)[0], $("body").on("mousedown", "" + that.menuSelecter, (function(a) {
+                }, asideNav = $(this.menuSelector)[0], $("body").on("mousedown", "" + that.menuSelector, (function(a) {
                     var getCss = function(a, e) {
                         var _a, _b, _c;
                         return null !== (_b = null === (_a = document.defaultView) || void 0 === _a ? void 0 : _a.getComputedStyle(a, null)[e]) && void 0 !== _b ? _b : null !== (_c = a.currentStyle) && void 0 !== _c ? _c : a.currentStyle[e];
@@ -620,12 +620,16 @@
                         var e = a.clientX - drags.clientX, t = a.clientY - drags.clientY;
                         (asideNav = asideNav || $("#Wandhi-nav")[0]).style.top = drags.y + t + "px", asideNav.style.left = drags.x + e + "px";
                     }));
-                })).on("mouseup", "" + that.menuSelecter, (function() {
+                })).on("mouseup", "" + that.menuSelector, (function() {
                     drags.down = !1, $(document).off("mousemove");
-                })), callback.call(this));
+                })), Menu.fullScreenMirror(), callback.call(this));
+            }, Menu.fullScreenMirror = function() {
+                unsafeWindow.document.onfullscreenchange = function(e) {
+                    Logger.debug("fullElement:" + unsafeWindow.document.fullscreenElement), Menu.autoHide && (unsafeWindow.document.fullscreenElement ? $("#" + Menu.mainId).hide() : $("#" + Menu.mainId).show());
+                };
             }, Menu.close = function() {
-                $("#" + Menu.mainId).hide();
-            }, Menu.mainId = "Wandhi-nav", Menu;
+                Menu.autoHide = !1, $("#" + Menu.mainId).hide();
+            }, Menu.mainId = "Wandhi-nav", Menu.autoHide = !0, Menu;
         }();
         Common.Menu = Menu;
     }(Common || (Common = {})), PluginBase = function() {
