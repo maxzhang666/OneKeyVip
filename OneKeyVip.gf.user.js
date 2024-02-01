@@ -89,7 +89,6 @@
 // @exclude        *://vip.wandhi.com/*
 // @match          *://c.pc.qq.com/ios*
 // @match          *://www.v2ex.com/t/*
-// @match          *://github.com/*
 // @match          *://*.nodeseek.com/jump*
 // @match          *://*.zhihu.com/question*
 // @match          *://www.baidu.com/*
