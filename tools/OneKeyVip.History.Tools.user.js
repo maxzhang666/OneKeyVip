@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           【玩的嗨】VIP工具箱,拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手 长期更新，放心使用
 // @namespace      https://www.wandhi.com/
-// @version        1.2
+// @version        1.3
 // @homepage       https://wiki.wandhi.com
 // @support        https:://wiki.wandhi.com
 // @description    拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手
@@ -14,7 +14,6 @@
 // @require        https://lib.baomitu.com/qrcode-generator/1.4.4/qrcode.min.js
 // @require        https://lib.baomitu.com/FileSaver.js/2.0.5/FileSaver.min.js
 // @require        https://lib.baomitu.com/viewerjs/1.11.3/viewer.min.js
-// @require        https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/fingerprintjs2/2.1.5/fingerprint2.min.js
 // @require        https://lf3-cdn-tos.bytecdntp.com/cdn/expire-1-M/react/18.2.0/umd/react.production.min.js
 // @require        https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/react-dom/18.2.0/umd/react-dom.production.min.js
 // @require        https://registry.npmmirror.com/@douyinfe/semi-ui/2.51.0/files/dist/umd/semi-ui.min.js
