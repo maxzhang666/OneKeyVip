@@ -2287,8 +2287,8 @@
             } catch (e) {
                 return selectedList;
             }
-        }, NetDiskDirectService.btnSelecotr = "", NetDiskDirectService.btn = "", NetDiskDirectService.bdVip2 = "http://fk.hrfx.gq/?code=YT04JmI9NTQ%3D", 
-        NetDiskDirectService.bdVip1 = "http://mtw.so/61EvtK", NetDiskDirectService;
+        }, NetDiskDirectService.btnSelecotr = "", NetDiskDirectService.btn = "", NetDiskDirectService.bdVip2 = "http://fk.iquanyi.cc", 
+        NetDiskDirectService.bdVip1 = "http://kk.cloudns.ch", NetDiskDirectService;
     }(PluginBase), AdClearService = function(_super) {
         function AdClearService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
