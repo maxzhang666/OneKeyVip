@@ -3,7 +3,7 @@
 // @namespace      https://www.wandhi.com/
 // @description    🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转；🎉 12、搜索引擎快速跳转
 // @license        MIT
-// @version        4.9.22
+// @version        4.9.23
 // @author         MaxZhang
 // @include        *://settings.wandhi.com/*
 // @include        *://m.youku.com/v*
@@ -152,6 +152,7 @@
 // @connect        openapi.baidu.com
 // @connect        localhost
 // @connect        pan.baidu.com
+// @connect        api.bilibili.com
 // @compatible     firefox
 // @compatible     chrome
 // @compatible     opera safari edge
@@ -165,7 +166,7 @@
     "object" == typeof exports && "undefined" != typeof module ? factory(require("react-dom"), require("sweetalert2"), require("@douyinfe/semi-ui"), require("viewerjs")) : "function" == typeof define && define.amd ? define([ "react-dom", "sweetalert2", "@douyinfe/semi-ui", "viewerjs" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).ReactDOM, global.Swal, global.SemiUI, global.Viewer);
 })(this, (function(ReactDOM, Swal, semiUi, Viewer) {
     "use strict";
-    var ReactDOM__default, Swal__default, Viewer__default, extendStatics, update_key, Min, Hour, Day, Week, BrowerType, Logger, LogLevel, VersionResult, Core, VersionCompar, Config, AjaxOption, Alert, Http, HttpHeaders, Route, css_248z$a, Common, PluginBase, SiteEnum, UpdateService, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$9, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$8, sAlert, commonjsGlobal, fingerprint2, GwdService, GwdHelper, css_248z$7, TaoBaoService, container, Container, css_248z$6, ConfigEnum, Toast, BiliImgService, Menu$2, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$5, CsdnAdService, Menu$1, WenKuService, LinkJumpService, css_248z$4, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$3, css_248z$2, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, NetDiskDirectService, AdClearService, css_248z$1, ImgViewService, css_248z, ZhihuService, Menu, XhsService, OneKeyVipInjection;
+    var ReactDOM__default, Swal__default, Viewer__default, extendStatics, update_key, Min, Hour, Day, Week, BrowerType, Logger, LogLevel, VersionResult, Core, VersionCompar, Config, AjaxOption, Http, HttpHeaders, Route, css_248z$a, Common, PluginBase, SiteEnum, UpdateService, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$9, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$8, sAlert, commonjsGlobal, fingerprint2, GwdService, GwdHelper, css_248z$7, TaoBaoService, container, Container, css_248z$6, ConfigEnum, Toast, BiliImgService, Menu$2, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$5, CsdnAdService, Alert, Menu$1, WenKuService, LinkJumpService, css_248z$4, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$3, css_248z$2, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, NetDiskDirectService, AdClearService, css_248z$1, ImgViewService, css_248z, ZhihuService, Menu, XhsService, OneKeyVipInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
@@ -652,77 +653,6 @@
             for (i in fd = new FormData, this.data) fd.append(i, this.data[i]);
             return fd;
         }, AjaxOption;
-    }(), Alert = function() {
-        function Alert() {}
-        return Alert.open = function(titls, content, area, shade, offset, maxmin) {
-            return void 0 === area && (area = [ "400px", "300px" ]), void 0 === shade && (shade = 0), 
-            void 0 === offset && (offset = "lb"), void 0 === maxmin && (maxmin = !0), layer.open({
-                type: 1,
-                title: titls,
-                area: area,
-                shade: shade,
-                offset: offset,
-                maxmin: maxmin,
-                content: content
-            });
-        }, Alert.info = function(msg) {
-            return layer.msg(msg, {
-                time: 2e3
-            });
-        }, Alert.error = function(msg) {
-            return layer.msg(msg, {
-                icon: 5,
-                time: 2e3
-            });
-        }, Alert.confim = function(title, msg, buttons, callback, auto_close) {
-            void 0 === auto_close && (auto_close = !1);
-            var tid = layer.open({
-                type: 1,
-                title: title || !1,
-                closeBtn: 1,
-                shade: .8,
-                id: "LAY_layuipro",
-                resize: !1,
-                btn: buttons,
-                btnAlign: "c",
-                moveType: 1,
-                content: '<div style="padding: 20px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">' + msg + "</div>",
-                yes: function(index) {
-                    callback(index), auto_close && Core.lazyload((function() {
-                        layer.close(tid);
-                    }));
-                }
-            });
-            return tid;
-        }, Alert.prompt = function(title, v, callback, size, type) {
-            void 0 === type && (type = 0), layer.prompt({
-                title: title,
-                value: v,
-                formType: type
-            }, (function(v, i, ele) {
-                callback(v), layer.close(i);
-            }));
-        }, Alert.close = function(index) {
-            layer.close(index);
-        }, Alert.closeAll = function() {
-            layer.closeAll();
-        }, Alert.loading = function(style, _time, _shade) {
-            return void 0 === style && (style = 1), void 0 === _time && (_time = 10), void 0 === _shade && (_shade = .3), 
-            layer.load(style, {
-                shade: _shade,
-                time: 1e3 * _time
-            });
-        }, Alert.loadingS = function(msg, time) {
-            return void 0 === time && (time = -1), Swal__default.default.fire({
-                title: msg,
-                didOpen: function() {
-                    Swal__default.default.showLoading();
-                },
-                allowOutsideClick: !1,
-                allowEscapeKey: !1,
-                timer: -1 == time ? void 0 : 1e3 * time
-            });
-        }, Alert;
     }(), Http = function() {
         function Http() {}
         return Http.ajax = function(option) {
@@ -807,8 +737,7 @@
             }));
         }, Http.get = function(url, data, head, loading, time_out) {
             return void 0 === data && (data = new Map), void 0 === head && (head = new Map), 
-            void 0 === loading && (loading = !0), void 0 === time_out && (time_out = 10), loading && Alert.loading(), 
-            new Promise((function(resolve, reject) {
+            void 0 === time_out && (time_out = 10), new Promise((function(resolve, reject) {
                 Http.ajax(new AjaxOption(url, "GET", data, (function(data) {
                     var _a, res;
                     try {
@@ -820,7 +749,7 @@
             }));
         }, Http.getWithHead = function(url, data, head, time_out) {
             return void 0 === data && (data = new Map), void 0 === head && (head = new Map), 
-            void 0 === time_out && (time_out = 10), Alert.loading(), new Promise((function(resolve, reject) {
+            void 0 === time_out && (time_out = 10), new Promise((function(resolve, reject) {
                 Http.ajax(new AjaxOption(url, "GET", data, (function(data) {
                     var _a, res;
                     try {
@@ -832,7 +761,7 @@
             }));
         }, Http.postWithHead = function(url, data, head, time_out) {
             return void 0 === data && (data = new Map), void 0 === head && (head = new Map), 
-            void 0 === time_out && (time_out = 10), Alert.loading(), new Promise((function(resolve, reject) {
+            void 0 === time_out && (time_out = 10), new Promise((function(resolve, reject) {
                 Http.ajax(new AjaxOption(url, "POST", data, (function(data) {
                     try {
                         resolve(data);
@@ -855,11 +784,11 @@
                         resolve(response.finalUrl);
                     },
                     onabort: function() {
-                        resolve();
+                        resolve("");
                     },
                     method: "GET",
                     onerror: function(response) {
-                        resolve();
+                        resolve("");
                     }
                 });
             }));
@@ -908,7 +837,11 @@
         }, Route.queryBiliImg = function(aid, callback) {
             Http.getData(this.biliInfo + "?aid=" + aid, callback);
         }, Route.queryBiliDown = function(aid, cid, callback) {
-            Http.getData(this.bilidown + "?cid=" + cid + "&avid=" + aid + "&qn=112&fnval=4048", callback);
+            Http.get(this.bilidown + "?cid=" + cid + "&avid=" + aid + "&qn=112&fnval=4048&s=wandhi").then((function(res) {
+                callback(res);
+            }));
+        }, Route.queryBiliDownWeb = function(aid, cid) {
+            return Http.get("https://api.bilibili.com/x/player/wbi/playurl?avid=" + aid + "&cid=" + cid);
         }, Route.queryCoupons = function(itemId, callback) {
             this.baseApi(this.coupons, new Map([ [ "id", itemId ] ]), callback);
         }, Route.queryJdCoupons = function(itemId, callback) {
@@ -974,7 +907,7 @@
         Route.sxb_key = "sxb_anhao", Route.config = "/config/query", Route.history = "/history/", 
         Route.historyv1 = "/history/v1", Route.historyv2 = "/history/v2", Route.historyv3 = "/history/v3", 
         Route.bili = "/tools/bili", Route.biliInfo = "https://api.bilibili.com/x/web-interface/view", 
-        Route.bilidown = "https://api.bilibili.com/x/player/playurl", Route.coupons = "/tb/infos/", 
+        Route.bilidown = "https://api.bilibili.com/x/player/wbi/playurl", Route.coupons = "/tb/infos/", 
         Route.like = "/tb/guesslike", Route.jd_coupons = "/jd/info", Route.sn_coupons = "/sn/info", 
         Route.vp_coupons = "/vp/info", Route.kl_coupons = "/kl/info", Route;
     }(), css_248z$a = 'html .aside-nav {\n    -ms-text-size-adjust: 100%;\n    -webkit-text-size-adjust: 100%;\n    -webkit-font-smoothing: antialiased;\n    font-size: 62.5%\n}\n\nbody .aside-nav {\n    font-family: "Helvetica Neue", Helvetica, "Microsoft YaHei", Arial, sans-serif;\n    margin: 0;\n    font-size: 1.6rem;\n    color: #4e546b\n}\n\n.aside-nav {\n    position: fixed;\n    bottom: 0;\n    left: -47px;\n    width: 260px;\n    height: 260px;\n    -webkit-filter: url(#goo);\n    filter: url(#goo);\n    -ms-user-select: none;\n    -moz-user-select: none;\n    -webkit-user-select: none;\n    user-select: none;\n    opacity: .75;\n    z-index: 99999\n}\n\n.aside-nav.no-filter {\n    -webkit-filter: none;\n    filter: none\n}\n\n.aside-nav .aside-menu {\n    position: absolute;\n    width: 70px;\n    height: 70px;\n    -webkit-border-radius: 50%;\n    border-radius: 50%;\n    background: #f34444;\n    left: -95px;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    margin: auto;\n    text-align: center;\n    line-height: 70px;\n    color: #fff;\n    font-size: 20px;\n    z-index: 1;\n    cursor: move\n}\n\n.aside-nav .menu-item {\n    position: absolute;\n    width: 60px;\n    height: 60px;\n    background-color: #ff7676;\n    left: -95px;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    margin: auto;\n    line-height: 60px;\n    text-align: center;\n    -webkit-border-radius: 50%;\n    border-radius: 50%;\n    text-decoration: none;\n    color: #fff;\n    -webkit-transition: background .5s, -webkit-transform .6s;\n    transition: background .5s, -webkit-transform .6s;\n    -moz-transition: transform .6s, background .5s, -moz-transform .6s;\n    transition: transform .6s, background .5s;\n    transition: transform .6s, background .5s, -webkit-transform .6s, -moz-transform .6s;\n    font-size: 14px;\n    -webkit-box-sizing: border-box;\n    -moz-box-sizing: border-box;\n    box-sizing: border-box\n}\n\n.aside-nav .menu-item:hover {\n    background: #a9c734\n}\n\n.aside-nav .menu-line {\n    line-height: 20px;\n    padding-top: 10px\n}\n\n.aside-nav:hover {\n    opacity: 1\n}\n\n.aside-nav:hover .aside-menu {\n    -webkit-animation: jello 1s;\n    -moz-animation: jello 1s;\n    animation: jello 1s\n}\n\n.aside-nav:hover .menu-first {\n    -webkit-transform: translate3d(0, -135%, 0);\n    -moz-transform: translate3d(0, -135%, 0);\n    transform: translate3d(0, -135%, 0)\n}\n\n.aside-nav:hover .menu-second {\n    -webkit-transform: translate3d(120%, -70%, 0);\n    -moz-transform: translate3d(120%, -70%, 0);\n    transform: translate3d(120%, -70%, 0)\n}\n\n.aside-nav:hover .menu-third {\n    -webkit-transform: translate3d(120%, 70%, 0);\n    -moz-transform: translate3d(120%, 70%, 0);\n    transform: translate3d(120%, 70%, 0)\n}\n\n.aside-nav:hover .menu-fourth {\n    -webkit-transform: translate3d(0, 135%, 0);\n    -moz-transform: translate3d(0, 135%, 0);\n    transform: translate3d(0, 135%, 0)\n}\n\n@-webkit-keyframes jello {\n    from, 11.1%, to {\n        -webkit-transform: none;\n        transform: none\n    }\n    22.2% {\n        -webkit-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -webkit-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -webkit-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -webkit-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -webkit-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -webkit-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -webkit-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n@-moz-keyframes jello {\n    from, 11.1%, to {\n        -moz-transform: none;\n        transform: none\n    }\n    22.2% {\n        -moz-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -moz-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -moz-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -moz-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -moz-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -moz-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -moz-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n@keyframes jello {\n    from, 11.1%, to {\n        -webkit-transform: none;\n        -moz-transform: none;\n        transform: none\n    }\n    22.2% {\n        -webkit-transform: skewX(-12.5deg) skewY(-12.5deg);\n        -moz-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -webkit-transform: skewX(6.25deg) skewY(6.25deg);\n        -moz-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -webkit-transform: skewX(-3.125deg) skewY(-3.125deg);\n        -moz-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -webkit-transform: skewX(1.5625deg) skewY(1.5625deg);\n        -moz-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -webkit-transform: skewX(-.78125deg) skewY(-.78125deg);\n        -moz-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -webkit-transform: skewX(0.390625deg) skewY(0.390625deg);\n        -moz-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -webkit-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        -moz-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n.animated {\n    -webkit-animation-duration: 1s;\n    -moz-animation-duration: 1s;\n    animation-duration: 1s;\n    -webkit-animation-fill-mode: both;\n    -moz-animation-fill-mode: both;\n    animation-fill-mode: both\n}\n\n@-webkit-keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -webkit-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -webkit-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -webkit-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -webkit-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -webkit-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -webkit-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n@-moz-keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -moz-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -moz-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -moz-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -moz-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -moz-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -moz-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n@keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -webkit-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        -moz-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -webkit-transform: translate3d(0, 800px, 0);\n        -moz-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -webkit-transform: translate3d(0, -20px, 0);\n        -moz-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -webkit-transform: translate3d(0, 10px, 0);\n        -moz-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -webkit-transform: translate3d(0, -5px, 0);\n        -moz-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -webkit-transform: translate3d(0, 0, 0);\n        -moz-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n.bounceInUp {\n    -webkit-animation-name: bounceInUp;\n    -moz-animation-name: bounceInUp;\n    animation-name: bounceInUp;\n    -webkit-animation-delay: 1s;\n    -moz-animation-delay: 1s;\n    animation-delay: 1s\n}\n', 
@@ -3193,8 +3126,9 @@
               default:
                 return "\u672a\u77e5";
             }
-        }, BiliImgService.videoListHtml = function(videoList, audioList, duration) {
-            var _this = this, sizeFormat = function(size) {
+        }, BiliImgService.videoListHtml = function(videoList, audioList, duration, mp4s) {
+            var sizeFormat, rows, _this = this;
+            return void 0 === mp4s && (mp4s = []), sizeFormat = function(size) {
                 void 0 === size && (size = 0);
                 for (var unit = [ "B", "K", "M", "G" ], i = unit.length - 1, dex = Math.pow(1024, i), vor = Math.pow(1e3, i); dex > 1; ) {
                     if (size >= vor) {
@@ -3204,12 +3138,13 @@
                     dex /= 1024, vor /= 1e3, i--;
                 }
                 return size ? size + unit[i] : "N/A";
-            }, rows = "";
-            return videoList.forEach((function(e) {
-                rows += '<tr>\n                        <td class="bili-table-cell">\u89c6\u9891</td>\n                        <td class="bili-table-cell">' + _this.getQuality(e.id) + '</td>\n                        <td class="bili-table-cell">' + sizeFormat(e.bandwidth * duration / 8) + '</td>\n                        <td class="bili-table-cell">' + e.frameRate + '</td>\n                        <td class="bili-table-cell">' + e.codecs + '</td>\n                        <td class="bili-table-cell"><button class="okv-btn okv-btn-primary bili-down-video-item" data-url="' + e.baseUrl + '" data-type="1">\u4e0b\u8f7d</button></td>\n                    </tr>';
+            }, rows = "", videoList.forEach((function(e) {
+                rows += '<tr>\n            <td class="bili-table-cell">\u89c6\u9891</td>\n            <td class="bili-table-cell">' + _this.getQuality(e.id) + '</td>\n            <td class="bili-table-cell">' + sizeFormat(e.bandwidth * duration / 8) + '</td>\n            <td class="bili-table-cell">' + e.frameRate + '</td>\n            <td class="bili-table-cell">' + e.codecs + '</td>\n            <td class="bili-table-cell"><button class="okv-btn okv-btn-primary bili-down-video-item" data-url="' + e.baseUrl + '" data-type="1">\u4e0b\u8f7d</button></td>\n            </tr>';
             })), audioList.forEach((function(e) {
-                rows += '<tr>\n                        <td class="bili-table-cell">\u97f3\u9891</td>\n                        <td class="bili-table-cell">' + _this.getQuality(e.id) + '</td>\n                        <td class="bili-table-cell">' + sizeFormat(e.bandwidth * duration / 8) + '</td>\n                        <td class="bili-table-cell">' + e.frameRate + '</td>\n                        <td class="bili-table-cell">' + e.codecs + '</td>\n                        <td class="bili-table-cell"><button class="okv-btn okv-btn-primary bili-down-video-item" data-url="' + e.baseUrl + '" data-type="2">\u4e0b\u8f7d</button></td>\n                    </tr>';
-            })), '\n<div style="height: 30rem">\n    <div style="margin-bottom: 20px">\u6ce8\u610f:\u97f3\u89c6\u9891\u662f\u5206\u5f00\u7684,\u8bf7\u4e0b\u8f7d\u540e\u81ea\u884c\u5408\u5e76<a href="https://wiki.wandhi.com/zh-cn/Download.html">\u70b9\u6211\u4e0b\u8f7d\u5408\u5e76\u5de5\u5177</a></div>\n    <table class="bili-table bili-table-small">\n        <thead class="bili-table-head">\n            <tr>\n                <th class="bili-table-cell">\u7c7b\u578b</th>\n                <th class="bili-table-cell">\u54c1\u8d28</th>\n                <th class="bili-table-cell">\u5927\u5c0f</th>\n                <th class="bili-table-cell">\u7801\u7387</th>\n                <th class="bili-table-cell">\u7f16\u7801</th>\n                <th class="bili-table-cell">\u64cd\u4f5c</th>\n            </tr>\n        </thead>\n        <tbody class="at-table-tbody">                    \n            ' + rows + "\n        </tbody>    \n    </table>\n</div>";
+                rows += '<tr>\n            <td class="bili-table-cell">\u97f3\u9891</td>\n            <td class="bili-table-cell">' + _this.getQuality(e.id) + '</td>\n            <td class="bili-table-cell">' + sizeFormat(e.bandwidth * duration / 8) + '</td>\n            <td class="bili-table-cell">' + e.frameRate + '</td>\n            <td class="bili-table-cell">' + e.codecs + '</td>\n            <td class="bili-table-cell"><button class="okv-btn okv-btn-primary bili-down-video-item" data-url="' + e.baseUrl + '" data-type="2">\u4e0b\u8f7d</button></td>\n            </tr>';
+            })), mp4s.forEach((function(e) {
+                rows = '<tr>\n            <td class="bili-table-cell">\u97f3\u89c6\u5df2\u5408\u5e76</td>\n            <td class="bili-table-cell">' + _this.getQuality(e.quality) + '</td>\n            <td class="bili-table-cell">' + sizeFormat(e.size) + '</td>\n            <td class="bili-table-cell">MP4</td>\n            <td class="bili-table-cell">MP4</td>\n            <td class="bili-table-cell"><button class="okv-btn okv-btn-primary bili-down-video-item" data-url="' + e.url + '" data-type="1">\u4e0b\u8f7d</button></td>\n            </tr>' + rows;
+            })), '\n<div style="height: 30rem">\n    <div style="margin-bottom: 20px">\u6ce8\u610f:\u97f3\u89c6\u9891\u662f<b style="color:red">\u5206\u5f00</b>\u7684,\u8bf7\u4e0b\u8f7d\u540e\u81ea\u884c\u5408\u5e76<a href="https://wiki.wandhi.com/zh-cn/Download.html" target="_blank">\u70b9\u6211\u4e0b\u8f7d\u5408\u5e76\u5de5\u5177</a></div>\n    <table class="bili-table bili-table-small">\n        <thead class="bili-table-head">\n            <tr>\n                <th class="bili-table-cell">\u7c7b\u578b</th>\n                <th class="bili-table-cell">\u54c1\u8d28</th>\n                <th class="bili-table-cell">\u5927\u5c0f</th>\n                <th class="bili-table-cell">\u7801\u7387</th>\n                <th class="bili-table-cell">\u7f16\u7801</th>\n                <th class="bili-table-cell">\u64cd\u4f5c</th>\n            </tr>\n        </thead>\n        <tbody class="at-table-tbody">                    \n            ' + rows + "\n        </tbody>    \n    </table>\n</div>";
         }, BiliImgService.prototype.loader = function() {}, BiliImgService.prototype.run = function() {
             this.init();
         }, BiliImgService.prototype.init = function() {
@@ -3251,13 +3186,26 @@
             var _this = this, key = "" + aid + cid + "MDD-NEW";
             Config.remember(key, Min, (function() {
                 return new Promise((function(resolve, reject) {
-                    Route.queryBiliDown(aid, cid, (function(res) {
-                        var _a, _b, _c;
-                        (null === (_c = null === (_b = null === (_a = res.data) || void 0 === _a ? void 0 : _a.dash) || void 0 === _b ? void 0 : _b.video) || void 0 === _c ? void 0 : _c.length) > 0 ? resolve(res) : reject(res);
+                    return __awaiter(_this, void 0, void 0, (function() {
+                        var mp4s;
+                        return __generator(this, (function(_a) {
+                            switch (_a.label) {
+                              case 0:
+                                return [ 4, Route.queryBiliDownWeb(aid, cid) ];
+
+                              case 1:
+                                return mp4s = _a.sent(), Route.queryBiliDown(aid, cid, (function(res) {
+                                    var _a, _b, _c, _d, _e, r;
+                                    (null === (_c = null === (_b = null === (_a = res.data) || void 0 === _a ? void 0 : _a.dash) || void 0 === _b ? void 0 : _b.video) || void 0 === _c ? void 0 : _c.length) > 0 ? (r = res, 
+                                    (null === (_e = null === (_d = mp4s.data) || void 0 === _d ? void 0 : _d.durl) || void 0 === _e ? void 0 : _e.length) > 0 && (r.data.durl = mp4s.data.durl, 
+                                    r.data.durl[0].quality = mp4s.data.quality), resolve(r)) : reject(res);
+                                })), [ 2 ];
+                            }
+                        }));
                     }));
                 }));
             })).then((function(res) {
-                sAlert.html(title, _this.videoListHtml(res.data.dash.video, res.data.dash.audio, res.data.dash.duration), !0, "\u6211\u597d\u4e86", "#3085d6", "40%").finally((function() {
+                sAlert.html(title, _this.videoListHtml(res.data.dash.video, res.data.dash.audio, res.data.dash.duration, res.data.durl), !0, "\u6211\u597d\u4e86", "#3085d6", "40%").finally((function() {
                     BiliImgService.initDown();
                 })), $(".bili-down-video-item").on("click", (function(e) {
                     var url = $(e.currentTarget).attr("data-url"), type = $(e.currentTarget).attr("data-type");
@@ -3728,7 +3676,74 @@
             }));
         }, CsdnAdService.adSelectors = [ "#footerRightAds", ".side-question-box", "div[id^='dmp_ad']", "div[class^='ad_']", "div[id^='floor-ad_']", ".adsbygoogle", "#recommendAdBox", "#asideNewNps", ".box-shadow" ], 
         CsdnAdService;
-    }(PluginBase), Menu$1 = Common.Menu, WenKuService = function(_super) {
+    }(PluginBase), Alert = function() {
+        function Alert() {}
+        return Alert.open = function(titls, content, area, shade, offset, maxmin) {
+            return void 0 === area && (area = [ "400px", "300px" ]), void 0 === shade && (shade = 0), 
+            void 0 === offset && (offset = "lb"), void 0 === maxmin && (maxmin = !0), layer.open({
+                type: 1,
+                title: titls,
+                area: area,
+                shade: shade,
+                offset: offset,
+                maxmin: maxmin,
+                content: content
+            });
+        }, Alert.info = function(msg) {
+            return layer.msg(msg, {
+                time: 2e3
+            });
+        }, Alert.error = function(msg) {
+            return layer.msg(msg, {
+                icon: 5,
+                time: 2e3
+            });
+        }, Alert.confim = function(title, msg, buttons, callback, auto_close) {
+            void 0 === auto_close && (auto_close = !1);
+            var tid = layer.open({
+                type: 1,
+                title: title || !1,
+                closeBtn: 1,
+                shade: .8,
+                id: "LAY_layuipro",
+                resize: !1,
+                btn: buttons,
+                btnAlign: "c",
+                moveType: 1,
+                content: '<div style="padding: 20px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">' + msg + "</div>",
+                yes: function(index) {
+                    callback(index), auto_close && Core.lazyload((function() {
+                        layer.close(tid);
+                    }));
+                }
+            });
+            return tid;
+        }, Alert.prompt = function(title, v, callback, size, type) {
+            void 0 === type && (type = 0), layer.prompt({
+                title: title,
+                value: v,
+                formType: type
+            }, (function(v, i, ele) {
+                callback(v), layer.close(i);
+            }));
+        }, Alert.close = function(index) {
+            layer.close(index);
+        }, Alert.closeAll = function() {
+            layer.closeAll();
+        }, Alert.loading = function(style, _time, _shade) {
+            return 1;
+        }, Alert.loadingS = function(msg, time) {
+            return void 0 === time && (time = -1), Swal__default.default.fire({
+                title: msg,
+                didOpen: function() {
+                    Swal__default.default.showLoading();
+                },
+                allowOutsideClick: !1,
+                allowEscapeKey: !1,
+                timer: -1 == time ? void 0 : 1e3 * time
+            });
+        }, Alert;
+    }(), Menu$1 = Common.Menu, WenKuService = function(_super) {
         function WenKuService() {
             var _this = _super.call(this) || this;
             return _this.rules = new Map([ [ SiteEnum.WenKu, /wenku\.baidu\.com\/view/i ] ]), 

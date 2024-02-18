@@ -69,7 +69,7 @@
     "object" == typeof exports && "undefined" != typeof module ? factory(require("react-dom"), require("sweetalert2")) : "function" == typeof define && define.amd ? define([ "react-dom", "sweetalert2" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).ReactDOM, global.Swal);
 })(this, (function(ReactDOM, Swal) {
     "use strict";
-    var ReactDOM__default, Swal__default, container, Container, Logger, LogLevel, extendStatics, BrowerType, VersionResult, Core, Common, PluginBase, SiteEnum, Config, AjaxOption, Alert, Http, HttpHeaders, Hour, Route, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, sAlert, commonjsGlobal, fingerprint2, GwdService, GwdHelper, TaoBaoService, JdService, ItemType, Tao, ListService, _GwdService, OneKeyVipHistoryToolsInjection;
+    var ReactDOM__default, Swal__default, container, Container, Logger, LogLevel, extendStatics, BrowerType, VersionResult, Core, Common, PluginBase, SiteEnum, Config, AjaxOption, Http, HttpHeaders, Hour, Route, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, sAlert, commonjsGlobal, fingerprint2, GwdService, GwdHelper, TaoBaoService, JdService, ItemType, Tao, ListService, _GwdService, OneKeyVipHistoryToolsInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
@@ -616,77 +616,6 @@
             for (i in fd = new FormData, this.data) fd.append(i, this.data[i]);
             return fd;
         }, AjaxOption;
-    }(), Alert = function() {
-        function Alert() {}
-        return Alert.open = function(titls, content, area, shade, offset, maxmin) {
-            return void 0 === area && (area = [ "400px", "300px" ]), void 0 === shade && (shade = 0), 
-            void 0 === offset && (offset = "lb"), void 0 === maxmin && (maxmin = !0), layer.open({
-                type: 1,
-                title: titls,
-                area: area,
-                shade: shade,
-                offset: offset,
-                maxmin: maxmin,
-                content: content
-            });
-        }, Alert.info = function(msg) {
-            return layer.msg(msg, {
-                time: 2e3
-            });
-        }, Alert.error = function(msg) {
-            return layer.msg(msg, {
-                icon: 5,
-                time: 2e3
-            });
-        }, Alert.confim = function(title, msg, buttons, callback, auto_close) {
-            void 0 === auto_close && (auto_close = !1);
-            var tid = layer.open({
-                type: 1,
-                title: title || !1,
-                closeBtn: 1,
-                shade: .8,
-                id: "LAY_layuipro",
-                resize: !1,
-                btn: buttons,
-                btnAlign: "c",
-                moveType: 1,
-                content: '<div style="padding: 20px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">' + msg + "</div>",
-                yes: function(index) {
-                    callback(index), auto_close && Core.lazyload((function() {
-                        layer.close(tid);
-                    }));
-                }
-            });
-            return tid;
-        }, Alert.prompt = function(title, v, callback, size, type) {
-            void 0 === type && (type = 0), layer.prompt({
-                title: title,
-                value: v,
-                formType: type
-            }, (function(v, i, ele) {
-                callback(v), layer.close(i);
-            }));
-        }, Alert.close = function(index) {
-            layer.close(index);
-        }, Alert.closeAll = function() {
-            layer.closeAll();
-        }, Alert.loading = function(style, _time, _shade) {
-            return void 0 === style && (style = 1), void 0 === _time && (_time = 10), void 0 === _shade && (_shade = .3), 
-            layer.load(style, {
-                shade: _shade,
-                time: 1e3 * _time
-            });
-        }, Alert.loadingS = function(msg, time) {
-            return void 0 === time && (time = -1), Swal__default.default.fire({
-                title: msg,
-                didOpen: function() {
-                    Swal__default.default.showLoading();
-                },
-                allowOutsideClick: !1,
-                allowEscapeKey: !1,
-                timer: -1 == time ? void 0 : 1e3 * time
-            });
-        }, Alert;
     }(), Http = function() {
         function Http() {}
         return Http.ajax = function(option) {
@@ -771,8 +700,7 @@
             }));
         }, Http.get = function(url, data, head, loading, time_out) {
             return void 0 === data && (data = new Map), void 0 === head && (head = new Map), 
-            void 0 === loading && (loading = !0), void 0 === time_out && (time_out = 10), loading && Alert.loading(), 
-            new Promise((function(resolve, reject) {
+            void 0 === time_out && (time_out = 10), new Promise((function(resolve, reject) {
                 Http.ajax(new AjaxOption(url, "GET", data, (function(data) {
                     var _a, res;
                     try {
@@ -784,7 +712,7 @@
             }));
         }, Http.getWithHead = function(url, data, head, time_out) {
             return void 0 === data && (data = new Map), void 0 === head && (head = new Map), 
-            void 0 === time_out && (time_out = 10), Alert.loading(), new Promise((function(resolve, reject) {
+            void 0 === time_out && (time_out = 10), new Promise((function(resolve, reject) {
                 Http.ajax(new AjaxOption(url, "GET", data, (function(data) {
                     var _a, res;
                     try {
@@ -796,7 +724,7 @@
             }));
         }, Http.postWithHead = function(url, data, head, time_out) {
             return void 0 === data && (data = new Map), void 0 === head && (head = new Map), 
-            void 0 === time_out && (time_out = 10), Alert.loading(), new Promise((function(resolve, reject) {
+            void 0 === time_out && (time_out = 10), new Promise((function(resolve, reject) {
                 Http.ajax(new AjaxOption(url, "POST", data, (function(data) {
                     try {
                         resolve(data);
@@ -819,11 +747,11 @@
                         resolve(response.finalUrl);
                     },
                     onabort: function() {
-                        resolve();
+                        resolve("");
                     },
                     method: "GET",
                     onerror: function(response) {
-                        resolve();
+                        resolve("");
                     }
                 });
             }));
@@ -872,7 +800,11 @@
         }, Route.queryBiliImg = function(aid, callback) {
             Http.getData(this.biliInfo + "?aid=" + aid, callback);
         }, Route.queryBiliDown = function(aid, cid, callback) {
-            Http.getData(this.bilidown + "?cid=" + cid + "&avid=" + aid + "&qn=112&fnval=4048", callback);
+            Http.get(this.bilidown + "?cid=" + cid + "&avid=" + aid + "&qn=112&fnval=4048&s=wandhi").then((function(res) {
+                callback(res);
+            }));
+        }, Route.queryBiliDownWeb = function(aid, cid) {
+            return Http.get("https://api.bilibili.com/x/player/wbi/playurl?avid=" + aid + "&cid=" + cid);
         }, Route.queryCoupons = function(itemId, callback) {
             this.baseApi(this.coupons, new Map([ [ "id", itemId ] ]), callback);
         }, Route.queryJdCoupons = function(itemId, callback) {
@@ -938,7 +870,7 @@
         Route.sxb_key = "sxb_anhao", Route.config = "/config/query", Route.history = "/history/", 
         Route.historyv1 = "/history/v1", Route.historyv2 = "/history/v2", Route.historyv3 = "/history/v3", 
         Route.bili = "/tools/bili", Route.biliInfo = "https://api.bilibili.com/x/web-interface/view", 
-        Route.bilidown = "https://api.bilibili.com/x/player/playurl", Route.coupons = "/tb/infos/", 
+        Route.bilidown = "https://api.bilibili.com/x/player/wbi/playurl", Route.coupons = "/tb/infos/", 
         Route.like = "/tb/guesslike", Route.jd_coupons = "/jd/info", Route.sn_coupons = "/sn/info", 
         Route.vp_coupons = "/vp/info", Route.kl_coupons = "/kl/info", Route;
     }(), EventHelper = function() {
