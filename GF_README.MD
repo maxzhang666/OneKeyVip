@@ -11,33 +11,12 @@
     <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Mac%20%7C%20Android-blue.svg" alt="platform">
 </p>
 
-### 应Greasyfork.org网站规则要求，脚本**历史价格**功能拆分发布:
 
-#### [电商平台历史价格展示、优惠券查询](https://greasyfork.org/zh-CN/scripts/472757)
-
-## 💕京东、淘宝活动导购群 推荐
-
-👉[点我](https://qm.qq.com/q/6c34zSGkuc)
-👈或使用手机QQ扫码加群(禁言)
-
-<img src="https://i2.100024.xyz/2023/10/08/iubwip.webp" alt="垃圾佬" width="20%">
-<img src="https://i2.100024.xyz/2023/09/10/j1dk77.webp" alt="垃圾佬" width="20%">
-
-## 声明
-
-> 脚本未最小化或混淆
->
-> 未引用不符合规则的外部资源
->
-> 举报前三思,瞎举报会被Ban
-
-## 版本号说明
-
-![x2TF67](https://cdn.jsdelivr.net/gh/maxzhang666/assets@master/img/2022/02/22/x2TF67.png)[](https://)
-
-## 💩 交流群 **有任何问题都可以加群反馈或在网站留言，修复更及时**
+## 💩交流群 **有任何问题都可以加群反馈或在网站留言，修复更及时**
 
 ### TG [猛击加入](//t.me/joinchat/fDZTZfGWE_9lYTFl)
+
+### 五群 [462983068](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=bBmrx1vXjbENW-tOycF7DCAQ-TpYnzaR&authKey=83NWF9%2BFkv5PIw2jLS%2FTcAMiCGraMiIbGMV4ce1WVEIOklGOm14IjIX%2F1Zu%2BeCvo&noverify=0&group_code=462983068) [**一键加群**](http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=bBmrx1vXjbENW-tOycF7DCAQ-TpYnzaR&authKey=83NWF9%2BFkv5PIw2jLS%2FTcAMiCGraMiIbGMV4ce1WVEIOklGOm14IjIX%2F1Zu%2BeCvo&noverify=0&group_code=462983068)
 
 ### 四群[**137750146**](http://qm.qq.com/cgi-bin/qm/qr?k=gUbyjh9xrnskBWGYm-9DbnJqWBZOpcva&jump_from=webapi&authKey=5ci2KE+i56fFxxCVrj2Wkj4D3D7aKphITW07QdHls771upOyVT/06ekBgrNUZKeF) [**一键加群**](http://qm.qq.com/cgi-bin/qm/qr?k=gUbyjh9xrnskBWGYm-9DbnJqWBZOpcva&jump_from=webapi&authKey=5ci2KE+i56fFxxCVrj2Wkj4D3D7aKphITW07QdHls771upOyVT/06ekBgrNUZKeF)
 
@@ -47,9 +26,26 @@
 
 ### 一群[**340569308**](http://shang.qq.com/wpa/qunwpa?idkey=7fc3fef0db96421305e65c41cc081ffeca507fdc23cab93d731277be829985ec)**已满** [**一键加群**](http://shang.qq.com/wpa/qunwpa?idkey=7fc3fef0db96421305e65c41cc081ffeca507fdc23cab93d731277be829985ec)
 
-### [**QQ频道**](https://qun.qq.com/qqweb/qunpro/share?_wv=3&_wwv=128&inviteCode=1U23Gb&from=181074&biz=ka)**推荐**
 
-## 🔧 [插件功能(点我查看详情)](https://wiki.wandhi.com/zh-cn/Feature.html)
+## 💕京东、淘宝活动导购群 推荐
+
+👉[点我](https://qm.qq.com/q/6c34zSGkuc)
+👈或使用手机QQ扫码加群(禁言)
+
+<img src="https://i2.100024.xyz/2023/10/08/iubwip.webp" alt="垃圾佬" width="20%">
+<img src="https://i2.100024.xyz/2023/09/10/j1dk77.webp" alt="垃圾佬" width="20%">
+<img src="https://i2.100024.xyz/2023/08/25/xsjquk.webp" alt="垃圾佬" width="20%">
+
+## 声明
+
+> 脚本未最小化或混淆
+>
+> 未引用不符合规则的外部资源
+>
+> 举报前三思,瞎举报会被Ban
+
+
+## 🔧 [插件功能(点我查看详情)](https://wikie.wandhi.com/zh-cn/Feature.html)
 
 * ✅ 视频解析
 * ✅ 音乐下载
@@ -68,8 +64,8 @@
 * ✅ YouTube视频下载
 * ✅ 搜索引擎快速跳转
 * ✅ 鼠标点击图片时放大图片
-    * ✅ github
-    * ✅ v2ex
+  * ✅ github
+  * ✅ v2ex
 
 ## 🔥挖坑
 
@@ -103,11 +99,11 @@
 
 ## 📖 常见问题
 
-[**点我查看**](https://wiki.wandhi.com/zh-cn/Faq.html)
+[**点我查看**](https://wikie.wandhi.com/zh-cn/Faq.html)
 
 ## 🔔 更新历史
 
-[**查看**](https://wiki.wandhi.com/zh-cn/Changelog)
+[**查看**](https://wikie.wandhi.com/zh-cn/Changelog)
 
 # 功能说明
 
@@ -115,10 +111,10 @@
 
 > 功能介绍由于篇幅过长不再此处展示，请点击下方文字查看
 
-## [插件功能(点我查看详情)](https://wiki.wandhi.com/zh-cn/Feature.html)
+## [插件功能(点我查看详情)](https://wikie.wandhi.com/zh-cn/Feature.html)
 
 ## 💕 友情捐助
 
 <p align="center">
-<img src="https://i.loli.net/2019/05/14/5cda672add6f594934.jpg" alt="友情捐助">
+<img src="https://registry.npmmirror.com/wandhi_cdn/1.0.1/files/image/qr.jpg" alt="友情捐助">
 </p>
