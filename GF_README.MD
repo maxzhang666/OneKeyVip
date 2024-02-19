@@ -63,6 +63,7 @@
 * ✅ 阿里云盘refresh_token获取工具
 * ✅ YouTube视频下载
 * ✅ 搜索引擎快速跳转
+* ✅ 小红书无水印图片、视频
 * ✅ 鼠标点击图片时放大图片
   * ✅ github
   * ✅ v2ex
@@ -70,7 +71,6 @@
 ## 🔥挖坑
 
 * ❎ 功能项单独的控制开关(部分实现)
-* ❎ 小红书无水印图片、视频
 * ❎ 搜索引擎跳转美化
 
 **插件有问题请及时反馈**
@@ -82,20 +82,6 @@
 ### [Github:https://github.com/maxzhang666/OneKeyVip](https://github.com/maxzhang666/OneKeyVip)
 
 ### [Gitee:https://gitee.com/ixysy/OneKeyVip](https://gitee.com/ixysy/OneKeyVip)
-
-## 📜 反馈说明
-
-> 反馈问题请按照以下格式进行：
-
-> 反馈时请给予“**Good**！”评价，并附上需要支持的网址，以及你所期望的需求！
-
-### 问题网址(**重要**)：
-
-### 问题描述(**重要**)：
-
-### 问题图片(**重要**)：
-
-最后，反馈时请给予“**Good**！”评价，并附上需要支持的网址，以及你所期望的需求！
 
 ## 📖 常见问题
 
