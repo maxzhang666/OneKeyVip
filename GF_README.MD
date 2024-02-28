@@ -32,9 +32,9 @@
 👉[点我](https://qm.qq.com/q/6c34zSGkuc)
 👈或使用手机QQ扫码加群(禁言)
 
-<img src="https://s2.loli.net/2024/02/28/Jmp2uEbGgRTf6Cr.png" alt="垃圾佬" width="20%">
-<img src="https://s2.loli.net/2024/02/28/FC5BLZXjHrYs6bo.png" alt="垃圾佬" width="20%">
-<img src="https://s2.loli.net/2024/02/28/GCj54flKsEiMgkm.png" alt="垃圾佬" width="20%">
+<img src="https://i1.wp.com/s2.loli.net/2024/02/28/Jmp2uEbGgRTf6Cr.png" alt="垃圾佬" width="20%">
+<img src="https://i1.wp.com/s2.loli.net/2024/02/28/FC5BLZXjHrYs6bo.png" alt="垃圾佬" width="20%">
+<img src="https://i1.wp.com/s2.loli.net/2024/02/28/GCj54flKsEiMgkm.png" alt="垃圾佬" width="20%">
 
 ## 声明
 
