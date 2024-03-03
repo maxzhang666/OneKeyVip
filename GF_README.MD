@@ -45,7 +45,7 @@
 > 举报前三思,瞎举报会被Ban
 
 
-## 🔧 [插件功能(点我查看详情)](https://wikie.wandhi.com/zh-cn/Feature.html)
+## 🔧 [插件功能(点我查看详情)](https://wiki.wandhi.com/zh-cn/Feature.html)
 
 * ✅ 视频解析
 * ✅ 音乐下载
@@ -85,11 +85,11 @@
 
 ## 📖 常见问题
 
-[**点我查看**](https://wikie.wandhi.com/zh-cn/Faq.html)
+[**点我查看**](https://wiki.wandhi.com/zh-cn/Faq.html)
 
 ## 🔔 更新历史
 
-[**查看**](https://wikie.wandhi.com/zh-cn/Changelog)
+[**查看**](https://wiki.wandhi.com/zh-cn/Changelog)
 
 # 功能说明
 
@@ -97,7 +97,7 @@
 
 > 功能介绍由于篇幅过长不再此处展示，请点击下方文字查看
 
-## [插件功能(点我查看详情)](https://wikie.wandhi.com/zh-cn/Feature.html)
+## [插件功能(点我查看详情)](https://wiki.wandhi.com/zh-cn/Feature.html)
 
 ## 💕 友情捐助
 
