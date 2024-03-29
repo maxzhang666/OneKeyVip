@@ -3,7 +3,7 @@
 // @namespace      https://www.wandhi.com/
 // @description    🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转；🎉 12、搜索引擎快速跳转
 // @license        MIT
-// @version        4.9.24
+// @version        4.9.25
 // @author         MaxZhang
 // @include        *://settings.wandhi.com/*
 // @include        *://m.youku.com/v*
@@ -3153,7 +3153,7 @@
         }, BiliImgService.prototype.init = function() {
             Core.autoLazyload((function() {
                 var _a, _b;
-                return ((null === (_a = $(".reply-box-textarea")) || void 0 === _a ? void 0 : _a.length) > 0 || (null === (_b = $(".comment-submit")) || void 0 === _b ? void 0 : _b.length) > 0) && ($(".video-info-detail").append('<div class="video-info-detail-list okv-tools-bili"></div>'), 
+                return ((null === (_a = $(".reply-box-textarea")) || void 0 === _a ? void 0 : _a.length) > 0 || (null === (_b = $(".comment-submit")) || void 0 === _b ? void 0 : _b.length) > 0) && ($("#viewbox_report").append('<div class="video-info-detail-list okv-tools-bili"></div>'), 
                 !0);
             }), (function() {
                 Config.get(ConfigEnum.BiliPc_Cover, !0) && BiliImgService.add_img_btn(), Config.get(ConfigEnum.BiliPc_Video_Download, !0) && BiliImgService.add_down_btn(), 

@@ -1241,7 +1241,7 @@
         }, BiliImgService.prototype.init = function() {
             Core.autoLazyload((function() {
                 var _a, _b;
-                return ((null === (_a = $(".reply-box-textarea")) || void 0 === _a ? void 0 : _a.length) > 0 || (null === (_b = $(".comment-submit")) || void 0 === _b ? void 0 : _b.length) > 0) && ($(".video-info-detail").append('<div class="video-info-detail-list okv-tools-bili"></div>'), 
+                return ((null === (_a = $(".reply-box-textarea")) || void 0 === _a ? void 0 : _a.length) > 0 || (null === (_b = $(".comment-submit")) || void 0 === _b ? void 0 : _b.length) > 0) && ($("#viewbox_report").append('<div class="video-info-detail-list okv-tools-bili"></div>'), 
                 !0);
             }), (function() {
                 Config.get(ConfigEnum.BiliPc_Cover, !0) && BiliImgService.add_img_btn(), Config.get(ConfigEnum.BiliPc_Video_Download, !0) && BiliImgService.add_down_btn(), 
