@@ -3,7 +3,7 @@
 // @namespace      https://www.wandhi.com/
 // @description    🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转；🎉 12、搜索引擎快速跳转
 // @license        MIT
-// @version        4.9.26
+// @version        4.9.27
 // @author         MaxZhang
 // @include        *://settings.wandhi.com/*
 // @include        *://m.youku.com/v*
@@ -118,6 +118,8 @@
 // @match          *://www.yuque.com/r/goto*
 // @match          *://blog.51cto.com/transfer*
 // @match          *://r.wjx.com/redirect.aspx*
+// @match          *://www.infoq.cn/link*
+// @match          *://open.work.weixin.qq.com/wwopen/uriconfirm?uri=
 // @require        https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
 // @require        https://lib.baomitu.com/limonte-sweetalert2/11.4.7/sweetalert2.all.min.js
 // @require        https://lib.baomitu.com/echarts/4.6.0/echarts.min.js
@@ -1010,7 +1012,8 @@
         SiteEnum.Github = "Github", SiteEnum.NodeSeek = "NodeSeek", SiteEnum.HiTv = "HiTv", 
         SiteEnum.Xhs = "Xhs", SiteEnum.KingSoftDoc = "KingSoftDoc", SiteEnum.BingCn = "BingCn", 
         SiteEnum.SiChuang = "SiChuang", SiteEnum.Uisdc = "Uisdc", SiteEnum.YuQue = "YuQue", 
-        SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", SiteEnum.WenJuanXing = "WenJuanXing";
+        SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", SiteEnum.WenJuanXing = "WenJuanXing", 
+        SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork";
     }(SiteEnum || (SiteEnum = {})), UpdateService = function(_super) {
         function UpdateService() {
             var _this = _super.call(this) || this;
@@ -3857,7 +3860,7 @@
     }(PluginBase), LinkJumpService = function(_super) {
         function LinkJumpService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ], [ SiteEnum.Gitee, /gitee\.com\/link/i ], [ SiteEnum.JueJin, /juejin\.cn\/\?target/i ], [ SiteEnum.Weibo, /weibo\.cn\/sinaurl/i ], [ SiteEnum.TuXiaoChao, /support\.qq\.com\/products\/.*\/link-jump/i ], [ SiteEnum.OsCh, /oschina\.net\/action\/GoToLink/i ], [ SiteEnum.AiFaDian, /afdian\.net\/link\?target/i ], [ SiteEnum.Baidu, /jump(2?)\.bdimg\.com\/safecheck/i ], [ SiteEnum.DouBan, /www\.douban\.com\/link2\// ], [ SiteEnum.g17173, /link\.17173\.com\/\?target/i ], [ SiteEnum.TencentDoc, /docs\.qq\.com\/scenario\/link/i ], [ SiteEnum.TencentMail, /mail\.qq\.com\/cgi-bin\/readtemplate/i ], [ SiteEnum.TencentQQ, /c\.pc\.qq\.com\/(middlem|ios)\.html/i ], [ SiteEnum.SsPAi, /sspai\.com\/link/i ], [ SiteEnum.NodeSeek, /nodeseek\.com\/jump/i ], [ SiteEnum.KingSoftDoc, /[p|www]\.kdocs\.cn\/office\/link/i ], [ SiteEnum.TencentCloudBlog, /cloud\.tencent\.com\/developer\/tools\/blog-entry/i ], [ SiteEnum.Uisdc, /link\.uisdc\.com\/\?redirect/i ], [ SiteEnum.YuQue, /www\.yuque\.com\/r\/goto/i ], [ SiteEnum.CTO51, /blog\.51cto\.com\/transfer/i ], [ SiteEnum.WenJuanXing, /r\.wjx\.com\/redirect\.aspx/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ], [ SiteEnum.Gitee, /gitee\.com\/link/i ], [ SiteEnum.JueJin, /juejin\.cn\/\?target/i ], [ SiteEnum.Weibo, /weibo\.cn\/sinaurl/i ], [ SiteEnum.TuXiaoChao, /support\.qq\.com\/products\/.*\/link-jump/i ], [ SiteEnum.OsCh, /oschina\.net\/action\/GoToLink/i ], [ SiteEnum.AiFaDian, /afdian\.net\/link\?target/i ], [ SiteEnum.Baidu, /jump(2?)\.bdimg\.com\/safecheck/i ], [ SiteEnum.DouBan, /www\.douban\.com\/link2\// ], [ SiteEnum.g17173, /link\.17173\.com\/\?target/i ], [ SiteEnum.TencentDoc, /docs\.qq\.com\/scenario\/link/i ], [ SiteEnum.TencentMail, /mail\.qq\.com\/cgi-bin\/readtemplate/i ], [ SiteEnum.TencentQQ, /c\.pc\.qq\.com\/(middlem|ios)\.html/i ], [ SiteEnum.SsPAi, /sspai\.com\/link/i ], [ SiteEnum.NodeSeek, /nodeseek\.com\/jump/i ], [ SiteEnum.KingSoftDoc, /[p|www]\.kdocs\.cn\/office\/link/i ], [ SiteEnum.TencentCloudBlog, /cloud\.tencent\.com\/developer\/tools\/blog-entry/i ], [ SiteEnum.Uisdc, /link\.uisdc\.com\/\?redirect/i ], [ SiteEnum.YuQue, /www\.yuque\.com\/r\/goto/i ], [ SiteEnum.CTO51, /blog\.51cto\.com\/transfer/i ], [ SiteEnum.WenJuanXing, /r\.wjx\.com\/redirect\.aspx/i ], [ SiteEnum.InfoQ, /www\.infoq\.cn\/link/i ], [ SiteEnum.WeChatWork, /open\.work\.weixin\.qq\.com\/wwopen\/uriconfirm/i ] ]), 
             _this.key = "", _this.selector = "", _this._unique = !1, _this._appName = "LinkJump", 
             _this.semiui = !0, _this;
         }
@@ -3874,6 +3877,7 @@
               case SiteEnum.SsPAi:
               case SiteEnum.KingSoftDoc:
               case SiteEnum.TencentCloudBlog:
+              case SiteEnum.InfoQ:
                 this.key = "target";
                 break;
 
@@ -3916,6 +3920,10 @@
 
               case SiteEnum.CTO51:
                 this.selector = ".url span";
+                break;
+
+              case SiteEnum.WeChatWork:
+                this.key = "uri";
                 break;
 
               default:

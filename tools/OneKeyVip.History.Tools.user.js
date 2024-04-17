@@ -556,7 +556,8 @@
         SiteEnum.Github = "Github", SiteEnum.NodeSeek = "NodeSeek", SiteEnum.HiTv = "HiTv", 
         SiteEnum.Xhs = "Xhs", SiteEnum.KingSoftDoc = "KingSoftDoc", SiteEnum.BingCn = "BingCn", 
         SiteEnum.SiChuang = "SiChuang", SiteEnum.Uisdc = "Uisdc", SiteEnum.YuQue = "YuQue", 
-        SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", SiteEnum.WenJuanXing = "WenJuanXing";
+        SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", SiteEnum.WenJuanXing = "WenJuanXing", 
+        SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork";
     }(SiteEnum || (SiteEnum = {})), Config = function() {
         function Config() {}
         return Object.defineProperty(Config, "env", {
