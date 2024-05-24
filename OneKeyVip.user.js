@@ -158,6 +158,7 @@
 // @connect        localhost
 // @connect        pan.baidu.com
 // @connect        api.bilibili.com
+// @connect        quark.cn
 // @compatible     firefox
 // @compatible     chrome
 // @compatible     opera safari edge
@@ -171,7 +172,7 @@
     "object" == typeof exports && "undefined" != typeof module ? factory(require("react-dom"), require("sweetalert2"), require("@douyinfe/semi-ui"), require("viewerjs")) : "function" == typeof define && define.amd ? define([ "react-dom", "sweetalert2", "@douyinfe/semi-ui", "viewerjs" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).ReactDOM, global.Swal, global.SemiUI, global.Viewer);
 })(this, (function(ReactDOM, Swal, semiUi, Viewer) {
     "use strict";
-    var ReactDOM__default, Swal__default, Viewer__default, extendStatics, update_key, Min, Hour, Day, Week, BrowerType, Logger, LogLevel, VersionResult, Core, VersionCompar, Config, AjaxOption, Http, HttpHeaders, Route, css_248z$a, Common, PluginBase, SiteEnum, UpdateService, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$9, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$8, sAlert, commonjsGlobal, fingerprint2, GwdService, GwdHelper, css_248z$7, TaoBaoService, container, Container, css_248z$6, ConfigEnum, Toast, BiliImgService, Menu$2, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$5, CsdnAdService, Alert, Menu$1, WenKuService, LinkJumpService, css_248z$4, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$3, css_248z$2, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, NetDiskDirectService, AdClearService, css_248z$1, ImgViewService, css_248z, ZhihuService, Menu, XhsService, OneKeyVipInjection;
+    var ReactDOM__default, Swal__default, Viewer__default, extendStatics, update_key, Min, Hour, Day, Week, BrowerType, Logger, LogLevel, VersionResult, Core, VersionCompar, Config, AjaxOption, Http, HttpHeaders, Route, css_248z$a, Common, PluginBase, SiteEnum, UpdateService, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$9, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$8, sAlert, commonjsGlobal, fingerprint2, GwdService, GwdHelper, css_248z$7, TaoBaoService, container, Container, css_248z$6, ConfigEnum, Toast, BiliImgService, Menu$2, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$5, CsdnAdService, Alert, Menu$1, WenKuService, LinkJumpService, css_248z$4, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$3, css_248z$2, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, Quark, NetDiskDirectService, AdClearService, css_248z$1, ImgViewService, css_248z, ZhihuService, Menu, XhsService, OneKeyVipInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
@@ -663,8 +664,9 @@
         return Http.ajax = function(option) {
             var _a, _b, _c, head;
             option.headers.set("User-Agent", null !== (_a = unsafeWindow.navigator.userAgent) && void 0 !== _a ? _a : "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36"), 
-            option.headers.set("Accept", "application/atom+xml,application/xml,text/xml"), head = new HttpHeaders, 
-            option.url.indexOf("wandhi") > 0 && (head.version = Config.env.script.version, head.auth = null !== (_b = Config.env.script.author) && void 0 !== _b ? _b : "", 
+            0 == option.headers.has("Accept") && option.headers.set("Accept", "application/atom+xml,application/xml,text/xml"), 
+            head = new HttpHeaders, option.url.indexOf("wandhi") > 0 && (head.version = Config.env.script.version, 
+            head.auth = null !== (_b = Config.env.script.author) && void 0 !== _b ? _b : "", 
             head.namespace = null !== (_c = Config.env.script.namespace) && void 0 !== _c ? _c : ""), 
             option.headers.forEach((function(v, k) {
                 head[k] = v;
@@ -4287,7 +4289,60 @@
                 new MfbMenu(Config.get(ConfigEnum.Search_OptMenuPos, "cl"), Config.get(ConfigEnum.Search_OptMenuMethod, "hover")).Init(menus);
             }
         }, SearchService.keySelector = "#none", SearchService;
-    }(PluginBase), QuarkFileResponse = function QuarkFileResponse() {}, NetDiskDirectService = function(_super) {
+    }(PluginBase), QuarkFileResponse = function QuarkFileResponse() {}, Quark = function() {
+        function Quark() {}
+        return Quark.init = function() {
+            "false" == Config.get(Quark.signKey, "false") && this.sign();
+        }, Quark.notification = function(msg) {
+            semiUi.Notification.success({
+                title: "\u7b7e\u5230\u901a\u77e5",
+                content: msg,
+                duration: 3,
+                theme: "light",
+                position: "bottomRight"
+            });
+        }, Quark.sign = function() {
+            return __awaiter(this, void 0, void 0, (function() {
+                var growth_info, sign_return, message;
+                return __generator(this, (function(_a) {
+                    switch (_a.label) {
+                      case 0:
+                        return [ 4, Quark.getCurrentInfo() ];
+
+                      case 1:
+                        return (growth_info = _a.sent()) ? growth_info.data.cap_sign.sign_daily ? (message = "\ud83d\udcc5 \u6267\u884c\u7b7e\u5230: \u4eca\u65e5\u5df2\u7b7e\u5230+" + growth_info.data.cap_sign.sign_daily_reward / 1024 / 1024 + "MB\uff0c\u8fde\u7b7e\u8fdb\u5ea6(" + growth_info.data.cap_sign.sign_progress + "/" + growth_info.data.cap_sign.sign_target + ")\u2705", 
+                        this.notification(message), [ 3, 4 ]) : [ 3, 2 ] : [ 3, 4 ];
+
+                      case 2:
+                        return [ 4, this.getSignInfo() ];
+
+                      case 3:
+                        (null == (sign_return = _a.sent()) ? void 0 : sign_return.data) && (message = "\ud83d\udcc5 \u6267\u884c\u7b7e\u5230: \u4eca\u65e5\u7b7e\u5230+" + sign_return.data.sign_daily_reward / 1024 / 1024 + "MB\uff0c\u8fde\u7b7e\u8fdb\u5ea6(" + (growth_info.cap_sign.sign_progress + 1) + "/" + growth_info.cap_sign.sign_target + ")\u2705", 
+                        this.notification(message)), _a.label = 4;
+
+                      case 4:
+                        return Config.set(Quark.signKey, "true", 86400), [ 2 ];
+                    }
+                }));
+            }));
+        }, Quark.getSignInfo = function() {
+            return __awaiter(this, void 0, void 0, (function() {
+                var p;
+                return __generator(this, (function(_a) {
+                    return (p = new Map).set("sign_cyclic", "true"), [ 2, Http.post(Quark.signUrl + "?pr=ucpro&fr=pc&uc_param_str", p) ];
+                }));
+            }));
+        }, Quark.getCurrentInfo = function() {
+            return __awaiter(this, void 0, void 0, (function() {
+                return __generator(this, (function(_a) {
+                    return [ 2, Http.get(Quark.infoUrl + "?pr=ucpro&fr=pc&uc_param_str", new Map, new Map([ [ "Accept", "application/json" ] ])) ];
+                }));
+            }));
+        }, Quark.infoUrl = "https://drive-m.quark.cn/1/clouddrive/capacity/growth/info", 
+        Quark.signUrl = "https://drive-m.quark.cn/1/clouddrive/capacity/growth/sign", Quark.accUrl = "", 
+        Quark.saveUrl = "", Quark.signKey = "QuarkSignKey" + (new Date).toLocaleDateString().replace(/-/g, ""), 
+        Quark;
+    }(), NetDiskDirectService = function(_super) {
         function NetDiskDirectService() {
             var _this = _super.call(this) || this;
             return _this.rules = new Map([ [ SiteEnum.KuaKeHome, /pan\.quark\.cn\/list/ ], [ SiteEnum.KuaKeShare, /pan\.quark\.cn\/s/ ], [ SiteEnum.BaiduPanMain, /pan\.baidu\.com\/disk\/main/i ] ]), 
@@ -4319,7 +4374,8 @@
                         }
                     }));
                 }));
-            })), NetDiskDirectService.initButton(), NetDiskDirectService.quarkEvent(), NetDiskDirectService.commonEvent();
+            })), NetDiskDirectService.initButton(), NetDiskDirectService.quarkEvent(), NetDiskDirectService.commonEvent(), 
+            Quark.init();
         }, NetDiskDirectService.baiduSelectedList = function() {
             try {
                 return require("system-core:context/context.js").instanceForSystem.list.getSelected();

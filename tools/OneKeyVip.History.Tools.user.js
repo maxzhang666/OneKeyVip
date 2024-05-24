@@ -623,8 +623,9 @@
         return Http.ajax = function(option) {
             var _a, _b, _c, head;
             option.headers.set("User-Agent", null !== (_a = unsafeWindow.navigator.userAgent) && void 0 !== _a ? _a : "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36"), 
-            option.headers.set("Accept", "application/atom+xml,application/xml,text/xml"), head = new HttpHeaders, 
-            option.url.indexOf("wandhi") > 0 && (head.version = Config.env.script.version, head.auth = null !== (_b = Config.env.script.author) && void 0 !== _b ? _b : "", 
+            0 == option.headers.has("Accept") && option.headers.set("Accept", "application/atom+xml,application/xml,text/xml"), 
+            head = new HttpHeaders, option.url.indexOf("wandhi") > 0 && (head.version = Config.env.script.version, 
+            head.auth = null !== (_b = Config.env.script.author) && void 0 !== _b ? _b : "", 
             head.namespace = null !== (_c = Config.env.script.namespace) && void 0 !== _c ? _c : ""), 
             option.headers.forEach((function(v, k) {
                 head[k] = v;
