@@ -158,7 +158,6 @@
 // @connect        localhost
 // @connect        pan.baidu.com
 // @connect        api.bilibili.com
-// @connect        quark.cn
 // @compatible     firefox
 // @compatible     chrome
 // @compatible     opera safari edge
