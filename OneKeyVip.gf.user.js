@@ -2108,7 +2108,7 @@
         function SearchService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
             return _this.rules = new Map([ [ SiteEnum.Baidu, /www\.baidu\.com\/(baidu|s)\?/i ], [ SiteEnum.Google, /www\.google\.com\/search\?/i ], [ SiteEnum.SoGou, /www\.sogou\.com\/web/i ], [ SiteEnum.SoGou, /www\.so\.com\/s\?/i ], [ SiteEnum.BingCn, /cn\.bing\.com\/search/i ] ]), 
-            _this._appName = "\u4fbf\u6377\u641c\u7d22", _this._unique = !1, _this.siteConfig = new Map([ [ SiteEnum.Baidu, "#kw" ], [ SiteEnum.Google, "input[name=q]" ], [ SiteEnum.SoGou, "#upquery" ], [ SiteEnum.BingCn, "#q" ] ]), 
+            _this._appName = "\u4fbf\u6377\u641c\u7d22", _this._unique = !1, _this.siteConfig = new Map([ [ SiteEnum.Baidu, "#kw" ], [ SiteEnum.Google, "input[name=q]" ], [ SiteEnum.SoGou, "#upquery" ], [ SiteEnum.BingCn, "#sb_form_q" ] ]), 
             _this;
         }
         return __extends(SearchService, _super), SearchService.prototype.loader = function() {
