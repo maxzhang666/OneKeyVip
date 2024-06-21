@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           【玩的嗨】VIP工具箱,拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手 长期更新，放心使用
 // @namespace      https://www.wandhi.com/
-// @version        1.4
+// @version        1.5
 // @homepage       https://wiki.wandhi.com
 // @support        https:://wiki.wandhi.com
 // @description    拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手
@@ -2361,10 +2361,11 @@
                     var slContainer, msg = "";
                     Logger.debug(data), "price_status" in data ? ($(".vip-plugin-outside-chart-container").html('<div id="vip-plugin-outside-chart-container-line"></div>'), 
                     that.echartsObj = echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), _this.theme()), 
-                    that.echartsObj.setOption(that.getChartOptionGwd(data)), that.chartMsg(msg)) : ("is_ban" in data && 1 == data.is_ban && 1 != Config.get("gwd_verify_close") && (sAlert.confirm("\u54ce\u54df\u4e0d\u9519\u54e6", "\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u5f02\u5e38,\u662f\u5426\u6253\u5f00\u9a8c\u8bc1\u9875\u9762\u8fdb\u884c\u9a8c\u8bc1?", "\u9a8c\u8bc1\u8d70\u8d77", "\u8001\u5b50\u4e0d\u770b", "info", "\u5c4f\u853d\u4e00\u5929").then((function(res) {
-                        res.isConfirmed ? Core.open("https://browser.gwdang.com/slider/verify.html?fromUrl=" + encodeURIComponent(Core.url)) : res.isDenied && Config.set("gwd_verify_close", 1, 86400), 
+                    that.echartsObj.setOption(that.getChartOptionGwd(data)), that.chartMsg(msg)) : ("is_ban" in data && 1 == data.is_ban && (1 != Config.get("gwd_verify_close") ? (sAlert.confirm("\u54ce\u54df\u4e0d\u9519\u54e6", "\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u5f02\u5e38,\u662f\u5426\u6253\u5f00\u9a8c\u8bc1\u9875\u9762\u8fdb\u884c\u9a8c\u8bc1?", "\u9a8c\u8bc1\u8d70\u8d77", "\u8001\u5b50\u4e0d\u770b", "info", "\u5c4f\u853d\u4e00\u5929").then((function(res) {
+                        res.isConfirmed ? Core.open("https://browser.gwdang.com/slider/verify.html?fromUrl=" + encodeURIComponent(Core.url)) : res.isDenied && (Config.set("gwd_verify_close", 1, 86400), 
+                        that.chartMsg("\u7528\u6237\u8868\u793a\u4e0d\u60f3\u770b\u5e76\u62d2\u7edd\u9a8c\u8bc1")), 
                         sAlert.close(res);
-                    })), slContainer = ".swal2-container", "99999999999" != $(slContainer).css("z-index") && $(slContainer).css("z-index", "99999999999")), 
+                    })), slContainer = ".swal2-container", "99999999999" != $(slContainer).css("z-index") && $(slContainer).css("z-index", "99999999999")) : that.chartMsg("\u7528\u6237\u5c4f\u853d\u4e86\u9a8c\u8bc1\u8868\u793a\u4e0d\u60f3\u770b")), 
                     that.historyService.Process());
                 }));
             }));
