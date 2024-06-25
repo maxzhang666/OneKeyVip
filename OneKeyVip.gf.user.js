@@ -2173,7 +2173,7 @@
             NetDiskDirectService.initButton(), NetDiskDirectService.baiduEvent(), NetDiskDirectService.commonEvent()) : this.site == SiteEnum.KuaKeShare && (NetDiskDirectService.btnSelecotr = ".file-info-share-buttom", 
             NetDiskDirectService.btn = NetDiskDirectService.quarkBtn, NetDiskDirectService.initButton(), 
             $(document).on("click", ".okv-btn-direct", (function(e) {
-                Toast.warning("\u8bf7\u4fdd\u5b58\u5230\u81ea\u5df1\u7f51\u76d8\u5185\u83b7\u53d6\u76f4\u94fe");
+                Toast.warning("\u8bf7\u5148\u4fdd\u5b58\u5230\u81ea\u5df1\u7f51\u76d8\uff0c\u7136\u540e\u4ece\u201c\u6211\u7684\u7f51\u76d8\u201d\u754c\u9762\u83b7\u53d6\u76f4\u94fe");
             })));
         }, NetDiskDirectService.quarkListener = function() {
             var _this = this;
@@ -2191,7 +2191,7 @@
                     }));
                 }));
             })), NetDiskDirectService.initButton(), NetDiskDirectService.quarkEvent(), NetDiskDirectService.commonEvent(), 
-            Quark.init();
+            Quark.init(), Logger.info("\u5938\u514b\u521d\u59cb\u5316\u5b8c\u6bd5");
         }, NetDiskDirectService.baiduSelectedList = function() {
             try {
                 return require("system-core:context/context.js").instanceForSystem.list.getSelected();
