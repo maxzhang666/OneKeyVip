@@ -847,8 +847,8 @@
 
                       case 1:
                         return html = _c.sent(), (data = new Map).set("grant_permissions_arr", "netdisk"), 
-                        data.set("bdstoken", null === (_a = html.match(/name="bdstoken"\s+value="([^"]+)"/)) || void 0 === _a ? void 0 : _a[1]), 
-                        data.set("client_id", null === (_b = html.match(/name="client_id"\s+value="([^"]+)"/)) || void 0 === _b ? void 0 : _b[1]), 
+                        data.set("bdstoken", null === (_a = null == html ? void 0 : html.match(/name="bdstoken"\s+value="([^"]+)"/)) || void 0 === _a ? void 0 : _a[1]), 
+                        data.set("client_id", null === (_b = null == html ? void 0 : html.match(/name="client_id"\s+value="([^"]+)"/)) || void 0 === _b ? void 0 : _b[1]), 
                         data.set("response_type", "token"), data.set("display", "page"), data.set("grant_permissions", "basic,netdisk"), 
                         [ 2, Http.ajaxNew(url, "POST", data, new Map, "multipart/form-data") ];
                     }
