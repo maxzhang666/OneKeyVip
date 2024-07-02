@@ -1220,8 +1220,8 @@
             this.init();
         }, BiliImgService.prototype.init = function() {
             Core.autoLazyload((function() {
-                var _a, _b;
-                return ((null === (_a = $(".reply-box-textarea")) || void 0 === _a ? void 0 : _a.length) > 0 || (null === (_b = $(".comment-submit")) || void 0 === _b ? void 0 : _b.length) > 0) && ($("#viewbox_report").append('<div class="video-info-detail-list okv-tools-bili"></div>'), 
+                var _a, _b, _c, _d;
+                return ((null === (_a = $(".reply-box-textarea")) || void 0 === _a ? void 0 : _a.length) > 0 || (null === (_b = $(".comment-submit")) || void 0 === _b ? void 0 : _b.length) > 0 || (null === (_c = $(".comment-container")) || void 0 === _c ? void 0 : _c.length) > 0 || (null === (_d = $("bili-comments")) || void 0 === _d ? void 0 : _d.length) > 0) && ($("#viewbox_report").append('<div class="video-info-detail-list okv-tools-bili"></div>'), 
                 !0);
             }), (function() {
                 Config.get(ConfigEnum.BiliPc_Cover, !0) && BiliImgService.add_img_btn(), Config.get(ConfigEnum.BiliPc_Video_Download, !0) && BiliImgService.add_down_btn(), 
@@ -1584,7 +1584,8 @@
             _this._unique = !1, _this.menu = new Common.Menu, _this._appName = "WenKu", _this;
         }
         return __extends(WenKuService, _super), WenKuService.prototype.loader = function() {
-            "undefined" == typeof $ && Core.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js");
+            "undefined" == typeof $ && Core.appendJs("//lib.baomitu.com/jquery/1.12.4/jquery.min.js"), 
+            Core.appendCss("https://registry.npmmirror.com/@douyinfe/semi-ui/2.51.0/files/dist/css/semi.min.css");
         }, WenKuService.prototype.run = function() {
             this.menu.Init([ {
                 title: "\u672c\u6b21\u5173\u95ed",
@@ -1595,13 +1596,13 @@
                 show: "\u5bfc\u51fa<br>\u6587\u6863",
                 type: "process"
             }, {
+                title: "\u89e3\u9501\u590d\u5236",
+                show: "\u89e3\u9501<br>\u590d\u5236",
+                type: "jd"
+            }, {
                 title: "\u7edd\u4e16\u597d\u5238",
                 show: "\u7edd\u4e16<br>\u597d\u5238",
                 type: "tb"
-            }, {
-                title: "\u4eac\u4e1c\u597d\u5238",
-                show: "\u4eac\u4e1c<br>\u597d\u5238",
-                type: "jd"
             } ], this._onClick);
         }, WenKuService.prototype._onClick = function() {
             return __awaiter(this, void 0, void 0, (function() {
@@ -1642,7 +1643,10 @@
                     })), $("body").on("click", "[data-cat=tb]", (function() {
                         Core.open("http://shop.huizhek.com");
                     })), $("body").on("click", "[data-cat=jd]", (function() {
-                        Core.open("http://shop.huizhek.com");
+                        var _a, _b, _c;
+                        null === (_a = unsafeWindow.document.querySelector(".header-wrapper")) || void 0 === _a || (_a.__vue__.$store.state.vipInfo.isVip = !0), 
+                        Logger.debug(null === (_b = unsafeWindow.document.querySelector(".header-wrapper")) || void 0 === _b ? void 0 : _b.__vue__.$store.state.vipInfo.isVip), 
+                        (null === (_c = unsafeWindow.document.querySelector(".header-wrapper")) || void 0 === _c ? void 0 : _c.__vue__.$store.state.vipInfo.isVip) && Toast.success("\u89e3\u9501\u6210\u529f,\u5feb\u53bb\u590d\u5236\u5427~");
                     })), [ 2 ];
                 }));
             }));
@@ -1691,8 +1695,9 @@
             _this.key = "", _this.selector = "", _this._unique = !1, _this._appName = "LinkJump", 
             _this.semiui = !0, _this;
         }
-        return __extends(LinkJumpService, _super), LinkJumpService.prototype.loader = function() {}, 
-        LinkJumpService.prototype.run = function() {
+        return __extends(LinkJumpService, _super), LinkJumpService.prototype.loader = function() {
+            Core.appendCss("https://registry.npmmirror.com/@douyinfe/semi-ui/2.51.0/files/dist/css/semi.min.css");
+        }, LinkJumpService.prototype.run = function() {
             var url, keys, item, config = "AutoJump_" + this.site.toString();
             switch (this.site) {
               case SiteEnum.CSDN:
