@@ -1118,7 +1118,8 @@
         ConfigEnum.CSDN_OpImgLink = "csdn_op_img_link", ConfigEnum.CSDN_OpAdClean = "csdn_op_ad_clean", 
         ConfigEnum.CSDN_OpArticleClean = "csdn_op_article_clean", ConfigEnum.CSDN_OpCommentClean = "csdn_op_comment_clean", 
         ConfigEnum.CSDN_OpClipboardClean = "csdn_op_clipboard_clean", ConfigEnum.Search_Helper_Switch = "search_helper_switch", 
-        ConfigEnum.Search_OptMenuMethod = "search_opt_menu_method", ConfigEnum.Search_OptMenuPos = "search_opt_menu_pos";
+        ConfigEnum.Search_OptMenuMethod = "search_opt_menu_method", ConfigEnum.Search_OptMenuPos = "search_opt_menu_pos", 
+        ConfigEnum.Search_Helper_Postion = "search_helper_postion";
     }(ConfigEnum || (ConfigEnum = {})), Toast = function() {
         function Toast() {}
         return Toast.success = function(str, time, position) {
@@ -2107,7 +2108,7 @@
                 })), new MfbModel("Bing", "onekeyvip-biying", (function() {
                     Core.open("https://cn.bing.com/search?q=" + $(SearchService.keySelector).val());
                 })) ];
-                new MfbMenu(Config.get(ConfigEnum.Search_OptMenuPos, "cl"), Config.get(ConfigEnum.Search_OptMenuMethod, "hover")).Init(menus);
+                new MfbMenu(Config.get(ConfigEnum.Search_OptMenuPos, Config.get(ConfigEnum.Search_Helper_Postion, "cl")), Config.get(ConfigEnum.Search_OptMenuMethod, "hover")).Init(menus);
             }
         }, SearchService.keySelector = "#none", SearchService;
     }(PluginBase), QuarkFileResponse = function QuarkFileResponse() {}, Quark = function() {
@@ -2426,19 +2427,24 @@
     }(PluginBase), SettingUI = function(_super) {
         function SettingUI(p) {
             var _this = _super.call(this, p) || this;
-            return _this.handOk = function(e) {
+            return _this.configKeys = [ "search_helper_switch", "search_helper_postion" ], _this.handOk = function(e) {
+                var key, obj = _this.fromApi.getValues();
+                for (key in obj) Config.set(key, obj[key]);
                 _this.setState({
                     visible: !1
-                });
+                }), Toast.success("\u4fdd\u5b58\u6210\u529f");
             }, _this.handCancel = function(e) {
                 _this.setState({
                     visible: !1
                 });
             }, _this.state = {
-                visible: !0
+                visible: !0,
+                search_helper_switch: Config.get("search_helper_switch", !0),
+                search_helper_postion: Config.get("search_helper_postion", "cl")
             }, _this.handCancel = _this.handCancel.bind(_this), _this;
         }
         return __extends(SettingUI, _super), SettingUI.prototype.render = function() {
+            var _this = this;
             return React__default.default.createElement(React__default.default.Fragment, null, React__default.default.createElement(semiUi.Modal, {
                 title: "\u63d2\u4ef6\u8bbe\u7f6e",
                 visible: this.state.visible,
@@ -2448,13 +2454,39 @@
                 tabPosition: "left",
                 type: "line"
             }, React__default.default.createElement(semiUi.TabPane, {
-                tab: React__default.default.createElement("span", null, "\u63a7\u5236\u9762\u677f"),
+                tab: React__default.default.createElement("span", null, "\u641c\u7d22\u52a9\u624b"),
                 itemKey: "1"
             }, React__default.default.createElement("div", {
+                className: "grid"
+            }, React__default.default.createElement(semiUi.Form, {
                 style: {
                     padding: "0 24px"
-                }
-            }, React__default.default.createElement("h3", null, "\u65bd\u5de5\u4e2d...."))))));
+                },
+                initValues: this.state,
+                getFormApi: function(api) {
+                    return _this.fromApi = api;
+                },
+                render: function(_a) {
+                    return _a.formState, _a.formApi, _a.values, React__default.default.createElement(React__default.default.Fragment, null, React__default.default.createElement(semiUi.Form.Switch, {
+                        field: "search_helper_switch",
+                        label: "\u641c\u7d22\u52a9\u624b"
+                    }), React__default.default.createElement(semiUi.Form.Select, {
+                        field: "search_helper_postion",
+                        label: "\u83dc\u5355\u4f4d\u7f6e",
+                        style: {
+                            width: "100%"
+                        }
+                    }, React__default.default.createElement(semiUi.Form.Select.Option, {
+                        value: "tl"
+                    }, "\u5de6\u4e0a"), React__default.default.createElement(semiUi.Form.Select.Option, {
+                        value: "cl"
+                    }, "\u5de6\u4e2d"), React__default.default.createElement(semiUi.Form.Select.Option, {
+                        value: "bl"
+                    }, "\u5de6\u4e0b")));
+                },
+                layout: "vertical",
+                onValueChange: function(values) {}
+            }))))));
         }, SettingUI;
     }(React__default.default.Component), SettingUIService = function(_super) {
         function SettingUIService() {

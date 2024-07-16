@@ -168,10 +168,10 @@
 // ==/UserScript==
 
 (function(global, factory) {
-    "object" == typeof exports && "undefined" != typeof module ? factory(require("react-dom"), require("sweetalert2"), require("@douyinfe/semi-ui"), require("viewerjs")) : "function" == typeof define && define.amd ? define([ "react-dom", "sweetalert2", "@douyinfe/semi-ui", "viewerjs" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).ReactDOM, global.Swal, global.SemiUI, global.Viewer);
-})(this, (function(ReactDOM, Swal, semiUi, Viewer) {
+    "object" == typeof exports && "undefined" != typeof module ? factory(require("react-dom"), require("sweetalert2"), require("@douyinfe/semi-ui"), require("viewerjs"), require("react")) : "function" == typeof define && define.amd ? define([ "react-dom", "sweetalert2", "@douyinfe/semi-ui", "viewerjs", "react" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).ReactDOM, global.Swal, global.SemiUI, global.Viewer, global.React);
+})(this, (function(ReactDOM, Swal, semiUi, Viewer, React) {
     "use strict";
-    var ReactDOM__default, Swal__default, Viewer__default, extendStatics, update_key, Min, Hour, Day, Week, BrowerType, Logger, LogLevel, VersionResult, Core, VersionCompar, Config, AjaxOption, Http, HttpHeaders, Route, css_248z$a, Common, PluginBase, SiteEnum, UpdateService, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$9, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$8, sAlert, commonjsGlobal, fingerprint2, GwdService, GwdHelper, css_248z$7, TaoBaoService, container, Container, css_248z$6, ConfigEnum, Toast, BiliImgService, Menu$2, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$5, CsdnAdService, Alert, Menu$1, WenKuService, LinkJumpService, css_248z$4, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$3, css_248z$2, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, Quark, NetDiskDirectService, AdClearService, css_248z$1, ImgViewService, css_248z, ZhihuService, Menu, XhsService, OneKeyVipInjection;
+    var ReactDOM__default, Swal__default, Viewer__default, React__default, extendStatics, update_key, Min, Hour, Day, Week, BrowerType, Logger, LogLevel, VersionResult, Core, VersionCompar, Config, AjaxOption, Http, HttpHeaders, Route, css_248z$a, Common, PluginBase, SiteEnum, UpdateService, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$9, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$8, sAlert, commonjsGlobal, fingerprint2, GwdService, GwdHelper, css_248z$7, TaoBaoService, container, Container, css_248z$6, ConfigEnum, Toast, BiliImgService, Menu$2, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$5, CsdnAdService, Alert, Menu$1, WenKuService, LinkJumpService, css_248z$4, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$3, css_248z$2, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, Quark, NetDiskDirectService, AdClearService, css_248z$1, ImgViewService, css_248z, ZhihuService, Menu, XhsService, SettingUI, SettingUIService, OneKeyVipInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
@@ -324,7 +324,8 @@
         }, module.exports), module.exports;
     }
     ReactDOM__default = _interopDefaultLegacy(ReactDOM), Swal__default = _interopDefaultLegacy(Swal), 
-    Viewer__default = _interopDefaultLegacy(Viewer), extendStatics = function(d, b) {
+    Viewer__default = _interopDefaultLegacy(Viewer), React__default = _interopDefaultLegacy(React), 
+    extendStatics = function(d, b) {
         return (extendStatics = Object.setPrototypeOf || {
             __proto__: []
         } instanceof Array && function(d, b) {
@@ -3079,7 +3080,8 @@
         ConfigEnum.CSDN_OpImgLink = "csdn_op_img_link", ConfigEnum.CSDN_OpAdClean = "csdn_op_ad_clean", 
         ConfigEnum.CSDN_OpArticleClean = "csdn_op_article_clean", ConfigEnum.CSDN_OpCommentClean = "csdn_op_comment_clean", 
         ConfigEnum.CSDN_OpClipboardClean = "csdn_op_clipboard_clean", ConfigEnum.Search_Helper_Switch = "search_helper_switch", 
-        ConfigEnum.Search_OptMenuMethod = "search_opt_menu_method", ConfigEnum.Search_OptMenuPos = "search_opt_menu_pos";
+        ConfigEnum.Search_OptMenuMethod = "search_opt_menu_method", ConfigEnum.Search_OptMenuPos = "search_opt_menu_pos", 
+        ConfigEnum.Search_Helper_Postion = "search_helper_postion";
     }(ConfigEnum || (ConfigEnum = {})), Toast = function() {
         function Toast() {}
         return Toast.success = function(str, time, position) {
@@ -4314,7 +4316,7 @@
                 })), new MfbModel("Bing", "onekeyvip-biying", (function() {
                     Core.open("https://cn.bing.com/search?q=" + $(SearchService.keySelector).val());
                 })) ];
-                new MfbMenu(Config.get(ConfigEnum.Search_OptMenuPos, "cl"), Config.get(ConfigEnum.Search_OptMenuMethod, "hover")).Init(menus);
+                new MfbMenu(Config.get(ConfigEnum.Search_OptMenuPos, Config.get(ConfigEnum.Search_Helper_Postion, "cl")), Config.get(ConfigEnum.Search_OptMenuMethod, "hover")).Init(menus);
             }
         }, SearchService.keySelector = "#none", SearchService;
     }(PluginBase), QuarkFileResponse = function QuarkFileResponse() {}, Quark = function() {
@@ -4692,9 +4694,88 @@
                 }
             } else Toast.warning("\u8bf7\u5148\u767b\u5f55\u5c0f\u7ea2\u4e66"); else Toast.warning("\u8bf7\u5148\u9009\u62e9\u4e00\u7bc7\u5185\u5bb9");
         }, XhsService;
+    }(PluginBase), SettingUI = function(_super) {
+        function SettingUI(p) {
+            var _this = _super.call(this, p) || this;
+            return _this.configKeys = [ "search_helper_switch", "search_helper_postion" ], _this.handOk = function(e) {
+                var key, obj = _this.fromApi.getValues();
+                for (key in obj) Config.set(key, obj[key]);
+                _this.setState({
+                    visible: !1
+                }), Toast.success("\u4fdd\u5b58\u6210\u529f");
+            }, _this.handCancel = function(e) {
+                _this.setState({
+                    visible: !1
+                });
+            }, _this.state = {
+                visible: !0,
+                search_helper_switch: Config.get("search_helper_switch", !0),
+                search_helper_postion: Config.get("search_helper_postion", "cl")
+            }, _this.handCancel = _this.handCancel.bind(_this), _this;
+        }
+        return __extends(SettingUI, _super), SettingUI.prototype.render = function() {
+            var _this = this;
+            return React__default.default.createElement(React__default.default.Fragment, null, React__default.default.createElement(semiUi.Modal, {
+                title: "\u63d2\u4ef6\u8bbe\u7f6e",
+                visible: this.state.visible,
+                onOk: this.handOk,
+                onCancel: this.handCancel
+            }, React__default.default.createElement(semiUi.Tabs, {
+                tabPosition: "left",
+                type: "line"
+            }, React__default.default.createElement(semiUi.TabPane, {
+                tab: React__default.default.createElement("span", null, "\u641c\u7d22\u52a9\u624b"),
+                itemKey: "1"
+            }, React__default.default.createElement("div", {
+                className: "grid"
+            }, React__default.default.createElement(semiUi.Form, {
+                style: {
+                    padding: "0 24px"
+                },
+                initValues: this.state,
+                getFormApi: function(api) {
+                    return _this.fromApi = api;
+                },
+                render: function(_a) {
+                    return _a.formState, _a.formApi, _a.values, React__default.default.createElement(React__default.default.Fragment, null, React__default.default.createElement(semiUi.Form.Switch, {
+                        field: "search_helper_switch",
+                        label: "\u641c\u7d22\u52a9\u624b"
+                    }), React__default.default.createElement(semiUi.Form.Select, {
+                        field: "search_helper_postion",
+                        label: "\u83dc\u5355\u4f4d\u7f6e",
+                        style: {
+                            width: "100%"
+                        }
+                    }, React__default.default.createElement(semiUi.Form.Select.Option, {
+                        value: "tl"
+                    }, "\u5de6\u4e0a"), React__default.default.createElement(semiUi.Form.Select.Option, {
+                        value: "cl"
+                    }, "\u5de6\u4e2d"), React__default.default.createElement(semiUi.Form.Select.Option, {
+                        value: "bl"
+                    }, "\u5de6\u4e0b")));
+                },
+                layout: "vertical",
+                onValueChange: function(values) {}
+            }))))));
+        }, SettingUI;
+    }(React__default.default.Component), SettingUIService = function(_super) {
+        function SettingUIService() {
+            var _this = null !== _super && _super.apply(this, arguments) || this;
+            return _this.rules = new Map([ [ SiteEnum.All, /.*?/i ] ]), _this._unique = !1, 
+            _this.semiui = !0, _this._appName = "SettingUI", _this;
+        }
+        return __extends(SettingUIService, _super), SettingUIService.prototype.loader = function() {}, 
+        SettingUIService.prototype.run = function() {
+            var _this = this;
+            GM_registerMenuCommand("\u63d2\u4ef6\u8bbe\u7f6e", (function() {
+                return Core.Render(React__default.default.createElement(SettingUI, {
+                    key: (new Date).getTime()
+                }), _this._appName);
+            }));
+        }, SettingUIService;
     }(PluginBase), OneKeyVipInjection = function() {
         function OneKeyVipInjection() {
-            this.plugins = new Array, this.plugins = [ Container.Require(AdClearService), Container.Require(ControlMenuService), Container.Require(ImgViewService), Container.Require(SettingService), Container.Require(AutoExpandService), Container.Require(AliyunPanToken), Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(BiliMobileService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(XhsService), Container.Require(GwdService), Container.Require(CsdnAdService), Container.Require(WenKuService), Container.Require(LinkJumpService), Container.Require(YoutubeService), Container.Require(_GwdService), Container.Require(SearchService), Container.Require(NetDiskDirectService), Container.Require(ZhihuService) ], 
+            this.plugins = new Array, this.plugins = [ Container.Require(AdClearService), Container.Require(ControlMenuService), Container.Require(ImgViewService), Container.Require(SettingService), Container.Require(SettingUIService), Container.Require(AutoExpandService), Container.Require(AliyunPanToken), Container.Require(UpdateService), Container.Require(BiliImgService), Container.Require(BiliMobileService), Container.Require(MovieService), Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(MusicService), Container.Require(XhsService), Container.Require(GwdService), Container.Require(CsdnAdService), Container.Require(WenKuService), Container.Require(LinkJumpService), Container.Require(YoutubeService), Container.Require(_GwdService), Container.Require(SearchService), Container.Require(NetDiskDirectService), Container.Require(ZhihuService) ], 
             Logger.info("container loaded");
         }
         return OneKeyVipInjection.prototype.Init = function() {
