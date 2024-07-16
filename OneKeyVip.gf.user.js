@@ -3,7 +3,7 @@
 // @namespace     https://www.wandhi.com/
 // @description   🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、CSDN页面、剪切板清理；🎉 7、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 8、YouTube视频下载🎉 9、中间页自动跳转；🎉 10、搜索引擎快速跳转
 // @license       MIT
-// @version       4.9.22
+// @version       4.9.23
 // @author        MaxZhang
 // @include       *://settings.wandhi.com/*
 // @include       *://m.youku.com/v*
@@ -85,7 +85,6 @@
 // @include       *://mail.qq.com/cgi-bin/readtemplate*
 // @include       *://cloud.tencent.com/developer/tools/blog-entry*
 // @include       *://link.uisdc.com/*
-// @exclude       *://tv.wandhi.com/*
 // @exclude       *://vip.wandhi.com/*
 // @match         *://c.pc.qq.com/ios*
 // @match         *://www.v2ex.com/t/*
@@ -156,7 +155,7 @@
     "object" == typeof exports && "undefined" != typeof module ? factory(require("react-dom"), require("sweetalert2"), require("@douyinfe/semi-ui"), require("react")) : "function" == typeof define && define.amd ? define([ "react-dom", "sweetalert2", "@douyinfe/semi-ui", "react" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).ReactDOM, global.Swal, global.SemiUI, global.React);
 })(this, (function(ReactDOM, Swal, semiUi, React) {
     "use strict";
-    var ReactDOM__default, Swal__default, React__default, container, Container, Logger, LogLevel, extendStatics, BrowerType, VersionResult, Core, Min, Hour, Day, Week, css_248z$5, Common, PluginBase, SiteEnum, Config, AjaxOption, Http, HttpHeaders, Route, css_248z$4, sAlert, css_248z$3, Runtime, ConfigEnum, Toast, BiliImgService, Menu$2, MovieService, UrlHelper, MusicService, css_248z$2, CsdnAdService, Alert, Menu$1, WenKuService, LinkJumpService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$1, css_248z, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, Quark, NetDiskDirectService, AdClearService, Menu, XhsService, SettingUI, SettingUIService, OneKeyVipGfInjection;
+    var ReactDOM__default, Swal__default, React__default, container, Container, Logger, LogLevel, extendStatics, BrowerType, VersionResult, Core, Min, Hour, Day, Week, css_248z$5, Common, PluginBase, SiteEnum, Config, AjaxOption, Http, HttpHeaders, Route, css_248z$4, sAlert, css_248z$3, Runtime, ConfigEnum, Toast, BiliImgService, Menu$2, jks, MovieService, UrlHelper, MusicService, css_248z$2, CsdnAdService, Alert, Menu$1, WenKuService, LinkJumpService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$1, css_248z, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, Quark, NetDiskDirectService, AdClearService, Menu, XhsService, SettingUI, SettingUIService, OneKeyVipGfInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
@@ -1336,7 +1335,94 @@
         BiliImgService.downBtn = '<button id="downvideo" class="okv-btn okv-btn-primary okv-bg-pink bili-top-button">\u4e0b\u8f7d\u89c6\u9891</button>', 
         BiliImgService.tripleClickBtn = '<button class="okv-btn okv-btn-primary okv-bg-pink bili-top-button" id="tripleClick">\u4e00\u4e0b\u70b9\u4ee8(\u70b9\u8d5e\u3001\u6295\u5e01\u3001\u6536\u85cf)</button>', 
         BiliImgService.hookSelector = ".okv-tools-bili", BiliImgService;
-    }(PluginBase), Menu$2 = Common.Menu, MovieService = function(_super) {
+    }(PluginBase), Menu$2 = Common.Menu, jks = [ {
+        url: "https://www.ckplayer.vip/jiexi/?url=",
+        title: "\u63a5\u53e3:Ckplayer"
+    }, {
+        url: "https://yparse.ik9.cc/index.php?url=",
+        title: "\u63a5\u53e3:\u4e91\u6790"
+    }, {
+        url: "https://www.8090g.cn/?url=",
+        title: "\u63a5\u53e3:8090"
+    }, {
+        title: "ckplayer",
+        url: " https://www.ckplayer.vip/jiexi/?url="
+    }, {
+        title: "qqwtt",
+        url: "https://jx.qqwtt.com/?url="
+    }, {
+        title: "\u5256\u5143",
+        url: "https://www.pouyun.com/?url="
+    }, {
+        url: "https://jx.m3u8.tv/jiexi/?url=",
+        title: "\u2464\u53f7\u63a5\u53e3"
+    }, {
+        url: "https://z1.m1907.top/?jx=",
+        title: "\u73a9\u7684\u55e8\u2014\u201428-\u82e5\u63a5\u53e3\u5931\u6548\u53ef\u53cd\u9988\uff01QQ\u7fa4:340569308"
+    }, {
+        url: "https://www.8090.la/8090/?url=",
+        title: "\u5168\u80fdvip\u63a5\u53e3\u2461"
+    }, {
+        title: "\u76d8\u53e4",
+        url: "https://www.pangujiexi.com/jiexi/?url="
+    }, {
+        title: "eptept",
+        url: "https://dmjx.m3u8.tv/?url="
+    }, {
+        title: "BL",
+        url: "https://vip.bljiex.com/?v="
+    }, {
+        url: "https://www.mtosz.com/m3u8.php?url=",
+        title: "Mao\u89e3\u6790"
+    }, {
+        title: "play",
+        url: "https://www.playm3u8.cn/jiexi.php?url="
+    }, {
+        title: "\u591c\u5e55",
+        url: "https://www.yemu.xyz/?url="
+    }, {
+        title: "TV\u89e3\u6790[\u817e\u8baf (\u8292\u679c)]",
+        url: "https://jx.m3u8.tv/jiexi/?url="
+    }, {
+        title: "\u51b0\u8c46",
+        url: "https://api.qianqi.net/vip/?url="
+    }, {
+        title: "JY",
+        url: "https://jx.playerjy.com/?url="
+    }, {
+        title: "JY\u89e3\u6790",
+        url: "https://jx.we-vip.com/?url="
+    }, {
+        title: "\u2478\u53f7\u89e3\u6790\u63a5\u53e3",
+        url: "https://www.8090g.cn/jiexi/?url="
+    }, {
+        title: "\u7efc\u5408/B\u7ad9",
+        url: "https://jx.jsonplayer.com/player/?url="
+    }, {
+        title: "Player-JY",
+        url: "https://jx.playerjy.com/?url="
+    }, {
+        title: "\u867e\u7c731",
+        url: "https://jx.xmflv.com/?url="
+    }, {
+        title: "\u867e\u7c732",
+        url: "https://jx.xmflv.cc/?url="
+    }, {
+        title: "m1907",
+        url: "https://im1907.top/?jx="
+    }, {
+        title: "CK",
+        url: "https://jx.m3u8.tv/jiexi/?url="
+    }, {
+        title: "8090",
+        url: "https://www.8090g.cn/?url="
+    }, {
+        title: "qianqi",
+        url: "https://api.qianqi.net/vip/?url="
+    }, {
+        title: "\u6837\u56fe\u5185\u7f6e",
+        url: "https://jx.yangtu.top/?url="
+    } ], MovieService = function(_super) {
         function MovieService() {
             var _this = _super.call(this) || this;
             return _this.rules = new Map([ [ SiteEnum.HiTv, /tv\.wandhi\.com\/go\.html/i ], [ SiteEnum.YouKu, /youku\.com/i ], [ SiteEnum.IQiYi, /iqiyi|iq\.com/i ], [ SiteEnum.LeShi, /\.le\.com/i ], [ SiteEnum.Tencent_V, /v\.qq/i ], [ SiteEnum.TuDou, /tudou\.com/i ], [ SiteEnum.MangGuo, /mgtv\.com/i ], [ SiteEnum.SoHu, /sohu\.com/i ], [ SiteEnum.Acfun, /acfun\.com/i ], [ SiteEnum.BiliBili, /bilibili\.com/i ], [ SiteEnum.M1905, /1905\.com/i ], [ SiteEnum.PPTV, /pptv\.com/i ], [ SiteEnum.YinYueTai, /yinyuetai\.com/ ] ]), 
@@ -1348,6 +1434,7 @@
         }, MovieService.prototype.run = function() {
             switch (this.site) {
               case SiteEnum.HiTv:
+                Logger.debug("HiTv\u89e3\u6790\u9875\u9762\uff0c\u52a0\u8f7d\u81ea\u5b9a\u4e49\u63a5\u53e3"), 
                 this.cusInterFace(), this.lastPlay();
                 break;
 
@@ -1371,11 +1458,13 @@
                 } ], this._onClick), this.autoHide();
             }
         }, MovieService.prototype.cusInterFace = function() {
-            var h_1, _this = this, urls = Config.get(ConfigEnum.Jiexi_Cus_Interface);
-            urls && (h_1 = $("#jk").html(), urls.split("\n").forEach((function(e) {
+            var _this = this, urls = Config.get(ConfigEnum.Jiexi_Cus_Interface), h = "";
+            urls && (h = $("#jk").html(), urls.split("\n").forEach((function(e) {
                 var datas = e.split("||");
-                "https:" == unsafeWindow.location.protocol ? h_1 += '<option value="' + datas[0].replace("http:", "https:") + '" selected="">' + _this.jkPre + datas[1] + "</option>" : h_1 += '<option value="' + datas[0] + '" selected="">' + _this.jkPre + datas[1] + "</option>";
-            })), $("#jk").html(h_1)), Logger.debug(urls);
+                "https:" == unsafeWindow.location.protocol ? h += '<option value="' + datas[0].replace("http:", "https:") + '" selected="">' + _this.jkPre + datas[1] + "</option>" : h += '<option value="' + datas[0] + '" selected="">' + _this.jkPre + datas[1] + "</option>";
+            }))), jks.forEach((function(e) {
+                h += '<option value="' + e.url + '" selected="">' + e.title + "</option>";
+            })), Logger.debug(h), $("#jk").html(h), Logger.debug(urls);
         }, MovieService.prototype.lastPlay = function() {
             var last, _this = this;
             $("#bf").on("click", (function() {
@@ -2439,8 +2528,8 @@
                 });
             }, _this.state = {
                 visible: !0,
-                search_helper_switch: Config.get("search_helper_switch", !0),
-                search_helper_postion: Config.get("search_helper_postion", "cl")
+                search_helper_switch: Config.get(ConfigEnum.Search_Helper_Switch, !0),
+                search_helper_postion: Config.get(ConfigEnum.Search_Helper_Postion, "cl")
             }, _this.handCancel = _this.handCancel.bind(_this), _this;
         }
         return __extends(SettingUI, _super), SettingUI.prototype.render = function() {
