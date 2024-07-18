@@ -3,7 +3,7 @@
 // @namespace     https://www.wandhi.com/
 // @description   🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转；🎉 12、搜索引擎快速跳转
 // @license       MIT
-// @version       4.9.34
+// @version       4.9.35
 // @author        MaxZhang
 // @include       *://settings.wandhi.com/*
 // @include       *://m.youku.com/v*
@@ -3387,7 +3387,7 @@
     } ], MovieService = function(_super) {
         function MovieService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.HiTv, /tv\.wandhi\.com\/go\.html/i ], [ SiteEnum.YouKu, /youku\.com/i ], [ SiteEnum.IQiYi, /iqiyi|iq\.com/i ], [ SiteEnum.LeShi, /\.le\.com/i ], [ SiteEnum.Tencent_V, /v\.qq/i ], [ SiteEnum.TuDou, /tudou\.com/i ], [ SiteEnum.MangGuo, /mgtv\.com/i ], [ SiteEnum.SoHu, /sohu\.com/i ], [ SiteEnum.Acfun, /acfun\.com/i ], [ SiteEnum.BiliBili, /bilibili\.com/i ], [ SiteEnum.M1905, /1905\.com/i ], [ SiteEnum.PPTV, /pptv\.com/i ], [ SiteEnum.YinYueTai, /yinyuetai\.com/ ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.YouKu, /youku\.com/i ], [ SiteEnum.IQiYi, /iqiyi|iq\.com/i ], [ SiteEnum.LeShi, /\.le\.com/i ], [ SiteEnum.Tencent_V, /v\.qq/i ], [ SiteEnum.TuDou, /tudou\.com/i ], [ SiteEnum.MangGuo, /mgtv\.com/i ], [ SiteEnum.SoHu, /sohu\.com/i ], [ SiteEnum.Acfun, /acfun\.com/i ], [ SiteEnum.BiliBili, /bilibili\.com/i ], [ SiteEnum.M1905, /1905\.com/i ], [ SiteEnum.PPTV, /pptv\.com/i ], [ SiteEnum.YinYueTai, /yinyuetai\.com/ ], [ SiteEnum.HiTv, /tv\.wandhi\.com\/go\.html/i ] ]), 
             _this.jkPre = "\u81ea\u5b9a\u4e49\u63a5\u53e3\uff1a", _this.menu = new Common.Menu, 
             _this._unique = !1, _this._appName = "MovieService", _this;
         }
