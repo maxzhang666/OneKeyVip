@@ -1470,7 +1470,8 @@
             $("#bf").on("click", (function() {
                 var op = $("#jk option:selected"), url = op.val(), name = op.text().replace(_this.jkPre, "");
                 Config.set(ConfigEnum.Jiexi_Interface_Last_Play, name), Config.set(ConfigEnum.Jiexi_Interface_Last_Play_Url, url);
-            })), (last = Config.get(ConfigEnum.Jiexi_Interface_Last_Play_Url)) && $("#jk").val(last);
+            })), (last = Config.get(ConfigEnum.Jiexi_Interface_Last_Play_Url)) && $("#jk").val(last), 
+            unsafeWindow.dihejk && $("#url").val() && unsafeWindow.dihejk();
         }, MovieService.prototype._onClick = function() {
             $("body").on("click", "[data-cat=process]", (function() {
                 Core.open("http://tv.wandhi.com/go.html?url=" + encodeURIComponent(window.location.href));

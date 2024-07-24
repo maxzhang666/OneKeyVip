@@ -82,6 +82,8 @@
 
 ### [Github:https://github.com/maxzhang666/OneKeyVip](https://github.com/maxzhang666/OneKeyVip)
 
+### [Gitlab:https://gitlab.com/_MaxZhang/OneKeyVip](https://gitlab.com/_MaxZhang/OneKeyVip)
+
 ### [Gitee:https://gitee.com/ixysy/OneKeyVip](https://gitee.com/ixysy/OneKeyVip)
 
 ## 📜 反馈说明
