@@ -113,6 +113,7 @@
 // @match         *://*.kdocs.cn/office/link*
 // @match         *://ispacesoft.com/*.html
 // @match         *://tv.wandhi.com/go.html*
+// @match         *://tv.wandhi.com/check.html
 // @match         *://*.xiaohongshu.com/explore*
 // @match         *://www.yuque.com/r/goto*
 // @match         *://blog.51cto.com/transfer*
@@ -1007,10 +1008,11 @@
         SiteEnum.BD_DETAIL_NEW = "BD_DETAIL_NEW", SiteEnum.BD_DETAIL_Share = "BD_DETAIL_Share", 
         SiteEnum.Gwd = "Gwd", SiteEnum.Xxqg = "Xxqg", SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin", 
         SiteEnum.V2EX = "V2EX", SiteEnum.Github = "Github", SiteEnum.NodeSeek = "NodeSeek", 
-        SiteEnum.HiTv = "HiTv", SiteEnum.Xhs = "Xhs", SiteEnum.KingSoftDoc = "KingSoftDoc", 
-        SiteEnum.BingCn = "BingCn", SiteEnum.SiChuang = "SiChuang", SiteEnum.Uisdc = "Uisdc", 
-        SiteEnum.YuQue = "YuQue", SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", SiteEnum.WenJuanXing = "WenJuanXing", 
-        SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork", SiteEnum.KuaKeShare = "KuaKeShare";
+        SiteEnum.HiTv = "HiTv", SiteEnum.HiTvCheck = "HiTvCheck", SiteEnum.Xhs = "Xhs", 
+        SiteEnum.KingSoftDoc = "KingSoftDoc", SiteEnum.BingCn = "BingCn", SiteEnum.SiChuang = "SiChuang", 
+        SiteEnum.Uisdc = "Uisdc", SiteEnum.YuQue = "YuQue", SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", 
+        SiteEnum.WenJuanXing = "WenJuanXing", SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork", 
+        SiteEnum.KuaKeShare = "KuaKeShare";
     }(SiteEnum || (SiteEnum = {})), UpdateService = function(_super) {
         function UpdateService() {
             var _this = _super.call(this) || this;
@@ -2376,7 +2378,7 @@
             } ], (Fingerprint2 = function Fingerprint2(options) {
                 throw new Error("'new Fingerprint()' is deprecated, see https://github.com/fingerprintjs/fingerprintjs#upgrade-guide-from-182-to-200");
             }).get = function(options, callback) {
-                var keys, i;
+                var keys, i, _chainComponents;
                 callback ? options || (options = {}) : (callback = options, options = {}), extendSoft(options, defaultOptions), 
                 options.components = options.extraComponents.concat(components), keys = {
                     data: [],
@@ -2387,23 +2389,23 @@
                             value: value
                         });
                     }
-                }, i = -1, function chainComponents(alreadyWaited) {
+                }, i = -1, (_chainComponents = function chainComponents(alreadyWaited) {
                     if ((i += 1) >= options.components.length) callback(keys.data); else {
                         var component = options.components[i];
-                        if (options.excludes[component.key]) chainComponents(!1); else {
+                        if (options.excludes[component.key]) _chainComponents(!1); else {
                             if (!alreadyWaited && component.pauseBefore) return i -= 1, void setTimeout((function() {
-                                chainComponents(!0);
+                                _chainComponents(!0);
                             }), 1);
                             try {
                                 component.getData((function(value) {
-                                    keys.addPreprocessedComponent(component.key, value), chainComponents(!1);
+                                    keys.addPreprocessedComponent(component.key, value), _chainComponents(!1);
                                 }), options);
                             } catch (error) {
-                                keys.addPreprocessedComponent(component.key, String(error)), chainComponents(!1);
+                                keys.addPreprocessedComponent(component.key, String(error)), _chainComponents(!1);
                             }
                         }
                     }
-                }(!1);
+                })(!1);
             }, Fingerprint2.getPromise = function(options) {
                 return new Promise((function(resolve, reject) {
                     Fingerprint2.get(options, resolve);
@@ -3307,17 +3309,8 @@
         url: "https://www.8090g.cn/?url=",
         title: "\u63a5\u53e3:8090"
     }, {
-        title: "ckplayer",
-        url: " https://www.ckplayer.vip/jiexi/?url="
-    }, {
-        title: "qqwtt",
-        url: "https://jx.qqwtt.com/?url="
-    }, {
         title: "\u5256\u5143",
         url: "https://www.pouyun.com/?url="
-    }, {
-        url: "https://jx.m3u8.tv/jiexi/?url=",
-        title: "\u2464\u53f7\u63a5\u53e3"
     }, {
         url: "https://z1.m1907.top/?jx=",
         title: "\u73a9\u7684\u55e8\u2014\u201428-\u82e5\u63a5\u53e3\u5931\u6548\u53ef\u53cd\u9988\uff01QQ\u7fa4:340569308"
@@ -3327,9 +3320,6 @@
     }, {
         title: "\u76d8\u53e4",
         url: "https://www.pangujiexi.com/jiexi/?url="
-    }, {
-        title: "eptept",
-        url: "https://dmjx.m3u8.tv/?url="
     }, {
         title: "BL",
         url: "https://vip.bljiex.com/?v="
@@ -3346,9 +3336,6 @@
         title: "TV\u89e3\u6790[\u817e\u8baf (\u8292\u679c)]",
         url: "https://jx.m3u8.tv/jiexi/?url="
     }, {
-        title: "\u51b0\u8c46",
-        url: "https://api.qianqi.net/vip/?url="
-    }, {
         title: "JY",
         url: "https://jx.playerjy.com/?url="
     }, {
@@ -3357,12 +3344,6 @@
     }, {
         title: "\u2478\u53f7\u89e3\u6790\u63a5\u53e3",
         url: "https://www.8090g.cn/jiexi/?url="
-    }, {
-        title: "\u7efc\u5408/B\u7ad9",
-        url: "https://jx.jsonplayer.com/player/?url="
-    }, {
-        title: "Player-JY",
-        url: "https://jx.playerjy.com/?url="
     }, {
         title: "\u867e\u7c731",
         url: "https://jx.xmflv.com/?url="
@@ -3376,18 +3357,21 @@
         title: "CK",
         url: "https://jx.m3u8.tv/jiexi/?url="
     }, {
+        title: "\u4e03\u54e5",
+        url: "https://jx.nnxv.cn/tv.php?url="
+    }, {
+        title: "\u795e\u54e5",
+        url: "https://json.ovvo.pro/jx.php?url="
+    }, {
         title: "8090",
         url: "https://www.8090g.cn/?url="
     }, {
-        title: "qianqi",
-        url: "https://api.qianqi.net/vip/?url="
-    }, {
-        title: "\u6837\u56fe\u5185\u7f6e",
-        url: "https://jx.yangtu.top/?url="
+        title: "\u51b0\u8c46",
+        url: "https://bd.jx.cn/?url="
     } ], MovieService = function(_super) {
         function MovieService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.YouKu, /youku\.com/i ], [ SiteEnum.IQiYi, /iqiyi|iq\.com/i ], [ SiteEnum.LeShi, /\.le\.com/i ], [ SiteEnum.Tencent_V, /v\.qq/i ], [ SiteEnum.TuDou, /tudou\.com/i ], [ SiteEnum.MangGuo, /mgtv\.com/i ], [ SiteEnum.SoHu, /sohu\.com/i ], [ SiteEnum.Acfun, /acfun\.com/i ], [ SiteEnum.BiliBili, /bilibili\.com/i ], [ SiteEnum.M1905, /1905\.com/i ], [ SiteEnum.PPTV, /pptv\.com/i ], [ SiteEnum.YinYueTai, /yinyuetai\.com/ ], [ SiteEnum.HiTv, /tv\.wandhi\.com\/go\.html/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.YouKu, /youku\.com/i ], [ SiteEnum.IQiYi, /iqiyi|iq\.com/i ], [ SiteEnum.LeShi, /\.le\.com/i ], [ SiteEnum.Tencent_V, /v\.qq/i ], [ SiteEnum.TuDou, /tudou\.com/i ], [ SiteEnum.MangGuo, /mgtv\.com/i ], [ SiteEnum.SoHu, /sohu\.com/i ], [ SiteEnum.Acfun, /acfun\.com/i ], [ SiteEnum.BiliBili, /bilibili\.com/i ], [ SiteEnum.M1905, /1905\.com/i ], [ SiteEnum.PPTV, /pptv\.com/i ], [ SiteEnum.YinYueTai, /yinyuetai\.com/ ], [ SiteEnum.HiTv, /tv\.wandhi\.com\/go\.html/i ], [ SiteEnum.HiTvCheck, /tv\.wandhi\.com\/check\.html/i ] ]), 
             _this.jkPre = "\u81ea\u5b9a\u4e49\u63a5\u53e3\uff1a", _this.menu = new Common.Menu, 
             _this._unique = !1, _this._appName = "MovieService", _this;
         }
@@ -3398,6 +3382,10 @@
               case SiteEnum.HiTv:
                 Logger.debug("HiTv\u89e3\u6790\u9875\u9762\uff0c\u52a0\u8f7d\u81ea\u5b9a\u4e49\u63a5\u53e3"), 
                 this.cusInterFace(), this.lastPlay();
+                break;
+
+              case SiteEnum.HiTvCheck:
+                this.jkCheck();
                 break;
 
               default:
@@ -3419,6 +3407,32 @@
                     type: "jd"
                 } ], this._onClick), this.autoHide();
             }
+        }, MovieService.prototype.hashCode = function(str) {
+            var i, hash = 0;
+            if (0 === str.length) return hash;
+            for (i = 0; i < str.length; i++) hash = (hash << 5) - hash + str.charCodeAt(i), 
+            hash |= 0;
+            return 2147483647 & hash;
+        }, MovieService.prototype.jkCheck = function() {
+            var _this = this, html = "";
+            jks.forEach((function(item, index) {
+                var id = _this.hashCode(item.title);
+                html += '<div class="lbl">\n                <label for="name" id="' + id + '" class="valid-none" data-title="' + item.title + '" data-url="' + item.url + '">' + item.title + '<b style="color:red">(\u5f85\u68c0\u6d4b)</b></label>\n            </div>\n            <div class="ctrl">\n                <input type="text" name="name" data-required="true" data-validation="text"\n                    data-msg="Invalid Name" placeholder="Ex: John Donga" value="' + item.url + '" disabled>\n            </div>';
+            })), $("#formbody").html(html), unsafeWindow.jks = jks, unsafeWindow.letcheckUrl = function(url) {
+                return new Promise((function(resolve, reject) {
+                    try {
+                        unsafeWindow.fetch(new Request(url), {
+                            mode: "no-cors"
+                        }).then((function(res) {
+                            Logger.debug(res, url), resolve(!0);
+                        })).catch((function(e) {
+                            Logger.debug(e, url), reject(!1);
+                        }));
+                    } catch (e) {
+                        reject(!1);
+                    }
+                }));
+            };
         }, MovieService.prototype.cusInterFace = function() {
             var _this = this, urls = Config.get(ConfigEnum.Jiexi_Cus_Interface), h = "";
             urls && (h = $("#jk").html(), urls.split("\n").forEach((function(e) {
