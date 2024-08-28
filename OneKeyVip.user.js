@@ -4426,7 +4426,7 @@
     }(PluginBase), QuarkFileResponse = function QuarkFileResponse() {}, Quark = function() {
         function Quark() {}
         return Quark.init = function() {
-            "false" == Config.get(Quark.signKey, "false") && this.sign();
+            this.sign();
         }, Quark.notification = function(msg) {
             semiUi.Notification.success({
                 title: "\u7b7e\u5230\u901a\u77e5",
@@ -4436,23 +4436,24 @@
                 position: "bottomRight"
             });
         }, Quark.sign = function() {
+            var _a;
             return __awaiter(this, void 0, void 0, (function() {
                 var growth_info, sign_return, message;
-                return __generator(this, (function(_a) {
-                    switch (_a.label) {
+                return __generator(this, (function(_b) {
+                    switch (_b.label) {
                       case 0:
                         return [ 4, Quark.getCurrentInfo() ];
 
                       case 1:
-                        return (growth_info = _a.sent()) ? growth_info.data.cap_sign.sign_daily ? (message = "\ud83d\udcc5 \u6267\u884c\u7b7e\u5230: \u4eca\u65e5\u5df2\u7b7e\u5230+" + growth_info.data.cap_sign.sign_daily_reward / 1024 / 1024 + "MB\uff0c\u8fde\u7b7e\u8fdb\u5ea6(" + growth_info.data.cap_sign.sign_progress + "/" + growth_info.data.cap_sign.sign_target + ")\u2705", 
+                        return (growth_info = _b.sent()) ? (null === (_a = growth_info.data.cap_sign) || void 0 === _a ? void 0 : _a.sign_daily) ? (message = "\ud83d\udcc5 \u6267\u884c\u7b7e\u5230: \u4eca\u65e5\u5df2\u7b7e\u5230+" + growth_info.data.cap_sign.sign_daily_reward / 1024 / 1024 + "MB\uff0c\u8fde\u7b7e\u8fdb\u5ea6(" + growth_info.data.cap_sign.sign_progress + "/" + growth_info.data.cap_sign.sign_target + ")\u2705", 
                         this.notification(message), [ 3, 4 ]) : [ 3, 2 ] : [ 3, 4 ];
 
                       case 2:
                         return [ 4, this.getSignInfo() ];
 
                       case 3:
-                        (null == (sign_return = _a.sent()) ? void 0 : sign_return.data) && (message = "\ud83d\udcc5 \u6267\u884c\u7b7e\u5230: \u4eca\u65e5\u7b7e\u5230+" + sign_return.data.sign_daily_reward / 1024 / 1024 + "MB\uff0c\u8fde\u7b7e\u8fdb\u5ea6(" + (growth_info.cap_sign.sign_progress + 1) + "/" + growth_info.cap_sign.sign_target + ")\u2705", 
-                        this.notification(message)), _a.label = 4;
+                        (null == (sign_return = _b.sent()) ? void 0 : sign_return.data) && (message = "\ud83d\udcc5 \u6267\u884c\u7b7e\u5230: \u4eca\u65e5\u7b7e\u5230+" + sign_return.data.sign_daily_reward / 1024 / 1024 + "MB\uff0c\u8fde\u7b7e\u8fdb\u5ea6(" + (growth_info.cap_sign.sign_progress + 1) + "/" + growth_info.cap_sign.sign_target + ")\u2705", 
+                        this.notification(message)), _b.label = 4;
 
                       case 4:
                         return Config.set(Quark.signKey, "true", 86400), [ 2 ];
@@ -4655,7 +4656,7 @@
             var rows = "";
             return list.forEach((function(e) {
                 rows += '<tr>\n                        <td class="bili-table-cell">' + e.file_name + '</td>\n                        <td class="bili-table-cell">' + Core.sizeFormat(e.size) + '</td>\n                        <td class="bili-table-cell">\n                        <button class="okv-btn okv-btn-primary okv-btn-success quark-send-item" data-url="' + e.download_url + '" data-filename="' + e.file_name + '" data-ua="' + e.ua + '" data-ck="' + e.cookie + '">\u53d1\u9001Aria</button>\n                        <button class="okv-btn okv-btn-primary quark-copy-item" data-url="' + e.download_url + '">\u590d\u5236\u94fe\u63a5</button>\n                        <button class="okv-btn okv-btn-primary quark-down-item" data-url="' + e.download_url + '">\u4e0b\u8f7d</button>\n                        </td>\n                    </tr>';
-            })), '<div style="height: 30rem">\n                    <div style="padding-bottom: 25px;">\u5982\u679c\u51fa\u73b0403\u8bf7\u5c1d\u8bd5<a style="color: red" target="_blank" href="https://settings.wandhi.com/tools/wangpan/page.html">\u68c0\u67e5\u914d\u7f6e</a>\u6216\u5347\u7ea7<a target="_blank" href="https://wiki.wandhi.com/zh-cn/Changelog.html">\u6700\u65b0\u7248\u672c</a>\n                    <p>\u76f4\u94fe<b style="color: red">\u5e76\u4e0d\u80fd</b> \u4ee3\u66ff\u7f51\u76d8VIP\u529f\u80fd\uff0c\u4e0d\u4f1a\u4f7f\u7528\u8bf7\u5148\u67e5\u770b<a href="https://wiki.wandhi.com" style="color: blue" target="_blank">Wiki</a></p>\n                    <p>\u76f4\u94fe\u529f\u80fd\u642d\u914dVIP\u4f1a\u5458\u624d\u80fd\u83b7\u53d6\u5230\u52a0\u901f\u94fe\u63a5<b>(<a href="' + NetDiskDirectService.bdVip1 + '" target="_blank" style="color: red">\u83b7\u53d6\u4e34\u65f6VIP\u2460</a>\uff0c<a href="' + NetDiskDirectService.bdVip2 + '" target="_blank" style="color: red">\u83b7\u53d6\u4e34\u65f6VIP\u2461</a>)</b></p>\n                    <p><b style="color: red">\u5927\u6587\u4ef6</b>\u8bf7\u4f18\u5148\u4f7f\u7528Aria\u4e4b\u7c7b\u7684\u4e0b\u8f7d\u5de5\u5177,\u76f4\u63a5\u70b9\u51fb\u4e0b\u8f7d\u5927\u6982\u7387\u4f1a\u6ca1\u6743\u9650</p>\n                    <p><b style="color: red">\u767e\u5ea6UA\uff1a</b>pan.baidu.com</p>\n                    </div>\n                    <table class="bili-table bili-table-small">\n                        <thead class="bili-table-head">\n                            <tr>                        \n                                <th class="bili-table-cell">\u6807\u9898</th>\n                                <th class="bili-table-cell">\u5927\u5c0f</th>\n                                <th class="bili-table-cell">\u64cd\u4f5c</th>\n                            </tr>\n                        </thead>\n                        <tbody class="at-table-tbody">                    \n                            ' + rows + "\n                        </tbody>    \n                    </table>\n                </div>";
+            })), '<div style="height: 30rem">\n                    <div style="padding-bottom: 25px;">\u5982\u679c\u51fa\u73b0403\u8bf7\u5c1d\u8bd5<a style="color: red" target="_blank" href="https://settings.wandhi.com/tools/wangpan/page.html">\u68c0\u67e5\u914d\u7f6e</a>\u6216\u5347\u7ea7<b>\u6700\u65b0\u7248\u672c</b>\n                    <p>\u76f4\u94fe<b style="color: red">\u5e76\u4e0d\u80fd</b> \u4ee3\u66ff\u7f51\u76d8VIP\u529f\u80fd\uff0c\u4e0d\u4f1a\u4f7f\u7528\u8bf7\u5148\u67e5\u770b<a href="https://wiki.wandhi.com" style="color: blue" target="_blank">Wiki</a></p>\n                    <p>\u76f4\u94fe\u529f\u80fd\u642d\u914dVIP\u4f1a\u5458\u624d\u80fd\u83b7\u53d6\u5230\u52a0\u901f\u94fe\u63a5<b>(<a href="' + NetDiskDirectService.bdVip1 + '" target="_blank" style="color: red">\u83b7\u53d6\u4e34\u65f6VIP\u2460</a>\uff0c<a href="' + NetDiskDirectService.bdVip2 + '" target="_blank" style="color: red">\u83b7\u53d6\u4e34\u65f6VIP\u2461</a>)</b></p>\n                    <p><b style="color: red">\u5927\u6587\u4ef6</b>\u8bf7\u4f18\u5148\u4f7f\u7528Aria\u4e4b\u7c7b\u7684\u4e0b\u8f7d\u5de5\u5177,\u76f4\u63a5\u70b9\u51fb\u4e0b\u8f7d\u5927\u6982\u7387\u4f1a\u6ca1\u6743\u9650</p>\n                    <p><b style="color: red">\u767e\u5ea6UA\uff1a</b>pan.baidu.com</p>\n                    </div>\n                    <table class="bili-table bili-table-small">\n                        <thead class="bili-table-head">\n                            <tr>                        \n                                <th class="bili-table-cell">\u6807\u9898</th>\n                                <th class="bili-table-cell">\u5927\u5c0f</th>\n                                <th class="bili-table-cell">\u64cd\u4f5c</th>\n                            </tr>\n                        </thead>\n                        <tbody class="at-table-tbody">                    \n                            ' + rows + "\n                        </tbody>    \n                    </table>\n                </div>";
         }, NetDiskDirectService.initButton = function() {
             Core.autoLazyload((function() {
                 return $(NetDiskDirectService.btnSelecotr).length > 0;
