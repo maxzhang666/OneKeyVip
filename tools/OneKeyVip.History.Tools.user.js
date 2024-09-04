@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           【玩的嗨】淘宝、天猫、京东、唯品会隐藏优惠券查询，自动显示历史价格和比价,拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手 长期更新，放心使用
 // @namespace      https://www.wandhi.com/
-// @version        1.5
+// @version        1.6
 // @homepage       https://wiki.wandhi.com
 // @support        https:://wiki.wandhi.com
 // @description    拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手
@@ -1002,9 +1002,9 @@
             return new Promise((function(resolve) {
                 Core.autoLazyload((function() {
                     var _a;
-                    return (null === (_a = $('[class^="BasicContent--detailInfoWrap--"]')) || void 0 === _a ? void 0 : _a.length) > 0;
+                    return (null === (_a = $('[class^="BasicContent--"] [class^="detailInfoWrap--"]')) || void 0 === _a ? void 0 : _a.length) > 0;
                 }), (function() {
-                    $('[class^="BasicContent--detailInfoWrap--"]').before(html), resolve(!0);
+                    $('[class^="BasicContent--"] [class^="detailInfoWrap--"]').before(html), resolve(!0);
                 }), .2);
             }));
         }, TaoCoupon.prototype.init_coupons = function() {
@@ -2305,7 +2305,7 @@
               case SiteEnum.TaoBao:
               case SiteEnum.TMall:
                 this.factory = new TaoCoupon, this.itemUrl = "https://item.taobao.com/item.htm?id=" + Core.getPar("id"), 
-                this.parentEleSelector = '[class^="BasicContent--detailInfoWrap--"]';
+                this.parentEleSelector = '[class^="BasicContent--"] [class^="detailInfoWrap--"]';
                 break;
 
               case SiteEnum.JingDong:
@@ -2836,7 +2836,7 @@
         }, GwdHelper.version = "", GwdHelper.from_device = "default", GwdHelper.from_type = "", 
         GwdHelper.union = "union_gwdang", GwdHelper.crc64 = !0, GwdHelper.gwd_fp_key = "gwd_fp_key", 
         GwdHelper.gwd_dfp_key = "gwd_dfp_key", GwdHelper;
-    }(), styleInject(".wandhi_tab {\n  font-family: PingFangSC-Regular;\n  font-weight: 400;\n  font-size: 14px;\n  width: 80%;\n  border: 1px solid #f40;\n  border-collapse: collapse;\n}\n.wandhi_tab thead {\n  font-size: 14px;\n  text-align: center;\n}\n.wandhi_tab tr th {\n  padding: 10px 10px;\n  text-align: center;\n}\n.wandhi_tab tr td {\n  padding: 10px 10px;\n  text-align: center;\n  font-size: 14px;\n}\n.wandhi_tab tr td a {\n  text-decoration: none;\n}\n.wandhi_tab_taobao,\n.wandhi_tab_tmall {\n  margin-bottom: 15px;\n}\n.wandhi_tab_taobao thead,\n.wandhi_tab_tmall thead {\n  background-color: #f40;\n  color: #FFF;\n}\n.wandhi_tab_taobao tr td,\n.wandhi_tab_tmall tr td {\n  border: 1px solid #e6602d;\n  color: #e6602d;\n}\n.wandhi_tab_taobao tr td a,\n.wandhi_tab_tmall tr td a {\n  color: #e6602d;\n}\n.wandhi_tab_tmall thead {\n  background-color: #ff0036;\n}\n.wandhi_tab_tmall tr td {\n  border: 1px solid #ff0036;\n  color: #ff0036;\n}\n.wandhi_tab_tmall tr td a {\n  color: #ff0036;\n}\n.tb-prop .tb-img li a {\n  width: auto !important;\n  background-position-x: 5px !important;\n}\n.tb-prop .tb-img li span {\n  text-indent: 1em !important;\n  display: block !important;\n  padding: 0 5px !important;\n  margin-left: 35px;\n}\n"), 
+    }(), styleInject(".wandhi_tab {\n  font-family: PingFangSC-Regular;\n  font-weight: 400;\n  font-size: 14px;\n  border: 1px solid #f40;\n  border-collapse: collapse;\n}\n.wandhi_tab thead {\n  font-size: 14px;\n  text-align: center;\n}\n.wandhi_tab tr th {\n  padding: 10px 10px;\n  text-align: center;\n}\n.wandhi_tab tr td {\n  padding: 10px 10px;\n  text-align: center;\n  font-size: 14px;\n}\n.wandhi_tab tr td a {\n  text-decoration: none;\n}\n.wandhi_tab_taobao,\n.wandhi_tab_tmall {\n  margin-bottom: 15px;\n}\n.wandhi_tab_taobao thead,\n.wandhi_tab_tmall thead {\n  background-color: #f40;\n  color: #FFF;\n}\n.wandhi_tab_taobao tr td,\n.wandhi_tab_tmall tr td {\n  border: 1px solid #e6602d;\n  color: #e6602d;\n}\n.wandhi_tab_taobao tr td a,\n.wandhi_tab_tmall tr td a {\n  color: #e6602d;\n}\n.wandhi_tab_tmall thead {\n  background-color: #ff0036;\n}\n.wandhi_tab_tmall tr td {\n  border: 1px solid #ff0036;\n  color: #ff0036;\n}\n.wandhi_tab_tmall tr td a {\n  color: #ff0036;\n}\n.tb-prop .tb-img li a {\n  width: auto !important;\n  background-position-x: 5px !important;\n}\n.tb-prop .tb-img li span {\n  text-indent: 1em !important;\n  display: block !important;\n  padding: 0 5px !important;\n  margin-left: 35px;\n}\n"), 
     TaoBaoService = function(_super) {
         function TaoBaoService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
@@ -2847,16 +2847,16 @@
         TaoBaoService.prototype.run = function() {
             this.init(), this.historyService.linkTest() && this.historyService.Process();
         }, TaoBaoService.prototype.init = function() {
-            var _this = this, init = "<div id='wandhi_div'><table class='wandhi_tab' id='wandhi_table'><thead><tr><th><b style='cursor:pointer'>\u4f18\u60e0\u5238</b></th><th>\u5238\u540e</th><th>\u6709 \u6548 \u671f</th><th>\u64cd\u4f5c</th></tr></thead><tr><td colspan='4'>\u6b63\u5728\u67e5\u8be2\u4f18\u60e0\u4fe1\u606f\uff0c\u8bf7\u7a0d\u5019...</td></tr></table></div>";
+            var _this = this, init = "<div id='wandhi_div'><table class='wandhi_tab " + (this.site == SiteEnum.TaoBao ? "wandhi_tab_taobao" : "wandhi_tab_tmall") + "' id='wandhi_table'><thead><tr><th><b style='cursor:pointer'>\u4f18\u60e0\u5238</b></th><th>\u5238\u540e</th><th>\u6709 \u6548 \u671f</th><th>\u64cd\u4f5c</th></tr></thead><tr><td colspan='4'>\u6b63\u5728\u67e5\u8be2\u4f18\u60e0\u4fe1\u606f\uff0c\u8bf7\u7a0d\u5019...</td></tr></table></div>";
             Core.autoLazyload((function() {
-                var _a;
-                return (null === (_a = $("#skuWrap")) || void 0 === _a ? void 0 : _a.length) > 0;
+                var _a, _b;
+                return (null === (_a = $("#skuWrap")) || void 0 === _a ? void 0 : _a.length) > 0 || (null === (_b = $('[class^="Price--"][class*=" hasBgImg--"]')) || void 0 === _b ? void 0 : _b.length) > 0;
             }), (function() {
-                var _a, itemId, key, d;
+                var itemId, key, d;
                 $("#skuWrap").prepend(init), $("#J_LinkBasket").parent().parent().prepend(init), 
                 $(".J_LinkAdd").parent().parent().prepend(init), $("[class*=BasicContent--actions]").prepend(init), 
-                (null === (_a = _this.rules.get(SiteEnum.TaoBao)) || void 0 === _a ? void 0 : _a.test(Core.currentUrl())) ? $("#wandhi_table").addClass("wandhi_tab_taobao") : $("#wandhi_table").addClass("wandhi_tab_tmall"), 
-                itemId = Core.getPar("id"), key = "td_s_" + itemId, (d = Config.get(key, !1)) ? _this.initElement(d) : Route.queryCoupons(itemId, (function(data) {
+                $(".beautify-scroll-bar").prepend(init), itemId = Core.getPar("id"), key = "td_s_" + itemId, 
+                (d = Config.get(key, !1)) ? _this.initElement(d) : Route.queryCoupons(itemId, (function(data) {
                     Config.set(key, data, 43200), _this.initElement(data);
                 }));
             }), .2);
