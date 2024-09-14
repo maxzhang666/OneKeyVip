@@ -3,7 +3,7 @@
 // @namespace     https://www.wandhi.com/
 // @description   🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转；🎉 12、搜索引擎快速跳转
 // @license       MIT
-// @version       4.9.37
+// @version       4.9.38
 // @author        MaxZhang
 // @include       *://item.taobao.com/*
 // @include       *://s.taobao.com/search*
@@ -3574,7 +3574,8 @@
             switch (ListService.that = this, this.site) {
               case SiteEnum.TaoBao:
                 this.selectorList.push(".items .item"), this.selectorList.push('a[class^="Card--doubleCardWrapper"]'), 
-                this.atrack.push(".pic a", ".title a"), this.itemType = ItemType.TaoBao;
+                this.selectorList.push('a[class^="doubleCardWrapper--"]'), this.atrack.push(".pic a", ".title a"), 
+                this.itemType = ItemType.TaoBao;
                 break;
 
               case SiteEnum.TMall:
@@ -3627,7 +3628,7 @@
             }
         }, ListService.prototype.initSearch = function(that) {
             that.selectorList.forEach((function(e, i) {
-                $(e).each((function(index, ele) {
+                Logger.debug("\u521d\u59cb\u5316\u5217\u8868\u9879:" + e), $(e).each((function(index, ele) {
                     that.initSearchItem(ele);
                 }));
             }));
