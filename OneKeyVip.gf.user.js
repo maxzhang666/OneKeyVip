@@ -1329,7 +1329,7 @@
             }));
         }, BiliImgService.add_triple_btn = function() {
             $(this.hookSelector).last().append(BiliImgService.tripleClickBtn), $("body").on("click", "#tripleClick", (function() {
-                [ ".video-like", ".coin", ".collect" ].forEach((function(item) {
+                [ ".video-like", ".video-coin", ".video-fav" ].forEach((function(item) {
                     $(item).trigger("click");
                 }));
             }));

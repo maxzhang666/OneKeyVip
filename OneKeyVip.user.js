@@ -3,7 +3,7 @@
 // @namespace     https://www.wandhi.com/
 // @description   🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转；🎉 12、搜索引擎快速跳转
 // @license       MIT
-// @version       4.9.38
+// @version       4.9.39
 // @author        MaxZhang
 // @include       *://item.taobao.com/*
 // @include       *://s.taobao.com/search*
@@ -3291,7 +3291,7 @@
             }));
         }, BiliImgService.add_triple_btn = function() {
             $(this.hookSelector).last().append(BiliImgService.tripleClickBtn), $("body").on("click", "#tripleClick", (function() {
-                [ ".video-like", ".coin", ".collect" ].forEach((function(item) {
+                [ ".video-like", ".video-coin", ".video-fav" ].forEach((function(item) {
                     $(item).trigger("click");
                 }));
             }));
