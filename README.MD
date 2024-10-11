@@ -119,5 +119,5 @@
 ## 💕 友情捐助
 
 <p align="center">
-<img src="https://registry.npmmirror.com/wandhi_cdn/1.0.1/files/image/qr.jpg" alt="友情捐助">
+<img src="https://i1.wp.com/s2.loli.net/2024/10/10/yhWoF4M5fqTGVwp.jpg" alt="友情捐助">
 </p>
