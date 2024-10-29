@@ -368,25 +368,6 @@
         static decode(str) {
             return window.atob(str);
         }
-        Msg(msg) {
-            return layer.msg(msg, {
-                icon: 5
-            });
-        }
-        showContent(title, content) {
-            return layer.open({
-                type: 1,
-                title: title,
-                shade: 0,
-                content: content
-            });
-        }
-        close(obj) {
-            layer.close(obj);
-        }
-        closeAll() {
-            layer.closeAll();
-        }
         static open(url, loadInBackGround = !1) {
             if (Core.getBrowser() == BrowerType.Safiri && "undefined" == typeof GM_openInTab) {
                 if (void 0 === (null === GM || void 0 === GM ? void 0 : GM.openInTab)) return void window.open(url, "_blank");
@@ -2219,9 +2200,12 @@
         }
         loader() {}
         run() {
-            NetDiskDirectService._site = this.site, this.site == SiteEnum.KuaKeHome ? (NetDiskDirectService.btnSelecotr = ".btn-operate", 
+            NetDiskDirectService._site = this.site, this.site == SiteEnum.KuaKeHome ? -1 === Core.url.indexOf("myshare") ? (NetDiskDirectService.btnSelecotr = ".btn-operate", 
             NetDiskDirectService.btn = NetDiskDirectService.quarkBtn, NetDiskDirectService.getSelecor = NetDiskDirectService.getQuarkSelectedFile, 
-            NetDiskDirectService.quarkListener(), Core.appendCssContent(".btn-operate {justify-content: flex-start !important;}")) : this.site == SiteEnum.BaiduPanMain ? (NetDiskDirectService.btnSelecotr = ".wp-s-agile-tool-bar__header", 
+            NetDiskDirectService.quarkListener(), Core.appendCssContent(".btn-operate {justify-content: flex-start !important;}")) : (NetDiskDirectService.btnSelecotr = ".tabs-container", 
+            NetDiskDirectService.btn = '<div class="ovk-main" style="margin-right: 10px;">\n    <button type="button" class="ant-btn btn-file okv-btn-direct">\n        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMyMjIiIHN0cm9rZS13aWR0aD0iMiI+PHBhdGggc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBkPSJNOSAxMmwyIDIgMi0yeiIvPjxwYXRoIGQ9Ik0xNCA4aDEuNTUzYy44NSAwIDEuMTYuMDkzIDEuNDcuMjY3LjMxMS4xNzQuNTU2LjQzLjcyMi43NTYuMTY2LjMyNi4yNTUuNjUuMjU1IDEuNTR2NC44NzNjMCAuODkyLS4wODkgMS4yMTUtLjI1NSAxLjU0LS4xNjYuMzI3LS40MS41ODMtLjcyMi43NTctLjMxLjE3NC0uNjIuMjY3LTEuNDcuMjY3SDYuNDQ3Yy0uODUgMC0xLjE2LS4wOTMtMS40Ny0uMjY3YTEuNzc4IDEuNzc4IDAgMDEtLjcyMi0uNzU2Yy0uMTY2LS4zMjYtLjI1NS0uNjUtLjI1NS0xLjU0di00Ljg3M2MwLS44OTIuMDg5LTEuMjE1LjI1NS0xLjU0LjE2Ni0uMzI3LjQxLS41ODMuNzIyLS43NTcuMzEtLjE3NC42Mi0uMjY3IDEuNDctLjI2N0gxMSIvPjxwYXRoIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZD0iTTExIDN2MTAiLz48L2c+PC9zdmc+" class="btn-icon" alt="" style="width: 20px;height: 20px">\n        <span>\u5bfc\u51fa\u5206\u4eab\u94fe\u63a5</span>\n    </button>\n</div>', 
+            NetDiskDirectService.getSelecor = NetDiskDirectService.getQuarkShareSelectedFile, 
+            NetDiskDirectService.quarkListener()) : this.site == SiteEnum.BaiduPanMain ? (NetDiskDirectService.btnSelecotr = ".wp-s-agile-tool-bar__header", 
             NetDiskDirectService.btn = '<div class="ovk-main" style="margin-right: 10px;">\n    <button type="button" class="u-button nd-file-list-toolbar-action-item u-button--primary u-button--small is-round is-has-icon okv-btn-direct" style="background: #09AAFF;border-color: #09AAFF;font-size: 14px;padding: 7px 16px;border: none;\n}">\n        <i class="u-icon u-icon-download"></i>\n        <span>\u83b7\u53d6\u76f4\u94fe</span>\n    </button>\n</div>', 
             NetDiskDirectService.initButton(), NetDiskDirectService.baiduEvent(), NetDiskDirectService.commonEvent()) : this.site == SiteEnum.KuaKeShare && (NetDiskDirectService.btnSelecotr = ".file-info-share-buttom", 
             NetDiskDirectService.btn = NetDiskDirectService.quarkBtn, NetDiskDirectService.initButton(), 
@@ -2341,6 +2325,21 @@
                     let fileList = props.list || [], selectedKeys = props.selectedRowKeys || [];
                     fileList.forEach(val => {
                         selectedKeys.includes(val.fid) && selectedList.push(val);
+                    });
+                }
+                return selectedList;
+            } catch (e) {
+                return selectedList;
+            }
+        }
+        static getQuarkShareSelectedFile() {
+            let selectedList = [];
+            try {
+                let reactDom = document.getElementsByClassName("file-list")[0], props = Core.getReact(reactDom).props;
+                if (props) {
+                    let fileList = props.list || [], selectedKeys = props.selectedRowKeys || [];
+                    fileList.forEach(val => {
+                        selectedKeys.includes(val.share_id) && selectedList.push(val);
                     });
                 }
                 return selectedList;

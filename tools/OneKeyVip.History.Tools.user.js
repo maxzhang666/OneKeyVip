@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           【玩的嗨】淘宝、天猫、京东、唯品会隐藏优惠券查询，自动显示历史价格和比价,拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手 长期更新，放心使用
 // @namespace      https://www.wandhi.com/
-// @version        1.7
+// @version        1.8
 // @homepage       https://wiki.wandhi.com
 // @support        https:://wiki.wandhi.com
 // @description    拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手
@@ -69,18 +69,41 @@
     "object" == typeof exports && "undefined" != typeof module ? factory(require("react-dom"), require("sweetalert2")) : "function" == typeof define && define.amd ? define([ "react-dom", "sweetalert2" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).ReactDOM, global.Swal);
 })(this, (function(ReactDOM, Swal) {
     "use strict";
-    var ReactDOM__default, Swal__default, container, Container, Logger, LogLevel, extendStatics, BrowerType, VersionResult, Core, Common, PluginBase, SiteEnum, Config, AjaxOption, Http, HttpHeaders, Hour, Route, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, sAlert, commonjsGlobal, fingerprint2, GwdService, GwdHelper, TaoBaoService, JdService, ItemType, Tao, ListService, _GwdService, OneKeyVipHistoryToolsInjection;
+    var ReactDOM__default, Swal__default, LogLevel, BrowerType, VersionResult, Common, SiteEnum, commonjsGlobal, fingerprint2, headStyle, isChrome, isIE, hasWeakMap, ua, isNativeObject, checkFunctions, ItemType;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
         };
     }
-    function __extends(d, b) {
-        function __() {
-            this.constructor = d;
+    ReactDOM__default = _interopDefaultLegacy(ReactDOM), Swal__default = _interopDefaultLegacy(Swal);
+    const container = new Map;
+    class Container {
+        static Registe(type, args) {
+            let className = this.processName(type.name);
+            return container.has(className) ? container.get(className) : className ? (container.set(className, window.Reflect.construct(type, args)), 
+            container.get(className)) : void 0;
         }
-        extendStatics(d, b), d.prototype = null === b ? Object.create(b) : (__.prototype = b.prototype, 
-        new __);
+        static processName(name) {
+            return name.toLowerCase();
+        }
+        static Require(type) {
+            return this.Registe(type, []);
+        }
+    }
+    class Logger {
+        static log(msg, group, level) {}
+        static debug(msg, group = "debug") {
+            this.log(msg, group, LogLevel.debug);
+        }
+        static info(msg, group = "info") {
+            this.log(msg, group, LogLevel.info);
+        }
+        static warn(msg, group = "warning") {
+            this.log(msg, group, LogLevel.warn);
+        }
+        static error(msg, group = "error") {
+            this.log(msg, group, LogLevel.error);
+        }
     }
     function __awaiter(thisArg, _arguments, P, generator) {
         return new (P || (P = Promise))((function(resolve, reject) {
@@ -108,126 +131,10 @@
             step((generator = generator.apply(thisArg, _arguments || [])).next());
         }));
     }
-    function __generator(thisArg, body) {
-        var f, y, t, g, _ = {
-            label: 0,
-            sent: function() {
-                if (1 & t[0]) throw t[1];
-                return t[1];
-            },
-            trys: [],
-            ops: []
-        };
-        return g = {
-            next: verb(0),
-            throw: verb(1),
-            return: verb(2)
-        }, "function" == typeof Symbol && (g[Symbol.iterator] = function() {
-            return this;
-        }), g;
-        function verb(n) {
-            return function(v) {
-                return function step(op) {
-                    if (f) throw new TypeError("Generator is already executing.");
-                    for (;_; ) try {
-                        if (f = 1, y && (t = 2 & op[0] ? y.return : op[0] ? y.throw || ((t = y.return) && t.call(y), 
-                        0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-                        switch (y = 0, t && (op = [ 2 & op[0], t.value ]), op[0]) {
-                          case 0:
-                          case 1:
-                            t = op;
-                            break;
-
-                          case 4:
-                            return _.label++, {
-                                value: op[1],
-                                done: !1
-                            };
-
-                          case 5:
-                            _.label++, y = op[1], op = [ 0 ];
-                            continue;
-
-                          case 7:
-                            op = _.ops.pop(), _.trys.pop();
-                            continue;
-
-                          default:
-                            if (!(t = _.trys, (t = t.length > 0 && t[t.length - 1]) || 6 !== op[0] && 2 !== op[0])) {
-                                _ = 0;
-                                continue;
-                            }
-                            if (3 === op[0] && (!t || op[1] > t[0] && op[1] < t[3])) {
-                                _.label = op[1];
-                                break;
-                            }
-                            if (6 === op[0] && _.label < t[1]) {
-                                _.label = t[1], t = op;
-                                break;
-                            }
-                            if (t && _.label < t[2]) {
-                                _.label = t[2], _.ops.push(op);
-                                break;
-                            }
-                            t[2] && _.ops.pop(), _.trys.pop();
-                            continue;
-                        }
-                        op = body.call(thisArg, _);
-                    } catch (e) {
-                        op = [ 6, e ], y = 0;
-                    } finally {
-                        f = t = 0;
-                    }
-                    if (5 & op[0]) throw op[1];
-                    return {
-                        value: op[0] ? op[1] : void 0,
-                        done: !0
-                    };
-                }([ n, v ]);
-            };
-        }
-    }
-    function styleInject(css, ref) {
-        var insertAt, head, style;
-        void 0 === ref && (ref = {}), insertAt = ref.insertAt, css && "undefined" != typeof document && (head = document.head || document.getElementsByTagName("head")[0], 
-        (style = document.createElement("style")).type = "text/css", "top" === insertAt && head.firstChild ? head.insertBefore(style, head.firstChild) : head.appendChild(style), 
-        style.styleSheet ? style.styleSheet.cssText = css : style.appendChild(document.createTextNode(css)));
-    }
-    ReactDOM__default = _interopDefaultLegacy(ReactDOM), Swal__default = _interopDefaultLegacy(Swal), 
-    container = new Map, Container = function() {
-        function Container() {}
-        return Container.Registe = function(type, args) {
-            var className = this.processName(type.name);
-            return container.has(className) ? container.get(className) : className ? (container.set(className, window.Reflect.construct(type, args)), 
-            container.get(className)) : void 0;
-        }, Container.processName = function(name) {
-            return name.toLowerCase();
-        }, Container.Require = function(type) {
-            return this.Registe(type, []);
-        }, Container;
-    }(), Logger = function() {
-        function Logger() {}
-        return Logger.log = function(msg, group, level) {}, Logger.debug = function(msg, group) {
-            void 0 === group && (group = "debug"), this.log(msg, group, LogLevel.debug);
-        }, Logger.info = function(msg, group) {
-            void 0 === group && (group = "info"), this.log(msg, group, LogLevel.info);
-        }, Logger.warn = function(msg, group) {
-            void 0 === group && (group = "warning"), this.log(msg, group, LogLevel.warn);
-        }, Logger.error = function(msg, group) {
-            void 0 === group && (group = "error"), this.log(msg, group, LogLevel.error);
-        }, Logger;
-    }(), function(LogLevel) {
+    !function(LogLevel) {
         LogLevel[LogLevel.debug = 0] = "debug", LogLevel[LogLevel.info = 1] = "info", LogLevel[LogLevel.warn = 2] = "warn", 
         LogLevel[LogLevel.error = 3] = "error";
-    }(LogLevel || (LogLevel = {})), extendStatics = function(d, b) {
-        return (extendStatics = Object.setPrototypeOf || {
-            __proto__: []
-        } instanceof Array && function(d, b) {
-            d.__proto__ = b;
-        } || function(d, b) {
-            for (var p in b) b.hasOwnProperty(p) && (d[p] = b[p]);
-        })(d, b);
-    }, function(BrowerType) {
+    }(LogLevel || (LogLevel = {})), function(BrowerType) {
         BrowerType[BrowerType.Edge = 0] = "Edge", BrowerType[BrowerType.Edg = 1] = "Edg", 
         BrowerType[BrowerType.Chrome = 2] = "Chrome", BrowerType[BrowerType.Firefox = 3] = "Firefox", 
         BrowerType[BrowerType.Safiri = 4] = "Safiri", BrowerType[BrowerType.Se360 = 5] = "Se360", 
@@ -238,134 +145,116 @@
     }(BrowerType || (BrowerType = {})), function(VersionResult) {
         VersionResult[VersionResult.less = -1] = "less", VersionResult[VersionResult.equal = 0] = "equal", 
         VersionResult[VersionResult.greater = 1] = "greater", VersionResult[VersionResult.incomparable = NaN] = "incomparable";
-    }(VersionResult || (VersionResult = {})), Core = function() {
-        function Core() {
+    }(VersionResult || (VersionResult = {}));
+    class Core {
+        constructor() {
             this.url = Core.currentUrl();
         }
-        return Core.Render = function(element, id) {
-            var script, container = document.getElementById(id);
-            container || ((script = unsafeWindow.window.document.createElement("div")).id = id, 
-            unsafeWindow.window.document.head.append(script), container = document.getElementById(id)), 
+        static Render(element, id) {
+            let container = document.getElementById(id);
+            if (!container) {
+                let script = unsafeWindow.window.document.createElement("div");
+                script.id = id, unsafeWindow.window.document.head.append(script), container = document.getElementById(id);
+            }
             ReactDOM__default.default.render(element, container);
-        }, Core.appendTo = function(selector, html) {
+        }
+        static appendTo(selector, html) {
             $(selector).append(html);
-        }, Core.prepend = function(selector, html) {
+        }
+        static prepend(selector, html) {
             $(selector).prepend(html);
-        }, Core.lazyload = function(callback, time) {
-            return void 0 === time && (time = 5), __awaiter(this, void 0, Promise, (function() {
-                var _this = this;
-                return __generator(this, (function(_a) {
-                    return [ 2, new Promise((function(resolve) {
-                        setTimeout((function() {
-                            return __awaiter(_this, void 0, void 0, (function() {
-                                return __generator(this, (function(_a) {
-                                    switch (_a.label) {
-                                      case 0:
-                                        return [ 4, callback() ];
-
-                                      case 1:
-                                        return _a.sent(), resolve(), [ 2 ];
-                                    }
-                                }));
-                            }));
-                        }), 1e3 * time);
-                    })) ];
-                }));
+        }
+        static lazyload(callback, time = 5) {
+            return __awaiter(this, void 0, void 0, (function*() {
+                return new Promise(resolve => {
+                    setTimeout(() => __awaiter(this, void 0, void 0, (function*() {
+                        yield callback(), resolve();
+                    })), 1e3 * time);
+                });
             }));
-        }, Core.autoLazyload = function(is_ok, callback, time) {
-            return void 0 === time && (time = 5), __awaiter(this, void 0, Promise, (function() {
-                var _this = this;
-                return __generator(this, (function(_a) {
-                    return [ 2, new Promise((function(resolve) {
-                        return __awaiter(_this, void 0, void 0, (function() {
-                            return __generator(this, (function(_a) {
-                                switch (_a.label) {
-                                  case 0:
-                                    return is_ok() ? [ 3, 1 ] : (setTimeout((function() {
-                                        Core.autoLazyload(is_ok, callback, time).then((function() {
-                                            return resolve();
-                                        }));
-                                    }), 1e3 * time), [ 3, 3 ]);
-
-                                  case 1:
-                                    return [ 4, callback() ];
-
-                                  case 2:
-                                    _a.sent(), Logger.debug("\u81ea\u52a8\u5ef6\u8fdf\u56de\u8c03\u6267\u884c\u5b8c\u6bd5,\u5ef6\u65f6\u65f6\u95f4:" + time), 
-                                    resolve(), _a.label = 3;
-
-                                  case 3:
-                                    return [ 2 ];
-                                }
-                            }));
-                        }));
-                    })) ];
-                }));
+        }
+        static autoLazyload(is_ok, callback, time = 5) {
+            return __awaiter(this, void 0, void 0, (function*() {
+                return new Promise(resolve => __awaiter(this, void 0, void 0, (function*() {
+                    is_ok() ? (yield callback(), Logger.debug("\u81ea\u52a8\u5ef6\u8fdf\u56de\u8c03\u6267\u884c\u5b8c\u6bd5,\u5ef6\u65f6\u65f6\u95f4:" + time), 
+                    resolve()) : setTimeout(() => {
+                        Core.autoLazyload(is_ok, callback, time).then(() => resolve());
+                    }, 1e3 * time);
+                })));
             }));
-        }, Core.sleep = function(time) {
-            return new Promise((function(resolve) {
-                setTimeout((function() {
+        }
+        static sleep(time) {
+            return new Promise(resolve => {
+                setTimeout(() => {
                     resolve();
-                }), 1e3 * time);
-            }));
-        }, Core.random = function(min, max) {
-            var range = max - min, rand = Math.random();
+                }, 1e3 * time);
+            });
+        }
+        static random(min, max) {
+            let range = max - min, rand = Math.random();
             return min + Math.round(rand * range);
-        }, Core.randStr = function(len) {
-            var $chars, maxPos, pwd, i;
-            for (void 0 === len && (len = 4), maxPos = ($chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789").length, 
-            pwd = "", i = 0; i < len; i++) pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
+        }
+        static randStr(len = 4) {
+            let $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789", maxPos = $chars.length, pwd = "";
+            for (let i = 0; i < len; i++) pwd += $chars.charAt(Math.floor(Math.random() * maxPos));
             return pwd;
-        }, Core.background = function(callback, time) {
-            void 0 === time && (time = 5), setInterval((function() {
+        }
+        static background(callback, time = 5) {
+            setInterval(() => {
                 callback();
-            }), 1e3 * time);
-        }, Object.defineProperty(Core, "head", {
-            get: function() {
-                return unsafeWindow.window.document.head;
-            },
-            enumerable: !1,
-            configurable: !0
-        }), Core.isNumber = function(a) {
+            }, 1e3 * time);
+        }
+        static get head() {
+            return unsafeWindow.window.document.head;
+        }
+        static isNumber(a) {
             return !Array.isArray(a) && a - parseFloat(a) >= 0;
-        }, Core.addUrl = function(key, url) {
+        }
+        static addUrl(key, url) {
             GM_setValue(key, url);
-        }, Core.openUrl = function(key) {
+        }
+        static openUrl(key) {
             this.open(GM_getValue(key));
-        }, Core.getPar = function(option, url) {
-            void 0 === url && (url = window.location.search);
-            var v = url.match(new RegExp("[?&]" + option + "=([^&]+)", "i"));
+        }
+        static getPar(option, url = window.location.search) {
+            let v = url.match(new RegExp("[?&]" + option + "=([^&]+)", "i"));
             return null == v || v.length < 1 ? "" : v[1];
-        }, Core.appendCss = function(url) {
-            var linkCSS = document.createElement("link");
+        }
+        static appendCss(url) {
+            let linkCSS = document.createElement("link");
             linkCSS.type = "text/css", linkCSS.rel = "stylesheet", linkCSS.href = url, Core.head.appendChild(linkCSS);
-        }, Core.appendCssContent = function(content) {
-            var Style = document.createElement("style");
+        }
+        static appendCssContent(content) {
+            let Style = document.createElement("style");
             Style.innerHTML = content, Core.head.appendChild(Style);
-        }, Core.prototype.bodyAppendCss = function(url) {
+        }
+        bodyAppendCss(url) {
             $("body").append($('<link rel="stylesheet" href="' + url + '">'));
-        }, Core.bodyAppend = function(html) {
+        }
+        static bodyAppend(html) {
             $("body").append(html);
-        }, Core.bodyPrepend = function(html) {
+        }
+        static bodyPrepend(html) {
             $("body").prepend(html);
-        }, Core.appendJs = function(url) {
-            var linkScript = document.createElement("script");
+        }
+        static appendJs(url) {
+            let linkScript = document.createElement("script");
             linkScript.type = "text/javascript", linkScript.src = url, this.head.appendChild(linkScript);
-        }, Core.prototype.bodyAppendJs = function(url) {
+        }
+        bodyAppendJs(url) {
             $("body").append($('<script type="text/javascript" src="' + url + '"><\/script>'));
-        }, Core.currentUrl = function() {
+        }
+        static currentUrl() {
             return window.location.href;
-        }, Object.defineProperty(Core, "url", {
-            get: function() {
-                return window.location.href;
-            },
-            enumerable: !1,
-            configurable: !0
-        }), Core.inIframe = function() {
+        }
+        static get url() {
+            return window.location.href;
+        }
+        static inIframe() {
             return !(!self.frameElement || "IFRAME" != self.frameElement.tagName) || (window.frames.length != parent.frames.length || self != top);
-        }, Core.format = function(time, fmt) {
-            var o, k;
-            for (k in void 0 === fmt && (fmt = "yyyy-MM-dd hh:mm:ss"), o = {
+        }
+        static format(time, fmt = "yyyy-MM-dd hh:mm:ss") {
+            let o = {
                 "M+": time.getMonth() + 1,
                 "d+": time.getDate(),
                 "h+": time.getHours(),
@@ -373,109 +262,123 @@
                 "s+": time.getSeconds(),
                 "q+": Math.floor((time.getMonth() + 3) / 3),
                 S: time.getMilliseconds()
-            }, /(y+)/.test(fmt) && (fmt = fmt.replace(RegExp.$1, (time.getFullYear() + "").substr(4 - RegExp.$1.length))), 
-            o) new RegExp("(" + k + ")").test(fmt) && (fmt = fmt.replace(RegExp.$1, 1 == RegExp.$1.length ? o[k] : ("00" + o[k]).substr(("" + o[k]).length)));
+            };
+            /(y+)/.test(fmt) && (fmt = fmt.replace(RegExp.$1, (time.getFullYear() + "").substr(4 - RegExp.$1.length)));
+            for (let k in o) new RegExp("(" + k + ")").test(fmt) && (fmt = fmt.replace(RegExp.$1, 1 == RegExp.$1.length ? o[k] : ("00" + o[k]).substr(("" + o[k]).length)));
             return fmt;
-        }, Core.sizeFormat = function(value) {
-            var unit, index;
-            return value === +value ? (unit = [ "B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" ], 
-            index = Math.floor(Math.log(value) / Math.log(1024)), "" + (value / Math.pow(1024, index)).toFixed(1) + unit[index]) : "";
-        }, Core.encode = function(str) {
+        }
+        static sizeFormat(value) {
+            if (value === +value) {
+                let unit = [ "B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB" ], index = Math.floor(Math.log(value) / Math.log(1024));
+                return `${(value / Math.pow(1024, index)).toFixed(1)}${unit[index]}`;
+            }
+            return "";
+        }
+        static encode(str) {
             return window.btoa(str);
-        }, Core.decode = function(str) {
+        }
+        static decode(str) {
             return window.atob(str);
-        }, Core.prototype.Msg = function(msg) {
-            return layer.msg(msg, {
-                icon: 5
-            });
-        }, Core.prototype.showContent = function(title, content) {
-            return layer.open({
-                type: 1,
-                title: title,
-                shade: 0,
-                content: content
-            });
-        }, Core.prototype.close = function(obj) {
-            layer.close(obj);
-        }, Core.prototype.closeAll = function() {
-            layer.closeAll();
-        }, Core.open = function(url, loadInBackGround) {
-            if (void 0 === loadInBackGround && (loadInBackGround = !1), Core.getBrowser() == BrowerType.Safiri && "undefined" == typeof GM_openInTab) {
+        }
+        static open(url, loadInBackGround = !1) {
+            if (Core.getBrowser() == BrowerType.Safiri && "undefined" == typeof GM_openInTab) {
                 if (void 0 === (null === GM || void 0 === GM ? void 0 : GM.openInTab)) return void window.open(url, "_blank");
                 null === GM || void 0 === GM || GM.openInTab(url, loadInBackGround);
             }
             GM_openInTab(url, loadInBackGround);
-        }, Core.click = function(selector, callback) {
+        }
+        static click(selector, callback) {
             $(selector).on("click", callback);
-        }, Core.uuid = function(len, split, radix) {
-            var chars, uuid, i, r;
-            if (void 0 === len && (len = 10), void 0 === split && (split = !1), void 0 === radix && (radix = 0), 
-            chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split(""), 
-            uuid = [], radix = 0 == radix ? radix || chars.length : radix, split) for (r = void 0, 
-            uuid[8] = uuid[13] = uuid[18] = uuid[23] = "-", uuid[14] = "4", i = 0; i < 36; i++) uuid[i] || (r = 0 | 16 * Math.random(), 
-            uuid[i] = chars[19 == i ? 3 & r | 8 : r]); else for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
+        }
+        static uuid(len = 10, split = !1, radix = 0) {
+            let i, chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".split(""), uuid = [];
+            if (radix = 0 == radix ? radix || chars.length : radix, split) {
+                let r;
+                for (uuid[8] = uuid[13] = uuid[18] = uuid[23] = "-", uuid[14] = "4", i = 0; i < 36; i++) uuid[i] || (r = 0 | 16 * Math.random(), 
+                uuid[i] = chars[19 == i ? 3 & r | 8 : r]);
+            } else for (i = 0; i < len; i++) uuid[i] = chars[0 | Math.random() * radix];
             return uuid.join("");
-        }, Core.getBrowser = function() {
-            var browser = !1, userAgent = window.navigator.userAgent.toLowerCase();
+        }
+        static getBrowser() {
+            let browser = !1, userAgent = window.navigator.userAgent.toLowerCase();
             return null != userAgent.match(/firefox/) ? browser = BrowerType.Firefox : null != userAgent.match(/edge/) ? browser = BrowerType.Edge : null != userAgent.match(/edg/) ? browser = BrowerType.Edg : null != userAgent.match(/bidubrowser/) ? browser = BrowerType.Baidu : null != userAgent.match(/lbbrowser/) ? browser = BrowerType.Liebao : null != userAgent.match(/ubrowser/) ? browser = BrowerType.UC : null != userAgent.match(/qqbrowse/) ? browser = BrowerType.QQ : null != userAgent.match(/metasr/) ? browser = BrowerType.Sogou : null != userAgent.match(/opr/) ? browser = BrowerType.Opera : null != userAgent.match(/maxthon/) ? browser = BrowerType.Maxthon : null != userAgent.match(/2345explorer/) ? browser = BrowerType.Ie2345 : null != userAgent.match(/chrome/) ? browser = navigator.mimeTypes.length > 10 ? BrowerType.Se360 : BrowerType.Chrome : null != userAgent.match(/safari/) && (browser = BrowerType.Safiri), 
             browser;
-        }, Core.getPercent = function(num, total) {
+        }
+        static getPercent(num, total) {
             return num = parseFloat(String(num)), total = parseFloat(String(total)), isNaN(num) || isNaN(total) ? 0 : total <= 0 ? "0" : Math.round(num / total * 1e4) / 100;
-        }, Core.getReact = function(dom, traverseUp) {
-            var domFiber, compFiber_1, i, GetCompFiber, compFiber;
-            if (void 0 === traverseUp && (traverseUp = 0), null == (domFiber = dom[Object.keys(dom).find((function(key) {
-                return key.startsWith("__reactFiber$") || key.startsWith("__reactInternalInstance$");
-            }))])) return null;
+        }
+        static getReact(dom, traverseUp = 0) {
+            const domFiber = dom[Object.keys(dom).find(key => key.startsWith("__reactFiber$") || key.startsWith("__reactInternalInstance$"))];
+            if (null == domFiber) return null;
             if (domFiber._currentElement) {
-                for (compFiber_1 = domFiber._currentElement._owner, i = 0; i < traverseUp; i++) compFiber_1 = compFiber_1._currentElement._owner;
-                return compFiber_1._instance;
+                let compFiber = domFiber._currentElement._owner;
+                for (let i = 0; i < traverseUp; i++) compFiber = compFiber._currentElement._owner;
+                return compFiber._instance;
             }
-            for (compFiber = (GetCompFiber = function(fiber) {
-                for (var parentFiber = fiber.return; "string" == typeof parentFiber.type; ) parentFiber = parentFiber.return;
+            const GetCompFiber = fiber => {
+                let parentFiber = fiber.return;
+                for (;"string" == typeof parentFiber.type; ) parentFiber = parentFiber.return;
                 return parentFiber;
-            })(domFiber), i = 0; i < traverseUp; i++) compFiber = GetCompFiber(compFiber);
+            };
+            let compFiber = GetCompFiber(domFiber);
+            for (let i = 0; i < traverseUp; i++) compFiber = GetCompFiber(compFiber);
             return compFiber.stateNode || compFiber;
-        }, Core.copyText = function(text) {
-            var textArea = document.createElement("textarea");
+        }
+        static copyText(text) {
+            const textArea = document.createElement("textarea");
             return textArea.style.position = "fixed", textArea.style.visibility = "-10000px", 
             textArea.value = text, document.body.appendChild(textArea), textArea.focus(), textArea.select(), 
             document.execCommand("copy") ? (document.body.removeChild(textArea), !0) : (document.body.removeChild(textArea), 
             !1);
-        }, Core.getGmCookie = function(key, domain) {
-            return void 0 === domain && (domain = ""), new Promise((function(resolve, reject) {
-                if ("undefined" != typeof GM_cookie) {
-                    var obj = {
-                        name: key,
-                        url: Core.url
-                    };
-                    domain && (obj.domain = domain), GM_cookie.list(obj, (function(cookies, error) {
-                        (null == cookies ? void 0 : cookies.length) > 0 ? resolve(cookies[0].value) : (Logger.warn("get cookie [" + key + "] is error:" + error), 
-                        resolve(""));
-                    }));
-                } else resolve("");
-            }));
-        }, Core.getCookie = function(key) {
-            var i, l, tempArr, arr = document.cookie.replace(/\s/g, "").split(";");
-            for (i = 0, l = arr.length; i < l; i++) if ((tempArr = arr[i].split("="))[0] == key) return decodeURIComponent(tempArr[1]);
+        }
+        static getGmCookie(key, domain = "") {
+            return new Promise((resolve, reject) => {
+                if ("undefined" == typeof GM_cookie) return void resolve("");
+                let obj = {
+                    name: key,
+                    url: Core.url
+                };
+                domain && (obj.domain = domain), GM_cookie.list(obj, (cookies, error) => {
+                    (null == cookies ? void 0 : cookies.length) > 0 ? resolve(cookies[0].value) : (Logger.warn(`get cookie [${key}] is error:${error}`), 
+                    resolve(""));
+                });
+            });
+        }
+        static getCookie(key) {
+            let arr = document.cookie.replace(/\s/g, "").split(";");
+            for (let i = 0, l = arr.length; i < l; i++) {
+                let tempArr = arr[i].split("=");
+                if (tempArr[0] == key) return decodeURIComponent(tempArr[1]);
+            }
             return "";
-        }, Core;
-    }(), styleInject('html .aside-nav {\n    -ms-text-size-adjust: 100%;\n    -webkit-text-size-adjust: 100%;\n    -webkit-font-smoothing: antialiased;\n    font-size: 62.5%\n}\n\nbody .aside-nav {\n    font-family: "Helvetica Neue", Helvetica, "Microsoft YaHei", Arial, sans-serif;\n    margin: 0;\n    font-size: 1.6rem;\n    color: #4e546b\n}\n\n.aside-nav {\n    position: fixed;\n    bottom: 0;\n    left: -47px;\n    width: 260px;\n    height: 260px;\n    -webkit-filter: url(#goo);\n    filter: url(#goo);\n    -ms-user-select: none;\n    -moz-user-select: none;\n    -webkit-user-select: none;\n    user-select: none;\n    opacity: .75;\n    z-index: 99999\n}\n\n.aside-nav.no-filter {\n    -webkit-filter: none;\n    filter: none\n}\n\n.aside-nav .aside-menu {\n    position: absolute;\n    width: 70px;\n    height: 70px;\n    -webkit-border-radius: 50%;\n    border-radius: 50%;\n    background: #f34444;\n    left: -95px;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    margin: auto;\n    text-align: center;\n    line-height: 70px;\n    color: #fff;\n    font-size: 20px;\n    z-index: 1;\n    cursor: move\n}\n\n.aside-nav .menu-item {\n    position: absolute;\n    width: 60px;\n    height: 60px;\n    background-color: #ff7676;\n    left: -95px;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    margin: auto;\n    line-height: 60px;\n    text-align: center;\n    -webkit-border-radius: 50%;\n    border-radius: 50%;\n    text-decoration: none;\n    color: #fff;\n    -webkit-transition: background .5s, -webkit-transform .6s;\n    transition: background .5s, -webkit-transform .6s;\n    -moz-transition: transform .6s, background .5s, -moz-transform .6s;\n    transition: transform .6s, background .5s;\n    transition: transform .6s, background .5s, -webkit-transform .6s, -moz-transform .6s;\n    font-size: 14px;\n    -webkit-box-sizing: border-box;\n    -moz-box-sizing: border-box;\n    box-sizing: border-box\n}\n\n.aside-nav .menu-item:hover {\n    background: #a9c734\n}\n\n.aside-nav .menu-line {\n    line-height: 20px;\n    padding-top: 10px\n}\n\n.aside-nav:hover {\n    opacity: 1\n}\n\n.aside-nav:hover .aside-menu {\n    -webkit-animation: jello 1s;\n    -moz-animation: jello 1s;\n    animation: jello 1s\n}\n\n.aside-nav:hover .menu-first {\n    -webkit-transform: translate3d(0, -135%, 0);\n    -moz-transform: translate3d(0, -135%, 0);\n    transform: translate3d(0, -135%, 0)\n}\n\n.aside-nav:hover .menu-second {\n    -webkit-transform: translate3d(120%, -70%, 0);\n    -moz-transform: translate3d(120%, -70%, 0);\n    transform: translate3d(120%, -70%, 0)\n}\n\n.aside-nav:hover .menu-third {\n    -webkit-transform: translate3d(120%, 70%, 0);\n    -moz-transform: translate3d(120%, 70%, 0);\n    transform: translate3d(120%, 70%, 0)\n}\n\n.aside-nav:hover .menu-fourth {\n    -webkit-transform: translate3d(0, 135%, 0);\n    -moz-transform: translate3d(0, 135%, 0);\n    transform: translate3d(0, 135%, 0)\n}\n\n@-webkit-keyframes jello {\n    from, 11.1%, to {\n        -webkit-transform: none;\n        transform: none\n    }\n    22.2% {\n        -webkit-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -webkit-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -webkit-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -webkit-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -webkit-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -webkit-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -webkit-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n@-moz-keyframes jello {\n    from, 11.1%, to {\n        -moz-transform: none;\n        transform: none\n    }\n    22.2% {\n        -moz-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -moz-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -moz-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -moz-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -moz-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -moz-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -moz-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n@keyframes jello {\n    from, 11.1%, to {\n        -webkit-transform: none;\n        -moz-transform: none;\n        transform: none\n    }\n    22.2% {\n        -webkit-transform: skewX(-12.5deg) skewY(-12.5deg);\n        -moz-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -webkit-transform: skewX(6.25deg) skewY(6.25deg);\n        -moz-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -webkit-transform: skewX(-3.125deg) skewY(-3.125deg);\n        -moz-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -webkit-transform: skewX(1.5625deg) skewY(1.5625deg);\n        -moz-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -webkit-transform: skewX(-.78125deg) skewY(-.78125deg);\n        -moz-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -webkit-transform: skewX(0.390625deg) skewY(0.390625deg);\n        -moz-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -webkit-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        -moz-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n.animated {\n    -webkit-animation-duration: 1s;\n    -moz-animation-duration: 1s;\n    animation-duration: 1s;\n    -webkit-animation-fill-mode: both;\n    -moz-animation-fill-mode: both;\n    animation-fill-mode: both\n}\n\n@-webkit-keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -webkit-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -webkit-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -webkit-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -webkit-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -webkit-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -webkit-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n@-moz-keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -moz-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -moz-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -moz-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -moz-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -moz-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -moz-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n@keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -webkit-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        -moz-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -webkit-transform: translate3d(0, 800px, 0);\n        -moz-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -webkit-transform: translate3d(0, -20px, 0);\n        -moz-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -webkit-transform: translate3d(0, 10px, 0);\n        -moz-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -webkit-transform: translate3d(0, -5px, 0);\n        -moz-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -webkit-transform: translate3d(0, 0, 0);\n        -moz-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n.bounceInUp {\n    -webkit-animation-name: bounceInUp;\n    -moz-animation-name: bounceInUp;\n    animation-name: bounceInUp;\n    -webkit-animation-delay: 1s;\n    -moz-animation-delay: 1s;\n    animation-delay: 1s\n}\n'), 
+        }
+    }
+    function styleInject(css, ref) {
+        var insertAt, head, style;
+        void 0 === ref && (ref = {}), insertAt = ref.insertAt, css && "undefined" != typeof document && (head = document.head || document.getElementsByTagName("head")[0], 
+        (style = document.createElement("style")).type = "text/css", "top" === insertAt && head.firstChild ? head.insertBefore(style, head.firstChild) : head.appendChild(style), 
+        style.styleSheet ? style.styleSheet.cssText = css : style.appendChild(document.createTextNode(css)));
+    }
+    styleInject('html .aside-nav {\n    -ms-text-size-adjust: 100%;\n    -webkit-text-size-adjust: 100%;\n    -webkit-font-smoothing: antialiased;\n    font-size: 62.5%\n}\n\nbody .aside-nav {\n    font-family: "Helvetica Neue", Helvetica, "Microsoft YaHei", Arial, sans-serif;\n    margin: 0;\n    font-size: 1.6rem;\n    color: #4e546b\n}\n\n.aside-nav {\n    position: fixed;\n    bottom: 0;\n    left: -47px;\n    width: 260px;\n    height: 260px;\n    -webkit-filter: url(#goo);\n    filter: url(#goo);\n    -ms-user-select: none;\n    -moz-user-select: none;\n    -webkit-user-select: none;\n    user-select: none;\n    opacity: .75;\n    z-index: 99999\n}\n\n.aside-nav.no-filter {\n    -webkit-filter: none;\n    filter: none\n}\n\n.aside-nav .aside-menu {\n    position: absolute;\n    width: 70px;\n    height: 70px;\n    -webkit-border-radius: 50%;\n    border-radius: 50%;\n    background: #f34444;\n    left: -95px;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    margin: auto;\n    text-align: center;\n    line-height: 70px;\n    color: #fff;\n    font-size: 20px;\n    z-index: 1;\n    cursor: move\n}\n\n.aside-nav .menu-item {\n    position: absolute;\n    width: 60px;\n    height: 60px;\n    background-color: #ff7676;\n    left: -95px;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    margin: auto;\n    line-height: 60px;\n    text-align: center;\n    -webkit-border-radius: 50%;\n    border-radius: 50%;\n    text-decoration: none;\n    color: #fff;\n    -webkit-transition: background .5s, -webkit-transform .6s;\n    transition: background .5s, -webkit-transform .6s;\n    -moz-transition: transform .6s, background .5s, -moz-transform .6s;\n    transition: transform .6s, background .5s;\n    transition: transform .6s, background .5s, -webkit-transform .6s, -moz-transform .6s;\n    font-size: 14px;\n    -webkit-box-sizing: border-box;\n    -moz-box-sizing: border-box;\n    box-sizing: border-box\n}\n\n.aside-nav .menu-item:hover {\n    background: #a9c734\n}\n\n.aside-nav .menu-line {\n    line-height: 20px;\n    padding-top: 10px\n}\n\n.aside-nav:hover {\n    opacity: 1\n}\n\n.aside-nav:hover .aside-menu {\n    -webkit-animation: jello 1s;\n    -moz-animation: jello 1s;\n    animation: jello 1s\n}\n\n.aside-nav:hover .menu-first {\n    -webkit-transform: translate3d(0, -135%, 0);\n    -moz-transform: translate3d(0, -135%, 0);\n    transform: translate3d(0, -135%, 0)\n}\n\n.aside-nav:hover .menu-second {\n    -webkit-transform: translate3d(120%, -70%, 0);\n    -moz-transform: translate3d(120%, -70%, 0);\n    transform: translate3d(120%, -70%, 0)\n}\n\n.aside-nav:hover .menu-third {\n    -webkit-transform: translate3d(120%, 70%, 0);\n    -moz-transform: translate3d(120%, 70%, 0);\n    transform: translate3d(120%, 70%, 0)\n}\n\n.aside-nav:hover .menu-fourth {\n    -webkit-transform: translate3d(0, 135%, 0);\n    -moz-transform: translate3d(0, 135%, 0);\n    transform: translate3d(0, 135%, 0)\n}\n\n@-webkit-keyframes jello {\n    from, 11.1%, to {\n        -webkit-transform: none;\n        transform: none\n    }\n    22.2% {\n        -webkit-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -webkit-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -webkit-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -webkit-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -webkit-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -webkit-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -webkit-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n@-moz-keyframes jello {\n    from, 11.1%, to {\n        -moz-transform: none;\n        transform: none\n    }\n    22.2% {\n        -moz-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -moz-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -moz-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -moz-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -moz-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -moz-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -moz-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n@keyframes jello {\n    from, 11.1%, to {\n        -webkit-transform: none;\n        -moz-transform: none;\n        transform: none\n    }\n    22.2% {\n        -webkit-transform: skewX(-12.5deg) skewY(-12.5deg);\n        -moz-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n    33.3% {\n        -webkit-transform: skewX(6.25deg) skewY(6.25deg);\n        -moz-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n    44.4% {\n        -webkit-transform: skewX(-3.125deg) skewY(-3.125deg);\n        -moz-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n    55.5% {\n        -webkit-transform: skewX(1.5625deg) skewY(1.5625deg);\n        -moz-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n    66.6% {\n        -webkit-transform: skewX(-.78125deg) skewY(-.78125deg);\n        -moz-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n    77.7% {\n        -webkit-transform: skewX(0.390625deg) skewY(0.390625deg);\n        -moz-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n    88.8% {\n        -webkit-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        -moz-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n.animated {\n    -webkit-animation-duration: 1s;\n    -moz-animation-duration: 1s;\n    animation-duration: 1s;\n    -webkit-animation-fill-mode: both;\n    -moz-animation-fill-mode: both;\n    animation-fill-mode: both\n}\n\n@-webkit-keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -webkit-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -webkit-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -webkit-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -webkit-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -webkit-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -webkit-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n@-moz-keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -moz-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -moz-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -moz-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -moz-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -moz-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -moz-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n@keyframes bounceInUp {\n    from, 60%, 75%, 90%, to {\n        -webkit-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        -moz-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n    from {\n        opacity: 0;\n        -webkit-transform: translate3d(0, 800px, 0);\n        -moz-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n    60% {\n        opacity: 1;\n        -webkit-transform: translate3d(0, -20px, 0);\n        -moz-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n    75% {\n        -webkit-transform: translate3d(0, 10px, 0);\n        -moz-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n    90% {\n        -webkit-transform: translate3d(0, -5px, 0);\n        -moz-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n    to {\n        -webkit-transform: translate3d(0, 0, 0);\n        -moz-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n.bounceInUp {\n    -webkit-animation-name: bounceInUp;\n    -moz-animation-name: bounceInUp;\n    animation-name: bounceInUp;\n    -webkit-animation-delay: 1s;\n    -moz-animation-delay: 1s;\n    animation-delay: 1s\n}\n'), 
     function(Common) {
-        var Menu = function() {
-            function Menu() {
+        class Menu {
+            constructor() {
                 this.core = new Core, this.site = /tv.wandhi.com/i, this.userAgent = navigator.userAgent, 
                 this.menusClass = [ "first", "second", "third", "fourth", "fifth" ], this.menuSelector = "#Wandhi-nav";
             }
-            return Menu.prototype.loader = function() {}, Menu.prototype.getBody = function(option) {
-                return '<svg width="0" height="0"><defs><filter id="goo"><feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"></feGaussianBlur><feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo"></feColorMatrix><feComposite in="SourceGraphic" in2="goo" operator="atop"></feComposite></filter></defs></svg><div class="aside-nav bounceInUp animated" id="Wandhi-nav"><label for="" class="aside-menu" title="\u6309\u4f4f\u62d6\u52a8">VIP</label>' + option + "</div>";
-            }, Menu.prototype.Init = function(menus, callback, skipIframe) {
-                var that, str, drags, asideNav, _this = this;
-                void 0 === skipIframe && (skipIframe = !0), Core.inIframe() && skipIframe || (that = this, 
-                this.loader(), str = "", menus.forEach((function(element, index) {
-                    str += '<a href="javascript:void(0)" title="' + element.title + '" data-cat="' + element.type + '" class="menu-item menu-line menu-' + _this.menusClass[index] + '">' + element.show + "</a>";
-                })), Logger.info("\u8ffd\u52a0\u83dc\u5355"), Core.bodyAppend(this.getBody(str)), 
-                /Safari|iPhone/i.test(this.userAgent) && /chrome/i.test(this.userAgent) && $("#Wandhi-nav").addClass("no-filter"), 
-                drags = {
+            loader() {}
+            getBody(option) {
+                return `<svg width="0" height="0"><defs><filter id="goo"><feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"></feGaussianBlur><feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo"></feColorMatrix><feComposite in="SourceGraphic" in2="goo" operator="atop"></feComposite></filter></defs></svg><div class="aside-nav bounceInUp animated" id="Wandhi-nav"><label for="" class="aside-menu" title="\u6309\u4f4f\u62d6\u52a8">VIP</label>${option}</div>`;
+            }
+            Init(menus, callback, skipIframe = !0) {
+                if (Core.inIframe() && skipIframe) return;
+                this.loader();
+                let str = "";
+                menus.forEach((element, index) => {
+                    str += `<a href="javascript:void(0)" title="${element.title}" data-cat="${element.type}" class="menu-item menu-line menu-${this.menusClass[index]}">${element.show}</a>`;
+                }), Logger.info("\u8ffd\u52a0\u83dc\u5355"), Core.bodyAppend(this.getBody(str)), 
+                /Safari|iPhone/i.test(this.userAgent) && /chrome/i.test(this.userAgent) && $("#Wandhi-nav").addClass("no-filter");
+                const drags = {
                     down: !1,
                     x: 0,
                     y: 0,
@@ -483,8 +386,10 @@
                     winHei: 0,
                     clientX: 0,
                     clientY: 0
-                }, asideNav = $(this.menuSelector)[0], $("body").on("mousedown", "" + that.menuSelector, (function(a) {
-                    var getCss = function(a, e) {
+                };
+                let asideNav = $(this.menuSelector)[0];
+                $("body").on("mousedown", "" + this.menuSelector, (function(a) {
+                    const getCss = (a, e) => {
                         var _a, _b, _c;
                         return null !== (_b = null === (_a = document.defaultView) || void 0 === _a ? void 0 : _a.getComputedStyle(a, null)[e]) && void 0 !== _b ? _b : null !== (_c = a.currentStyle) && void 0 !== _c ? _c : a.currentStyle[e];
                     };
@@ -492,39 +397,45 @@
                     drags.y = parseInt(getCss(this, "top")), drags.winHei = $(window).height(), drags.winWid = $(window).width(), 
                     $(document).on("mousemove", (function(a) {
                         var e = a.clientX - drags.clientX, t = a.clientY - drags.clientY;
-                        (asideNav = asideNav || $("#Wandhi-nav")[0]).style.top = drags.y + t + "px", asideNav.style.left = drags.x + e + "px";
+                        asideNav = asideNav || $("#Wandhi-nav")[0], asideNav.style.top = drags.y + t + "px", 
+                        asideNav.style.left = drags.x + e + "px";
                     }));
-                })).on("mouseup", "" + that.menuSelector, (function() {
+                })).on("mouseup", "" + this.menuSelector, (function() {
                     drags.down = !1, $(document).off("mousemove");
-                })), Menu.fullScreenMirror(), callback.call(this));
-            }, Menu.fullScreenMirror = function() {
-                unsafeWindow.document.onfullscreenchange = function(e) {
+                })), Menu.fullScreenMirror(), callback.call(this);
+            }
+            static fullScreenMirror() {
+                unsafeWindow.document.onfullscreenchange = e => {
                     Logger.debug("fullElement:" + unsafeWindow.document.fullscreenElement), Menu.autoHide && (unsafeWindow.document.fullscreenElement ? $("#" + Menu.mainId).hide() : $("#" + Menu.mainId).show());
                 };
-            }, Menu.close = function() {
+            }
+            static close() {
                 Menu.autoHide = !1, $("#" + Menu.mainId).hide();
-            }, Menu.mainId = "Wandhi-nav", Menu.autoHide = !0, Menu;
-        }();
-        Common.Menu = Menu;
-    }(Common || (Common = {})), PluginBase = function() {
-        function PluginBase() {
-            var _this = this;
-            this._unique = !0, this.semiui = !1, this.menu = new Common.Menu, this.Process = function() {
-                _this.semiui && Core.appendCss("https://registry.npmmirror.com/@douyinfe/semi-ui/2.51.0/files/dist/css/semi.min.css"), 
-                _this.loader(), _this.run();
+            }
+        }
+        Menu.mainId = "Wandhi-nav", Menu.autoHide = !0, Common.Menu = Menu;
+    }(Common || (Common = {}));
+    class PluginBase {
+        constructor() {
+            this._unique = !0, this.semiui = !1, this.menu = new Common.Menu, this.Process = () => {
+                this.semiui && Core.appendCss("https://registry.npmmirror.com/@douyinfe/semi-ui/2.51.0/files/dist/css/semi.min.css"), 
+                this.loader(), this.run();
             }, this._appName = "base";
         }
-        return PluginBase.prototype.unique = function() {
+        unique() {
             return this._unique;
-        }, PluginBase.prototype.linkTest = function(url) {
-            var flag, _this = this;
-            return url || (url = Core.currentUrl()), flag = !1, this.rules.forEach((function(v, k) {
-                return !v.test(url) || (flag = !0, _this.site = k, !1);
-            })), flag;
-        }, PluginBase.prototype.appName = function() {
+        }
+        linkTest(url) {
+            url || (url = Core.currentUrl());
+            let flag = !1;
+            return this.rules.forEach((v, k) => !v.test(url) || (flag = !0, this.site = k, !1)), 
+            flag;
+        }
+        appName() {
             return this._appName;
-        }, PluginBase;
-    }(), function(SiteEnum) {
+        }
+    }
+    !function(SiteEnum) {
         SiteEnum.All = "All", SiteEnum.Settings = "Settings", SiteEnum.Settings_Jiexi_Opt = "Settings_Jiexi_Opt", 
         SiteEnum.Settings_AutoJump = "Settings_AutoJump", SiteEnum.Settings_AutoJump_Opt = "Settings_AutoJump_Opt", 
         SiteEnum.Settings_CSDN = "Settings_CSDN", SiteEnum.Settings_CSDN_Opt = "Settings_CSDN_Opt", 
@@ -559,78 +470,85 @@
         SiteEnum.Uisdc = "Uisdc", SiteEnum.YuQue = "YuQue", SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", 
         SiteEnum.WenJuanXing = "WenJuanXing", SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork", 
         SiteEnum.KuaKeShare = "KuaKeShare";
-    }(SiteEnum || (SiteEnum = {})), Config = function() {
-        function Config() {}
-        return Object.defineProperty(Config, "env", {
-            get: function() {
-                return GM_info;
-            },
-            enumerable: !1,
-            configurable: !0
-        }), Config.get = function(key, defaultValue) {
-            var objStr, obj;
-            if (void 0 === defaultValue && (defaultValue = ""), objStr = GM_getValue(this.encode(key), null)) {
-                if (-1 == (obj = JSON.parse(objStr)).exp || obj.exp > (new Date).getTime()) return Logger.info("cache true:" + key + "," + obj.exp), 
+    }(SiteEnum || (SiteEnum = {}));
+    class Config {
+        static get env() {
+            return GM_info;
+        }
+        static get(key, defaultValue = "") {
+            let objStr = GM_getValue(this.encode(key), null);
+            if (objStr) {
+                let obj = JSON.parse(objStr);
+                if (-1 == obj.exp || obj.exp > (new Date).getTime()) return Logger.info(`cache true:${key},${obj.exp}`), 
                 obj.value;
                 GM_deleteValue(key);
             }
             return Logger.info("cache false"), defaultValue;
-        }, Config.set = function(key, v, exp) {
-            void 0 === exp && (exp = -1);
-            var obj = {
+        }
+        static set(key, v, exp = -1) {
+            let obj = {
                 key: key,
                 value: v,
                 exp: -1 == exp ? exp : (new Date).getTime() + 1e3 * exp
             };
             Logger.debug(obj), GM_setValue(this.encode(key), JSON.stringify(obj));
-        }, Config.remember = function(key, exp, callback) {
-            var _this = this;
-            return new Promise((function(reso, reject) {
-                var v = _this.get(key, null);
-                null == v || "" === v ? callback().then((function(res) {
-                    _this.set(key, res, exp), reso(res);
-                })).catch((function(e) {
-                    reject(e);
-                })) : (Logger.debug(v), reso(v));
-            }));
-        }, Config.clear = function(key) {
-            GM_deleteValue(key);
-        }, Config.decode = function(str) {
-            return atob(str);
-        }, Config.encode = function(str) {
-            return btoa(str);
-        }, Config.inc = function(s) {
-            var v = Config.get(s, 0);
-            v++, Config.set(s, v);
-        }, Config;
-    }(), AjaxOption = function() {
-        function AjaxOption(_url, _methodType, _data, _success, _header, timeOut) {
-            void 0 === _methodType && (_methodType = "GET"), void 0 === _header && (_header = new Map), 
-            void 0 === timeOut && (timeOut = 60), this.url = _url, this.methodType = _methodType, 
-            this.onSuccess = _success, this.onError = _success, this.data = _data, this.headers = _header, 
-            this.timeOut = timeOut;
         }
-        return AjaxOption.prototype.getData = function() {
-            var fd_1, fd, i;
+        static remember(key, exp, callback) {
+            return new Promise((reso, reject) => {
+                let v = this.get(key, null);
+                null == v || "" === v ? callback().then(res => {
+                    this.set(key, res, exp), reso(res);
+                }).catch(e => {
+                    reject(e);
+                }) : (Logger.debug(v), reso(v));
+            });
+        }
+        static clear(key) {
+            GM_deleteValue(key);
+        }
+        static decode(str) {
+            return atob(str);
+        }
+        static encode(str) {
+            return btoa(str);
+        }
+        static inc(s) {
+            let v = Config.get(s, 0);
+            v++, Config.set(s, v);
+        }
+    }
+    class AjaxOption {
+        constructor(_url, _methodType = "GET", _data, _success, _header = new Map, timeOut = 60) {
+            this.url = _url, this.methodType = _methodType, this.onSuccess = _success, this.onError = _success, 
+            this.data = _data, this.headers = _header, this.timeOut = timeOut;
+        }
+        getData() {
             if (this.data instanceof FormData) return this.data;
-            if (this.data instanceof Map) return fd_1 = new FormData, this.data.forEach((function(v, k) {
-                fd_1.append(k, v);
-            })), fd_1;
-            for (i in fd = new FormData, this.data) fd.append(i, this.data[i]);
-            return fd;
-        }, AjaxOption;
-    }(), Http = function() {
-        function Http() {}
-        return Http.ajax = function(option) {
-            var _a, _b, _c, head;
+            if (this.data instanceof Map) {
+                let fd = new FormData;
+                return this.data.forEach((v, k) => {
+                    fd.append(k, v);
+                }), fd;
+            }
+            {
+                let fd = new FormData;
+                for (var i in this.data) fd.append(i, this.data[i]);
+                return fd;
+            }
+        }
+    }
+    class Http {
+        constructor() {}
+        static ajax(option) {
+            var _a, _b, _c;
             option.headers.set("User-Agent", null !== (_a = unsafeWindow.navigator.userAgent) && void 0 !== _a ? _a : "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36"), 
-            0 == option.headers.has("Accept") && option.headers.set("Accept", "application/atom+xml,application/xml,text/xml"), 
-            head = new HttpHeaders, option.url.indexOf("wandhi") > 0 && (head.version = Config.env.script.version, 
-            head.auth = null !== (_b = Config.env.script.author) && void 0 !== _b ? _b : "", 
+            0 == option.headers.has("Accept") && option.headers.set("Accept", "application/atom+xml,application/xml,text/xml");
+            let head = new HttpHeaders;
+            option.url.indexOf("wandhi") > 0 && (head.version = Config.env.script.version, head.auth = null !== (_b = Config.env.script.author) && void 0 !== _b ? _b : "", 
             head.namespace = null !== (_c = Config.env.script.namespace) && void 0 !== _c ? _c : ""), 
-            option.headers.forEach((function(v, k) {
+            option.headers.forEach((v, k) => {
                 head[k] = v;
-            })), GM_xmlhttpRequest({
+            }), GM_xmlhttpRequest({
                 url: option.url,
                 method: option.methodType,
                 headers: head,
@@ -649,86 +567,93 @@
                     (null === (_a = res.finalUrl) || void 0 === _a ? void 0 : _a.indexOf("adguard.org")) > 0 || (null === (_b = option.url) || void 0 === _b ? void 0 : _b.indexOf("jsdelivr")) > 0 ? option.onError(null) : null === (_c = option.onError) || void 0 === _c || _c.call(option, res);
                 }
             });
-        }, Http.ajaxNew = function(url, method, data, header, dataType) {
-            var _a, _b, head, _getData, _data;
-            return void 0 === header && (header = new Map), void 0 === dataType && (dataType = void 0), 
-            head = new HttpHeaders, header.size > 0 && header.forEach((function(v, k) {
+        }
+        static ajaxNew(url, method, data, header = new Map, dataType) {
+            var _a, _b;
+            let head = new HttpHeaders;
+            header.size > 0 && header.forEach((v, k) => {
                 head[k] = v;
-            })), url.indexOf("wandhi") > 0 && (head.version = Config.env.script.version, head.auth = null !== (_a = Config.env.script.author) && void 0 !== _a ? _a : "", 
-            head.namespace = null !== (_b = Config.env.script.namespace) && void 0 !== _b ? _b : ""), 
-            _getData = function(_data) {
+            }), url.indexOf("wandhi") > 0 && (head.version = Config.env.script.version, head.auth = null !== (_a = Config.env.script.author) && void 0 !== _a ? _a : "", 
+            head.namespace = null !== (_b = Config.env.script.namespace) && void 0 !== _b ? _b : "");
+            let _data = (_data => {
                 if (_data instanceof FormData) return data;
                 if (data instanceof Map) {
-                    var fd_1 = new FormData;
-                    return _data.forEach((function(v, k) {
-                        var _v;
-                        _v = "string" == typeof v ? v.toString() : JSON.stringify(v), fd_1.append(k, _v);
-                    })), fd_1;
+                    let fd = new FormData;
+                    return _data.forEach((v, k) => {
+                        let _v;
+                        _v = "string" == typeof v ? v.toString() : JSON.stringify(v), fd.append(k, _v);
+                    }), fd;
                 }
                 return JSON.stringify(_data);
-            }, _data = _getData(data), Logger.debug(_data), null != dataType ? "multipart/form-data" != dataType && (head["Content-Type"] = dataType) : data instanceof FormData || data instanceof Map ? head["Content-Type"] = "application/x-www-form-urlencoded; charset=utf-8" : head["Content-Type"] = "application/json; charset=utf-8", 
-            new Promise((function(resolve, reject) {
+            })(data);
+            return Logger.debug(_data), null != dataType ? "multipart/form-data" != dataType && (head["Content-Type"] = dataType) : data instanceof FormData || data instanceof Map ? head["Content-Type"] = "application/x-www-form-urlencoded; charset=utf-8" : head["Content-Type"] = "application/json; charset=utf-8", 
+            new Promise((resolve, reject) => {
                 GM_xmlhttpRequest({
                     url: url,
                     method: method,
                     headers: head,
                     data: _data,
-                    onload: function(res) {
+                    onload: res => {
                         try {
                             resolve(JSON.parse(res.responseText));
                         } catch (error) {
                             Logger.debug(error), resolve(res.responseText);
                         }
                     },
-                    onerror: function(err) {
+                    onerror: err => {
                         Logger.debug(err), reject(err);
                     },
-                    ontimeout: function() {
+                    ontimeout: () => {
                         Logger.debug("\u8bf7\u6c42\u8d85\u65f6:" + url), reject("\u8bf7\u6c42\u8d85\u65f6");
                     }
                 });
-            }));
-        }, Http.getData = function(url, callback) {
+            });
+        }
+        static getData(url, callback) {
             $.getJSON(url, (function(d) {
                 callback(d);
             }));
-        }, Http.JqGet = function(url, callback, head) {
-            void 0 === head && (head = new Map), Http.get(url, new Map, head).then((function(d) {
+        }
+        static JqGet(url, callback, head = new Map) {
+            Http.get(url, new Map, head).then(d => {
                 callback(d);
-            }));
-        }, Http.post = function(url, data, timeOut) {
-            return void 0 === timeOut && (timeOut = 10), new Promise((function(resolve) {
+            });
+        }
+        static post(url, data, timeOut = 10) {
+            return new Promise((function(resolve) {
                 Http.ajax(new AjaxOption(url, "POST", data, (function(data) {
                     resolve(data);
                 }), new Map, timeOut));
             }));
-        }, Http.get = function(url, data, head, loading, time_out) {
-            return void 0 === data && (data = new Map), void 0 === head && (head = new Map), 
-            void 0 === time_out && (time_out = 10), new Promise((function(resolve, reject) {
+        }
+        static get(url, data = new Map, head = new Map, loading = !0, time_out = 10) {
+            return new Promise((function(resolve, reject) {
                 Http.ajax(new AjaxOption(url, "GET", data, (function(data) {
-                    var _a, res;
+                    var _a;
                     try {
-                        res = null !== (_a = JSON.parse(data)) && void 0 !== _a ? _a : data, resolve(res);
+                        let res = null !== (_a = JSON.parse(data)) && void 0 !== _a ? _a : data;
+                        resolve(res);
                     } catch (error) {
                         Logger.debug(error), reject();
                     }
                 }), head, time_out));
             }));
-        }, Http.getWithHead = function(url, data, head, time_out) {
-            return void 0 === data && (data = new Map), void 0 === head && (head = new Map), 
-            void 0 === time_out && (time_out = 10), new Promise((function(resolve, reject) {
+        }
+        static getWithHead(url, data = new Map, head = new Map, time_out = 10) {
+            return new Promise((function(resolve, reject) {
                 Http.ajax(new AjaxOption(url, "GET", data, (function(data) {
-                    var _a, res;
+                    var _a;
                     try {
-                        res = null !== (_a = JSON.parse(data)) && void 0 !== _a ? _a : data, resolve(res);
+                        let res = null !== (_a = JSON.parse(data)) && void 0 !== _a ? _a : data;
+                        resolve(res);
                     } catch (error) {
                         Logger.debug(error), reject();
                     }
                 }), head, time_out));
             }));
-        }, Http.postWithHead = function(url, data, head, time_out) {
-            return void 0 === data && (data = new Map), void 0 === head && (head = new Map), 
-            void 0 === time_out && (time_out = 10), new Promise((function(resolve, reject) {
+        }
+        static postWithHead(url, data = new Map, head = new Map, time_out = 10) {
+            return new Promise((function(resolve, reject) {
                 Http.ajax(new AjaxOption(url, "POST", data, (function(data) {
                     try {
                         resolve(data);
@@ -737,320 +662,330 @@
                     }
                 }), head, time_out));
             }));
-        }, Http.get_text = function(url) {
+        }
+        static get_text(url) {
             return new Promise((function(resolve) {
                 Http.ajax(new AjaxOption(url, "GET", new Map, (function(data) {
                     resolve(data);
                 })));
             }));
-        }, Http.get302 = function(url) {
+        }
+        static get302(url) {
             return new Promise((function(resolve) {
                 GM_xmlhttpRequest({
                     url: url,
                     onload: function(response) {
                         resolve(response.finalUrl);
                     },
-                    onabort: function() {
+                    onabort: () => {
                         resolve("");
                     },
                     method: "GET",
-                    onerror: function(response) {
+                    onerror: response => {
                         resolve("");
                     }
                 });
             }));
-        }, Http;
-    }(), HttpHeaders = function HttpHeaders() {}, Hour = 60 * 60, Route = function() {
-        function Route() {}
-        return Object.defineProperty(Route, "apiRoot", {
-            get: function() {
-                return "https://api.huizhek.com/api";
-            },
-            enumerable: !1,
-            configurable: !0
-        }), Route.baseApi = function(api, data, callback, timeOut) {
-            void 0 === timeOut && (timeOut = 10), Http.post(Route.apiRoot + api, data, timeOut).then((function(res) {
+        }
+    }
+    class HttpHeaders {}
+    class Route {
+        static get apiRoot() {
+            return "https://api.huizhek.com/api";
+        }
+        static baseApi(api, data, callback, timeOut = 10) {
+            Http.post(Route.apiRoot + api, data, timeOut).then(res => {
                 callback(res);
-            }));
-        }, Route.querySbx = function(id, callback) {
-            var _this = this;
-            "" !== Config.get(this.sxb_key, "") ? this.query365(id, Config.get(this.sxb_key), callback) : this.queryValue("sxb_anhao", (function(res) {
-                _this.query365(id, res.data, callback);
-            }));
-        }, Route.sbxFeedback = function(id, answer) {
-            this.baseApi("/tools/record", new Map([ [ "id", id ], [ "data", answer ], [ "anhao", Config.get(this.sxb_key) ] ]), (function() {}));
-        }, Route.query365 = function(id, anhao, callback) {
-            var api = Config.get("sxb_api");
-            api ? Http.post(api, new Map([ [ "docinfo", "https://www.shangxueba.com/ask/" + id + ".html" ], [ "anhao", anhao ] ])).then((function(res) {
+            });
+        }
+        static querySbx(id, callback) {
+            "" !== Config.get(this.sxb_key, "") ? this.query365(id, Config.get(this.sxb_key), callback) : this.queryValue("sxb_anhao", res => {
+                this.query365(id, res.data, callback);
+            });
+        }
+        static sbxFeedback(id, answer) {
+            this.baseApi("/tools/record", new Map([ [ "id", id ], [ "data", answer ], [ "anhao", Config.get(this.sxb_key) ] ]), () => {});
+        }
+        static query365(id, anhao, callback) {
+            let api = Config.get("sxb_api");
+            api ? Http.post(api, new Map([ [ "docinfo", `https://www.shangxueba.com/ask/${id}.html` ], [ "anhao", anhao ] ])).then(res => {
                 callback(res);
-            })) : this.queryValue("sxb_api", (function(res) {
-                Config.set("sxb_api", res.data, 864e5), Http.post(res.data, new Map([ [ "docinfo", "https://www.shangxueba.com/ask/" + id + ".html" ], [ "anhao", anhao ] ]));
-            }));
-        }, Route.queryValue = function(key, callback) {
+            }) : this.queryValue("sxb_api", res => {
+                Config.set("sxb_api", res.data, 864e5), Http.post(res.data, new Map([ [ "docinfo", `https://www.shangxueba.com/ask/${id}.html` ], [ "anhao", anhao ] ]));
+            });
+        }
+        static queryValue(key, callback) {
             this.baseApi(Route.config, new Map([ [ "key", key ] ]), callback);
-        }, Route.queryHistory = function(url, siteType, callback) {
+        }
+        static queryHistory(url, siteType, callback) {
             this.baseApi(this.history, new Map([ [ "url", url ], [ "type", siteType ] ]), callback);
-        }, Route.queryHistoryV5 = function(url) {
-            var _this = this;
-            return new Promise((function(reso, reje) {
-                _this.baseApi(_this.historyv3, new Map([ [ "url", url ] ]), (function(res) {
+        }
+        static queryHistoryV5(url) {
+            return new Promise((reso, reje) => {
+                this.baseApi(this.historyv3, new Map([ [ "url", url ] ]), res => {
                     res.code ? reso(res) : reje(res);
-                }));
-            }));
-        }, Route.queryHistoryV4 = function(url, callback) {
+                });
+            });
+        }
+        static queryHistoryV4(url, callback) {
             Http.JqGet(url, callback);
-        }, Route.queryBiliImg = function(aid, callback) {
-            Http.getData(this.biliInfo + "?aid=" + aid, callback);
-        }, Route.queryBiliDown = function(aid, cid, callback) {
-            Http.get(this.bilidown + "?cid=" + cid + "&avid=" + aid + "&qn=112&fnval=4048&s=wandhi").then((function(res) {
+        }
+        static queryBiliImg(aid, callback) {
+            Http.getData(`${this.biliInfo}?aid=${aid}`, callback);
+        }
+        static queryBiliDown(aid, cid, callback) {
+            Http.get(`${this.bilidown}?cid=${cid}&avid=${aid}&qn=112&fnval=4048&s=wandhi`).then(res => {
                 callback(res);
-            }));
-        }, Route.queryBiliDownWeb = function(aid, cid) {
-            return Http.get("https://api.bilibili.com/x/player/wbi/playurl?avid=" + aid + "&cid=" + cid);
-        }, Route.queryCoupons = function(itemId, callback) {
+            });
+        }
+        static queryBiliDownWeb(aid, cid) {
+            return Http.get(`https://api.bilibili.com/x/player/wbi/playurl?avid=${aid}&cid=${cid}`);
+        }
+        static queryCoupons(itemId, callback) {
             this.baseApi(this.coupons, new Map([ [ "id", itemId ] ]), callback);
-        }, Route.queryJdCoupons = function(itemId, callback) {
+        }
+        static queryJdCoupons(itemId, callback) {
             Route.baseApi(Route.jd_coupons, new Map([ [ "item_id", itemId ] ]), callback);
-        }, Route.querySnCoupons = function(url, callback) {
+        }
+        static querySnCoupons(url, callback) {
             Route.baseApi(Route.sn_coupons, new Map([ [ "url", url ] ]), callback);
-        }, Route.queryVpCoupons = function(url, callback) {
+        }
+        static queryVpCoupons(url, callback) {
             Route.baseApi(Route.vp_coupons, new Map([ [ "url", url ] ]), callback);
-        }, Route.queryKlCoupons = function(itemId) {
-            return new Promise((function(reso) {
-                Route.baseApi(Route.kl_coupons, new Map([ [ "itemId", itemId ] ]), (function(res) {
+        }
+        static queryKlCoupons(itemId) {
+            return new Promise(reso => {
+                Route.baseApi(Route.kl_coupons, new Map([ [ "itemId", itemId ] ]), res => {
                     reso(res);
-                }));
-            }));
-        }, Route.couponQuery = function(itemId, type, callback) {
+                });
+            });
+        }
+        static couponQuery(itemId, type, callback) {
             Route.baseApi("/coupons/info", new Map([ [ "id", itemId ], [ "type", type ] ]), callback);
-        }, Route._getSurl = function() {
-            var reg = /(?<=s\/|surl=)([a-zA-Z0-9_-]+)/g;
+        }
+        static _getSurl() {
+            let reg = /(?<=s\/|surl=)([a-zA-Z0-9_-]+)/g;
             return reg.test(Core.url) ? Core.url.match(reg)[0] : "";
-        }, Route.baiduDriect = function(fids, accessToken) {
-            return __awaiter(this, void 0, Promise, (function() {
-                var url;
-                return __generator(this, (function(_a) {
-                    return url = "https://pan.baidu.com/rest/2.0/xpan/multimedia?method=filemetas&dlink=1&fsids=" + fids + "&access_token=" + accessToken, 
-                    [ 2, Http.ajaxNew(url, "GET", null, new Map([ [ "User-Agent", "pan.baidu.com" ] ])) ];
-                }));
+        }
+        static baiduDriect(fids, accessToken) {
+            return __awaiter(this, void 0, void 0, (function*() {
+                let url = `https://pan.baidu.com/rest/2.0/xpan/multimedia?method=filemetas&dlink=1&fsids=${fids}&access_token=${accessToken}`;
+                return Http.ajaxNew(url, "GET", null, new Map([ [ "User-Agent", "pan.baidu.com" ] ]));
             }));
-        }, Route.baiduAccessToken = function() {
+        }
+        static baiduAccessToken() {
             return Http.get302("https://openapi.baidu.com/oauth/2.0/authorize?client_id=IlLqBbU3GjQ0t46TRwFateTprHWl39zF&response_type=token&redirect_uri=oob&scope=basic,netdisk");
-        }, Route.baiduAccessTokenAuth = function() {
+        }
+        static baiduAccessTokenAuth() {
             var _a, _b;
-            return __awaiter(this, void 0, void 0, (function() {
-                var url, html, data;
-                return __generator(this, (function(_c) {
-                    switch (_c.label) {
-                      case 0:
-                        return url = "https://openapi.baidu.com/oauth/2.0/authorize?client_id=IlLqBbU3GjQ0t46TRwFateTprHWl39zF&response_type=token&redirect_uri=oob&scope=basic,netdisk", 
-                        [ 4, Http.get_text(url) ];
-
-                      case 1:
-                        return html = _c.sent(), (data = new Map).set("grant_permissions_arr", "netdisk"), 
-                        data.set("bdstoken", null === (_a = null == html ? void 0 : html.match(/name="bdstoken"\s+value="([^"]+)"/)) || void 0 === _a ? void 0 : _a[1]), 
-                        data.set("client_id", null === (_b = null == html ? void 0 : html.match(/name="client_id"\s+value="([^"]+)"/)) || void 0 === _b ? void 0 : _b[1]), 
-                        data.set("response_type", "token"), data.set("display", "page"), data.set("grant_permissions", "basic,netdisk"), 
-                        [ 2, Http.ajaxNew(url, "POST", data, new Map, "multipart/form-data") ];
-                    }
-                }));
+            return __awaiter(this, void 0, void 0, (function*() {
+                let url = "https://openapi.baidu.com/oauth/2.0/authorize?client_id=IlLqBbU3GjQ0t46TRwFateTprHWl39zF&response_type=token&redirect_uri=oob&scope=basic,netdisk", html = yield Http.get_text(url), data = new Map;
+                return data.set("grant_permissions_arr", "netdisk"), data.set("bdstoken", null === (_a = null == html ? void 0 : html.match(/name="bdstoken"\s+value="([^"]+)"/)) || void 0 === _a ? void 0 : _a[1]), 
+                data.set("client_id", null === (_b = null == html ? void 0 : html.match(/name="client_id"\s+value="([^"]+)"/)) || void 0 === _b ? void 0 : _b[1]), 
+                data.set("response_type", "token"), data.set("display", "page"), data.set("grant_permissions", "basic,netdisk"), 
+                Http.ajaxNew(url, "POST", data, new Map, "multipart/form-data");
             }));
-        }, Route.quarkDriect = function(fids) {
+        }
+        static quarkDriect(fids) {
             return Http.ajaxNew("https://drive.quark.cn/1/clouddrive/file/download?pr=ucpro&fr=pc", "POST", {
                 fids: fids
             }, new Map([ [ "User-Agent", "quark-cloud-drive" ] ]));
-        }, Route.RouteConfig = function() {
-            return new Promise((function(resolve) {
-                var config = Config.get("script_config", !1);
-                config ? resolve(config) : Route.baseApi("/config/script", new Map, (function(res) {
-                    var config = JSON.parse(Core.decode(res.data));
-                    Config.set("script_config", config, 2 * Hour), resolve(config);
-                }));
-            }));
-        }, Route.sxb_key = "sxb_anhao", Route.config = "/config/query", Route.history = "/history/", 
-        Route.historyv1 = "/history/v1", Route.historyv2 = "/history/v2", Route.historyv3 = "/history/v3", 
-        Route.bili = "/tools/bili", Route.biliInfo = "https://api.bilibili.com/x/web-interface/view", 
-        Route.bilidown = "https://api.bilibili.com/x/player/wbi/playurl", Route.coupons = "/tb/infos/", 
-        Route.like = "/tb/guesslike", Route.jd_coupons = "/jd/info", Route.sn_coupons = "/sn/info", 
-        Route.vp_coupons = "/vp/info", Route.kl_coupons = "/kl/info", Route;
-    }(), EventHelper = function() {
-        function EventHelper() {}
-        return EventHelper.bind_click = function(query, act) {
+        }
+        static RouteConfig() {
+            return new Promise(resolve => {
+                let config = Config.get("script_config", !1);
+                config ? resolve(config) : Route.baseApi("/config/script", new Map, res => {
+                    let config = JSON.parse(Core.decode(res.data));
+                    Config.set("script_config", config, 7200), resolve(config);
+                });
+            });
+        }
+    }
+    Route.sxb_key = "sxb_anhao", Route.config = "/config/query", Route.history = "/history/", 
+    Route.historyv1 = "/history/v1", Route.historyv2 = "/history/v2", Route.historyv3 = "/history/v3", 
+    Route.bili = "/tools/bili", Route.biliInfo = "https://api.bilibili.com/x/web-interface/view", 
+    Route.bilidown = "https://api.bilibili.com/x/player/wbi/playurl", Route.coupons = "/tb/infos/", 
+    Route.like = "/tb/guesslike", Route.jd_coupons = "/jd/info", Route.sn_coupons = "/sn/info", 
+    Route.vp_coupons = "/vp/info", Route.kl_coupons = "/kl/info";
+    class EventHelper {
+        static bind_click(query, act) {
             var _a;
-            null === (_a = document.querySelector(query)) || void 0 === _a || _a.addEventListener("click", (function(e) {
+            null === (_a = document.querySelector(query)) || void 0 === _a || _a.addEventListener("click", e => {
                 act();
-            }));
-        }, EventHelper;
-    }(), Runtime = function() {
-        function Runtime() {}
-        return Object.defineProperty(Runtime, "url", {
-            get: function() {
-                return window.location.href;
-            },
-            enumerable: !1,
-            configurable: !0
-        }), Runtime;
-    }(), BaseCoupon = function() {
-        function BaseCoupon() {}
-        return BaseCoupon.prototype.init_qrcode = function(url) {
-            return new Promise((function(resolve) {
-                var qr = qrcode(0, "H");
+            });
+        }
+    }
+    class Runtime {
+        static get url() {
+            return window.location.href;
+        }
+    }
+    class BaseCoupon {
+        constructor() {}
+        init_qrcode(url) {
+            return new Promise(resolve => {
+                let qr = qrcode(0, "H");
                 qr.addData(url), qr.make(), $("#vip-plugin-outside-coupons-qrcode-img").html(qr.createSvgTag(4, 1)), 
                 resolve(!0);
-            }));
-        }, BaseCoupon.prototype.init_coupon_info = function(after, price, time, q_url) {
-            var coup_info, act, url, now;
-            void 0 === q_url && (q_url = ""), coup_info = "<p>\u79fb\u52a8\u7aef<span>\u5feb\u6377</span>\u8d2d\u4e70</p>", 
-            act = '<a class="vip-plugin-outside-coupons-button quan-none" href="javascript:void(0)">\u6253\u5f00\u624b\u673a\u626b\u4e00\u626b</a>', 
-            url = Runtime.url, q_url && (now = new Date, coup_info = "<p><span>" + price + '</span> \u5143\u5238</p><p class="vip-plugin-outside-coupons-date">\uff08' + Core.format(now, "yyyy-MM-dd") + " ~ " + time + "\uff09</p>", 
-            act = '<a class="vip-plugin-outside-coupons-button quan-exits">\u626b\u7801\u9886' + price + "\u5143\u4f18\u60e0\u5238</a>", 
-            url = q_url), new Promise((function(resolve) {
+            });
+        }
+        init_coupon_info(after, price, time, q_url = "") {
+            let coup_info = "<p>\u79fb\u52a8\u7aef<span>\u5feb\u6377</span>\u8d2d\u4e70</p>", act = '<a class="vip-plugin-outside-coupons-button quan-none" href="javascript:void(0)">\u6253\u5f00\u624b\u673a\u626b\u4e00\u626b</a>', url = Runtime.url;
+            if (q_url) {
+                let now = new Date;
+                coup_info = `<p><span>${price}</span> \u5143\u5238</p><p class="vip-plugin-outside-coupons-date">\uff08${Core.format(now, "yyyy-MM-dd")} ~ ${time}\uff09</p>`, 
+                act = `<a class="vip-plugin-outside-coupons-button quan-exits">\u626b\u7801\u9886${price}\u5143\u4f18\u60e0\u5238</a>`, 
+                url = q_url;
+            }
+            new Promise(resolve => {
                 $(".vip-plugin-outside-coupons-title").html(coup_info), $(".vip-plugin-outside-coupons-action").html(act), 
                 resolve();
-            })).then((function() {
-                q_url && EventHelper.bind_click(".vip-plugin-outside-coupons-button", (function() {
+            }).then(() => {
+                q_url && EventHelper.bind_click(".vip-plugin-outside-coupons-button", () => {
                     Core.open(url);
-                }));
-            }));
-        }, BaseCoupon.prototype.default = function(url) {
-            var _this = this;
-            void 0 === url && (url = ""), Logger.debug(url), this.init_qrcode("" == url ? Runtime.url : url).then((function(res) {
-                _this.init_coupon_info(0, 0, "");
-            }));
-        }, BaseCoupon;
-    }(), VpCoupon = function(_super) {
-        function VpCoupon() {
-            return null !== _super && _super.apply(this, arguments) || this;
+                });
+            });
         }
-        return __extends(VpCoupon, _super), VpCoupon.prototype.init_html = function(html) {
-            var _this = this;
-            return new Promise((function(resolve) {
+        default(url = "") {
+            Logger.debug(url), this.init_qrcode("" == url ? Runtime.url : url).then(res => {
+                this.init_coupon_info(0, 0, "");
+            });
+        }
+    }
+    class VpCoupon extends BaseCoupon {
+        init_html(html) {
+            return new Promise(resolve => {
                 if ($(".FW-product.clearfix").length) Core.appendTo(".FW-product.clearfix", html), 
                 resolve(!0); else {
-                    var that_1 = _this;
-                    Core.lazyload((function() {
-                        return that_1.init_html(html);
-                    }), 1);
+                    let that = this;
+                    Core.lazyload(() => that.init_html(html), 1);
                 }
-            }));
-        }, VpCoupon.prototype.init_coupons = function() {
-            var _this = this;
-            Route.queryVpCoupons(Runtime.url, (function(res) {
+            });
+        }
+        init_coupons() {
+            Route.queryVpCoupons(Runtime.url, res => {
                 var q, exp;
                 Logger.debug(res), res.code ? res.data.has_coupon ? (q = res.data, exp = new Date(q.quan_time), 
-                _this.init_qrcode(decodeURIComponent(q.quan_link)).then((function(res) {
+                this.init_qrcode(decodeURIComponent(q.quan_link)).then(res => {
                     var _a;
-                    _this.init_coupon_info(q.after_price, q.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), null !== (_a = decodeURIComponent(q.quan_link)) && void 0 !== _a ? _a : Core.url);
-                }))) : res.data.quan_link ? (_this.default(res.data.quan_link), EventHelper.bind_click("#vip-plugin-outside-coupons-qrcode-img", (function() {
+                    this.init_coupon_info(q.after_price, q.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), null !== (_a = decodeURIComponent(q.quan_link)) && void 0 !== _a ? _a : Core.url);
+                })) : res.data.quan_link ? (this.default(res.data.quan_link), EventHelper.bind_click("#vip-plugin-outside-coupons-qrcode-img", () => {
                     Core.open(res.data.quan_link);
-                }))) : _this.default() : _this.default();
-            }));
-        }, VpCoupon;
-    }(BaseCoupon), SuningCoupon = function(_super) {
-        function SuningCoupon() {
-            return null !== _super && _super.apply(this, arguments) || this;
+                })) : this.default() : this.default();
+            });
         }
-        return __extends(SuningCoupon, _super), SuningCoupon.prototype.init_html = function(html) {
-            var _this = this;
-            return new Promise((function(resolve) {
+    }
+    class SuningCoupon extends BaseCoupon {
+        init_html(html) {
+            return new Promise(resolve => {
                 if ($(".proinfo-container").length) Core.appendTo(".proinfo-container", html), resolve(!0); else {
-                    var that_1 = _this;
-                    Core.lazyload((function() {
-                        return that_1.init_html(html);
-                    }), 1);
+                    let that = this;
+                    Core.lazyload(() => that.init_html(html), 1);
                 }
-            }));
-        }, SuningCoupon.prototype.init_coupons = function() {
-            var _this = this;
-            Route.querySnCoupons(Runtime.url, (function(res) {
+            });
+        }
+        init_coupons() {
+            Route.querySnCoupons(Runtime.url, res => {
                 var q, exp;
                 Logger.debug(res), res.code ? res.data.has_coupon ? (q = res.data, exp = new Date(q.quan_time), 
-                _this.init_qrcode(decodeURIComponent(q.quan_link)).then((function(res) {
-                    _this.init_coupon_info(q.after_price, q.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), decodeURIComponent(q.quan_link));
-                }))) : res.data.quan_link ? (_this.default(res.data.quan_link), EventHelper.bind_click("#vip-plugin-outside-coupons-qrcode-img", (function() {
+                this.init_qrcode(decodeURIComponent(q.quan_link)).then(res => {
+                    this.init_coupon_info(q.after_price, q.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), decodeURIComponent(q.quan_link));
+                })) : res.data.quan_link ? (this.default(res.data.quan_link), EventHelper.bind_click("#vip-plugin-outside-coupons-qrcode-img", () => {
                     Core.open(res.data.quan_link);
-                }))) : _this.default() : _this.default();
-            }));
-        }, SuningCoupon;
-    }(BaseCoupon), JdCoupon = function(_super) {
-        function JdCoupon() {
-            return null !== _super && _super.apply(this, arguments) || this;
+                })) : this.default() : this.default();
+            });
         }
-        return __extends(JdCoupon, _super), JdCoupon.prototype.init_html = function(html) {
-            var _this = this;
-            return new Promise((function(resolve) {
-                $(".product-intro").length ? (Core.appendTo(".product-intro", html), resolve(!0)) : setTimeout(_this.init_html, 2e3);
-            }));
-        }, JdCoupon.prototype.init_coupons = function() {
-            var _a, _b, key_1, coupon, q_1, exp_1, _this = this, item_id = null === (_b = null === (_a = unsafeWindow.pageConfig) || void 0 === _a ? void 0 : _a.product) || void 0 === _b ? void 0 : _b.skuid;
-            item_id ? (key_1 = "jd_" + item_id, (coupon = Config.get(key_1)) ? coupon.has_coupon ? (q_1 = coupon, 
-            exp_1 = new Date(q_1.quan_time), this.init_qrcode(decodeURIComponent(q_1.quan_link)).then((function(res) {
-                _this.init_coupon_info(q_1.after_price, q_1.quan_price, "" + Core.format(exp_1, "yyyy-MM-dd"), decodeURIComponent(q_1.quan_link));
-            }))) : coupon.quan_link ? this.default(coupon.quan_link) : this.default() : Route.queryJdCoupons(item_id, (function(res) {
-                var q_2, exp_2;
-                Logger.debug(res), res.code ? (Config.set(key_1, res.data, 43200), res.data.has_coupon ? (q_2 = res.data, 
-                exp_2 = new Date(q_2.quan_time), _this.init_qrcode(decodeURIComponent(q_2.quan_link)).then((function(res) {
-                    _this.init_coupon_info(q_2.after_price, q_2.quan_price, "" + Core.format(exp_2, "yyyy-MM-dd"), decodeURIComponent(q_2.quan_link));
-                }))) : res.data.quan_link ? _this.default(res.data.quan_link) : _this.default()) : _this.default();
-            }))) : this.default();
-        }, JdCoupon;
-    }(BaseCoupon), TaoCoupon = function(_super) {
-        function TaoCoupon() {
-            return null !== _super && _super.apply(this, arguments) || this;
+    }
+    class JdCoupon extends BaseCoupon {
+        init_html(html) {
+            return new Promise(resolve => {
+                $(".product-intro").length ? (Core.appendTo(".product-intro", html), resolve(!0)) : setTimeout(this.init_html, 2e3);
+            });
         }
-        return __extends(TaoCoupon, _super), TaoCoupon.prototype.init_html = function(html) {
-            return new Promise((function(resolve) {
-                Core.autoLazyload((function() {
+        init_coupons() {
+            var _a, _b;
+            let item_id = null === (_b = null === (_a = unsafeWindow.pageConfig) || void 0 === _a ? void 0 : _a.product) || void 0 === _b ? void 0 : _b.skuid;
+            if (item_id) {
+                let key = "jd_" + item_id, coupon = Config.get(key);
+                if (coupon) if (coupon.has_coupon) {
+                    let q = coupon, exp = new Date(q.quan_time);
+                    this.init_qrcode(decodeURIComponent(q.quan_link)).then(res => {
+                        this.init_coupon_info(q.after_price, q.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), decodeURIComponent(q.quan_link));
+                    });
+                } else coupon.quan_link ? this.default(coupon.quan_link) : this.default(); else Route.queryJdCoupons(item_id, res => {
+                    if (Logger.debug(res), res.code) if (Config.set(key, res.data, 43200), res.data.has_coupon) {
+                        let q = res.data, exp = new Date(q.quan_time);
+                        this.init_qrcode(decodeURIComponent(q.quan_link)).then(res => {
+                            this.init_coupon_info(q.after_price, q.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), decodeURIComponent(q.quan_link));
+                        });
+                    } else res.data.quan_link ? this.default(res.data.quan_link) : this.default(); else this.default();
+                });
+            } else this.default();
+        }
+    }
+    class TaoCoupon extends BaseCoupon {
+        init_html(html) {
+            return new Promise(resolve => {
+                Core.autoLazyload(() => {
                     var _a;
                     return (null === (_a = $('[class^="BasicContent--"] [class^="detailInfoWrap--"]')) || void 0 === _a ? void 0 : _a.length) > 0;
-                }), (function() {
+                }, () => {
                     $('[class^="BasicContent--"] [class^="detailInfoWrap--"]').before(html), resolve(!0);
-                }), .2);
-            }));
-        }, TaoCoupon.prototype.init_coupons = function() {
-            var _this = this, itemId = Core.getPar("id"), key = "n_itemId_" + itemId, coupon = Config.get(key, !1);
-            coupon ? (Logger.info(coupon), this.render_coupon((null == coupon ? void 0 : coupon.length) > 0 && "string" != typeof coupon ? coupon[0] : void 0)) : Route.queryCoupons(Core.getPar("id"), (function(data) {
+                }, .2);
+            });
+        }
+        init_coupons() {
+            let key = "n_itemId_" + Core.getPar("id"), coupon = Config.get(key, !1);
+            coupon ? (Logger.info(coupon), this.render_coupon((null == coupon ? void 0 : coupon.length) > 0 && "string" != typeof coupon ? coupon[0] : void 0)) : Route.queryCoupons(Core.getPar("id"), data => {
                 var _a, _b, q, exp;
                 data.code ? ((null === (_a = data.data) || void 0 === _a ? void 0 : _a.length) > 0 ? (q = data.data[0], 
-                exp = new Date(q.quan_time), _this.init_qrcode(decodeURIComponent(q.quan_link)).then((function(res) {
-                    _this.init_coupon_info(q.after_price, q.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), decodeURIComponent(q.quan_link));
-                }))) : _this.init_qrcode(Runtime.url).then((function(res) {
-                    _this.init_coupon_info(0, 0, "");
-                })), Config.set(key, (null === (_b = data.data) || void 0 === _b ? void 0 : _b.length) > 0 ? data.data : [], 43200)) : _this.init_qrcode(Runtime.url).then((function(res) {
-                    _this.init_coupon_info(0, 0, "");
-                }));
-            }));
-        }, TaoCoupon.prototype.render_coupon = function(quan) {
-            var q_1, exp, _this = this;
-            void 0 === quan && (quan = void 0), null == quan ? this.init_qrcode(Runtime.url).then((function(res) {
-                _this.init_coupon_info(0, 0, "");
-            })) : (q_1 = quan, exp = new Date(q_1.quan_time), this.init_qrcode(decodeURIComponent(q_1.quan_link)).then((function(res) {
-                _this.init_coupon_info(q_1.after_price, q_1.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), decodeURIComponent(q_1.quan_link));
-            })));
-        }, TaoCoupon;
-    }(BaseCoupon), DefCoupon = function(_super) {
-        function DefCoupon() {
-            return null !== _super && _super.apply(this, arguments) || this;
+                exp = new Date(q.quan_time), this.init_qrcode(decodeURIComponent(q.quan_link)).then(res => {
+                    this.init_coupon_info(q.after_price, q.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), decodeURIComponent(q.quan_link));
+                })) : this.init_qrcode(Runtime.url).then(res => {
+                    this.init_coupon_info(0, 0, "");
+                }), Config.set(key, (null === (_b = data.data) || void 0 === _b ? void 0 : _b.length) > 0 ? data.data : [], 43200)) : this.init_qrcode(Runtime.url).then(res => {
+                    this.init_coupon_info(0, 0, "");
+                });
+            });
         }
-        return __extends(DefCoupon, _super), DefCoupon.prototype.init_html = function(html) {
-            return new Promise((function(resolve) {
+        render_coupon(quan) {
+            if (null == quan) this.init_qrcode(Runtime.url).then(res => {
+                this.init_coupon_info(0, 0, "");
+            }); else {
+                let q = quan;
+                var exp = new Date(q.quan_time);
+                this.init_qrcode(decodeURIComponent(q.quan_link)).then(res => {
+                    this.init_coupon_info(q.after_price, q.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), decodeURIComponent(q.quan_link));
+                });
+            }
+        }
+    }
+    class DefCoupon extends BaseCoupon {
+        init_html(html) {
+            return new Promise(resolve => {
                 resolve(!1);
-            }));
-        }, DefCoupon.prototype.init_coupons = function() {}, DefCoupon;
-    }(BaseCoupon), LinesOption = function LinesOption() {}, styleInject("#vip-plugin-outside {\n    border: 1px solid #eee;\n    margin: 0 auto;\n    position: relative;\n    clear: both;\n    display: none;\n    flex: 1;\n}\n\n#vip-plugin-outside .vip-plugin-outside-toolbar {\n    position: absolute;\n    top: 5px;\n    right: 10px;\n    z-index: 10000;\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons {\n    width: 240px;\n    float: left\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode {\n    text-align: center;\n    min-height: 150px;\n    margin-top: 30px\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode canvas,\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode img,\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode svg {\n    margin: 0 auto;\n    height: 150px;\n    width: 150px;\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-title {\n    margin-top: 20px;\n    color: #000;\n    font-size: 14px;\n    font-weight: 700;\n    text-align: center\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-title span {\n    color: #ff0036;\n    font-weight: 700\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action {\n    margin-top: 10px;\n    text-align: center\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action a {\n    text-decoration: none\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action .vip-plugin-outside-coupons-button {\n    min-width: 135px;\n    padding: 0 8px;\n    line-height: 35px;\n    color: #fff;\n    background: #ff0036;\n    font-size: 13px;\n    font-weight: 700;\n    letter-spacing: 1.5px;\n    margin: 0 auto;\n    text-align: center;\n    border-radius: 15px;\n    display: inline-block;\n    cursor: pointer\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action .vip-plugin-outside-coupons-button.quan-none {\n    color: #000;\n    background: #bec5c5\n}\n\n.vip-plugin-outside-coupons-date {\n    color: #233b3d;\n    font-weight: normal;\n    font-size: 12px;\n}\n\n#vip-plugin-outside .vip-plugin-outside-history .vip-plugin-outside-history-tip {\n    position: absolute;\n    margin: 0;\n    top: 50%;\n    left: 50%;\n    letter-spacing: 1px;\n    font-size: 15px;\n    transform: translateX(-50%) translateY(-50%)\n}\n\n#vip-plugin-outside .vip-plugin-outside-history,\n#vip-plugin-outside-chart-body {\n    height: 300px;\n    overflow: hidden;\n    position: relative\n}\n\n#vip-plugin-outside .vip-plugin-outside-history .vip-plugin-outside-chart-container,\n#vip-plugin-outside-chart-container-line {\n    width: 100%;\n    /* width: 500px; */\n    height: 100%\n}\n\n#vip-plugin-outside-similar {\n    width: 100%;\n    background: #fff;\n    z-index: 99999999;\n    height: 268px;\n    overflow: hidden;\n    left: -1px;\n    top: 36px;\n    border: 1px solid #edf1f2 !important\n}\n\n.vip-plugin-outside-similar-buy-list {\n    width: 303px;\n    border-right: 1px solid rgb(237, 241, 242);\n    height: 270px;\n    padding: 0px;\n    overflow: hidden;\n    float: left;\n    margin: 0px;\n}\n\n.vip-plugin-outside-similar-buy-list-li-store {\n    float: left;\n    overflow: hidden;\n    margin: 8px 7px 4px 14px;\n    width: 16px;\n    height: 16px\n}\n\n.vip-plugin-outside-similar-buy-list li {\n    border-bottom: 1px solid #edf1f2;\n    overflow: hidden;\n    width: 100%;\n    height: 33px;\n    line-height: 33px\n}\n\n.vip-plugin-outside-similar-buy-list li:first-child b {\n    font-style: normal;\n    font-size: 14px;\n    margin-left: 14px;\n    font-weight: 700\n}\n\n.vip-plugin-outside-similar-buy-list-li-first {\n    top: 15px;\n    width: auto;\n    right: 51px;\n    padding: 0;\n    text-align: center;\n    font-size: 12px;\n    margin: 0;\n    height: auto\n}\n\n.vip-plugin-outside-similar-buy-list-li-title {\n    height: 33px;\n    margin: 0;\n    display: inline-block;\n    float: left;\n    font-size: 14px;\n    font-weight: 700;\n    padding: 0;\n    background: 0 0;\n    line-height: 33px;\n    max-width: 170px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    width: auto\n}\n\n.vip-plugin-outside-similar-buy-list-li-price {\n    color: #E4393C;\n    font-weight: 700;\n    line-height: 33px;\n    height: 33px;\n    width: auto;\n    float: right;\n    font-size: 14px;\n    margin-right: 14px;\n}"), 
-    MsgInfo = function MsgInfo() {}, PromoInfo = function PromoInfo() {
-        this.price = 0, this.time = 0;
-    }, HistoryService = function(_super) {
-        function HistoryService() {
-            var _this = null !== _super && _super.apply(this, arguments) || this;
-            return _this.rules = new Map([ [ SiteEnum.TMall, /detail.tmall.com\/item.htm/i ], [ SiteEnum.TaoBao, /item.taobao.com/i ], [ SiteEnum.JingDong, /item.jd.(com|hk)\/[0-9]*.html/i ], [ SiteEnum.SuNing, /product.suning.com/i ], [ SiteEnum.Vp, /detail.vip.com/i ] ]), 
-            _this.factory = new DefCoupon, _this;
+            });
         }
-        return __extends(HistoryService, _super), HistoryService.prototype.loader = function() {}, 
-        HistoryService.prototype.run = function() {
+        init_coupons() {}
+    }
+    class LinesOption {}
+    styleInject("#vip-plugin-outside {\n    border: 1px solid #eee;\n    margin: 0 auto;\n    position: relative;\n    clear: both;\n    display: none;\n    flex: 1;\n}\n\n#vip-plugin-outside .vip-plugin-outside-toolbar {\n    position: absolute;\n    top: 5px;\n    right: 10px;\n    z-index: 10000;\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons {\n    width: 240px;\n    float: left\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode {\n    text-align: center;\n    min-height: 150px;\n    margin-top: 30px\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode canvas,\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode img,\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-qrcode svg {\n    margin: 0 auto;\n    height: 150px;\n    width: 150px;\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-title {\n    margin-top: 20px;\n    color: #000;\n    font-size: 14px;\n    font-weight: 700;\n    text-align: center\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-title span {\n    color: #ff0036;\n    font-weight: 700\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action {\n    margin-top: 10px;\n    text-align: center\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action a {\n    text-decoration: none\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action .vip-plugin-outside-coupons-button {\n    min-width: 135px;\n    padding: 0 8px;\n    line-height: 35px;\n    color: #fff;\n    background: #ff0036;\n    font-size: 13px;\n    font-weight: 700;\n    letter-spacing: 1.5px;\n    margin: 0 auto;\n    text-align: center;\n    border-radius: 15px;\n    display: inline-block;\n    cursor: pointer\n}\n\n#vip-plugin-outside .vip-plugin-outside-coupons .vip-plugin-outside-coupons-action .vip-plugin-outside-coupons-button.quan-none {\n    color: #000;\n    background: #bec5c5\n}\n\n.vip-plugin-outside-coupons-date {\n    color: #233b3d;\n    font-weight: normal;\n    font-size: 12px;\n}\n\n#vip-plugin-outside .vip-plugin-outside-history .vip-plugin-outside-history-tip {\n    position: absolute;\n    margin: 0;\n    top: 50%;\n    left: 50%;\n    letter-spacing: 1px;\n    font-size: 15px;\n    transform: translateX(-50%) translateY(-50%)\n}\n\n#vip-plugin-outside .vip-plugin-outside-history,\n#vip-plugin-outside-chart-body {\n    height: 300px;\n    overflow: hidden;\n    position: relative\n}\n\n#vip-plugin-outside .vip-plugin-outside-history .vip-plugin-outside-chart-container,\n#vip-plugin-outside-chart-container-line {\n    width: 100%;\n    /* width: 500px; */\n    height: 100%\n}\n\n#vip-plugin-outside-similar {\n    width: 100%;\n    background: #fff;\n    z-index: 99999999;\n    height: 268px;\n    overflow: hidden;\n    left: -1px;\n    top: 36px;\n    border: 1px solid #edf1f2 !important\n}\n\n.vip-plugin-outside-similar-buy-list {\n    width: 303px;\n    border-right: 1px solid rgb(237, 241, 242);\n    height: 270px;\n    padding: 0px;\n    overflow: hidden;\n    float: left;\n    margin: 0px;\n}\n\n.vip-plugin-outside-similar-buy-list-li-store {\n    float: left;\n    overflow: hidden;\n    margin: 8px 7px 4px 14px;\n    width: 16px;\n    height: 16px\n}\n\n.vip-plugin-outside-similar-buy-list li {\n    border-bottom: 1px solid #edf1f2;\n    overflow: hidden;\n    width: 100%;\n    height: 33px;\n    line-height: 33px\n}\n\n.vip-plugin-outside-similar-buy-list li:first-child b {\n    font-style: normal;\n    font-size: 14px;\n    margin-left: 14px;\n    font-weight: 700\n}\n\n.vip-plugin-outside-similar-buy-list-li-first {\n    top: 15px;\n    width: auto;\n    right: 51px;\n    padding: 0;\n    text-align: center;\n    font-size: 12px;\n    margin: 0;\n    height: auto\n}\n\n.vip-plugin-outside-similar-buy-list-li-title {\n    height: 33px;\n    margin: 0;\n    display: inline-block;\n    float: left;\n    font-size: 14px;\n    font-weight: 700;\n    padding: 0;\n    background: 0 0;\n    line-height: 33px;\n    max-width: 170px;\n    overflow: hidden;\n    text-overflow: ellipsis;\n    white-space: nowrap;\n    width: auto\n}\n\n.vip-plugin-outside-similar-buy-list-li-price {\n    color: #E4393C;\n    font-weight: 700;\n    line-height: 33px;\n    height: 33px;\n    width: auto;\n    float: right;\n    font-size: 14px;\n    margin-right: 14px;\n}");
+    class MsgInfo {}
+    class PromoInfo {
+        constructor() {
+            this.price = 0, this.time = 0;
+        }
+    }
+    class HistoryService extends PluginBase {
+        constructor() {
+            super(...arguments), this.rules = new Map([ [ SiteEnum.TMall, /detail.tmall.com\/item.htm/i ], [ SiteEnum.TaoBao, /item.taobao.com/i ], [ SiteEnum.JingDong, /item.jd.(com|hk)\/[0-9]*.html/i ], [ SiteEnum.SuNing, /product.suning.com/i ], [ SiteEnum.Vp, /detail.vip.com/i ] ]), 
+            this.factory = new DefCoupon;
+        }
+        loader() {}
+        run() {
             this.injectHistory();
-        }, HistoryService.prototype.injectHistory = function() {
-            var _this = this;
+        }
+        injectHistory() {
             switch (Logger.debug(this.site), this.site) {
               case SiteEnum.TaoBao:
               case SiteEnum.TMall:
@@ -1072,27 +1007,23 @@
               default:
                 this.factory = new DefCoupon;
             }
-            this.factory.init_html(this.getHistoryHtml()).then((function(res) {
-                res && _this.InitPriceHistory(), _this.factory.init_coupons && _this.factory.init_coupons();
-            }));
-        }, HistoryService.prototype.InitPriceHistory = function() {
+            this.factory.init_html(this.getHistoryHtml()).then(res => {
+                res && this.InitPriceHistory(), this.factory.init_coupons && this.factory.init_coupons();
+            });
+        }
+        InitPriceHistory() {
             $("#vip-plugin-outside").show(), this.theme(), this.chartMsg("\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u4e2d");
-        }, HistoryService.prototype.getHistoryHtml = function() {
+        }
+        getHistoryHtml() {
             return '<div id="vip-plugin-outside">\n                    <div class="vip-plugin-outside-coupons">\n                        <div class="vip-plugin-outside-coupons-qrcode"><canvas id="vip-plugin-outside-coupons-qrcode-img"></canvas></div>\n                        <div class="vip-plugin-outside-coupons-title"></div>\n                        <div class="vip-plugin-outside-coupons-action"></div>\n                    </div>\n                    <div id="vip-plugin-outside-history" class="vip-plugin-outside-history">\n                        <div class="vip-plugin-outside-chart-container"></div>\n                        <p class="vip-plugin-outside-history-tip"></p>\n                    </div>    \n                </div>';
-        }, HistoryService.prototype.chartMsg = function(msg) {
+        }
+        chartMsg(msg) {
             $(".vip-plugin-outside-history-tip").html(msg);
-        }, HistoryService.prototype.getChartOption = function(data) {
-            var _a, _b, step, line, text = "\u5386\u53f2\u4f4e\u4ef7\uff1a{red|\uffe5" + data.min + "} ( {red|" + data.date + "} ) \u5206\u6790\uff1a" + data.mark, chartOption = new LinesOption, datas = function(data) {
-                var l = [];
-                return data.price_detail.forEach((function(v) {
-                    var p = {
-                        name: v.time,
-                        value: [ v.timestamp, v.price, v.mark ]
-                    };
-                    l.push(p);
-                })), l;
-            };
-            return step = 10, (chartOption = {
+        }
+        getChartOption(data) {
+            var _a, _b, text = `\u5386\u53f2\u4f4e\u4ef7\uff1a{red|\uffe5${data.min}} ( {red|${data.date}} ) \u5206\u6790\uff1a${data.mark}`;
+            let chartOption = new LinesOption;
+            chartOption = {
                 title: {
                     left: "center",
                     subtext: text,
@@ -1111,12 +1042,15 @@
                         type: "cross"
                     },
                     formatter: function(params) {
-                        var _a, _b, date, year, month, day, monthStr, dayStr, price;
-                        return params = params[0], year = (date = new Date(params.name)).getFullYear(), 
-                        month = date.getMonth() + 1, day = date.getDate(), monthStr = month.toString(), 
-                        dayStr = day.toString(), month < 10 && (monthStr = "0" + month), day < 10 && (dayStr = "0" + day), 
-                        price = null === (_a = params.value[1]) || void 0 === _a ? void 0 : _a.toString(), 
-                        "\u65e5\u671f\uff1a" + year + "-" + monthStr + "-" + dayStr + "<br/>\u4ef7\u683c\uff1a\uffe5" + (price = null === (_b = parseFloat(price)) || void 0 === _b ? void 0 : _b.toFixed(2)) + ("" == params.value[2] ? "" : "<br/>" + params.value[2]);
+                        var _a, _b, year, month, day;
+                        params = params[0];
+                        let date = new Date(params.name);
+                        year = date.getFullYear(), month = date.getMonth() + 1, day = date.getDate();
+                        let monthStr = month.toString(), dayStr = day.toString();
+                        month < 10 && (monthStr = "0" + month), day < 10 && (dayStr = "0" + day);
+                        let price = null === (_a = params.value[1]) || void 0 === _a ? void 0 : _a.toString();
+                        return price = null === (_b = parseFloat(price)) || void 0 === _b ? void 0 : _b.toFixed(2), 
+                        `\u65e5\u671f\uff1a${year}-${monthStr}-${dayStr}<br/>\u4ef7\u683c\uff1a\uffe5${price}${"" == params.value[2] ? "" : "<br/>" + params.value[2]}`;
                     }
                 },
                 grid: {
@@ -1135,7 +1069,16 @@
                 series: [ {
                     type: "line",
                     step: "end",
-                    data: datas(data),
+                    data: (data => {
+                        let l = [];
+                        return data.price_detail.forEach(v => {
+                            let p = {
+                                name: v.time,
+                                value: [ v.timestamp, v.price, v.mark ]
+                            };
+                            l.push(p);
+                        }), l;
+                    })(data),
                     showSymbol: !1,
                     symbolSize: 3,
                     lineStyle: {
@@ -1143,10 +1086,13 @@
                         color: "#ff0036"
                     }
                 } ]
-            }).yAxis = {
-                min: Math.floor(.9 * data.min / step) * step,
-                max: Math.ceil(1.1 * data.max / step) * step
-            }, (line = null === (_a = chartOption.series) || void 0 === _a ? void 0 : _a.pop()).markPoint = {
+            };
+            chartOption.yAxis = {
+                min: 10 * Math.floor(.9 * data.min / 10),
+                max: 10 * Math.ceil(1.1 * data.max / 10)
+            };
+            let line = null === (_a = chartOption.series) || void 0 === _a ? void 0 : _a.pop();
+            return line.markPoint = {
                 data: [ {
                     value: data.min,
                     coord: [ data.date, data.min ],
@@ -1169,7 +1115,8 @@
                 start: 0,
                 end: 100
             } ], chartOption;
-        }, HistoryService.prototype.theme = function() {
+        }
+        theme() {
             return {
                 color: [ "#2ec7c9", "#b6a2de", "#5ab1ef", "#ffb980", "#d87a80", "#8d98b3", "#e5cf0d", "#97b552", "#95706d", "#dc69aa", "#07a2a4", "#9a7fd1", "#588dd5", "#f5994e", "#c05050", "#59678c", "#c9ab00", "#7eb00a", "#6f5553", "#c14089" ],
                 title: {
@@ -1421,73 +1368,77 @@
                     fontFamily: "\u5fae\u8f6f\u96c5\u9ed1, Arial, Verdana, sans-serif"
                 }
             };
-        }, HistoryService;
-    }(PluginBase), KaolaCoupon = function(_super) {
-        function KaolaCoupon() {
-            return null !== _super && _super.apply(this, arguments) || this;
         }
-        return __extends(KaolaCoupon, _super), KaolaCoupon.prototype.init_coupons = function() {
-            var key_1, coupon, q_1, exp_1, _this = this, itemId = unsafeWindow.__kaolaGTMGoodsData.product_no;
-            itemId ? (key_1 = "kol-" + itemId, (coupon = Config.get(key_1)) ? coupon.has_coupon ? (q_1 = coupon, 
-            exp_1 = new Date(q_1.quan_time), this.init_qrcode(decodeURIComponent(q_1.quan_link)).then((function(res) {
-                _this.init_coupon_info(q_1.after_price, q_1.quan_price, "" + Core.format(exp_1, "yyyy-MM-dd"), decodeURIComponent(q_1.quan_link));
-            }))) : coupon.quan_link ? this.default(coupon.quan_link) : this.default() : Route.queryKlCoupons(itemId).then((function(res) {
-                var q_2, exp_2;
-                Logger.debug(res), (null == res ? void 0 : res.code) ? (Config.set(key_1, res.data, 43200), 
-                res.data.has_coupon ? (q_2 = res.data, exp_2 = new Date(q_2.quan_time), _this.init_qrcode(decodeURIComponent(q_2.quan_link)).then((function(res) {
-                    _this.init_coupon_info(q_2.after_price, q_2.quan_price, "" + Core.format(exp_2, "yyyy-MM-dd"), decodeURIComponent(q_2.quan_link));
-                }))) : res.data.quan_link ? _this.default(res.data.quan_link) : _this.default()) : _this.default();
-            }))) : this.default();
-        }, KaolaCoupon.prototype.init_html = function(html) {
-            var _this = this;
-            return new Promise((function(resolve) {
-                $("#comboRecbox").length ? (Core.appendTo("#comboRecbox", html), resolve(!0)) : setTimeout((function() {
-                    _this.init_html(html);
-                }), 2e3);
-            }));
-        }, KaolaCoupon;
-    }(BaseCoupon), styleInject(".one-key-vip-container { z-index: 99999!important }\n.one-key-vip-popup { font-size: 14px !important }\n.one-key-vip-setting-label { display: flex;align-items: center;justify-content: space-between;padding-top: 20px; }\n.one-key-vip-setting-checkbox { width: 16px;height: 16px; }\n"), 
-    sAlert = function() {
-        function sAlert() {}
-        return sAlert.toast = function(msg, icon, position, time) {
-            void 0 === icon && (icon = "success"), void 0 === position && (position = "top"), 
-            void 0 === time && (time = 2), Swal__default.default.fire({
-                toast: !0,
-                position: position,
-                showCancelButton: !1,
-                showConfirmButton: !1,
-                title: msg,
-                icon: icon,
-                timer: 1e3 * time,
-                customClass: this.customeCss
+    }
+    class KaolaCoupon extends BaseCoupon {
+        init_coupons() {
+            let itemId = unsafeWindow.__kaolaGTMGoodsData.product_no;
+            if (itemId) {
+                let key = "kol-" + itemId, coupon = Config.get(key);
+                if (coupon) if (coupon.has_coupon) {
+                    let q = coupon, exp = new Date(q.quan_time);
+                    this.init_qrcode(decodeURIComponent(q.quan_link)).then(res => {
+                        this.init_coupon_info(q.after_price, q.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), decodeURIComponent(q.quan_link));
+                    });
+                } else coupon.quan_link ? this.default(coupon.quan_link) : this.default(); else Route.queryKlCoupons(itemId).then(res => {
+                    if (Logger.debug(res), null == res ? void 0 : res.code) if (Config.set(key, res.data, 43200), 
+                    res.data.has_coupon) {
+                        let q = res.data, exp = new Date(q.quan_time);
+                        this.init_qrcode(decodeURIComponent(q.quan_link)).then(res => {
+                            this.init_coupon_info(q.after_price, q.quan_price, "" + Core.format(exp, "yyyy-MM-dd"), decodeURIComponent(q.quan_link));
+                        });
+                    } else res.data.quan_link ? this.default(res.data.quan_link) : this.default(); else this.default();
+                });
+            } else this.default();
+        }
+        init_html(html) {
+            return new Promise(resolve => {
+                $("#comboRecbox").length ? (Core.appendTo("#comboRecbox", html), resolve(!0)) : setTimeout(() => {
+                    this.init_html(html);
+                }, 2e3);
             });
-        }, sAlert.error = function(msg, time) {
-            void 0 === time && (time = 2), this.toast(msg, "error", "center", time);
-        }, sAlert.info = function(msg, icon, position, time) {
-            void 0 === icon && (icon = "success"), void 0 === position && (position = "top"), 
-            void 0 === time && (time = 2), Swal__default.default.fire({
-                toast: !0,
-                position: position,
-                showCancelButton: !1,
-                showConfirmButton: !1,
-                title: msg,
-                icon: icon,
-                timer: 1e3 * time,
-                customClass: this.customeCss
-            });
-        }, sAlert.msg = function(title, html, width) {
-            return void 0 === width && (width = "32rem"), "auto" == width && (width = unsafeWindow.window.outerWidth < 900 ? "90%" : 800), 
+        }
+    }
+    styleInject(".one-key-vip-container { z-index: 99999!important }\n.one-key-vip-popup { font-size: 14px !important }\n.one-key-vip-setting-label { display: flex;align-items: center;justify-content: space-between;padding-top: 20px; }\n.one-key-vip-setting-checkbox { width: 16px;height: 16px; }\n");
+    class sAlert {
+        static toast(msg, icon = "success", position = "top", time = 2) {
             Swal__default.default.fire({
-                title: "<strong>" + title + "</strong>",
+                toast: !0,
+                position: position,
+                showCancelButton: !1,
+                showConfirmButton: !1,
+                title: msg,
+                icon: icon,
+                timer: 1e3 * time,
+                customClass: this.customeCss
+            });
+        }
+        static error(msg, time = 2) {
+            this.toast(msg, "error", "center", time);
+        }
+        static info(msg, icon = "success", position = "top", time = 2) {
+            Swal__default.default.fire({
+                toast: !0,
+                position: position,
+                showCancelButton: !1,
+                showConfirmButton: !1,
+                title: msg,
+                icon: icon,
+                timer: 1e3 * time,
+                customClass: this.customeCss
+            });
+        }
+        static msg(title, html, width = "32rem") {
+            return "auto" == width && (width = unsafeWindow.window.outerWidth < 900 ? "90%" : 800), 
+            Swal__default.default.fire({
+                title: `<strong>${title}</strong>`,
                 html: html,
                 showCloseButton: !0,
                 width: width
             });
-        }, sAlert.html = function(title, html, cancel, cancelTxt, cancelColor, width, confirm, confirmTxt) {
-            return void 0 === cancel && (cancel = !1), void 0 === cancelTxt && (cancelTxt = ""), 
-            void 0 === cancelColor && (cancelColor = "#3085d6"), void 0 === width && (width = "32rem"), 
-            void 0 === confirm && (confirm = !1), void 0 === confirmTxt && (confirmTxt = ""), 
-            "auto" == width && (width = unsafeWindow.window.outerWidth < 900 ? "90%" : 800), 
+        }
+        static html(title, html, cancel = !1, cancelTxt = "", cancelColor = "#3085d6", width = "32rem", confirm = !1, confirmTxt = "") {
+            return "auto" == width && (width = unsafeWindow.window.outerWidth < 900 ? "90%" : 800), 
             Swal__default.default.fire({
                 position: "center",
                 width: width,
@@ -1502,10 +1453,9 @@
                 allowOutsideClick: !1,
                 allowEscapeKey: !1
             });
-        }, sAlert.confirm = function(title, text, confirmText, cancelText, icon, denyText) {
-            void 0 === confirmText && (confirmText = "\u786e\u5b9a"), void 0 === cancelText && (cancelText = "\u53d6\u6d88"), 
-            void 0 === icon && (icon = "question"), void 0 === denyText && (denyText = "");
-            var option = {
+        }
+        static confirm(title, text, confirmText = "\u786e\u5b9a", cancelText = "\u53d6\u6d88", icon = "question", denyText = "") {
+            let option = {
                 title: title,
                 text: text,
                 icon: icon,
@@ -1517,9 +1467,9 @@
                 cancelButtonText: cancelText
             };
             return "" != denyText && (option.denyButtonText = denyText), Swal__default.default.fire(option);
-        }, sAlert.showImg = function(image, title, text, alt, btnTxt) {
-            void 0 === btnTxt && (btnTxt = "");
-            var opt = {
+        }
+        static showImg(image, title, text, alt, btnTxt = "") {
+            let opt = {
                 title: title,
                 text: text,
                 imageUrl: image,
@@ -1528,35 +1478,39 @@
             };
             return null != btnTxt && (opt.showConfirmButton = !0, opt.confirmButtonText = btnTxt), 
             Swal__default.default.fire(opt);
-        }, sAlert.loading = function(time, target) {
-            void 0 === time && (time = -1), void 0 === target && (target = null), null == target ? Swal__default.default.showLoading() : Swal__default.default.showLoading(target), 
-            -1 != time && Core.sleep(time).then((function() {
+        }
+        static loading(time = -1, target = null) {
+            null == target ? Swal__default.default.showLoading() : Swal__default.default.showLoading(target), 
+            -1 != time && Core.sleep(time).then(() => {
                 Swal__default.default.hideLoading();
-            }));
-        }, sAlert.closeLoading = function() {
+            });
+        }
+        static closeLoading() {
             Swal__default.default.hideLoading();
-        }, sAlert.close = function(target) {
+        }
+        static close(target) {
             Swal__default.default.close(target);
-        }, sAlert.customeCss = {
-            container: "one-key-vip-container",
-            popup: "one-key-vip-popup",
-            header: "one-key-vip-header",
-            title: "one-key-vip-title",
-            closeButton: "one-key-vip-close",
-            icon: "one-key-vip-icon",
-            image: "one-key-vip-image",
-            content: "one-key-vip-content",
-            htmlContainer: "one-key-vip-html",
-            input: "one-key-vip-input",
-            validationMessage: "one-key-vip-validation",
-            actions: "one-key-vip-actions",
-            confirmButton: "one-key-vip-confirm",
-            denyButton: "one-key-vip-deny",
-            cancelButton: "one-key-vip-cancel",
-            loader: "one-key-vip-loader",
-            footer: "one-key-vip-footer"
-        }, sAlert;
-    }(), commonjsGlobal = "undefined" != typeof globalThis ? globalThis : "undefined" != typeof window ? window : "undefined" != typeof global ? global : "undefined" != typeof self ? self : {}, 
+        }
+    }
+    sAlert.customeCss = {
+        container: "one-key-vip-container",
+        popup: "one-key-vip-popup",
+        header: "one-key-vip-header",
+        title: "one-key-vip-title",
+        closeButton: "one-key-vip-close",
+        icon: "one-key-vip-icon",
+        image: "one-key-vip-image",
+        content: "one-key-vip-content",
+        htmlContainer: "one-key-vip-html",
+        input: "one-key-vip-input",
+        validationMessage: "one-key-vip-validation",
+        actions: "one-key-vip-actions",
+        confirmButton: "one-key-vip-confirm",
+        denyButton: "one-key-vip-deny",
+        cancelButton: "one-key-vip-cancel",
+        loader: "one-key-vip-loader",
+        footer: "one-key-vip-footer"
+    }, commonjsGlobal = "undefined" != typeof globalThis ? globalThis : "undefined" != typeof window ? window : "undefined" != typeof global ? global : "undefined" != typeof self ? self : {}, 
     fingerprint2 = function createCommonjsModule(fn, module) {
         return fn(module = {
             exports: {}
@@ -2260,47 +2214,292 @@
                 }));
             }, Fingerprint2.x64hash128 = x64hash128, Fingerprint2.VERSION = "2.1.5", Fingerprint2;
         }, module.exports ? module.exports = definition() : context.exports ? context.exports = definition() : context.Fingerprint2 = definition();
-    })), GwdService = function(_super) {
-        function GwdService() {
-            var _this = null !== _super && _super.apply(this, arguments) || this;
-            return _this.rules = new Map([ [ SiteEnum.TMall, /detail\.tmall\.com\/item\.htm/i ], [ SiteEnum.TaoBao, /item\.taobao\.com\//i ], [ SiteEnum.JingDong, /item\.(yiyaojd|jd)\.(com|hk)\/[0-9]*\.html/i ], [ SiteEnum.SuNing, /product\.suning\.com\//i ], [ SiteEnum.Vp, /detail\.vip\.com\//i ], [ SiteEnum.KaoLa, /goods\.kaola\.(com\.hk|com)/i ] ]), 
-            _this._appName = "GwdService", _this.historyService = new HistoryService, _this.factory = new DefCoupon, 
-            _this.dfp = function() {
-                var dfp = Config.get(GwdHelper.gwd_dfp_key);
-                return dfp || (dfp = Core.randStr(60), Config.set(GwdHelper.gwd_dfp_key, dfp, 7200), 
-                dfp);
-            }, _this.fp = function() {
-                var fp = Config.get(GwdHelper.gwd_fp_key);
-                return fp || (fingerprint2.get({
-                    fonts: {
-                        extendedJsFonts: !1
-                    },
-                    excludes: {
-                        userAgent: !0,
-                        enumerateDevices: !0,
-                        pixelRatio: !0,
-                        doNotTrack: !0,
-                        fontsFlash: !0
-                    }
-                }, (function(components) {
-                    var values = components.map((function(component) {
-                        return component.value;
-                    })), murmur = fingerprint2.x64hash128(values.join(""), 31);
-                    fp = murmur, Config.set(GwdHelper.gwd_fp_key, fp, 7200);
-                })), fp);
-            }, _this.itemUrl = "", _this;
+    })), headStyle = document.head.style, isChrome = void 0 !== window.chrome, isIE = "ActiveXObject" in window, 
+    hasWeakMap = "WeakMap" in window.WeakMap && new window.WeakMap, ua = navigator.userAgent, 
+    isNativeObject = o => !!/native code/.test(o.toString.toString()) && !!/native code/.test(o.toString()), 
+    checkFunctions = {
+        _1: function _1() {
+            return isChrome;
+        },
+        _2: function _2() {
+            return "mozRTCIceCandidate" in window || "mozInnerScreenY" in window;
+        },
+        _3: function _3() {
+            return "safari" in window;
+        },
+        _4: function _4() {
+            return isIE;
+        },
+        _5: function _5() {
+            return isIE && !("maxHeight" in headStyle);
+        },
+        _6: function _6() {
+            return isIE && !document.addEventListener;
+        },
+        _7: function _7() {
+            return isIE && !window.atob;
+        },
+        _8: function _8() {
+            return isIE && isNativeObject(window.Uint8Array);
+        },
+        _9: function _9() {
+            return isIE && hasWeakMap && isNativeObject(window.WeakMap);
+        },
+        _10: function _10() {
+            return "Google Inc." === navigator.vendor;
+        },
+        _11: function _11() {
+            return "Apple Computer, Inc." === navigator.vendor;
+        },
+        _12: function _12() {
+            return 800 === window.innerWidth && 600 === window.innerHeight && 0 === window.outerWidth && 0 === window.outerHeight || "" == navigator.languages || /Headless/i.test(ua);
+        },
+        _13: function _13() {
+            return "callPhantom" in window || /PhantomJS/i.test(ua) || function isPhantomjs() {
+                var err = "";
+                try {
+                    null[0]();
+                } catch (e) {
+                    err = e;
+                }
+                return err.stack.indexOf("phantomjs") > -1;
+            }();
+        },
+        _14: function _14() {
+            return /python/i.test(navigator.appVersion);
+        },
+        _15: function _15() {
+            return function IsSupportLocalStorage() {
+                try {
+                    return localStorage.a = "b", "b" === localStorage.a;
+                } catch (e) {
+                    return !1;
+                }
+            }();
+        },
+        _16: function _16() {
+            return /Maxthon/i.test(navigator.vendor);
+        },
+        _17: function _17() {
+            return "opr" in window || "opera" in window;
+        },
+        _18: function _18() {
+            return isChrome && /BIDUBrowser/i.test(ua);
+        },
+        _19: function _19() {
+            return isChrome && /LBBROWSER/i.test(ua);
+        },
+        _20: function _20() {
+            return isChrome && /QQBrowser/.test(ua);
+        },
+        _21: function _21() {
+            return isChrome && /UBrowser/i.test(ua);
+        },
+        _22: function _22() {
+            return isChrome && /2345Explorer/.test(ua);
+        },
+        _23: function _23() {
+            return isChrome && /TheWorld/.test(ua);
+        },
+        _24: function _24() {
+            return isChrome && "MSGesture" in window;
+        },
+        _25: function _25() {
+            return isNativeObject(Object.getOwnPropertyDescriptor) && null != Object.getOwnPropertyDescriptor(navigator);
+        },
+        _26: function _26() {
+            return "$cdc_asdjflasutopfhvcZLmcfl_" in window || navigator.webdriver;
+        },
+        _27: function _27() {
+            return document.hidden;
+        },
+        _28: function _28() {
+            return /zh-cn/i.test(navigator.language || navigator.systemLanguage);
+        },
+        _29: function _29() {
+            return -480 === (new Date).getTimezoneOffset();
+        },
+        _30: function _30() {
+            return function IsSupportWebGL() {
+                var webglContext, i;
+                try {
+                    return (webglContext = document.createElement("canvas").getContext("webgl")) && (i = webglContext.getExtension("WEBGL_lose_context")) && i.loseContext(), 
+                    !!webglContext;
+                } catch (e) {
+                    return !1;
+                }
+            }();
+        },
+        _31: function _31() {
+            return null !== window.outerWidth && (window.outerWidth === document.documentElement.clientWidth || document.body.clientWidth);
         }
-        return __extends(GwdService, _super), GwdService.prototype.loader = function() {
-            this.dfp(), this.fp(), this.paraPre();
-        }, GwdService.prototype.run = function() {
+    };
+    class DynamicDetails {
+        constructor() {
+            this.touchPosition = {
+                x: 0,
+                y: 0
+            }, this.touchEventTrusted = !1, this.mouseEventCount = 0, this.mousePosition = {
+                x: 0,
+                y: 0
+            }, this.mouseDownCount = 0, this.mouseClickPosition = {
+                x: 0,
+                y: 0
+            }, this.mouseEventTrusted = !1, this.keyDownCount = 0, this.scrollCount = 0, this.windowBlur = !1, 
+            this.windowFocus = !1, this.consoleWindowOpened = !1, this.ip = 0, this.batteryLevel = 127, 
+            this.deviceOrientationExists = !1, this.features = this.packStaticFeatureValue();
+        }
+        packStaticFeatureValue() {
+            var i, shift, set, value = 0;
+            for (i in checkFunctions) {
+                shift = parseInt(i.split("_")[1]) - 1, set = 0;
+                try {
+                    set = checkFunctions[i]() ? 1 : 0;
+                } catch (e) {}
+                value |= set << shift;
+            }
+            return value;
+        }
+        touchStartFn(e) {
+            this.touchEventTrusted = e.isTrusted, this.mouseEventCount++;
+            const t = e.touches[0];
+            this.touchPosition.x = 0 | t.clientX, this.touchPosition.y = 0 | t.clientY;
+        }
+        touchMoveFn(e) {
+            this.touchEventTrusted = e.isTrusted, this.mouseEventCount++;
+        }
+        mouseMoveFn(e) {
+            this.mouseEventTrusted = e.isTrusted, this.mouseEventCount++;
+        }
+        mouseDownFn(e) {
+            this.mouseEventTrusted = e.isTrusted, this.mouseEventCount++, this.mousePosition.x = e.clientX, 
+            this.mousePosition.y = e.clientY, this.mouseDownCount++;
+        }
+        mouseClickFn(e) {
+            this.mouseEventTrusted = e.isTrusted, this.mouseEventCount++, this.mouseClickPosition.x = e.clientX, 
+            this.mouseClickPosition.y = e.clientY;
+        }
+        keyDownFn(e) {
+            this.keyDownCount++;
+        }
+        scrollFn(e) {
+            this.scrollCount++;
+        }
+        focusFn(e) {
+            this.windowFocus = !0, this.windowBlur = !1;
+        }
+        pack() {
+            let numberToHex = n => n.toString(16);
+            return `${`${this.touchPosition.x},${this.touchPosition.y},${this.touchEventTrusted ? 1 : 0}`};${`${this.mouseEventCount},${this.mousePosition.x},${this.mousePosition.y},${this.mouseClickPosition.x},${this.mouseClickPosition.y},${this.mouseDownCount},${this.mouseEventTrusted ? 1 : 0}`};${`${this.keyDownCount},${this.scrollCount},${this.windowBlur ? 1 : 0},${this.windowFocus ? 1 : 0}`};${`${this.consoleWindowOpened ? 1 : 0},${numberToHex(this.ip)},${this.batteryLevel},${this.deviceOrientationExists ? 1 : 0}`};${"" + numberToHex(this.features)}`;
+        }
+        encode() {
+            return Base64.encode(this.pack());
+        }
+    }
+    class SignInfo {
+        constructor() {
+            this.details = new DynamicDetails, this.fp = "", this.initialize();
+        }
+        initialize() {
+            let that = this;
+            try {
+                const k = Config.get("gwdang-dfp-obj", "{}");
+                if (k) {
+                    const r = JSON.parse(k);
+                    Object.keys(r).forEach(item => {
+                        that.details[item] = r[item];
+                    });
+                }
+            } catch (e) {}
+            window.requestIdleCallback ? window.requestIdleCallback(() => {
+                that.collectMovement(that.details);
+            }) : setTimeout(() => {
+                that.collectMovement(that.details);
+            }, 500), fingerprint2.get({
+                fonts: {
+                    extendedJsFonts: !1
+                },
+                excludes: {
+                    userAgent: !0,
+                    enumerateDevices: !0,
+                    pixelRatio: !0,
+                    doNotTrack: !0,
+                    fontsFlash: !0
+                }
+            }, function(components) {
+                var values = components.map((function(component) {
+                    return component.value;
+                })), murmur = fingerprint2.x64hash128(values.join(""), 31);
+                that.fp = murmur, Config.set(GwdHelper.gwd_fp_key, that.fp, 43200);
+            }.bind(this)), that.intervalHandle = setInterval(function() {
+                var collected = that.details.encode();
+                Config.set("gwdang-dfp-obj", JSON.stringify(that.details)), Config.set(GwdHelper.gwd_dfp_key, collected, 7200);
+            }.bind(that), 2e3);
+        }
+        collectMovement(details) {
+            var b = document.body;
+            "ontouchmove" in document && document.addEventListener("touchmove", details.touchMoveFn.bind(details), !0), 
+            b.addEventListener("touchstart", details.touchStartFn.bind(details), !0), b.addEventListener("mousemove", details.mouseMoveFn.bind(details), !0), 
+            b.addEventListener("mousedown", details.mouseDownFn.bind(details), !0), b.addEventListener("click", details.mouseClickFn.bind(details), !0), 
+            b.addEventListener("keydown", details.keyDownFn.bind(details), !0), b.addEventListener("wheel", details.scrollFn.bind(details), !0), 
+            window.addEventListener("focus", details.focusFn.bind(details), !0), window.addEventListener("blur", details.blurFn.bind(details), !0), 
+            details.getWebRTCIP(details), details.getDeviceOrientation(details), details.getBatteryStatus(details), 
+            details.consoleCheckLoop();
+        }
+    }
+    class Base64 {
+        static encode(input) {
+            let chr1, chr2, chr3, enc1, enc2, enc3, enc4, output = "", i = 0;
+            for (input = Base64._utf8_encode(input); i < input.length; ) chr1 = input.charCodeAt(i++), 
+            chr2 = input.charCodeAt(i++), chr3 = input.charCodeAt(i++), enc1 = chr1 >> 2, enc2 = (3 & chr1) << 4 | chr2 >> 4, 
+            enc3 = (15 & chr2) << 2 | chr3 >> 6, enc4 = 63 & chr3, isNaN(chr2) ? enc3 = enc4 = 64 : isNaN(chr3) && (enc4 = 64), 
+            output = output + this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) + this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
+            return output;
+        }
+        static decode(input) {
+            let chr1, chr2, chr3, enc1, enc2, enc3, enc4, output = "", i = 0;
+            for (input = input.replace(/[^A-Za-z0-9\+\/\=]/g, ""); i < input.length; ) enc1 = this._keyStr.indexOf(input.charAt(i++)), 
+            enc2 = this._keyStr.indexOf(input.charAt(i++)), enc3 = this._keyStr.indexOf(input.charAt(i++)), 
+            enc4 = this._keyStr.indexOf(input.charAt(i++)), chr1 = enc1 << 2 | enc2 >> 4, chr2 = (15 & enc2) << 4 | enc3 >> 2, 
+            chr3 = (3 & enc3) << 6 | enc4, output += String.fromCharCode(chr1), 64 != enc3 && (output += String.fromCharCode(chr2)), 
+            64 != enc4 && (output += String.fromCharCode(chr3));
+            return output = Base64._utf8_decode(output), output;
+        }
+        static _utf8_encode(string) {
+            string = string.replace(/\r\n/g, "\n");
+            let utftext = "";
+            for (let n = 0; n < string.length; n++) {
+                let c = string.charCodeAt(n);
+                c < 128 ? utftext += String.fromCharCode(c) : c > 127 && c < 2048 ? (utftext += String.fromCharCode(c >> 6 | 192), 
+                utftext += String.fromCharCode(63 & c | 128)) : (utftext += String.fromCharCode(c >> 12 | 224), 
+                utftext += String.fromCharCode(c >> 6 & 63 | 128), utftext += String.fromCharCode(63 & c | 128));
+            }
+            return utftext;
+        }
+        static _utf8_decode(utftext) {
+            let string = "", i = 0, c = 0, c2 = 0, c3 = 0;
+            for (;i < utftext.length; ) c = utftext.charCodeAt(i), c < 128 ? (string += String.fromCharCode(c), 
+            i++) : c > 191 && c < 224 ? (c2 = utftext.charCodeAt(i + 1), string += String.fromCharCode((31 & c) << 6 | 63 & c2), 
+            i += 2) : (c2 = utftext.charCodeAt(i + 1), c3 = utftext.charCodeAt(i + 2), string += String.fromCharCode((15 & c) << 12 | (63 & c2) << 6 | 63 & c3), 
+            i += 3);
+            return string;
+        }
+    }
+    Base64._keyStr = "ZLHUPIO4tAok06E/caWCmSFfKusy3nrjJRzDTvBgY7wdMlXp82NViGq=+Qheb91x5";
+    class GwdService extends PluginBase {
+        constructor() {
+            super(...arguments), this.rules = new Map([ [ SiteEnum.TMall, /detail\.tmall\.com\/item\.htm/i ], [ SiteEnum.TaoBao, /item\.taobao\.com\//i ], [ SiteEnum.JingDong, /item\.(yiyaojd|jd)\.(com|hk)\/[0-9]*\.html/i ], [ SiteEnum.SuNing, /product\.suning\.com\//i ], [ SiteEnum.Vp, /detail\.vip\.com\//i ], [ SiteEnum.KaoLa, /goods\.kaola\.(com\.hk|com)/i ] ]), 
+            this._appName = "GwdService", this.historyService = new HistoryService, this.factory = new DefCoupon, 
+            this.itemUrl = "";
+        }
+        loader() {
+            new SignInfo;
+        }
+        run() {
             this.injectHistory();
-        }, GwdService.prototype.paraPre = function() {
-            var url = "https://browser.gwdang.com/brwext/permanent_id?version=2&default_style=bottom&referrer=" + encodeURIComponent(unsafeWindow.window.document.referrer);
-            Http.JqGet(url, (function(res) {
-                res && Logger.debug(res);
-            }));
-        }, GwdService.prototype.injectHistory = function() {
-            var _a, _b, _this = this;
+        }
+        injectHistory() {
+            var _a, _b;
             switch (Logger.debug(this.site), this.site) {
               case SiteEnum.TaoBao:
               case SiteEnum.TMall:
@@ -2309,7 +2508,7 @@
                 break;
 
               case SiteEnum.JingDong:
-                this.factory = new JdCoupon, this.itemUrl = "https://item.jd.com/" + (null === (_b = null === (_a = unsafeWindow.pageConfig) || void 0 === _a ? void 0 : _a.product) || void 0 === _b ? void 0 : _b.skuid) + ".html";
+                this.factory = new JdCoupon, this.itemUrl = `https://item.jd.com/${null === (_b = null === (_a = unsafeWindow.pageConfig) || void 0 === _a ? void 0 : _a.product) || void 0 === _b ? void 0 : _b.skuid}.html`;
                 break;
 
               case SiteEnum.SuNing:
@@ -2321,61 +2520,79 @@
                 break;
 
               case SiteEnum.KaoLa:
-                this.factory = new KaolaCoupon, this.itemUrl = "https://goods.kaola.com/product/" + unsafeWindow.__kaolaGTMGoodsData.product_no + ".html";
+                this.factory = new KaolaCoupon, this.itemUrl = `https://goods.kaola.com/product/${unsafeWindow.__kaolaGTMGoodsData.product_no}.html`;
                 break;
 
               default:
                 this.factory = new DefCoupon;
             }
-            this.factory.init_html(this.getHistoryHtml()).then((function(res) {
-                res && _this.InitPriceHistory(), _this.factory.init_coupons && _this.factory.init_coupons(), 
-                _this.autoResize();
-            }));
-        }, GwdService.prototype.autoResize = function() {
-            var setChartWidth_1, that = this;
-            that.parentEleSelector && (setChartWidth_1 = function() {
-                var _a, _b, width;
-                $(".vip-plugin-outside-chart-container") && (width = Number(null === (_a = $(that.parentEleSelector)) || void 0 === _a ? void 0 : _a.width()), 
-                $(".vip-plugin-outside-chart-container").width(width - 240), Logger.info("\u56fe\u8868\u7ed8\u5236\u5bbd\u5ea6\u66f4\u65b0:" + width), 
-                null === (_b = that.echartsObj) || void 0 === _b || _b.resize());
-            }, Core.autoLazyload((function() {
-                var _a, _b;
-                return (null === (_a = $(that.parentEleSelector)) || void 0 === _a ? void 0 : _a.length) > 0 && Number(null === (_b = $(that.parentEleSelector)) || void 0 === _b ? void 0 : _b.width()) > 0;
-            }), (function() {
-                setChartWidth_1();
-            }), .5), unsafeWindow.window.onresize = function() {
-                Logger.info("\u9875\u9762\u5927\u5c0f\u53d8\u66f4"), setChartWidth_1();
+            this.factory.init_html(this.getHistoryHtml()).then(res => {
+                res && this.InitPriceHistory(), this.factory.init_coupons && this.factory.init_coupons(), 
+                this.autoResize();
             });
-        }, GwdService.prototype.InitPriceHistory = function() {
-            var _a, that, _this = this;
-            $("#vip-plugin-outside").show(), this.theme(), this.chartMsg("\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u4e2d"), 
-            that = this, Route.queryHistoryV5(null !== (_a = that.itemUrl) && void 0 !== _a ? _a : Core.url).then((function(res) {
+        }
+        autoResize() {
+            let that = this;
+            if (that.parentEleSelector) {
+                let setChartWidth = () => {
+                    var _a, _b;
+                    if ($(".vip-plugin-outside-chart-container")) {
+                        let width = Number(null === (_a = $(that.parentEleSelector)) || void 0 === _a ? void 0 : _a.width());
+                        $(".vip-plugin-outside-chart-container").width(width - 240), Logger.info("\u56fe\u8868\u7ed8\u5236\u5bbd\u5ea6\u66f4\u65b0:" + width), 
+                        null === (_b = that.echartsObj) || void 0 === _b || _b.resize();
+                    }
+                };
+                Core.autoLazyload(() => {
+                    var _a, _b;
+                    return (null === (_a = $(that.parentEleSelector)) || void 0 === _a ? void 0 : _a.length) > 0 && Number(null === (_b = $(that.parentEleSelector)) || void 0 === _b ? void 0 : _b.width()) > 0;
+                }, () => {
+                    setChartWidth();
+                }, .5), unsafeWindow.window.onresize = () => {
+                    Logger.info("\u9875\u9762\u5927\u5c0f\u53d8\u66f4"), setChartWidth();
+                };
+            }
+        }
+        InitPriceHistory() {
+            var _a;
+            $("#vip-plugin-outside").show(), this.theme(), this.chartMsg("\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u4e2d");
+            let that = this;
+            Route.queryHistoryV5(null !== (_a = that.itemUrl) && void 0 !== _a ? _a : Core.url).then(res => {
                 Logger.debug(res.data), $(".vip-plugin-outside-chart-container").html('<div id="vip-plugin-outside-chart-container-line"></div>'), 
                 that.echartsObj = echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), that.theme()), 
                 that.echartsObj.setOption(that.getChartOption(res.data)), that.chartMsg("");
-            })).catch((function() {
-                Route.queryHistoryV4(GwdHelper.get("https://browser.gwdang.com/extension/price_towards?url=" + encodeURIComponent(Core.url) + "&ver=1"), (function(data) {
-                    var slContainer, msg = "";
-                    Logger.debug(data), "price_status" in data ? ($(".vip-plugin-outside-chart-container").html('<div id="vip-plugin-outside-chart-container-line"></div>'), 
-                    that.echartsObj = echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), _this.theme()), 
-                    that.echartsObj.setOption(that.getChartOptionGwd(data)), that.chartMsg(msg)) : ("is_ban" in data && 1 == data.is_ban && (1 != Config.get("gwd_verify_close") ? (sAlert.confirm("\u54ce\u54df\u4e0d\u9519\u54e6", "\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u5f02\u5e38,\u662f\u5426\u6253\u5f00\u9a8c\u8bc1\u9875\u9762\u8fdb\u884c\u9a8c\u8bc1?", "\u9a8c\u8bc1\u8d70\u8d77", "\u8001\u5b50\u4e0d\u770b", "info", "\u5c4f\u853d\u4e00\u5929").then((function(res) {
-                        res.isConfirmed ? Core.open("https://browser.gwdang.com/slider/verify.html?fromUrl=" + encodeURIComponent(Core.url)) : res.isDenied && (Config.set("gwd_verify_close", 1, 86400), 
-                        that.chartMsg("\u7528\u6237\u8868\u793a\u4e0d\u60f3\u770b\u5e76\u62d2\u7edd\u9a8c\u8bc1")), 
-                        sAlert.close(res);
-                    })), slContainer = ".swal2-container", "99999999999" != $(slContainer).css("z-index") && $(slContainer).css("z-index", "99999999999")) : that.chartMsg("\u7528\u6237\u5c4f\u853d\u4e86\u9a8c\u8bc1\u8868\u793a\u4e0d\u60f3\u770b")), 
-                    that.historyService.Process());
-                }));
-            }));
-        }, GwdService.prototype.getHistoryHtml = function() {
-            return '<div id="vip-plugin-outside">\n                    <div class="vip-plugin-outside-toolbar">\n                    [\u624b\u5de5\u67e5\u8be2\uff1a<a href="https://tool.manmanbuy.com/m/disSitePro.aspx?c_from=m&url=' + Core.url + '" target="_blank">\u63a5\u53e3\u4e00</a>,<a href="http://www.hisprice.cn/his.php?hisurl=' + Core.url + '" target="_blank">\u63a5\u53e3\u4e8c</a>]\n                    </div>\n                    <div class="vip-plugin-outside-coupons">\n                        <div class="vip-plugin-outside-coupons-qrcode" id="vip-plugin-outside-coupons-qrcode-img"></div>\n                        <div class="vip-plugin-outside-coupons-title"></div>\n                        <div class="vip-plugin-outside-coupons-action"></div>\n                    </div>\n                    <div id="vip-plugin-outside-history" class="vip-plugin-outside-history">\n                        <div class="vip-plugin-outside-chart-container"></div>\n                        <p class="vip-plugin-outside-history-tip"></p>\n                    </div>    \n                    \n                </div>';
-        }, GwdService.prototype.chartMsg = function(msg) {
+            }).catch(() => {
+                Route.queryHistoryV4(GwdHelper.get(`https://browser.gwdang.com/extension/price_towards?url=${encodeURIComponent(Core.url)}&ver=1`), data => {
+                    if (Logger.debug(data), "price_status" in data) $(".vip-plugin-outside-chart-container").html('<div id="vip-plugin-outside-chart-container-line"></div>'), 
+                    that.echartsObj = echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), this.theme()), 
+                    that.echartsObj.setOption(that.getChartOptionGwd(data)), that.chartMsg(""); else {
+                        if ("is_ban" in data && 1 == data.is_ban) if (1 != Config.get("gwd_verify_close")) {
+                            sAlert.confirm("\u54ce\u54df\u4e0d\u9519\u54e6", "\u5386\u53f2\u4ef7\u683c\u67e5\u8be2\u5f02\u5e38,\u662f\u5426\u6253\u5f00\u9a8c\u8bc1\u9875\u9762\u8fdb\u884c\u9a8c\u8bc1?", "\u9a8c\u8bc1\u8d70\u8d77", "\u8001\u5b50\u4e0d\u770b", "info", "\u5c4f\u853d\u4e00\u5929").then(res => {
+                                res.isConfirmed ? Core.open("https://browser.gwdang.com/slider/verify.html?fromUrl=" + encodeURIComponent(Core.url)) : res.isDenied && (Config.set("gwd_verify_close", 1, 86400), 
+                                that.chartMsg("\u7528\u6237\u8868\u793a\u4e0d\u60f3\u770b\u5e76\u62d2\u7edd\u9a8c\u8bc1")), 
+                                sAlert.close(res);
+                            });
+                            let slContainer = ".swal2-container";
+                            "99999999999" != $(slContainer).css("z-index") && $(slContainer).css("z-index", "99999999999");
+                        } else that.chartMsg("\u7528\u6237\u5c4f\u853d\u4e86\u9a8c\u8bc1\u8868\u793a\u4e0d\u60f3\u770b");
+                        that.historyService.Process();
+                    }
+                });
+            });
+        }
+        getHistoryHtml() {
+            return `<div id="vip-plugin-outside">\n                    <div class="vip-plugin-outside-toolbar">\n                    [\u624b\u5de5\u67e5\u8be2\uff1a<a href="https://tool.manmanbuy.com/m/disSitePro.aspx?c_from=m&url=${Core.url}" target="_blank">\u63a5\u53e3\u4e00</a>,<a href="http://www.hisprice.cn/his.php?hisurl=${Core.url}" target="_blank">\u63a5\u53e3\u4e8c</a>]\n                    </div>\n                    <div class="vip-plugin-outside-coupons">\n                        <div class="vip-plugin-outside-coupons-qrcode" id="vip-plugin-outside-coupons-qrcode-img"></div>\n                        <div class="vip-plugin-outside-coupons-title"></div>\n                        <div class="vip-plugin-outside-coupons-action"></div>\n                    </div>\n                    <div id="vip-plugin-outside-history" class="vip-plugin-outside-history">\n                        <div class="vip-plugin-outside-chart-container"></div>\n                        <p class="vip-plugin-outside-history-tip"></p>\n                    </div>    \n                    \n                </div>`;
+        }
+        chartMsg(msg) {
             $(".vip-plugin-outside-history-tip").html(msg);
-        }, GwdService.prototype.getChartOption = function(data) {
-            var _a, _b, text, maxData, minData, chartOption, step, line, analysisTxt = "\u6700\u4f4e";
-            return data.info.min, text = analysisTxt + "\uff1a{red|\uffe5" + data.info.min + "} ( {red|" + data.info.max + "} )", 
-            maxData = new PromoInfo, (minData = new PromoInfo).price = Number.MAX_SAFE_INTEGER, 
-            minData.humanPrice = Number.MAX_SAFE_INTEGER, maxData.humanPrice = Number.MIN_SAFE_INTEGER, 
-            chartOption = new LinesOption, step = 10, (chartOption = {
+        }
+        getChartOption(data) {
+            var _a, _b;
+            data.info.min;
+            let text = `\u6700\u4f4e\uff1a{red|\uffe5${data.info.min}} ( {red|${data.info.max}} )`, maxData = new PromoInfo, minData = new PromoInfo;
+            minData.price = Number.MAX_SAFE_INTEGER, minData.humanPrice = Number.MAX_SAFE_INTEGER, 
+            maxData.humanPrice = Number.MIN_SAFE_INTEGER;
+            let chartOption = new LinesOption;
+            chartOption = {
                 title: {
                     left: "center",
                     subtext: text,
@@ -2394,12 +2611,15 @@
                         type: "cross"
                     },
                     formatter: function(params) {
-                        var _a, _b, date, year, month, day, monthStr, dayStr, price;
-                        return params = params[0], year = (date = new Date(params.axisValue)).getFullYear(), 
-                        month = date.getMonth() + 1, day = date.getDate(), monthStr = month.toString(), 
-                        dayStr = day.toString(), month < 10 && (monthStr = "0" + month), day < 10 && (dayStr = "0" + day), 
-                        price = null === (_a = params.value[1]) || void 0 === _a ? void 0 : _a.toString(), 
-                        "\u65e5\u671f\uff1a" + year + "-" + monthStr + "-" + dayStr + "<br/>\u4ef7\u683c\uff1a\uffe5" + (price = null === (_b = parseFloat(price)) || void 0 === _b ? void 0 : _b.toFixed(2)) + ("" == params.value[2] ? "" : "<br/>" + params.value[2]);
+                        var _a, _b, year, month, day;
+                        params = params[0];
+                        let date = new Date(params.axisValue);
+                        year = date.getFullYear(), month = date.getMonth() + 1, day = date.getDate();
+                        let monthStr = month.toString(), dayStr = day.toString();
+                        month < 10 && (monthStr = "0" + month), day < 10 && (dayStr = "0" + day);
+                        let price = null === (_a = params.value[1]) || void 0 === _a ? void 0 : _a.toString();
+                        return price = null === (_b = parseFloat(price)) || void 0 === _b ? void 0 : _b.toFixed(2), 
+                        `\u65e5\u671f\uff1a${year}-${monthStr}-${dayStr}<br/>\u4ef7\u683c\uff1a\uffe5${price}${"" == params.value[2] ? "" : "<br/>" + params.value[2]}`;
                     }
                 },
                 grid: {
@@ -2418,19 +2638,23 @@
                 series: [ {
                     type: "line",
                     step: "end",
-                    data: function(data) {
-                        var couponsMap, now_1, l = [];
-                        return data.list.length > 0 && (couponsMap = {}, now_1 = new Date("9999-99-99 00:00:00").getMilliseconds(), 
-                        data.list.forEach((function(v) {
-                            var p;
-                            v.time < now_1 && (now_1 = v.time), v.price > maxData.humanPrice && (maxData.humanPrice = v.price, 
-                            maxData.time = v.time), v.price < minData.humanPrice && (minData.humanPrice = v.price, 
-                            minData.time = v.time), (new PromoInfo).msg = new MsgInfo, p = {
-                                name: v.time,
-                                value: [ v.date, v.price, "" ]
-                            }, l.push(p);
-                        })), Logger.debug(couponsMap)), Logger.debug(maxData), Logger.debug(minData), l;
-                    }(data),
+                    data: (data => {
+                        let l = [];
+                        if (data.list.length > 0) {
+                            let couponsMap = {}, now = new Date("9999-99-99 00:00:00").getMilliseconds();
+                            data.list.forEach(v => {
+                                v.time < now && (now = v.time), v.price > maxData.humanPrice && (maxData.humanPrice = v.price, 
+                                maxData.time = v.time), v.price < minData.humanPrice && (minData.humanPrice = v.price, 
+                                minData.time = v.time), (new PromoInfo).msg = new MsgInfo;
+                                let p = {
+                                    name: v.time,
+                                    value: [ v.date, v.price, "" ]
+                                };
+                                l.push(p);
+                            }), Logger.debug(couponsMap);
+                        }
+                        return Logger.debug(maxData), Logger.debug(minData), l;
+                    })(data),
                     showSymbol: !1,
                     symbolSize: 3,
                     lineStyle: {
@@ -2438,10 +2662,13 @@
                         color: "#ff0036"
                     }
                 } ]
-            }).yAxis = {
-                min: Math.floor(.9 * minData.humanPrice / step) * step,
-                max: Math.ceil(1.1 * maxData.humanPrice / step) * step
-            }, (line = null === (_a = chartOption.series) || void 0 === _a ? void 0 : _a.pop()).markPoint = {
+            };
+            chartOption.yAxis = {
+                min: 10 * Math.floor(.9 * minData.humanPrice / 10),
+                max: 10 * Math.ceil(1.1 * maxData.humanPrice / 10)
+            };
+            let line = null === (_a = chartOption.series) || void 0 === _a ? void 0 : _a.pop();
+            return line.markPoint = {
                 data: [ {
                     value: minData.humanPrice,
                     coord: [ 1e3 * minData.time, minData.humanPrice ],
@@ -2464,18 +2691,27 @@
                 start: 0,
                 end: 100
             } ], chartOption;
-        }, GwdService.prototype.getMinPrice = function(data) {
-            var min, min_1, minDate_1, analysisTxt = data.analysis.tip;
-            return data.analysis.promo_days.length > 0 ? analysisTxt = analysisTxt + "\uff1a{red|\uffe5" + (min = data.analysis.promo_days[data.analysis.promo_days.length - 1]).price + "} ( {red|" + min.date + "} )" : (min_1 = Number.MIN_VALUE, 
-            minDate_1 = 0, data.nopuzzle_promo.forEach((function(el) {
-                el.price < min_1 && (min_1 = el.price, minDate_1 = el.time);
-            })), Core.format(new Date(1e3 * minDate_1), "yyyy-MM-dd"), analysisTxt = analysisTxt + "\uff1a{red|" + min_1 + "} ( {red|" + minDate_1 + "} )"), 
-            analysisTxt;
-        }, GwdService.prototype.getChartOptionGwd = function(data) {
-            var _a, _b, chartOption, step, line, text = this.getMinPrice(data), maxData = new PromoInfo, minData = new PromoInfo;
-            return minData.price = Number.MAX_SAFE_INTEGER, minData.humanPrice = Number.MAX_SAFE_INTEGER, 
-            maxData.humanPrice = Number.MIN_SAFE_INTEGER, chartOption = new LinesOption, step = 10, 
-            (chartOption = {
+        }
+        getMinPrice(data) {
+            let analysisTxt = data.analysis.tip;
+            if (data.analysis.promo_days.length > 0) {
+                let min = data.analysis.promo_days[data.analysis.promo_days.length - 1];
+                analysisTxt = `${analysisTxt}\uff1a{red|\uffe5${min.price}} ( {red|${min.date}} )`;
+            } else {
+                let min = Number.MIN_VALUE, minDate = 0;
+                data.nopuzzle_promo.forEach(el => {
+                    el.price < min && (min = el.price, minDate = el.time);
+                }), Core.format(new Date(1e3 * minDate), "yyyy-MM-dd"), analysisTxt = `${analysisTxt}\uff1a{red|${min}} ( {red|${minDate}} )`;
+            }
+            return analysisTxt;
+        }
+        getChartOptionGwd(data) {
+            var _a, _b;
+            let text = this.getMinPrice(data), maxData = new PromoInfo, minData = new PromoInfo;
+            minData.price = Number.MAX_SAFE_INTEGER, minData.humanPrice = Number.MAX_SAFE_INTEGER, 
+            maxData.humanPrice = Number.MIN_SAFE_INTEGER;
+            let chartOption = new LinesOption;
+            chartOption = {
                 title: {
                     left: "center",
                     subtext: text,
@@ -2494,12 +2730,15 @@
                         type: "cross"
                     },
                     formatter: function(params) {
-                        var _a, _b, date, year, month, day, monthStr, dayStr, price;
-                        return params = params[0], year = (date = new Date(params.name)).getFullYear(), 
-                        month = date.getMonth() + 1, day = date.getDate(), monthStr = month.toString(), 
-                        dayStr = day.toString(), month < 10 && (monthStr = "0" + month), day < 10 && (dayStr = "0" + day), 
-                        price = null === (_a = params.value[1]) || void 0 === _a ? void 0 : _a.toString(), 
-                        "\u65e5\u671f\uff1a" + year + "-" + monthStr + "-" + dayStr + "<br/>\u4ef7\u683c\uff1a\uffe5" + (price = null === (_b = parseFloat(price)) || void 0 === _b ? void 0 : _b.toFixed(2)) + ("" == params.value[2] ? "" : "<br/>" + params.value[2]);
+                        var _a, _b, year, month, day;
+                        params = params[0];
+                        let date = new Date(params.name);
+                        year = date.getFullYear(), month = date.getMonth() + 1, day = date.getDate();
+                        let monthStr = month.toString(), dayStr = day.toString();
+                        month < 10 && (monthStr = "0" + month), day < 10 && (dayStr = "0" + day);
+                        let price = null === (_a = params.value[1]) || void 0 === _a ? void 0 : _a.toString();
+                        return price = null === (_b = parseFloat(price)) || void 0 === _b ? void 0 : _b.toFixed(2), 
+                        `\u65e5\u671f\uff1a${year}-${monthStr}-${dayStr}<br/>\u4ef7\u683c\uff1a\uffe5${price}${"" == params.value[2] ? "" : "<br/>" + params.value[2]}`;
                     }
                 },
                 grid: {
@@ -2518,23 +2757,32 @@
                 series: [ {
                     type: "line",
                     step: "end",
-                    data: function(data) {
-                        var _a, storeData, couponsMap_1, now_2, dayTime_1, l = [];
-                        return data.store.length > 0 && (storeData = data.store[0], data.store.length > 1 && (storeData = data.store[1]), 
-                        couponsMap_1 = {}, (null === (_a = data.promo) || void 0 === _a ? void 0 : _a.length) > 0 && data.promo.forEach((function(v) {
-                            couponsMap_1.hasOwnProperty(1e3 * v.time) || (couponsMap_1[1e3 * v.time] = v);
-                        })), now_2 = storeData.all_line_begin_time, dayTime_1 = 864e5, storeData.all_line.forEach((function(v) {
-                            var promo, p;
-                            v > maxData.humanPrice && (maxData.humanPrice = v, maxData.time = now_2 / 1e3), 
-                            v < minData.humanPrice && (minData.humanPrice = v, minData.time = now_2 / 1e3), 
-                            (promo = new PromoInfo).msg = new MsgInfo, couponsMap_1.hasOwnProperty(now_2) && (Logger.debug("yes"), 
-                            promo = couponsMap_1[now_2]), p = {
-                                name: now_2,
-                                value: [ now_2, v, couponsMap_1.hasOwnProperty(now_2) ? promo.msg.coupon ? promo.msg.promotion : promo.msg.coupon : "" ]
-                            }, l.push(p), now_2 += dayTime_1;
-                        })), Logger.debug(couponsMap_1)), Logger.debug(maxData), Logger.debug(minData), 
-                        l;
-                    }(data),
+                    data: (data => {
+                        var _a;
+                        let l = [];
+                        if (data.store.length > 0) {
+                            let storeData = data.store[0];
+                            data.store.length > 1 && (storeData = data.store[1]);
+                            let couponsMap = {};
+                            (null === (_a = data.promo) || void 0 === _a ? void 0 : _a.length) > 0 && data.promo.forEach(v => {
+                                couponsMap.hasOwnProperty(1e3 * v.time) || (couponsMap[1e3 * v.time] = v);
+                            });
+                            let now = storeData.all_line_begin_time, dayTime = 864e5;
+                            storeData.all_line.forEach(v => {
+                                v > maxData.humanPrice && (maxData.humanPrice = v, maxData.time = now / 1e3), v < minData.humanPrice && (minData.humanPrice = v, 
+                                minData.time = now / 1e3);
+                                let promo = new PromoInfo;
+                                promo.msg = new MsgInfo, couponsMap.hasOwnProperty(now) && (Logger.debug("yes"), 
+                                promo = couponsMap[now]);
+                                let p = {
+                                    name: now,
+                                    value: [ now, v, couponsMap.hasOwnProperty(now) ? promo.msg.coupon ? promo.msg.promotion : promo.msg.coupon : "" ]
+                                };
+                                l.push(p), now += dayTime;
+                            }), Logger.debug(couponsMap);
+                        }
+                        return Logger.debug(maxData), Logger.debug(minData), l;
+                    })(data),
                     showSymbol: !1,
                     symbolSize: 3,
                     lineStyle: {
@@ -2542,10 +2790,13 @@
                         color: "#ff0036"
                     }
                 } ]
-            }).yAxis = {
-                min: Math.floor(.9 * minData.humanPrice / step) * step,
-                max: Math.ceil(1.1 * maxData.humanPrice / step) * step
-            }, (line = null === (_a = chartOption.series) || void 0 === _a ? void 0 : _a.pop()).markPoint = {
+            };
+            chartOption.yAxis = {
+                min: 10 * Math.floor(.9 * minData.humanPrice / 10),
+                max: 10 * Math.ceil(1.1 * maxData.humanPrice / 10)
+            };
+            let line = null === (_a = chartOption.series) || void 0 === _a ? void 0 : _a.pop();
+            return line.markPoint = {
                 data: [ {
                     value: minData.humanPrice,
                     coord: [ 1e3 * minData.time, minData.humanPrice ],
@@ -2568,7 +2819,8 @@
                 start: 0,
                 end: 100
             } ], chartOption;
-        }, GwdService.prototype.theme = function() {
+        }
+        theme() {
             return {
                 color: [ "#2ec7c9", "#b6a2de", "#5ab1ef", "#ffb980", "#d87a80", "#8d98b3", "#e5cf0d", "#97b552", "#95706d", "#dc69aa", "#07a2a4", "#9a7fd1", "#588dd5", "#f5994e", "#c05050", "#59678c", "#c9ab00", "#7eb00a", "#6f5553", "#c14089" ],
                 title: {
@@ -2820,96 +3072,107 @@
                     fontFamily: "\u5fae\u8f6f\u96c5\u9ed1, Arial, Verdana, sans-serif"
                 }
             };
-        }, GwdService.chartsWidth = !1, GwdService;
-    }(PluginBase), GwdHelper = function() {
-        function GwdHelper() {}
-        return GwdHelper.get = function(url) {
-            var from_type = "", G = GwdHelper;
+        }
+    }
+    GwdService.chartsWidth = !1;
+    class GwdHelper {
+        static get(url) {
+            let from_type = "", G = GwdHelper;
             return GwdHelper.from_type && (from_type = "&from_type=" + GwdHelper.from_type), 
             (url = GwdHelper.wrap(url) + "version=" + (new Date).getTime() + "&from_device=" + G.from_device + from_type).includes("union=") || (url += "&union=" + G.union), 
             G.crc64 && (url += "&crc64=1"), url;
-        }, GwdHelper.wrap = function(url) {
-            var start, callback, format, fp, G = GwdHelper;
-            return url ? (start = "?", callback = "callback=?&", url.indexOf("?") > -1 && (start = "&"), 
-            format = "format=jsonp&", callback = "", format = "format=json&", fp = "", localStorage.getItem("gwdang-fp") && (fp = "fp=" + Config.get(G.gwd_fp_key) + "&dfp=" + Config.get(G.gwd_dfp_key) + "&"), 
-            "" + url + start + callback + format + fp) : url;
-        }, GwdHelper.version = "", GwdHelper.from_device = "default", GwdHelper.from_type = "", 
-        GwdHelper.union = "union_gwdang", GwdHelper.crc64 = !0, GwdHelper.gwd_fp_key = "gwd_fp_key", 
-        GwdHelper.gwd_dfp_key = "gwd_dfp_key", GwdHelper;
-    }(), styleInject(".wandhi_tab {\n  font-family: PingFangSC-Regular;\n  font-weight: 400;\n  font-size: 14px;\n  border: 1px solid #f40;\n  border-collapse: collapse;\n}\n.wandhi_tab thead {\n  font-size: 14px;\n  text-align: center;\n}\n.wandhi_tab tr th {\n  padding: 10px 10px;\n  text-align: center;\n}\n.wandhi_tab tr td {\n  padding: 10px 10px;\n  text-align: center;\n  font-size: 14px;\n}\n.wandhi_tab tr td a {\n  text-decoration: none;\n}\n.wandhi_tab_taobao,\n.wandhi_tab_tmall {\n  margin-bottom: 15px;\n}\n.wandhi_tab_taobao thead,\n.wandhi_tab_tmall thead {\n  background-color: #f40;\n  color: #FFF;\n}\n.wandhi_tab_taobao tr td,\n.wandhi_tab_tmall tr td {\n  border: 1px solid #e6602d;\n  color: #e6602d;\n}\n.wandhi_tab_taobao tr td a,\n.wandhi_tab_tmall tr td a {\n  color: #e6602d;\n}\n.wandhi_tab_tmall thead {\n  background-color: #ff0036;\n}\n.wandhi_tab_tmall tr td {\n  border: 1px solid #ff0036;\n  color: #ff0036;\n}\n.wandhi_tab_tmall tr td a {\n  color: #ff0036;\n}\n.tb-prop .tb-img li a {\n  width: auto !important;\n  background-position-x: 5px !important;\n}\n.tb-prop .tb-img li span {\n  text-indent: 1em !important;\n  display: block !important;\n  padding: 0 5px !important;\n  margin-left: 35px;\n}\n"), 
-    TaoBaoService = function(_super) {
-        function TaoBaoService() {
-            var _this = null !== _super && _super.apply(this, arguments) || this;
-            return _this._appName = "TaoBaoService", _this.rules = new Map([ [ SiteEnum.TaoBao, /taobao\.com\//i ], [ SiteEnum.TMall, /tmall\.(com|hk)\//i ] ]), 
-            _this.UrlTag = "Wandhi_qLink", _this.historyService = new GwdService, _this;
         }
-        return __extends(TaoBaoService, _super), TaoBaoService.prototype.loader = function() {}, 
-        TaoBaoService.prototype.run = function() {
+        static wrap(url) {
+            let G = GwdHelper;
+            if (!url) return url;
+            let start = "?", callback = "callback=?&";
+            url.indexOf("?") > -1 && (start = "&");
+            let format = "format=jsonp&";
+            callback = "", format = "format=json&";
+            let fp = "";
+            return localStorage.getItem("gwdang-fp") && (fp = `fp=${Config.get(G.gwd_fp_key)}&dfp=${Config.get(G.gwd_dfp_key)}&`), 
+            "" + url + start + "format=json&" + fp;
+        }
+    }
+    GwdHelper.version = "", GwdHelper.from_device = "default", GwdHelper.from_type = "", 
+    GwdHelper.union = "union_gwdang", GwdHelper.crc64 = !0, GwdHelper.gwd_fp_key = "gwd_fp_key", 
+    GwdHelper.gwd_dfp_key = "gwd_dfp_key", styleInject(".wandhi_tab {\n  font-family: PingFangSC-Regular;\n  font-weight: 400;\n  font-size: 14px;\n  border: 1px solid #f40;\n  border-collapse: collapse;\n}\n.wandhi_tab thead {\n  font-size: 14px;\n  text-align: center;\n}\n.wandhi_tab tr th {\n  padding: 10px 10px;\n  text-align: center;\n}\n.wandhi_tab tr td {\n  padding: 10px 10px;\n  text-align: center;\n  font-size: 14px;\n}\n.wandhi_tab tr td a {\n  text-decoration: none;\n}\n.wandhi_tab_taobao,\n.wandhi_tab_tmall {\n  margin-bottom: 15px;\n}\n.wandhi_tab_taobao thead,\n.wandhi_tab_tmall thead {\n  background-color: #f40;\n  color: #FFF;\n}\n.wandhi_tab_taobao tr td,\n.wandhi_tab_tmall tr td {\n  border: 1px solid #e6602d;\n  color: #e6602d;\n}\n.wandhi_tab_taobao tr td a,\n.wandhi_tab_tmall tr td a {\n  color: #e6602d;\n}\n.wandhi_tab_tmall thead {\n  background-color: #ff0036;\n}\n.wandhi_tab_tmall tr td {\n  border: 1px solid #ff0036;\n  color: #ff0036;\n}\n.wandhi_tab_tmall tr td a {\n  color: #ff0036;\n}\n.tb-prop .tb-img li a {\n  width: auto !important;\n  background-position-x: 5px !important;\n}\n.tb-prop .tb-img li span {\n  text-indent: 1em !important;\n  display: block !important;\n  padding: 0 5px !important;\n  margin-left: 35px;\n}\n");
+    class TaoBaoService extends PluginBase {
+        constructor() {
+            super(...arguments), this._appName = "TaoBaoService", this.rules = new Map([ [ SiteEnum.TaoBao, /taobao\.com\//i ], [ SiteEnum.TMall, /tmall\.(com|hk)\//i ] ]), 
+            this.UrlTag = "Wandhi_qLink", this.historyService = new GwdService;
+        }
+        loader() {}
+        run() {
             this.init(), this.historyService.linkTest() && this.historyService.Process();
-        }, TaoBaoService.prototype.init = function() {
-            var _this = this, init = "<div id='wandhi_div'><table class='wandhi_tab " + (this.site == SiteEnum.TaoBao ? "wandhi_tab_taobao" : "wandhi_tab_tmall") + "' id='wandhi_table'><thead><tr><th><b style='cursor:pointer'>\u4f18\u60e0\u5238</b></th><th>\u5238\u540e</th><th>\u6709 \u6548 \u671f</th><th>\u64cd\u4f5c</th></tr></thead><tr><td colspan='4'>\u6b63\u5728\u67e5\u8be2\u4f18\u60e0\u4fe1\u606f\uff0c\u8bf7\u7a0d\u5019...</td></tr></table></div>";
-            Core.autoLazyload((function() {
+        }
+        init() {
+            var init = `<div id='wandhi_div'><table class='wandhi_tab ${this.site == SiteEnum.TaoBao ? "wandhi_tab_taobao" : "wandhi_tab_tmall"}' id='wandhi_table'><thead><tr><th><b style='cursor:pointer'>\u4f18\u60e0\u5238</b></th><th>\u5238\u540e</th><th>\u6709 \u6548 \u671f</th><th>\u64cd\u4f5c</th></tr></thead><tr><td colspan='4'>\u6b63\u5728\u67e5\u8be2\u4f18\u60e0\u4fe1\u606f\uff0c\u8bf7\u7a0d\u5019...</td></tr></table></div>`;
+            Core.autoLazyload(() => {
                 var _a, _b;
                 return (null === (_a = $("#skuWrap")) || void 0 === _a ? void 0 : _a.length) > 0 || (null === (_b = $('[class^="Price--"][class*=" hasBgImg--"]')) || void 0 === _b ? void 0 : _b.length) > 0;
-            }), (function() {
-                var itemId, key, d;
+            }, () => {
                 $("#skuWrap").prepend(init), $("#J_LinkBasket").parent().parent().prepend(init), 
                 $(".J_LinkAdd").parent().parent().prepend(init), $("[class*=BasicContent--actions]").prepend(init), 
-                $(".beautify-scroll-bar").prepend(init), itemId = Core.getPar("id"), key = "td_s_" + itemId, 
-                (d = Config.get(key, !1)) ? _this.initElement(d) : Route.queryCoupons(itemId, (function(data) {
-                    Config.set(key, data, 43200), _this.initElement(data);
-                }));
-            }), .2);
-        }, TaoBaoService.prototype.initElement = function(data) {
-            var _a, row;
-            $("#wandhi_table tbody tr").remove(), row = "", data.code && (null === (_a = data.data) || void 0 === _a ? void 0 : _a.length) > 0 && "string" != typeof data.data ? data.data.forEach((function(e) {
-                row += "<tr><td>" + e.quan_context + "</td><td>" + e.after_price + "</td><td>" + e.quan_time + "</td><td><b onclick=window.open(decodeURIComponent('" + e.quan_link + "')) style='cursor:pointer'>\u9886\u53d6</b></td></tr>";
-            })) : row = "<tr><td colspan='4'>\u8fd9\u4e2a\u5546\u54c1\u6ca1\u6709\u8d85\u503c\u4f18\u60e0\u5238</td></tr>", 
-            $("#wandhi_table tbody").append(row);
-        }, TaoBaoService;
-    }(PluginBase), JdService = function(_super) {
-        function JdService() {
-            var _this = _super.call(this) || this;
-            return _this._appName = "JdService", _this.rules = new Map([ [ SiteEnum.JingDong, /item\.(yiyaojd|jd)\.c/i ] ]), 
-            _this.historyService = new GwdService, _this;
+                $(".beautify-scroll-bar").prepend(init);
+                let itemId = Core.getPar("id"), key = "td_s_" + itemId, d = Config.get(key, !1);
+                d ? this.initElement(d) : Route.queryCoupons(itemId, data => {
+                    Config.set(key, data, 43200), this.initElement(data);
+                });
+            }, .2);
         }
-        return __extends(JdService, _super), JdService.prototype.loader = function() {
+        initElement(data) {
+            var _a, row;
+            $("#wandhi_table tbody tr").remove(), row = "", data.code && (null === (_a = data.data) || void 0 === _a ? void 0 : _a.length) > 0 && "string" != typeof data.data ? data.data.forEach(e => {
+                row += `<tr><td>${e.quan_context}</td><td>${e.after_price}</td><td>${e.quan_time}</td><td><b onclick=window.open(decodeURIComponent('${e.quan_link}')) style='cursor:pointer'>\u9886\u53d6</b></td></tr>`;
+            }) : row = "<tr><td colspan='4'>\u8fd9\u4e2a\u5546\u54c1\u6ca1\u6709\u8d85\u503c\u4f18\u60e0\u5238</td></tr>", 
+            $("#wandhi_table tbody").append(row);
+        }
+    }
+    class JdService extends PluginBase {
+        constructor() {
+            super(), this._appName = "JdService", this.rules = new Map([ [ SiteEnum.JingDong, /item\.(yiyaojd|jd)\.c/i ] ]), 
+            this.historyService = new GwdService;
+        }
+        loader() {
             this.historyService.linkTest() && this.historyService.Process();
-        }, JdService.prototype.run = function() {
-            var btn = '<a href="javascript:;" class="btn-special1 btn-lg btn-yhj"><span class="">\u67e5\u8be2\u4f18\u60e0\u5238</span></a>', keywords = $(".sku-name").text().trim();
-            $("#choose-btns").prepend(btn), $(".btn-yhj").on("click", (function() {
-                Core.open("https://shop.huizhek.com/?r=/l/jdlist&kw=" + encodeURIComponent(keywords) + "&t=223");
+        }
+        run() {
+            var keywords = $(".sku-name").text().trim();
+            $("#choose-btns").prepend('<a href="javascript:;" class="btn-special1 btn-lg btn-yhj"><span class="">\u67e5\u8be2\u4f18\u60e0\u5238</span></a>'), 
+            $(".btn-yhj").on("click", (function() {
+                Core.open(`https://shop.huizhek.com/?r=/l/jdlist&kw=${encodeURIComponent(keywords)}&t=223`);
             }));
-        }, JdService;
-    }(PluginBase), function(ItemType) {
+        }
+    }
+    !function(ItemType) {
         ItemType.TaoBao = "tb", ItemType.TMall = "tm", ItemType.JingDong = "jd", ItemType.JingDongChaoshi = "jdcs", 
         ItemType.Suning = "sn";
-    }(ItemType || (ItemType = {})), Tao = function() {
-        function Tao() {}
-        return Tao.isVailidItemId = function(itemId) {
+    }(ItemType || (ItemType = {}));
+    class Tao {
+        static isVailidItemId(itemId) {
             if (!itemId) return !1;
             var itemIdInt = parseInt(itemId);
             return itemIdInt.toString() == itemId && itemIdInt > 1e4;
-        }, Tao.isValidTaoId = function(itemId) {
-            return !!itemId && (!!Core.isNumber(itemId) || (!(itemId.indexOf("http") >= 0) || !(!this.isTaoBaoDetailPage(itemId) && !itemId.includes("//detail.ju.taobao.com/home.htm"))));
-        }, Tao.isTaoBaoDetailPage = function(url) {
-            return url.includes("//item.taobao.com/item.htm") || url.includes("//detail.tmall.com/item.htm") || url.includes("//chaoshi.detail.tmall.com/item.htm") || url.includes("//detail.tmall.hk/hk/item.htm");
-        }, Tao;
-    }(), ListService = function(_super) {
-        function ListService() {
-            var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.TaoBao, /s\.taobao\.com\/search/i ], [ SiteEnum.TMall, /list\.tmall\.com\/search_product\.htm/i ], [ SiteEnum.KaoLa, /search\.kaola\.com\/search\.html/i ], [ SiteEnum.JingDongList, /search\.jd\.com/i ], [ SiteEnum.SuNing, /search\.suning\.com/i ] ]), 
-            _this.selectorList = [], _this.selectora = [], _this.atrack = [], _this.key = "list_service_", 
-            _this._appName = "TaoList", _this;
         }
-        return __extends(ListService, _super), ListService.prototype.loader = function() {}, 
-        Object.defineProperty(ListService, "style", {
-            get: function() {
-                return "    \n    .onekeyvip-tb-box-area {position: absolute;top: 10px;right: 5px;z-index: 9999;}\n    .onekeyvip-jd-box-area {position: absolute;top: 275px;right: 10px;z-index: 9999;}  \n    .onekeyvip-jdcs-box-area {position: absolute;top: 5px;right: 0px;z-index: 9999;}\n    .onekeyvip-box-info-translucent{opacity: .33;}\n    .onekeyvip-box-info, .onekeyvip-box-info:hover, .onekeyvip-box-info:visited {text-decoration: none!important;}\n    .onekeyvip-box-wait{cursor:pointer}\n    .onekeyvip-box-info {width: auto!important;height: auto!important;padding: 6px 8px!important;font-size: 12px;color: #fff!important;border-radius: 15px;cursor: pointer;font-weight:bold}\n    .onekeyvip-jd-box-info-default, .onekeyvip-tb-box-info-default, .onekeyvip-jdcs-box-info-default{background: #3186fd!important;}\n    .onekeyvip-box-info-empty {color: #000!important;background: #ccc!important;}\n    .onekeyvip-box-info-find {background: #ff0036!important;}\n    .onekeyvip-box-done{position:relative}\n    ";
-            },
-            enumerable: !1,
-            configurable: !0
-        }), ListService.prototype.run = function() {
+        static isValidTaoId(itemId) {
+            return !!itemId && (!!Core.isNumber(itemId) || (!(itemId.indexOf("http") >= 0) || !(!this.isTaoBaoDetailPage(itemId) && !itemId.includes("//detail.ju.taobao.com/home.htm"))));
+        }
+        static isTaoBaoDetailPage(url) {
+            return url.includes("//item.taobao.com/item.htm") || url.includes("//detail.tmall.com/item.htm") || url.includes("//chaoshi.detail.tmall.com/item.htm") || url.includes("//detail.tmall.hk/hk/item.htm");
+        }
+    }
+    class ListService extends PluginBase {
+        constructor() {
+            super(), this.rules = new Map([ [ SiteEnum.TaoBao, /s\.taobao\.com\/search/i ], [ SiteEnum.TMall, /list\.tmall\.com\/search_product\.htm/i ], [ SiteEnum.KaoLa, /search\.kaola\.com\/search\.html/i ], [ SiteEnum.JingDongList, /search\.jd\.com/i ], [ SiteEnum.SuNing, /search\.suning\.com/i ] ]), 
+            this.selectorList = [], this.selectora = [], this.atrack = [], this.key = "list_service_", 
+            this._appName = "TaoList";
+        }
+        loader() {}
+        static get style() {
+            return "    \n    .onekeyvip-tb-box-area {position: absolute;top: 10px;right: 5px;z-index: 9999;}\n    .onekeyvip-jd-box-area {position: absolute;top: 275px;right: 10px;z-index: 9999;}  \n    .onekeyvip-jdcs-box-area {position: absolute;top: 5px;right: 0px;z-index: 9999;}\n    .onekeyvip-box-info-translucent{opacity: .33;}\n    .onekeyvip-box-info, .onekeyvip-box-info:hover, .onekeyvip-box-info:visited {text-decoration: none!important;}\n    .onekeyvip-box-wait{cursor:pointer}\n    .onekeyvip-box-info {width: auto!important;height: auto!important;padding: 6px 8px!important;font-size: 12px;color: #fff!important;border-radius: 15px;cursor: pointer;font-weight:bold}\n    .onekeyvip-jd-box-info-default, .onekeyvip-tb-box-info-default, .onekeyvip-jdcs-box-info-default{background: #3186fd!important;}\n    .onekeyvip-box-info-empty {color: #000!important;background: #ccc!important;}\n    .onekeyvip-box-info-find {background: #ff0036!important;}\n    .onekeyvip-box-done{position:relative}\n    ";
+        }
+        run() {
             switch (ListService.that = this, this.site) {
               case SiteEnum.TaoBao:
                 this.selectorList.push(".items .item"), this.selectorList.push('a[class^="Card--doubleCardWrapper"]'), 
@@ -2934,199 +3197,170 @@
                 this.selectorList.push(".item-wrap"), this.atrack.push(".img-block a", ".title-selling-point a"), 
                 this.itemType = ItemType.Suning;
             }
-            var that = this;
-            this.initStyle(), Core.autoLazyload((function() {
+            let that = this;
+            this.initStyle(), Core.autoLazyload(() => {
                 try {
                     return null != $ && null != jQuery;
                 } catch (e) {
                     return !1;
                 }
-            }), (function() {
-                return that.initSearchEvent();
-            }), 3), Core.background((function() {
-                return that.initSearch(that);
-            }), 3), Core.background((function() {
-                return that.initQuery();
-            }), 4);
-        }, ListService.prototype.initStyle = function() {
+            }, () => that.initSearchEvent(), 3), Core.background(() => that.initSearch(that), 3), 
+            Core.background(() => that.initQuery(), 4);
+        }
+        initStyle() {
             Core.appendCssContent(ListService.style), this.itemType == ItemType.Suning && Core.appendCssContent(".onekeyvip-sn-box-area{position: relative;}");
-        }, ListService.prototype.initSearchEvent = function() {
-            var that = this;
+        }
+        initSearchEvent() {
+            let that = this;
             try {
-                $(document).on("click", ".onekeyvip-" + that.itemType + "-box-area", (function() {
+                $(document).on("click", `.onekeyvip-${that.itemType}-box-area`, (function() {
                     var $this = $(this);
                     $this.hasClass("onekeyvip-box-wait") ? that.queryInfo(this) : $this.hasClass("onekeyvip-box-info-translucent") ? $this.removeClass("onekeyvip-box-info-translucent") : $this.addClass("onekeyvip-box-info-translucent");
                 }));
             } catch (e) {
-                Core.background((function() {
-                    $(".onekeyvip-" + that.itemType + "-box-area").click((function() {
+                Core.background(() => {
+                    $(`.onekeyvip-${that.itemType}-box-area`).click((function() {
                         var $this = $(this);
                         $this.hasClass("onekeyvip-box-wait") ? that.queryInfo(this) : $this.hasClass("onekeyvip-box-info-translucent") ? $this.removeClass("onekeyvip-box-info-translucent") : $this.addClass("onekeyvip-box-info-translucent");
                     }));
-                }));
+                });
             }
-        }, ListService.prototype.initSearch = function(that) {
-            that.selectorList.forEach((function(e, i) {
-                Logger.debug("\u521d\u59cb\u5316\u5217\u8868\u9879:" + e), $(e).each((function(index, ele) {
-                    that.initSearchItem(ele);
-                }));
-            }));
-        }, ListService.prototype.initSearchItem = function(selector) {
-            var _a, _b, _c, _d, _e, _f, _g, _h;
-            return __awaiter(this, void 0, Promise, (function() {
-                var $dom, itemId, $a, res;
-                return __generator(this, (function(_j) {
-                    switch (_j.label) {
-                      case 0:
-                        return ($dom = $(selector)).hasClass("onekeyvip-box-done") ? [ 2 ] : (itemId = null !== (_c = null !== (_b = null !== (_a = $dom.attr("data-id")) && void 0 !== _a ? _a : $dom.data("sku")) && void 0 !== _b ? _b : $dom.attr("id")) && void 0 !== _c ? _c : "", 
-                        Tao.isVailidItemId(itemId) || (itemId = null !== (_f = null !== (_e = null !== (_d = $dom.attr("data-itemid")) && void 0 !== _d ? _d : $dom.data("spu")) && void 0 !== _e ? _e : $dom.attr("id")) && void 0 !== _f ? _f : ""), 
-                        Tao.isVailidItemId(itemId) ? [ 3, 5 ] : $dom.attr("href") ? (itemId = location.protocol + $dom.attr("href"), 
-                        this.site != SiteEnum.TaoBao && this.site != SiteEnum.TMall ? [ 3, 3 ] : itemId.indexOf("click.simba.taobao.com") > -1 ? [ 4, Http.get302(itemId) ] : [ 3, 2 ]) : [ 3, 4 ]);
-
-                      case 1:
-                        itemId = _j.sent(), Logger.debug("302\u5904\u7406\u540eitemId:" + itemId), _j.label = 2;
-
-                      case 2:
-                        itemId = Core.getPar("id", itemId), _j.label = 3;
-
-                      case 3:
-                        return [ 3, 5 ];
-
-                      case 4:
-                        if (!($a = $dom.find("a")).length) return [ 2 ];
-                        itemId = null !== (_g = $a.attr("data-nid")) && void 0 !== _g ? _g : "", Tao.isVailidItemId(itemId) || (itemId = $a.hasClass("j_ReceiveCoupon") && $a.length > 1 ? location.protocol + $($a[1]).attr("href") : location.protocol + $a.attr("href")), 
-                        _j.label = 5;
-
-                      case 5:
-                        return !Tao.isVailidItemId(itemId) && itemId.indexOf("http") > -1 && (res = null !== (_h = /item.jd.com\/(.*?).html/i.exec(itemId)) && void 0 !== _h ? _h : [], 
-                        itemId = res.length > 0 ? res[1] : ""), Tao.isValidTaoId(itemId) || ListService.that.itemType != ItemType.Suning || (itemId = $dom.attr("id")).split("-").length > 1 && (itemId = itemId.split("-")[1] + "-" + itemId.split("-")[0]), 
-                        Tao.isValidTaoId(itemId) ? (this.initBoxHtml($dom, itemId), this.initTagClass($dom, itemId), 
-                        $dom.addClass("onekeyvip-box-done")) : Logger.debug("\u5546\u54c1\u5217\u8868id\u65e0\u6548:" + itemId), 
-                        [ 2 ];
-                    }
-                }));
-            }));
-        }, ListService.prototype.initTagClass = function(target, itemId) {
-            this.atrack.forEach((function(e) {
-                target.find(e).hasClass("onekeyvip-item-" + itemId) || target.find(e).addClass("onekeyvip-item-" + itemId);
-            }));
-        }, ListService.prototype.initBoxHtml = function(target, itemId) {
-            target.append('<div class="onekeyvip-' + this.itemType + '-box-area onekeyvip-box-wait" data-itemid="' + itemId + '"><a class="onekeyvip-box-info onekeyvip-' + this.itemType + '-box-info-default" title="\u70b9\u51fb\u67e5\u8be2">\u5f85\u67e5\u8be2</a></div>');
-        }, ListService.prototype.initQuery = function() {
-            var that = this;
-            $(".onekeyvip-box-wait").each((function(index, ele) {
-                var s = Core.random(1, 5);
-                Core.sleep(s).then((function() {
-                    that.queryInfo(ele);
-                }));
-            }));
-        }, ListService.prototype.queryInfo = function(target) {
-            return __awaiter(this, void 0, Promise, (function() {
-                var that, $this, itemId, k, render, couponInfo;
-                return __generator(this, (function(_a) {
-                    switch (_a.label) {
-                      case 0:
-                        return that = this, ($this = $(target)).removeClass("onekeyvip-box-wait"), itemId = $this.data("itemid"), 
-                        k = that.key + "_All2_" + ListService.that.itemType + "_" + itemId, render = function(res) {
-                            if (0 != (null == res ? void 0 : res.code)) {
-                                var couponInfo_1 = res.data;
-                                that.initCouponInfo(itemId, couponInfo_1, target);
-                            } else that.showQueryEmpty($this);
-                        }, (couponInfo = Config.get(k)) ? (render(couponInfo), [ 3, 3 ]) : [ 3, 1 ];
-
-                      case 1:
-                        return [ 4, Route.couponQuery(itemId, that.itemType, (function(couponInfoResult) {
-                            render(couponInfoResult), Config.set(k, couponInfo, 43200);
-                        })) ];
-
-                      case 2:
-                        _a.sent(), _a.label = 3;
-
-                      case 3:
-                        return [ 2 ];
-                    }
-                }));
-            }));
-        }, ListService.prototype.initCouponInfo = function(itemId, couponInfo, target) {
-            var _a, coupon, $this = $(target), that = this;
-            (null === (_a = null == couponInfo ? void 0 : couponInfo.coupons) || void 0 === _a ? void 0 : _a.length) > 0 && 0 != couponInfo.coupons[0].coupon_price && null != couponInfo.coupons[0].coupon_price ? (coupon = couponInfo.coupons[0], 
-            this.showQueryFind($this, coupon.coupon_price)) : that.showQueryEmpty($this), this.showItemUrl(itemId, null == couponInfo ? void 0 : couponInfo.item_url, that.site == SiteEnum.JingDong || that.site == SiteEnum.SuNing);
-        }, ListService.prototype.showItemUrl = function(itemId, itemUrl, flag) {
-            void 0 === flag && (flag = !1), flag ? $(".onekeyvip-item-" + itemId).each((function(i, ele) {
-                ele.onclick = function() {
-                    return !itemUrl || (Core.open(itemUrl), !1);
-                };
-            })) : $(".onekeyvip-item-" + itemId).each((function(i, ele) {
-                $(ele).on("click", (function() {
-                    return Logger.debug("\u70b9\u51fb:" + itemUrl), !itemUrl || (Core.open(itemUrl), 
-                    !1);
-                }));
-            }));
-        }, ListService.prototype._initQuery = function() {
-            var _a, that = this;
-            null === (_a = $(".goods")) || void 0 === _a || _a.each((function(i, ele) {
-                var m = Core.random(1, 5);
-                Core.sleep(m).then((function() {
-                    that._queryCoupon(ele);
-                }));
-            }));
-        }, ListService.prototype._queryCoupon = function(target) {
-            var _a;
-            return __awaiter(this, void 0, void 0, (function() {
-                var href, itemIds, that, itemId, key_1, quan_1;
-                return __generator(this, (function(_b) {
-                    switch (_b.label) {
-                      case 0:
-                        return href = null === (_a = $(target).find("a")[0]) || void 0 === _a ? void 0 : _a.href, 
-                        itemIds = /kaola\.com\/product\/(.*?)\.html/.exec(href), that = this, null != itemIds && (null == itemIds ? void 0 : itemIds.length) > 1 ? (itemId = itemIds[1], 
-                        key_1 = "kol-" + itemId, (quan_1 = Config.get(key_1)) ? (this._showItemUrl(target, quan_1), 
-                        [ 3, 3 ]) : [ 3, 1 ]) : [ 3, 3 ];
-
-                      case 1:
-                        return Config.clear(key_1), [ 4, Route.queryKlCoupons(itemId).then((function(res) {
-                            (null == res ? void 0 : res.code) && (Config.set(key_1, res.data, 86400), that._showItemUrl(target, quan_1));
-                        })) ];
-
-                      case 2:
-                        _b.sent(), _b.label = 3;
-
-                      case 3:
-                        return [ 2 ];
-                    }
-                }));
-            }));
-        }, ListService.prototype._showItemUrl = function(target, quan) {
-            var _a;
-            null === (_a = $(target).find("a")) || void 0 === _a || _a.on("click", (function() {
-                return Logger.debug(quan), !quan.quan_link || (Core.open(quan.quan_link), !1);
-            }));
-        }, ListService.prototype.showQueryFind = function(selector, couponMoney) {
-            selector.html('<a target="_blank" class="onekeyvip-box-info onekeyvip-box-info-find" title="\u5207\u6362\u900f\u660e\u5ea6">' + couponMoney + "\u5143\u5238</a>");
-        }, ListService.prototype.showQueryEmpty = function(selector) {
-            selector.addClass("onekeyvip-box-info-translucent"), selector.html('<a href="javascript:void(0);" class="onekeyvip-box-info onekeyvip-box-info-empty" title="\u5207\u6362\u900f\u660e\u5ea6">\u6682\u65e0\u4f18\u60e0</a>');
-        }, ListService;
-    }(PluginBase), styleInject(".slider + div, .slider + div + a,\n.texts,\n.header_new1,\n.slider_tips {\n    display: none !important;\n}\n"), 
-    _GwdService = function(_super) {
-        function _GwdService() {
-            var _this = null !== _super && _super.apply(this, arguments) || this;
-            return _this.rules = new Map([ [ SiteEnum.SuNing, /browser\.gwdang\.com/i ] ]), 
-            _this._appName = "sn_clear", _this;
         }
-        return __extends(_GwdService, _super), _GwdService.prototype.loader = function() {}, 
-        _GwdService.prototype.run = function() {}, _GwdService;
-    }(PluginBase), OneKeyVipHistoryToolsInjection = function() {
-        function OneKeyVipHistoryToolsInjection() {
+        initSearch(that) {
+            that.selectorList.forEach((e, i) => {
+                Logger.debug("\u521d\u59cb\u5316\u5217\u8868\u9879:" + e), $(e).each((index, ele) => {
+                    that.initSearchItem(ele);
+                });
+            });
+        }
+        initSearchItem(selector) {
+            var _a, _b, _c, _d, _e, _f, _g, _h;
+            return __awaiter(this, void 0, void 0, (function*() {
+                let $dom = $(selector);
+                if ($dom.hasClass("onekeyvip-box-done")) return;
+                let itemId = null !== (_c = null !== (_b = null !== (_a = $dom.attr("data-id")) && void 0 !== _a ? _a : $dom.data("sku")) && void 0 !== _b ? _b : $dom.attr("id")) && void 0 !== _c ? _c : "";
+                if (Tao.isVailidItemId(itemId) || (itemId = null !== (_f = null !== (_e = null !== (_d = $dom.attr("data-itemid")) && void 0 !== _d ? _d : $dom.data("spu")) && void 0 !== _e ? _e : $dom.attr("id")) && void 0 !== _f ? _f : ""), 
+                !Tao.isVailidItemId(itemId)) if ($dom.attr("href")) itemId = location.protocol + $dom.attr("href"), 
+                this.site != SiteEnum.TaoBao && this.site != SiteEnum.TMall || (itemId.indexOf("click.simba.taobao.com") > -1 && (itemId = yield Http.get302(itemId), 
+                Logger.debug("302\u5904\u7406\u540eitemId:" + itemId)), itemId = Core.getPar("id", itemId)); else {
+                    const $a = $dom.find("a");
+                    if (!$a.length) return;
+                    itemId = null !== (_g = $a.attr("data-nid")) && void 0 !== _g ? _g : "", Tao.isVailidItemId(itemId) || (itemId = $a.hasClass("j_ReceiveCoupon") && $a.length > 1 ? location.protocol + $($a[1]).attr("href") : location.protocol + $a.attr("href"));
+                }
+                if (!Tao.isVailidItemId(itemId) && itemId.indexOf("http") > -1) {
+                    let res = null !== (_h = /item.jd.com\/(.*?).html/i.exec(itemId)) && void 0 !== _h ? _h : [];
+                    itemId = res.length > 0 ? res[1] : "";
+                }
+                Tao.isValidTaoId(itemId) || ListService.that.itemType != ItemType.Suning || (itemId = $dom.attr("id"), 
+                itemId.split("-").length > 1 && (itemId = `${itemId.split("-")[1]}-${itemId.split("-")[0]}`)), 
+                Tao.isValidTaoId(itemId) ? (this.initBoxHtml($dom, itemId), this.initTagClass($dom, itemId), 
+                $dom.addClass("onekeyvip-box-done")) : Logger.debug("\u5546\u54c1\u5217\u8868id\u65e0\u6548:" + itemId);
+            }));
+        }
+        initTagClass(target, itemId) {
+            this.atrack.forEach(e => {
+                target.find(e).hasClass("onekeyvip-item-" + itemId) || target.find(e).addClass("onekeyvip-item-" + itemId);
+            });
+        }
+        initBoxHtml(target, itemId) {
+            target.append(`<div class="onekeyvip-${this.itemType}-box-area onekeyvip-box-wait" data-itemid="${itemId}"><a class="onekeyvip-box-info onekeyvip-${this.itemType}-box-info-default" title="\u70b9\u51fb\u67e5\u8be2">\u5f85\u67e5\u8be2</a></div>`);
+        }
+        initQuery() {
+            let that = this;
+            $(".onekeyvip-box-wait").each((index, ele) => {
+                let s = Core.random(1, 5);
+                Core.sleep(s).then(() => {
+                    that.queryInfo(ele);
+                });
+            });
+        }
+        queryInfo(target) {
+            return __awaiter(this, void 0, void 0, (function*() {
+                let that = this;
+                const $this = $(target);
+                $this.removeClass("onekeyvip-box-wait");
+                let itemId = $this.data("itemid"), k = `${that.key}_All2_${ListService.that.itemType}_${itemId}`, render = res => {
+                    if (0 != (null == res ? void 0 : res.code)) {
+                        let couponInfo = res.data;
+                        that.initCouponInfo(itemId, couponInfo, target);
+                    } else that.showQueryEmpty($this);
+                }, couponInfo = Config.get(k);
+                couponInfo ? render(couponInfo) : yield Route.couponQuery(itemId, that.itemType, couponInfoResult => {
+                    render(couponInfoResult), Config.set(k, couponInfo, 43200);
+                });
+            }));
+        }
+        initCouponInfo(itemId, couponInfo, target) {
+            var _a;
+            const $this = $(target);
+            let that = this;
+            if ((null === (_a = null == couponInfo ? void 0 : couponInfo.coupons) || void 0 === _a ? void 0 : _a.length) > 0 && 0 != couponInfo.coupons[0].coupon_price && null != couponInfo.coupons[0].coupon_price) {
+                let coupon = couponInfo.coupons[0];
+                this.showQueryFind($this, coupon.coupon_price);
+            } else that.showQueryEmpty($this);
+            this.showItemUrl(itemId, null == couponInfo ? void 0 : couponInfo.item_url, that.site == SiteEnum.JingDong || that.site == SiteEnum.SuNing);
+        }
+        showItemUrl(itemId, itemUrl, flag = !1) {
+            flag ? $(".onekeyvip-item-" + itemId).each((i, ele) => {
+                ele.onclick = () => !itemUrl || (Core.open(itemUrl), !1);
+            }) : $(".onekeyvip-item-" + itemId).each((i, ele) => {
+                $(ele).on("click", () => (Logger.debug("\u70b9\u51fb:" + itemUrl), !itemUrl || (Core.open(itemUrl), 
+                !1)));
+            });
+        }
+        _initQuery() {
+            var _a;
+            let that = this;
+            null === (_a = $(".goods")) || void 0 === _a || _a.each((i, ele) => {
+                let m = Core.random(1, 5);
+                Core.sleep(m).then(() => {
+                    that._queryCoupon(ele);
+                });
+            });
+        }
+        _queryCoupon(target) {
+            var _a;
+            return __awaiter(this, void 0, void 0, (function*() {
+                let href = null === (_a = $(target).find("a")[0]) || void 0 === _a ? void 0 : _a.href, itemIds = /kaola\.com\/product\/(.*?)\.html/.exec(href), that = this;
+                if (null != itemIds && (null == itemIds ? void 0 : itemIds.length) > 1) {
+                    let itemId = itemIds[1], key = "kol-" + itemId, quan = Config.get(key);
+                    quan ? this._showItemUrl(target, quan) : (Config.clear(key), yield Route.queryKlCoupons(itemId).then(res => {
+                        (null == res ? void 0 : res.code) && (Config.set(key, res.data, 86400), that._showItemUrl(target, quan));
+                    }));
+                }
+            }));
+        }
+        _showItemUrl(target, quan) {
+            var _a;
+            null === (_a = $(target).find("a")) || void 0 === _a || _a.on("click", () => (Logger.debug(quan), 
+            !quan.quan_link || (Core.open(quan.quan_link), !1)));
+        }
+        showQueryFind(selector, couponMoney) {
+            selector.html(`<a target="_blank" class="onekeyvip-box-info onekeyvip-box-info-find" title="\u5207\u6362\u900f\u660e\u5ea6">${couponMoney}\u5143\u5238</a>`);
+        }
+        showQueryEmpty(selector) {
+            selector.addClass("onekeyvip-box-info-translucent"), selector.html('<a href="javascript:void(0);" class="onekeyvip-box-info onekeyvip-box-info-empty" title="\u5207\u6362\u900f\u660e\u5ea6">\u6682\u65e0\u4f18\u60e0</a>');
+        }
+    }
+    styleInject(".slider + div, .slider + div + a,\n.texts,\n.header_new1,\n.slider_tips {\n    display: none !important;\n}\n");
+    class _GwdService extends PluginBase {
+        constructor() {
+            super(...arguments), this.rules = new Map([ [ SiteEnum.SuNing, /browser\.gwdang\.com/i ] ]), 
+            this._appName = "sn_clear";
+        }
+        loader() {}
+        run() {}
+    }
+    Logger.level = LogLevel.info, Container.Require(class OneKeyVipHistoryToolsInjection {
+        constructor() {
             this.plugins = new Array, this.plugins = [ Container.Require(ListService), Container.Require(TaoBaoService), Container.Require(JdService), Container.Require(GwdService), Container.Require(_GwdService) ], 
             Logger.info("container loaded");
         }
-        return OneKeyVipHistoryToolsInjection.prototype.Init = function() {
-            this.plugins.every((function(element) {
-                return element.linkTest() ? (new Promise((function(resolve) {
-                    resolve(1);
-                })).then(element.Process), Logger.debug("element [" + element.appName() + "];unique:[" + element.unique() + "]"), 
-                !element.unique()) : (Logger.debug("element [" + element.appName() + "];not pass"), 
-                !0);
-            }));
-        }, OneKeyVipHistoryToolsInjection;
-    }(), Logger.level = LogLevel.info, Container.Require(OneKeyVipHistoryToolsInjection).Init();
+        Init() {
+            this.plugins.every(element => element.linkTest() ? (new Promise(resolve => {
+                resolve(1);
+            }).then(element.Process), Logger.debug(`element [${element.appName()}];unique:[${element.unique()}]`), 
+            !element.unique()) : (Logger.debug(`element [${element.appName()}];not pass`), !0));
+        }
+    }).Init();
 }));

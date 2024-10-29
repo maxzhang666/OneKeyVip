@@ -3,7 +3,7 @@
 // @namespace     https://www.wandhi.com/
 // @description   🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转；🎉 12、搜索引擎快速跳转
 // @license       MIT
-// @version       4.9.39
+// @version       4.9.40
 // @author        MaxZhang
 // @include       *://item.taobao.com/*
 // @include       *://s.taobao.com/search*
@@ -171,7 +171,7 @@
     "object" == typeof exports && "undefined" != typeof module ? factory(require("react-dom"), require("sweetalert2"), require("@douyinfe/semi-ui"), require("viewerjs"), require("react")) : "function" == typeof define && define.amd ? define([ "react-dom", "sweetalert2", "@douyinfe/semi-ui", "viewerjs", "react" ], factory) : factory((global = "undefined" != typeof globalThis ? globalThis : global || self).ReactDOM, global.Swal, global.SemiUI, global.Viewer, global.React);
 })(this, (function(ReactDOM, Swal, semiUi, Viewer, React) {
     "use strict";
-    var ReactDOM__default, Swal__default, Viewer__default, React__default, extendStatics, update_key, Min, Hour, Day, Week, BrowerType, Logger, LogLevel, VersionResult, Core, VersionCompar, Config, AjaxOption, Http, HttpHeaders, Route, css_248z$a, Common, PluginBase, SiteEnum, UpdateService, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$9, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$8, sAlert, commonjsGlobal, fingerprint2, GwdService, GwdHelper, css_248z$7, TaoBaoService, container, Container, css_248z$6, ConfigEnum, Toast, BiliImgService, Menu$2, jks, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$5, CsdnAdService, Alert, Menu$1, WenKuService, LinkJumpService, css_248z$4, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$3, css_248z$2, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, Quark, NetDiskDirectService, AdClearService, css_248z$1, ImgViewService, css_248z, ZhihuService, Menu, XhsService, SettingUI, SettingUIService, OneKeyVipInjection;
+    var ReactDOM__default, Swal__default, Viewer__default, React__default, extendStatics, update_key, Min, Hour, Day, Week, BrowerType, Logger, LogLevel, VersionResult, Core, VersionCompar, Config, AjaxOption, Http, HttpHeaders, Route, css_248z$a, Common, PluginBase, SiteEnum, UpdateService, EventHelper, Runtime, BaseCoupon, VpCoupon, SuningCoupon, JdCoupon, TaoCoupon, DefCoupon, LinesOption, css_248z$9, MsgInfo, PromoInfo, HistoryService, KaolaCoupon, css_248z$8, sAlert, commonjsGlobal, fingerprint2, headStyle, isChrome, isIE, hasWeakMap, ua, isNativeObject, checkFunctions, DynamicDetails, SignInfo, Base64, GwdService, GwdHelper, css_248z$7, TaoBaoService, container, Container, css_248z$6, ConfigEnum, Toast, BiliImgService, Menu$2, jks, MovieService, JdService, UrlHelper, MusicService, ItemType, Tao, ListService, css_248z$5, CsdnAdService, Alert, Menu$1, WenKuService, LinkJumpService, css_248z$4, _GwdService, AutoExpandService, BIliTools, BiliMobileService, AliyunPanToken, css_248z$3, css_248z$2, MfbMenu, MfbModel, YoutubeService, SettingService, ControlMenuService, SearchService, QuarkFileResponse, Quark, NetDiskDirectService, AdClearService, css_248z$1, ImgViewService, css_248z, ZhihuService, Menu, XhsService, SettingUI, SettingUIService, OneKeyVipInjection;
     function _interopDefaultLegacy(e) {
         return e && "object" == typeof e && "default" in e ? e : {
             default: e
@@ -322,6 +322,31 @@
         return fn(module = {
             exports: {}
         }, module.exports), module.exports;
+    }
+    function isPhantomjs() {
+        var err = "";
+        try {
+            null[0]();
+        } catch (e) {
+            err = e;
+        }
+        return err.stack.indexOf("phantomjs") > -1;
+    }
+    function IsSupportLocalStorage() {
+        try {
+            return localStorage.a = "b", "b" === localStorage.a;
+        } catch (e) {
+            return !1;
+        }
+    }
+    function IsSupportWebGL() {
+        var webglContext, i;
+        try {
+            return (webglContext = document.createElement("canvas").getContext("webgl")) && (i = webglContext.getExtension("WEBGL_lose_context")) && i.loseContext(), 
+            !!webglContext;
+        } catch (e) {
+            return !1;
+        }
     }
     ReactDOM__default = _interopDefaultLegacy(ReactDOM), Swal__default = _interopDefaultLegacy(Swal), 
     Viewer__default = _interopDefaultLegacy(Viewer), React__default = _interopDefaultLegacy(React), 
@@ -505,21 +530,6 @@
             return window.btoa(str);
         }, Core.decode = function(str) {
             return window.atob(str);
-        }, Core.prototype.Msg = function(msg) {
-            return layer.msg(msg, {
-                icon: 5
-            });
-        }, Core.prototype.showContent = function(title, content) {
-            return layer.open({
-                type: 1,
-                title: title,
-                shade: 0,
-                content: content
-            });
-        }, Core.prototype.close = function(obj) {
-            layer.close(obj);
-        }, Core.prototype.closeAll = function() {
-            layer.closeAll();
         }, Core.open = function(url, loadInBackGround) {
             if (void 0 === loadInBackGround && (loadInBackGround = !1), Core.getBrowser() == BrowerType.Safiri && "undefined" == typeof GM_openInTab) {
                 if (void 0 === (null === GM || void 0 === GM ? void 0 : GM.openInTab)) return void window.open(url, "_blank");
@@ -2446,45 +2456,242 @@
                 }));
             }, Fingerprint2.x64hash128 = x64hash128, Fingerprint2.VERSION = "2.1.5", Fingerprint2;
         }, module.exports ? module.exports = definition() : context.exports ? context.exports = definition() : context.Fingerprint2 = definition();
-    })), GwdService = function(_super) {
+    })), headStyle = document.head.style, isChrome = void 0 !== window.chrome, isIE = "ActiveXObject" in window, 
+    hasWeakMap = "WeakMap" in window.WeakMap && new window.WeakMap, ua = navigator.userAgent, 
+    isNativeObject = function(o) {
+        return !!/native code/.test(o.toString.toString()) && !!/native code/.test(o.toString());
+    }, checkFunctions = {
+        _1: function _1() {
+            return isChrome;
+        },
+        _2: function _2() {
+            return "mozRTCIceCandidate" in window || "mozInnerScreenY" in window;
+        },
+        _3: function _3() {
+            return "safari" in window;
+        },
+        _4: function _4() {
+            return isIE;
+        },
+        _5: function _5() {
+            return isIE && !("maxHeight" in headStyle);
+        },
+        _6: function _6() {
+            return isIE && !document.addEventListener;
+        },
+        _7: function _7() {
+            return isIE && !window.atob;
+        },
+        _8: function _8() {
+            return isIE && isNativeObject(window.Uint8Array);
+        },
+        _9: function _9() {
+            return isIE && hasWeakMap && isNativeObject(window.WeakMap);
+        },
+        _10: function _10() {
+            return "Google Inc." === navigator.vendor;
+        },
+        _11: function _11() {
+            return "Apple Computer, Inc." === navigator.vendor;
+        },
+        _12: function _12() {
+            return 800 === window.innerWidth && 600 === window.innerHeight && 0 === window.outerWidth && 0 === window.outerHeight || "" == navigator.languages || /Headless/i.test(ua);
+        },
+        _13: function _13() {
+            return "callPhantom" in window || /PhantomJS/i.test(ua) || isPhantomjs();
+        },
+        _14: function _14() {
+            return /python/i.test(navigator.appVersion);
+        },
+        _15: function _15() {
+            return IsSupportLocalStorage();
+        },
+        _16: function _16() {
+            return /Maxthon/i.test(navigator.vendor);
+        },
+        _17: function _17() {
+            return "opr" in window || "opera" in window;
+        },
+        _18: function _18() {
+            return isChrome && /BIDUBrowser/i.test(ua);
+        },
+        _19: function _19() {
+            return isChrome && /LBBROWSER/i.test(ua);
+        },
+        _20: function _20() {
+            return isChrome && /QQBrowser/.test(ua);
+        },
+        _21: function _21() {
+            return isChrome && /UBrowser/i.test(ua);
+        },
+        _22: function _22() {
+            return isChrome && /2345Explorer/.test(ua);
+        },
+        _23: function _23() {
+            return isChrome && /TheWorld/.test(ua);
+        },
+        _24: function _24() {
+            return isChrome && "MSGesture" in window;
+        },
+        _25: function _25() {
+            return isNativeObject(Object.getOwnPropertyDescriptor) && null != Object.getOwnPropertyDescriptor(navigator);
+        },
+        _26: function _26() {
+            return "$cdc_asdjflasutopfhvcZLmcfl_" in window || navigator.webdriver;
+        },
+        _27: function _27() {
+            return document.hidden;
+        },
+        _28: function _28() {
+            return /zh-cn/i.test(navigator.language || navigator.systemLanguage);
+        },
+        _29: function _29() {
+            return -480 === (new Date).getTimezoneOffset();
+        },
+        _30: function _30() {
+            return IsSupportWebGL();
+        },
+        _31: function _31() {
+            return null !== window.outerWidth && (window.outerWidth === document.documentElement.clientWidth || document.body.clientWidth);
+        }
+    }, DynamicDetails = function() {
+        function DynamicDetails() {
+            this.touchPosition = {
+                x: 0,
+                y: 0
+            }, this.touchEventTrusted = !1, this.mouseEventCount = 0, this.mousePosition = {
+                x: 0,
+                y: 0
+            }, this.mouseDownCount = 0, this.mouseClickPosition = {
+                x: 0,
+                y: 0
+            }, this.mouseEventTrusted = !1, this.keyDownCount = 0, this.scrollCount = 0, this.windowBlur = !1, 
+            this.windowFocus = !1, this.consoleWindowOpened = !1, this.ip = 0, this.batteryLevel = 127, 
+            this.deviceOrientationExists = !1, this.features = this.packStaticFeatureValue();
+        }
+        return DynamicDetails.prototype.packStaticFeatureValue = function() {
+            var i, shift, set, value = 0;
+            for (i in checkFunctions) {
+                shift = parseInt(i.split("_")[1]) - 1, set = 0;
+                try {
+                    set = checkFunctions[i]() ? 1 : 0;
+                } catch (e) {}
+                value |= set << shift;
+            }
+            return value;
+        }, DynamicDetails.prototype.touchStartFn = function(e) {
+            this.touchEventTrusted = e.isTrusted, this.mouseEventCount++;
+            var t = e.touches[0];
+            this.touchPosition.x = 0 | t.clientX, this.touchPosition.y = 0 | t.clientY;
+        }, DynamicDetails.prototype.touchMoveFn = function(e) {
+            this.touchEventTrusted = e.isTrusted, this.mouseEventCount++;
+        }, DynamicDetails.prototype.mouseMoveFn = function(e) {
+            this.mouseEventTrusted = e.isTrusted, this.mouseEventCount++;
+        }, DynamicDetails.prototype.mouseDownFn = function(e) {
+            this.mouseEventTrusted = e.isTrusted, this.mouseEventCount++, this.mousePosition.x = e.clientX, 
+            this.mousePosition.y = e.clientY, this.mouseDownCount++;
+        }, DynamicDetails.prototype.mouseClickFn = function(e) {
+            this.mouseEventTrusted = e.isTrusted, this.mouseEventCount++, this.mouseClickPosition.x = e.clientX, 
+            this.mouseClickPosition.y = e.clientY;
+        }, DynamicDetails.prototype.keyDownFn = function(e) {
+            this.keyDownCount++;
+        }, DynamicDetails.prototype.scrollFn = function(e) {
+            this.scrollCount++;
+        }, DynamicDetails.prototype.focusFn = function(e) {
+            this.windowFocus = !0, this.windowBlur = !1;
+        }, DynamicDetails.prototype.pack = function() {
+            var numberToHex = function(n) {
+                return n.toString(16);
+            }, group1 = this.touchPosition.x + "," + this.touchPosition.y + "," + (this.touchEventTrusted ? 1 : 0), group2 = this.mouseEventCount + "," + this.mousePosition.x + "," + this.mousePosition.y + "," + this.mouseClickPosition.x + "," + this.mouseClickPosition.y + "," + this.mouseDownCount + "," + (this.mouseEventTrusted ? 1 : 0), group3 = this.keyDownCount + "," + this.scrollCount + "," + (this.windowBlur ? 1 : 0) + "," + (this.windowFocus ? 1 : 0), group4 = (this.consoleWindowOpened ? 1 : 0) + "," + numberToHex(this.ip) + "," + this.batteryLevel + "," + (this.deviceOrientationExists ? 1 : 0), group5 = "" + numberToHex(this.features), all = group1 + ";" + group2 + ";" + group3 + ";" + group4 + ";" + group5;
+            return all;
+        }, DynamicDetails.prototype.encode = function() {
+            return Base64.encode(this.pack());
+        }, DynamicDetails;
+    }(), SignInfo = function() {
+        function SignInfo() {
+            this.details = new DynamicDetails, this.fp = "", this.initialize();
+        }
+        return SignInfo.prototype.initialize = function() {
+            var k, r_1, that = this;
+            try {
+                (k = Config.get("gwdang-dfp-obj", "{}")) && (r_1 = JSON.parse(k), Object.keys(r_1).forEach((function(item) {
+                    that.details[item] = r_1[item];
+                })));
+            } catch (e) {}
+            window.requestIdleCallback ? window.requestIdleCallback((function() {
+                that.collectMovement(that.details);
+            })) : setTimeout((function() {
+                that.collectMovement(that.details);
+            }), 500), fingerprint2.get({
+                fonts: {
+                    extendedJsFonts: !1
+                },
+                excludes: {
+                    userAgent: !0,
+                    enumerateDevices: !0,
+                    pixelRatio: !0,
+                    doNotTrack: !0,
+                    fontsFlash: !0
+                }
+            }, function(components) {
+                var values = components.map((function(component) {
+                    return component.value;
+                })), murmur = fingerprint2.x64hash128(values.join(""), 31);
+                that.fp = murmur, Config.set(GwdHelper.gwd_fp_key, that.fp, 43200);
+            }.bind(this)), that.intervalHandle = setInterval(function() {
+                var collected = that.details.encode();
+                Config.set("gwdang-dfp-obj", JSON.stringify(that.details)), Config.set(GwdHelper.gwd_dfp_key, collected, 7200);
+            }.bind(that), 2e3);
+        }, SignInfo.prototype.collectMovement = function(details) {
+            var b = document.body;
+            "ontouchmove" in document && document.addEventListener("touchmove", details.touchMoveFn.bind(details), !0), 
+            b.addEventListener("touchstart", details.touchStartFn.bind(details), !0), b.addEventListener("mousemove", details.mouseMoveFn.bind(details), !0), 
+            b.addEventListener("mousedown", details.mouseDownFn.bind(details), !0), b.addEventListener("click", details.mouseClickFn.bind(details), !0), 
+            b.addEventListener("keydown", details.keyDownFn.bind(details), !0), b.addEventListener("wheel", details.scrollFn.bind(details), !0), 
+            window.addEventListener("focus", details.focusFn.bind(details), !0), window.addEventListener("blur", details.blurFn.bind(details), !0), 
+            details.getWebRTCIP(details), details.getDeviceOrientation(details), details.getBatteryStatus(details), 
+            details.consoleCheckLoop();
+        }, SignInfo;
+    }(), Base64 = function() {
+        function Base64() {}
+        return Base64.encode = function(input) {
+            var chr1, chr2, chr3, enc1, enc2, enc3, enc4, output = "", i = 0;
+            for (input = Base64._utf8_encode(input); i < input.length; ) enc1 = (chr1 = input.charCodeAt(i++)) >> 2, 
+            enc2 = (3 & chr1) << 4 | (chr2 = input.charCodeAt(i++)) >> 4, enc3 = (15 & chr2) << 2 | (chr3 = input.charCodeAt(i++)) >> 6, 
+            enc4 = 63 & chr3, isNaN(chr2) ? enc3 = enc4 = 64 : isNaN(chr3) && (enc4 = 64), output = output + this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) + this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
+            return output;
+        }, Base64.decode = function(input) {
+            var chr1, chr2, chr3, enc2, enc3, enc4, output = "", i = 0;
+            for (input = input.replace(/[^A-Za-z0-9\+\/\=]/g, ""); i < input.length; ) chr1 = this._keyStr.indexOf(input.charAt(i++)) << 2 | (enc2 = this._keyStr.indexOf(input.charAt(i++))) >> 4, 
+            chr2 = (15 & enc2) << 4 | (enc3 = this._keyStr.indexOf(input.charAt(i++))) >> 2, 
+            chr3 = (3 & enc3) << 6 | (enc4 = this._keyStr.indexOf(input.charAt(i++))), output += String.fromCharCode(chr1), 
+            64 != enc3 && (output += String.fromCharCode(chr2)), 64 != enc4 && (output += String.fromCharCode(chr3));
+            return output = Base64._utf8_decode(output);
+        }, Base64._utf8_encode = function(string) {
+            var utftext, n, c;
+            for (string = string.replace(/\r\n/g, "\n"), utftext = "", n = 0; n < string.length; n++) (c = string.charCodeAt(n)) < 128 ? utftext += String.fromCharCode(c) : c > 127 && c < 2048 ? (utftext += String.fromCharCode(c >> 6 | 192), 
+            utftext += String.fromCharCode(63 & c | 128)) : (utftext += String.fromCharCode(c >> 12 | 224), 
+            utftext += String.fromCharCode(c >> 6 & 63 | 128), utftext += String.fromCharCode(63 & c | 128));
+            return utftext;
+        }, Base64._utf8_decode = function(utftext) {
+            for (var string = "", i = 0, c = 0, c2 = 0, c3 = 0; i < utftext.length; ) (c = utftext.charCodeAt(i)) < 128 ? (string += String.fromCharCode(c), 
+            i++) : c > 191 && c < 224 ? (c2 = utftext.charCodeAt(i + 1), string += String.fromCharCode((31 & c) << 6 | 63 & c2), 
+            i += 2) : (c2 = utftext.charCodeAt(i + 1), c3 = utftext.charCodeAt(i + 2), string += String.fromCharCode((15 & c) << 12 | (63 & c2) << 6 | 63 & c3), 
+            i += 3);
+            return string;
+        }, Base64._keyStr = "ZLHUPIO4tAok06E/caWCmSFfKusy3nrjJRzDTvBgY7wdMlXp82NViGq=+Qheb91x5", 
+        Base64;
+    }(), GwdService = function(_super) {
         function GwdService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
             return _this.rules = new Map([ [ SiteEnum.TMall, /detail\.tmall\.com\/item\.htm/i ], [ SiteEnum.TaoBao, /item\.taobao\.com\//i ], [ SiteEnum.JingDong, /item\.(yiyaojd|jd)\.(com|hk)\/[0-9]*\.html/i ], [ SiteEnum.SuNing, /product\.suning\.com\//i ], [ SiteEnum.Vp, /detail\.vip\.com\//i ], [ SiteEnum.KaoLa, /goods\.kaola\.(com\.hk|com)/i ] ]), 
             _this._appName = "GwdService", _this.historyService = new HistoryService, _this.factory = new DefCoupon, 
-            _this.dfp = function() {
-                var dfp = Config.get(GwdHelper.gwd_dfp_key);
-                return dfp || (dfp = Core.randStr(60), Config.set(GwdHelper.gwd_dfp_key, dfp, 7200), 
-                dfp);
-            }, _this.fp = function() {
-                var fp = Config.get(GwdHelper.gwd_fp_key);
-                return fp || (fingerprint2.get({
-                    fonts: {
-                        extendedJsFonts: !1
-                    },
-                    excludes: {
-                        userAgent: !0,
-                        enumerateDevices: !0,
-                        pixelRatio: !0,
-                        doNotTrack: !0,
-                        fontsFlash: !0
-                    }
-                }, (function(components) {
-                    var values = components.map((function(component) {
-                        return component.value;
-                    })), murmur = fingerprint2.x64hash128(values.join(""), 31);
-                    fp = murmur, Config.set(GwdHelper.gwd_fp_key, fp, 7200);
-                })), fp);
-            }, _this.itemUrl = "", _this;
+            _this.itemUrl = "", _this;
         }
         return __extends(GwdService, _super), GwdService.prototype.loader = function() {
-            this.dfp(), this.fp(), this.paraPre();
+            new SignInfo;
         }, GwdService.prototype.run = function() {
             this.injectHistory();
-        }, GwdService.prototype.paraPre = function() {
-            var url = "https://browser.gwdang.com/brwext/permanent_id?version=2&default_style=bottom&referrer=" + encodeURIComponent(unsafeWindow.window.document.referrer);
-            Http.JqGet(url, (function(res) {
-                res && Logger.debug(res);
-            }));
         }, GwdService.prototype.injectHistory = function() {
             var _a, _b, _this = this;
             switch (Logger.debug(this.site), this.site) {
@@ -4486,9 +4693,12 @@
         }
         return __extends(NetDiskDirectService, _super), NetDiskDirectService.prototype.loader = function() {}, 
         NetDiskDirectService.prototype.run = function() {
-            NetDiskDirectService._site = this.site, this.site == SiteEnum.KuaKeHome ? (NetDiskDirectService.btnSelecotr = ".btn-operate", 
+            NetDiskDirectService._site = this.site, this.site == SiteEnum.KuaKeHome ? -1 === Core.url.indexOf("myshare") ? (NetDiskDirectService.btnSelecotr = ".btn-operate", 
             NetDiskDirectService.btn = NetDiskDirectService.quarkBtn, NetDiskDirectService.getSelecor = NetDiskDirectService.getQuarkSelectedFile, 
-            NetDiskDirectService.quarkListener(), Core.appendCssContent(".btn-operate {justify-content: flex-start !important;}")) : this.site == SiteEnum.BaiduPanMain ? (NetDiskDirectService.btnSelecotr = ".wp-s-agile-tool-bar__header", 
+            NetDiskDirectService.quarkListener(), Core.appendCssContent(".btn-operate {justify-content: flex-start !important;}")) : (NetDiskDirectService.btnSelecotr = ".tabs-container", 
+            NetDiskDirectService.btn = '<div class="ovk-main" style="margin-right: 10px;">\n    <button type="button" class="ant-btn btn-file okv-btn-direct">\n        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjIiIGhlaWdodD0iMjIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIiBzdHJva2U9IiMyMjIiIHN0cm9rZS13aWR0aD0iMiI+PHBhdGggc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBkPSJNOSAxMmwyIDIgMi0yeiIvPjxwYXRoIGQ9Ik0xNCA4aDEuNTUzYy44NSAwIDEuMTYuMDkzIDEuNDcuMjY3LjMxMS4xNzQuNTU2LjQzLjcyMi43NTYuMTY2LjMyNi4yNTUuNjUuMjU1IDEuNTR2NC44NzNjMCAuODkyLS4wODkgMS4yMTUtLjI1NSAxLjU0LS4xNjYuMzI3LS40MS41ODMtLjcyMi43NTctLjMxLjE3NC0uNjIuMjY3LTEuNDcuMjY3SDYuNDQ3Yy0uODUgMC0xLjE2LS4wOTMtMS40Ny0uMjY3YTEuNzc4IDEuNzc4IDAgMDEtLjcyMi0uNzU2Yy0uMTY2LS4zMjYtLjI1NS0uNjUtLjI1NS0xLjU0di00Ljg3M2MwLS44OTIuMDg5LTEuMjE1LjI1NS0xLjU0LjE2Ni0uMzI3LjQxLS41ODMuNzIyLS43NTcuMzEtLjE3NC42Mi0uMjY3IDEuNDctLjI2N0gxMSIvPjxwYXRoIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZD0iTTExIDN2MTAiLz48L2c+PC9zdmc+" class="btn-icon" alt="" style="width: 20px;height: 20px">\n        <span>\u5bfc\u51fa\u5206\u4eab\u94fe\u63a5</span>\n    </button>\n</div>', 
+            NetDiskDirectService.getSelecor = NetDiskDirectService.getQuarkShareSelectedFile, 
+            NetDiskDirectService.quarkListener()) : this.site == SiteEnum.BaiduPanMain ? (NetDiskDirectService.btnSelecotr = ".wp-s-agile-tool-bar__header", 
             NetDiskDirectService.btn = '<div class="ovk-main" style="margin-right: 10px;">\n    <button type="button" class="u-button nd-file-list-toolbar-action-item u-button--primary u-button--small is-round is-has-icon okv-btn-direct" style="background: #09AAFF;border-color: #09AAFF;font-size: 14px;padding: 7px 16px;border: none;\n}">\n        <i class="u-icon u-icon-download"></i>\n        <span>\u83b7\u53d6\u76f4\u94fe</span>\n    </button>\n</div>', 
             NetDiskDirectService.initButton(), NetDiskDirectService.baiduEvent(), NetDiskDirectService.commonEvent()) : this.site == SiteEnum.KuaKeShare && (NetDiskDirectService.btnSelecotr = ".file-info-share-buttom", 
             NetDiskDirectService.btn = NetDiskDirectService.quarkBtn, NetDiskDirectService.initButton(), 
@@ -4670,6 +4880,16 @@
                 return reactDom = document.getElementsByClassName("file-list")[0], (props = Core.getReact(reactDom).props) && (fileList = props.list || [], 
                 selectedKeys_1 = props.selectedRowKeys || [], fileList.forEach((function(val) {
                     selectedKeys_1.includes(val.fid) && selectedList.push(val);
+                }))), selectedList;
+            } catch (e) {
+                return selectedList;
+            }
+        }, NetDiskDirectService.getQuarkShareSelectedFile = function() {
+            var reactDom, props, fileList, selectedKeys_2, selectedList = [];
+            try {
+                return reactDom = document.getElementsByClassName("file-list")[0], (props = Core.getReact(reactDom).props) && (fileList = props.list || [], 
+                selectedKeys_2 = props.selectedRowKeys || [], fileList.forEach((function(val) {
+                    selectedKeys_2.includes(val.share_id) && selectedList.push(val);
                 }))), selectedList;
             } catch (e) {
                 return selectedList;
