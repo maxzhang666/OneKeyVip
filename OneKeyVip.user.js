@@ -2643,14 +2643,17 @@
                 Config.set("gwdang-dfp-obj", JSON.stringify(that.details)), Config.set(GwdHelper.gwd_dfp_key, collected, 7200);
             }.bind(that), 2e3);
         }, SignInfo.prototype.collectMovement = function(details) {
-            var b = document.body;
-            "ontouchmove" in document && document.addEventListener("touchmove", details.touchMoveFn.bind(details), !0), 
-            b.addEventListener("touchstart", details.touchStartFn.bind(details), !0), b.addEventListener("mousemove", details.mouseMoveFn.bind(details), !0), 
-            b.addEventListener("mousedown", details.mouseDownFn.bind(details), !0), b.addEventListener("click", details.mouseClickFn.bind(details), !0), 
-            b.addEventListener("keydown", details.keyDownFn.bind(details), !0), b.addEventListener("wheel", details.scrollFn.bind(details), !0), 
-            window.addEventListener("focus", details.focusFn.bind(details), !0), window.addEventListener("blur", details.blurFn.bind(details), !0), 
-            details.getWebRTCIP(details), details.getDeviceOrientation(details), details.getBatteryStatus(details), 
-            details.consoleCheckLoop();
+            var _a, _b, b = document.body;
+            "ontouchmove" in document && document.addEventListener("touchmove", details.touchMoveFn.bind(details), !0);
+            try {
+                b.addEventListener("touchstart", details.touchStartFn.bind(details), !0), b.addEventListener("mousemove", details.mouseMoveFn.bind(details), !0), 
+                b.addEventListener("mousedown", details.mouseDownFn.bind(details), !0), b.addEventListener("click", details.mouseClickFn.bind(details), !0), 
+                b.addEventListener("keydown", details.keyDownFn.bind(details), !0), b.addEventListener("wheel", details.scrollFn.bind(details), !0), 
+                window.addEventListener("focus", null === (_a = details.focusFn) || void 0 === _a ? void 0 : _a.bind(details), !0), 
+                window.addEventListener("blur", null === (_b = details.blurFn) || void 0 === _b ? void 0 : _b.bind(details), !0), 
+                details.getWebRTCIP(details), details.getDeviceOrientation(details), details.getBatteryStatus(details), 
+                details.consoleCheckLoop();
+            } catch (e) {}
         }, SignInfo;
     }(), Base64 = function() {
         function Base64() {}
@@ -3681,9 +3684,11 @@
             this.historyService.linkTest() && this.historyService.Process();
         }, JdService.prototype.run = function() {
             var btn = '<a href="javascript:;" class="btn-special1 btn-lg btn-yhj"><span class="">\u67e5\u8be2\u4f18\u60e0\u5238</span></a>', keywords = $(".sku-name").text().trim();
-            $("#choose-btns").prepend(btn), $(".btn-yhj").on("click", (function() {
-                Core.open("https://shop.huizhek.com/?r=/l/jdlist&kw=" + encodeURIComponent(keywords) + "&t=223");
-            }));
+            Core.lazyload((function() {
+                $("#choose-btns").prepend(btn), $(".btn-yhj").on("click", (function() {
+                    Core.open("https://shop.huizhek.com/?r=/l/jdlist&kw=" + encodeURIComponent(keywords) + "&t=223");
+                }));
+            }), 1);
         }, JdService;
     }(PluginBase), UrlHelper = function() {
         function UrlHelper() {}

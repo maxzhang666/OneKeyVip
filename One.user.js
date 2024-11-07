@@ -758,7 +758,7 @@
             _this;
         }
         return __extends(FeiShuDocApp, _super), FeiShuDocApp.prototype.loader = function() {
-            Hook.hookXmlHttpRequest((function(method, url, xml) {
+            Logger$1.debug("\u98de\u4e66\u6587\u6863hook"), Hook.hookXmlHttpRequest((function(method, url, xml) {
                 return url.includes("space/api/suite/permission/document/actions/state/") && "POST" == method;
             }), (function(xml) {
                 xml.addEventListener("readystatechange", (function() {

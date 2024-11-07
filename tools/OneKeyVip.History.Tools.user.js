@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           【玩的嗨】淘宝、天猫、京东、唯品会隐藏优惠券查询，自动显示历史价格和比价,拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手 长期更新，放心使用
 // @namespace      https://www.wandhi.com/
-// @version        1.8
+// @version        1.9
 // @homepage       https://wiki.wandhi.com
 // @support        https:://wiki.wandhi.com
 // @description    拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手
@@ -2437,14 +2437,17 @@
             }.bind(that), 2e3);
         }
         collectMovement(details) {
-            var b = document.body;
-            "ontouchmove" in document && document.addEventListener("touchmove", details.touchMoveFn.bind(details), !0), 
-            b.addEventListener("touchstart", details.touchStartFn.bind(details), !0), b.addEventListener("mousemove", details.mouseMoveFn.bind(details), !0), 
-            b.addEventListener("mousedown", details.mouseDownFn.bind(details), !0), b.addEventListener("click", details.mouseClickFn.bind(details), !0), 
-            b.addEventListener("keydown", details.keyDownFn.bind(details), !0), b.addEventListener("wheel", details.scrollFn.bind(details), !0), 
-            window.addEventListener("focus", details.focusFn.bind(details), !0), window.addEventListener("blur", details.blurFn.bind(details), !0), 
-            details.getWebRTCIP(details), details.getDeviceOrientation(details), details.getBatteryStatus(details), 
-            details.consoleCheckLoop();
+            var _a, _b, b = document.body;
+            "ontouchmove" in document && document.addEventListener("touchmove", details.touchMoveFn.bind(details), !0);
+            try {
+                b.addEventListener("touchstart", details.touchStartFn.bind(details), !0), b.addEventListener("mousemove", details.mouseMoveFn.bind(details), !0), 
+                b.addEventListener("mousedown", details.mouseDownFn.bind(details), !0), b.addEventListener("click", details.mouseClickFn.bind(details), !0), 
+                b.addEventListener("keydown", details.keyDownFn.bind(details), !0), b.addEventListener("wheel", details.scrollFn.bind(details), !0), 
+                window.addEventListener("focus", null === (_a = details.focusFn) || void 0 === _a ? void 0 : _a.bind(details), !0), 
+                window.addEventListener("blur", null === (_b = details.blurFn) || void 0 === _b ? void 0 : _b.bind(details), !0), 
+                details.getWebRTCIP(details), details.getDeviceOrientation(details), details.getBatteryStatus(details), 
+                details.consoleCheckLoop();
+            } catch (e) {}
         }
     }
     class Base64 {
@@ -3139,10 +3142,12 @@
         }
         run() {
             var keywords = $(".sku-name").text().trim();
-            $("#choose-btns").prepend('<a href="javascript:;" class="btn-special1 btn-lg btn-yhj"><span class="">\u67e5\u8be2\u4f18\u60e0\u5238</span></a>'), 
-            $(".btn-yhj").on("click", (function() {
-                Core.open(`https://shop.huizhek.com/?r=/l/jdlist&kw=${encodeURIComponent(keywords)}&t=223`);
-            }));
+            Core.lazyload(() => {
+                $("#choose-btns").prepend('<a href="javascript:;" class="btn-special1 btn-lg btn-yhj"><span class="">\u67e5\u8be2\u4f18\u60e0\u5238</span></a>'), 
+                $(".btn-yhj").on("click", (function() {
+                    Core.open(`https://shop.huizhek.com/?r=/l/jdlist&kw=${encodeURIComponent(keywords)}&t=223`);
+                }));
+            }, 1);
         }
     }
     !function(ItemType) {
