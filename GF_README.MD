@@ -3,14 +3,20 @@
 本脚本可安装于支持 Tampermonkey 或 暴力猴扩展的浏览器，包括但不限于Chrome，360，QQ，UC等。
 
 <p align="center">
-    <img src="https://img.shields.io/badge/dynamic/json?color=informational&prefix=v&label=release&query=%24.data.script.version&url=https%3A%2F%2Fscriptcat.org%2Fapi%2Fv1%2Fscripts%2F72" alt="release">
-    <img src="https://img.shields.io/badge/dynamic/json?color=informational&label=ScriptCat&query=%24.data.today_install&url=https%3A%2F%2Fscriptcat.org%2Fapi%2Fv1%2Fscripts%2F72" alt="ScriptCat">
+    <img src="https://img.shields.io/badge/dynamic/json?color=informational&prefix=v&label=release&query=%24.data.script.version&url=https%3A%2F%2Fscriptcat.org%2Fapi%2Fv2%2Fscripts%2F72" alt="release">
+    <img src="https://img.shields.io/badge/dynamic/json?color=informational&label=ScriptCat&query=%24.data.today_install&url=https%3A%2F%2Fscriptcat.org%2Fapi%2Fv2%2Fscripts%2F72" alt="ScriptCat">
     <img src="https://img.shields.io/badge/tamperMonkey-v4.8-brightgreen.svg" alt="tampermonkey">
     <img src="https://img.shields.io/badge/chrome%20x64-v76.0-brightgreen.svg" alt="chrome">
     <img src="https://img.shields.io/badge/safari%20-v12.0-brightgreen.svg" alt="safari">
     <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Mac%20%7C%20Android-blue.svg" alt="platform">
 </p>
 
+# 🤩🤩🤩重要说明🤩🤩🤩
+> 近期受MV3规则影响导致脚本失效
+> 
+> 大量用户反馈脚本失效的问题，请参照如下教程开启”开发者模式“恢复脚本功能
+>
+> [**点击查看教程**](https://wiki.wandhi.com/zh-cn/Faq.html#_12-mv3%E8%A7%84%E5%88%99%E4%B8%8B%E7%9A%84%E5%BD%B1%E5%93%8D-%E5%BC%80%E5%90%AF%E5%BC%80%E5%8F%91%E8%80%85%E6%A8%A1%E5%BC%8F)
 
 ## 💩交流群 **有任何问题都可以加群反馈或在网站留言，修复更及时**
 

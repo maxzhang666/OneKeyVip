@@ -2599,6 +2599,60 @@
             this.scrollCount++;
         }, DynamicDetails.prototype.focusFn = function(e) {
             this.windowFocus = !0, this.windowBlur = !1;
+        }, DynamicDetails.prototype.blurFn = function(e) {
+            this.windowBlur = !0;
+        }, DynamicDetails.prototype.getWebRTCIP = function(details) {
+            var i, r, a, that = this, t = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection;
+            t || (details.ip = 0), i = {
+                optional: [ {
+                    RtpDataChannels: !0
+                } ]
+            }, r = {
+                iceServers: [ {
+                    urls: "stun:stun.services.mozilla.com"
+                } ],
+                sdpSemantics: "plan-b"
+            };
+            try {
+                a = new t(r, i), setTimeout((function(n) {
+                    try {
+                        a.close();
+                    } catch (t) {}
+                }), 5e3), a.onicecandidate = function(t) {
+                    var i = t.candidate;
+                    i || (details.ip = 0), null != (r = that.extractIPFromWebRTCCandidate(i.candidate)) && (details.ip = r), 
+                    a.onicecandidate = null;
+                }, a.createDataChannel(""), a.createOffer().then((function(n) {
+                    a.setLocalDescription(n, (function() {}), (function() {}));
+                })).catch((function(t) {
+                    details.ip = 0;
+                }));
+            } catch (e) {
+                details.ip = 0;
+            }
+        }, DynamicDetails.prototype.extractIPFromWebRTCCandidate = function(n) {
+            var t = /(\d+)\.(\d+)\.(\d+)\.(\d+)\D/.exec(n);
+            return t ? (+t[1] << 24 | +t[2] << 16 | +t[3] << 8 | +t[4]) >>> 0 : null;
+        }, DynamicDetails.prototype.getDeviceOrientation = function(details) {
+            window.addEventListener("deviceorientation", (function cb(event) {
+                event.gamma && (details.deviceOrientationExists = !0), document.removeEventListener("deviceorientation", cb, !1);
+            }), !1);
+        }, DynamicDetails.prototype.getBatteryStatus = function(details) {
+            navigator.getBattery && navigator.getBattery().then((function(battery) {
+                battery && (details.batteryLevel = 100 * battery.level | 0);
+            }));
+        }, DynamicDetails.prototype.consoleCheckLoop = function() {
+            var func = this.devtoolsCb.bind(this);
+            func(), this.checkConsoleLoopHandle = setInterval((function(e) {
+                func();
+            }), 5e3);
+        }, DynamicDetails.prototype.devtoolsCb = function() {
+            var details = this, element = new Image;
+            Object.defineProperty(element, "id", {
+                get: function get() {
+                    details.consoleWindowOpened = !0, clearInterval(details.checkConsoleLoopHandle);
+                }
+            });
         }, DynamicDetails.prototype.pack = function() {
             var numberToHex = function(n) {
                 return n.toString(16);
@@ -2861,9 +2915,9 @@
                 end: 100
             } ], chartOption;
         }, GwdService.prototype.getMinPrice = function(data) {
-            var min, min_1, minDate_1, analysisTxt = data.analysis.tip;
+            var _a, min, min_1, minDate_1, analysisTxt = data.analysis.tip;
             return data.analysis.promo_days.length > 0 ? analysisTxt = analysisTxt + "\uff1a{red|\uffe5" + (min = data.analysis.promo_days[data.analysis.promo_days.length - 1]).price + "} ( {red|" + min.date + "} )" : (min_1 = Number.MIN_VALUE, 
-            minDate_1 = 0, data.nopuzzle_promo.forEach((function(el) {
+            minDate_1 = 0, null === (_a = data.nopuzzle_promo) || void 0 === _a || _a.forEach((function(el) {
                 el.price < min_1 && (min_1 = el.price, minDate_1 = el.time);
             })), Core.format(new Date(1e3 * minDate_1), "yyyy-MM-dd"), analysisTxt = analysisTxt + "\uff1a{red|" + min_1 + "} ( {red|" + minDate_1 + "} )"), 
             analysisTxt;

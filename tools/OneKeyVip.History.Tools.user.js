@@ -2388,6 +2388,69 @@
         focusFn(e) {
             this.windowFocus = !0, this.windowBlur = !1;
         }
+        blurFn(e) {
+            this.windowBlur = !0;
+        }
+        getWebRTCIP(details) {
+            var t, i, r, a;
+            let that = this;
+            (t = window.RTCPeerConnection || window.mozRTCPeerConnection || window.webkitRTCPeerConnection) || (details.ip = 0), 
+            i = {
+                optional: [ {
+                    RtpDataChannels: !0
+                } ]
+            }, r = {
+                iceServers: [ {
+                    urls: "stun:stun.services.mozilla.com"
+                } ],
+                sdpSemantics: "plan-b"
+            };
+            try {
+                a = new t(r, i), setTimeout((function(n) {
+                    try {
+                        a.close();
+                    } catch (t) {}
+                }), 5e3), a.onicecandidate = function(t) {
+                    var i = t.candidate;
+                    i || (details.ip = 0), null != (r = that.extractIPFromWebRTCCandidate(i.candidate)) && (details.ip = r), 
+                    a.onicecandidate = null;
+                }, a.createDataChannel(""), a.createOffer().then((function(n) {
+                    a.setLocalDescription(n, (function() {}), (function() {}));
+                })).catch((function(t) {
+                    details.ip = 0;
+                }));
+            } catch (e) {
+                details.ip = 0;
+            }
+        }
+        extractIPFromWebRTCCandidate(n) {
+            var t = /(\d+)\.(\d+)\.(\d+)\.(\d+)\D/.exec(n);
+            return t ? (+t[1] << 24 | +t[2] << 16 | +t[3] << 8 | +t[4]) >>> 0 : null;
+        }
+        getDeviceOrientation(details) {
+            window.addEventListener("deviceorientation", (function cb(event) {
+                event.gamma && (details.deviceOrientationExists = !0), document.removeEventListener("deviceorientation", cb, !1);
+            }), !1);
+        }
+        getBatteryStatus(details) {
+            navigator.getBattery && navigator.getBattery().then((function(battery) {
+                battery && (details.batteryLevel = 100 * battery.level | 0);
+            }));
+        }
+        consoleCheckLoop() {
+            var func = this.devtoolsCb.bind(this);
+            func(), this.checkConsoleLoopHandle = setInterval((function(e) {
+                func();
+            }), 5e3);
+        }
+        devtoolsCb() {
+            var details = this, element = new Image;
+            Object.defineProperty(element, "id", {
+                get: function get() {
+                    details.consoleWindowOpened = !0, clearInterval(details.checkConsoleLoopHandle);
+                }
+            });
+        }
         pack() {
             let numberToHex = n => n.toString(16);
             return `${`${this.touchPosition.x},${this.touchPosition.y},${this.touchEventTrusted ? 1 : 0}`};${`${this.mouseEventCount},${this.mousePosition.x},${this.mousePosition.y},${this.mouseClickPosition.x},${this.mouseClickPosition.y},${this.mouseDownCount},${this.mouseEventTrusted ? 1 : 0}`};${`${this.keyDownCount},${this.scrollCount},${this.windowBlur ? 1 : 0},${this.windowFocus ? 1 : 0}`};${`${this.consoleWindowOpened ? 1 : 0},${numberToHex(this.ip)},${this.batteryLevel},${this.deviceOrientationExists ? 1 : 0}`};${"" + numberToHex(this.features)}`;
@@ -2696,13 +2759,14 @@
             } ], chartOption;
         }
         getMinPrice(data) {
+            var _a;
             let analysisTxt = data.analysis.tip;
             if (data.analysis.promo_days.length > 0) {
                 let min = data.analysis.promo_days[data.analysis.promo_days.length - 1];
                 analysisTxt = `${analysisTxt}\uff1a{red|\uffe5${min.price}} ( {red|${min.date}} )`;
             } else {
                 let min = Number.MIN_VALUE, minDate = 0;
-                data.nopuzzle_promo.forEach(el => {
+                null === (_a = data.nopuzzle_promo) || void 0 === _a || _a.forEach(el => {
                     el.price < min && (min = el.price, minDate = el.time);
                 }), Core.format(new Date(1e3 * minDate), "yyyy-MM-dd"), analysisTxt = `${analysisTxt}\uff1a{red|${min}} ( {red|${minDate}} )`;
             }
