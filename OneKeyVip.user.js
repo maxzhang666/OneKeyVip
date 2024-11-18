@@ -3,7 +3,7 @@
 // @namespace     https://www.wandhi.com/
 // @description   🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转；🎉 12、搜索引擎快速跳转
 // @license       MIT
-// @version       4.9.40
+// @version       4.9.41
 // @author        MaxZhang
 // @include       *://item.taobao.com/*
 // @include       *://s.taobao.com/search*
@@ -847,8 +847,17 @@
                     res.code ? reso(res) : reje(res);
                 }));
             }));
-        }, Route.queryHistoryV4 = function(url, callback) {
-            Http.JqGet(url, callback);
+        }, Route.queryHistoryV4Pre = function(url) {
+            var _this = this;
+            return new Promise((function(reso, reje) {
+                _this.baseApi(url, new Map([]), (function(res) {
+                    res.code ? reso(res) : reje(res);
+                }));
+            }));
+        }, Route.queryHistoryV4 = function(url, pre, callback) {
+            Http.JqGet(pre, (function(res) {
+                Http.JqGet(url, callback, new Map([ [ ":authority", "browser.gwdang.com" ], [ "referer", unsafeWindow.window.location.origin ] ]));
+            }));
         }, Route.queryBiliImg = function(aid, callback) {
             Http.getData(this.biliInfo + "?aid=" + aid, callback);
         }, Route.queryBiliDown = function(aid, cid, callback) {
@@ -2804,7 +2813,7 @@
                 that.echartsObj = echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), that.theme()), 
                 that.echartsObj.setOption(that.getChartOption(res.data)), that.chartMsg("");
             })).catch((function() {
-                Route.queryHistoryV4(GwdHelper.get("https://browser.gwdang.com/extension/price_towards?url=" + encodeURIComponent(Core.url) + "&ver=1"), (function(data) {
+                Route.queryHistoryV4(GwdHelper.get("https://browser.gwdang.com/extension/price_towards?url=" + encodeURIComponent(Core.url) + "&ver=1"), "https://browser.gwdang.com/brwext/permanent_id?version=2&default_style=bottom&referrer=" + unsafeWindow.document.referrer, (function(data) {
                     var slContainer, msg = "";
                     Logger.debug(data), "price_status" in data ? ($(".vip-plugin-outside-chart-container").html('<div id="vip-plugin-outside-chart-container-line"></div>'), 
                     that.echartsObj = echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), _this.theme()), 

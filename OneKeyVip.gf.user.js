@@ -816,8 +816,17 @@
                 });
             });
         }
-        static queryHistoryV4(url, callback) {
-            Http.JqGet(url, callback);
+        static queryHistoryV4Pre(url) {
+            return new Promise((reso, reje) => {
+                this.baseApi(url, new Map([]), res => {
+                    res.code ? reso(res) : reje(res);
+                });
+            });
+        }
+        static queryHistoryV4(url, pre, callback) {
+            Http.JqGet(pre, res => {
+                Http.JqGet(url, callback, new Map([ [ ":authority", "browser.gwdang.com" ], [ "referer", unsafeWindow.window.location.origin ] ]));
+            });
         }
         static queryBiliImg(aid, callback) {
             Http.getData(`${this.biliInfo}?aid=${aid}`, callback);
