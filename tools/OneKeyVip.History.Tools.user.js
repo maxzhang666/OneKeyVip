@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           【玩的嗨】淘宝、天猫、京东、唯品会隐藏优惠券查询，自动显示历史价格和比价,拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手 长期更新，放心使用
 // @namespace      https://www.wandhi.com/
-// @version        2.0
+// @version        2.1
 // @homepage       https://wiki.wandhi.com
 // @support        https:://wiki.wandhi.com
 // @description    拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手
@@ -2636,7 +2636,7 @@
                 that.echartsObj = echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), that.theme()), 
                 that.echartsObj.setOption(that.getChartOption(res.data)), that.chartMsg("");
             }).catch(() => {
-                Route.queryHistoryV4(GwdHelper.get(`https://browser.gwdang.com/extension/price_towards?url=${encodeURIComponent(Core.url)}&ver=1`), "https://browser.gwdang.com/brwext/permanent_id?version=2&default_style=bottom&referrer=" + unsafeWindow.document.referrer, data => {
+                Route.queryHistoryV4(GwdHelper.get(`https://browser.gwdang.com/extension/price_towards?url=${encodeURIComponent(Core.url)}&ver=1`), GwdHelper.get("https://browser.gwdang.com/brwext/permanent_id?version=2&default_style=bottom&referrer=" + unsafeWindow.document.referrer), data => {
                     if (Logger.debug(data), "price_status" in data) $(".vip-plugin-outside-chart-container").html('<div id="vip-plugin-outside-chart-container-line"></div>'), 
                     that.echartsObj = echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), this.theme()), 
                     that.echartsObj.setOption(that.getChartOptionGwd(data)), that.chartMsg(""); else {

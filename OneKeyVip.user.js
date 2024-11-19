@@ -2813,7 +2813,7 @@
                 that.echartsObj = echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), that.theme()), 
                 that.echartsObj.setOption(that.getChartOption(res.data)), that.chartMsg("");
             })).catch((function() {
-                Route.queryHistoryV4(GwdHelper.get("https://browser.gwdang.com/extension/price_towards?url=" + encodeURIComponent(Core.url) + "&ver=1"), "https://browser.gwdang.com/brwext/permanent_id?version=2&default_style=bottom&referrer=" + unsafeWindow.document.referrer, (function(data) {
+                Route.queryHistoryV4(GwdHelper.get("https://browser.gwdang.com/extension/price_towards?url=" + encodeURIComponent(Core.url) + "&ver=1"), GwdHelper.get("https://browser.gwdang.com/brwext/permanent_id?version=2&default_style=bottom&referrer=" + unsafeWindow.document.referrer), (function(data) {
                     var slContainer, msg = "";
                     Logger.debug(data), "price_status" in data ? ($(".vip-plugin-outside-chart-container").html('<div id="vip-plugin-outside-chart-container-line"></div>'), 
                     that.echartsObj = echarts.init(document.getElementById("vip-plugin-outside-chart-container-line"), _this.theme()), 
