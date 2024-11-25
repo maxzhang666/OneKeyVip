@@ -1028,10 +1028,10 @@
         SiteEnum.Gwd = "Gwd", SiteEnum.Xxqg = "Xxqg", SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin", 
         SiteEnum.V2EX = "V2EX", SiteEnum.Github = "Github", SiteEnum.NodeSeek = "NodeSeek", 
         SiteEnum.HiTv = "HiTv", SiteEnum.HiTvCheck = "HiTvCheck", SiteEnum.Xhs = "Xhs", 
-        SiteEnum.KingSoftDoc = "KingSoftDoc", SiteEnum.BingCn = "BingCn", SiteEnum.SiChuang = "SiChuang", 
-        SiteEnum.Uisdc = "Uisdc", SiteEnum.YuQue = "YuQue", SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", 
-        SiteEnum.WenJuanXing = "WenJuanXing", SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork", 
-        SiteEnum.KuaKeShare = "KuaKeShare";
+        SiteEnum.KingSoftDoc = "KingSoftDoc", SiteEnum.BingCn = "BingCn", SiteEnum.Bing = "Bing", 
+        SiteEnum.SiChuang = "SiChuang", SiteEnum.Uisdc = "Uisdc", SiteEnum.YuQue = "YuQue", 
+        SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", SiteEnum.WenJuanXing = "WenJuanXing", 
+        SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork", SiteEnum.KuaKeShare = "KuaKeShare";
     }(SiteEnum || (SiteEnum = {})), UpdateService = function(_super) {
         function UpdateService() {
             var _this = _super.call(this) || this;
@@ -3903,7 +3903,7 @@
             }
         }, ListService.prototype.initSearch = function(that) {
             that.selectorList.forEach((function(e, i) {
-                Logger.debug("\u521d\u59cb\u5316\u5217\u8868\u9879:" + e), $(e).each((function(index, ele) {
+                $(e).each((function(index, ele) {
                     that.initSearchItem(ele);
                 }));
             }));
@@ -3920,7 +3920,7 @@
                         this.site != SiteEnum.TaoBao && this.site != SiteEnum.TMall ? [ 3, 3 ] : itemId.indexOf("click.simba.taobao.com") > -1 ? [ 4, Http.get302(itemId) ] : [ 3, 2 ]) : [ 3, 4 ]);
 
                       case 1:
-                        itemId = _j.sent(), Logger.debug("302\u5904\u7406\u540eitemId:" + itemId), _j.label = 2;
+                        itemId = _j.sent(), _j.label = 2;
 
                       case 2:
                         itemId = Core.getPar("id", itemId), _j.label = 3;
@@ -3936,9 +3936,8 @@
                       case 5:
                         return !Tao.isVailidItemId(itemId) && itemId.indexOf("http") > -1 && (res = null !== (_h = /item.jd.com\/(.*?).html/i.exec(itemId)) && void 0 !== _h ? _h : [], 
                         itemId = res.length > 0 ? res[1] : ""), Tao.isValidTaoId(itemId) || ListService.that.itemType != ItemType.Suning || (itemId = $dom.attr("id")).split("-").length > 1 && (itemId = itemId.split("-")[1] + "-" + itemId.split("-")[0]), 
-                        Tao.isValidTaoId(itemId) ? (this.initBoxHtml($dom, itemId), this.initTagClass($dom, itemId), 
-                        $dom.addClass("onekeyvip-box-done")) : Logger.debug("\u5546\u54c1\u5217\u8868id\u65e0\u6548:" + itemId), 
-                        [ 2 ];
+                        Tao.isValidTaoId(itemId) && (this.initBoxHtml($dom, itemId), this.initTagClass($dom, itemId), 
+                        $dom.addClass("onekeyvip-box-done")), [ 2 ];
                     }
                 }));
             }));
@@ -3994,8 +3993,7 @@
                 };
             })) : $(".onekeyvip-item-" + itemId).each((function(i, ele) {
                 $(ele).on("click", (function() {
-                    return Logger.debug("\u70b9\u51fb:" + itemUrl), !itemUrl || (Core.open(itemUrl), 
-                    !1);
+                    return !itemUrl || (Core.open(itemUrl), !1);
                 }));
             }));
         }, ListService.prototype._initQuery = function() {
@@ -4034,7 +4032,7 @@
         }, ListService.prototype._showItemUrl = function(target, quan) {
             var _a;
             null === (_a = $(target).find("a")) || void 0 === _a || _a.on("click", (function() {
-                return Logger.debug(quan), !quan.quan_link || (Core.open(quan.quan_link), !1);
+                return !quan.quan_link || (Core.open(quan.quan_link), !1);
             }));
         }, ListService.prototype.showQueryFind = function(selector, couponMoney) {
             selector.html('<a target="_blank" class="onekeyvip-box-info onekeyvip-box-info-find" title="\u5207\u6362\u900f\u660e\u5ea6">' + couponMoney + "\u5143\u5238</a>");
@@ -4677,8 +4675,8 @@
     }(PluginBase), SearchService = function(_super) {
         function SearchService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
-            return _this.rules = new Map([ [ SiteEnum.Baidu, /www\.baidu\.com\/(baidu|s)\?/i ], [ SiteEnum.Google, /www\.google\.com\/search\?/i ], [ SiteEnum.SoGou, /www\.sogou\.com\/web/i ], [ SiteEnum.SoGou, /www\.so\.com\/s\?/i ], [ SiteEnum.BingCn, /cn\.bing\.com\/search/i ] ]), 
-            _this._appName = "\u4fbf\u6377\u641c\u7d22", _this._unique = !1, _this.siteConfig = new Map([ [ SiteEnum.Baidu, "#kw" ], [ SiteEnum.Google, "input[name=q]" ], [ SiteEnum.SoGou, "#upquery" ], [ SiteEnum.BingCn, "#sb_form_q" ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.Baidu, /www\.baidu\.com\/(baidu|s)\?/i ], [ SiteEnum.Google, /www\.google\.com\/search\?/i ], [ SiteEnum.SoGou, /www\.sogou\.com\/web/i ], [ SiteEnum.SoGou, /www\.so\.com\/s\?/i ], [ SiteEnum.BingCn, /cn\.bing\.com\/search/i ], [ SiteEnum.Bing, /www\.bing\.com\/search/i ] ]), 
+            _this._appName = "\u4fbf\u6377\u641c\u7d22", _this._unique = !1, _this.siteConfig = new Map([ [ SiteEnum.Baidu, "#kw" ], [ SiteEnum.Google, "input[name=q]" ], [ SiteEnum.SoGou, "#upquery" ], [ SiteEnum.BingCn, "#sb_form_q" ], [ SiteEnum.Bing, "#sb_form_q" ] ]), 
             _this;
         }
         return __extends(SearchService, _super), SearchService.prototype.loader = function() {

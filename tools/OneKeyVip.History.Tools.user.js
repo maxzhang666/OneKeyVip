@@ -466,10 +466,10 @@
         SiteEnum.Gwd = "Gwd", SiteEnum.Xxqg = "Xxqg", SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin", 
         SiteEnum.V2EX = "V2EX", SiteEnum.Github = "Github", SiteEnum.NodeSeek = "NodeSeek", 
         SiteEnum.HiTv = "HiTv", SiteEnum.HiTvCheck = "HiTvCheck", SiteEnum.Xhs = "Xhs", 
-        SiteEnum.KingSoftDoc = "KingSoftDoc", SiteEnum.BingCn = "BingCn", SiteEnum.SiChuang = "SiChuang", 
-        SiteEnum.Uisdc = "Uisdc", SiteEnum.YuQue = "YuQue", SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", 
-        SiteEnum.WenJuanXing = "WenJuanXing", SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork", 
-        SiteEnum.KuaKeShare = "KuaKeShare";
+        SiteEnum.KingSoftDoc = "KingSoftDoc", SiteEnum.BingCn = "BingCn", SiteEnum.Bing = "Bing", 
+        SiteEnum.SiChuang = "SiChuang", SiteEnum.Uisdc = "Uisdc", SiteEnum.YuQue = "YuQue", 
+        SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", SiteEnum.WenJuanXing = "WenJuanXing", 
+        SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork", SiteEnum.KuaKeShare = "KuaKeShare";
     }(SiteEnum || (SiteEnum = {}));
     class Config {
         static get env() {
@@ -3306,7 +3306,7 @@
         }
         initSearch(that) {
             that.selectorList.forEach((e, i) => {
-                Logger.debug("\u521d\u59cb\u5316\u5217\u8868\u9879:" + e), $(e).each((index, ele) => {
+                $(e).each((index, ele) => {
                     that.initSearchItem(ele);
                 });
             });
@@ -3319,8 +3319,8 @@
                 let itemId = null !== (_c = null !== (_b = null !== (_a = $dom.attr("data-id")) && void 0 !== _a ? _a : $dom.data("sku")) && void 0 !== _b ? _b : $dom.attr("id")) && void 0 !== _c ? _c : "";
                 if (Tao.isVailidItemId(itemId) || (itemId = null !== (_f = null !== (_e = null !== (_d = $dom.attr("data-itemid")) && void 0 !== _d ? _d : $dom.data("spu")) && void 0 !== _e ? _e : $dom.attr("id")) && void 0 !== _f ? _f : ""), 
                 !Tao.isVailidItemId(itemId)) if ($dom.attr("href")) itemId = location.protocol + $dom.attr("href"), 
-                this.site != SiteEnum.TaoBao && this.site != SiteEnum.TMall || (itemId.indexOf("click.simba.taobao.com") > -1 && (itemId = yield Http.get302(itemId), 
-                Logger.debug("302\u5904\u7406\u540eitemId:" + itemId)), itemId = Core.getPar("id", itemId)); else {
+                this.site != SiteEnum.TaoBao && this.site != SiteEnum.TMall || (itemId.indexOf("click.simba.taobao.com") > -1 && (itemId = yield Http.get302(itemId)), 
+                itemId = Core.getPar("id", itemId)); else {
                     const $a = $dom.find("a");
                     if (!$a.length) return;
                     itemId = null !== (_g = $a.attr("data-nid")) && void 0 !== _g ? _g : "", Tao.isVailidItemId(itemId) || (itemId = $a.hasClass("j_ReceiveCoupon") && $a.length > 1 ? location.protocol + $($a[1]).attr("href") : location.protocol + $a.attr("href"));
@@ -3331,8 +3331,8 @@
                 }
                 Tao.isValidTaoId(itemId) || ListService.that.itemType != ItemType.Suning || (itemId = $dom.attr("id"), 
                 itemId.split("-").length > 1 && (itemId = `${itemId.split("-")[1]}-${itemId.split("-")[0]}`)), 
-                Tao.isValidTaoId(itemId) ? (this.initBoxHtml($dom, itemId), this.initTagClass($dom, itemId), 
-                $dom.addClass("onekeyvip-box-done")) : Logger.debug("\u5546\u54c1\u5217\u8868id\u65e0\u6548:" + itemId);
+                Tao.isValidTaoId(itemId) && (this.initBoxHtml($dom, itemId), this.initTagClass($dom, itemId), 
+                $dom.addClass("onekeyvip-box-done"));
             }));
         }
         initTagClass(target, itemId) {
@@ -3382,8 +3382,7 @@
             flag ? $(".onekeyvip-item-" + itemId).each((i, ele) => {
                 ele.onclick = () => !itemUrl || (Core.open(itemUrl), !1);
             }) : $(".onekeyvip-item-" + itemId).each((i, ele) => {
-                $(ele).on("click", () => (Logger.debug("\u70b9\u51fb:" + itemUrl), !itemUrl || (Core.open(itemUrl), 
-                !1)));
+                $(ele).on("click", () => !itemUrl || (Core.open(itemUrl), !1));
             });
         }
         _initQuery() {
@@ -3410,8 +3409,8 @@
         }
         _showItemUrl(target, quan) {
             var _a;
-            null === (_a = $(target).find("a")) || void 0 === _a || _a.on("click", () => (Logger.debug(quan), 
-            !quan.quan_link || (Core.open(quan.quan_link), !1)));
+            null === (_a = $(target).find("a")) || void 0 === _a || _a.on("click", () => !quan.quan_link || (Core.open(quan.quan_link), 
+            !1));
         }
         showQueryFind(selector, couponMoney) {
             selector.html(`<a target="_blank" class="onekeyvip-box-info onekeyvip-box-info-find" title="\u5207\u6362\u900f\u660e\u5ea6">${couponMoney}\u5143\u5238</a>`);
