@@ -3,7 +3,7 @@
 // @namespace     https://www.wandhi.com/
 // @description   🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转；🎉 12、搜索引擎快速跳转
 // @license       MIT
-// @version       4.9.41
+// @version       4.9.42
 // @author        MaxZhang
 // @include       *://item.taobao.com/*
 // @include       *://s.taobao.com/search*
@@ -3295,7 +3295,7 @@
         }, GwdHelper.version = "", GwdHelper.from_device = "default", GwdHelper.from_type = "", 
         GwdHelper.union = "union_gwdang", GwdHelper.crc64 = !0, GwdHelper.gwd_fp_key = "gwd_fp_key", 
         GwdHelper.gwd_dfp_key = "gwd_dfp_key", GwdHelper;
-    }(), css_248z$7 = ".wandhi_tab {\n  font-family: PingFangSC-Regular;\n  font-weight: 400;\n  font-size: 14px;\n  border: 1px solid #f40;\n  border-collapse: collapse;\n}\n.wandhi_tab thead {\n  font-size: 14px;\n  text-align: center;\n}\n.wandhi_tab tr th {\n  padding: 10px 10px;\n  text-align: center;\n}\n.wandhi_tab tr td {\n  padding: 10px 10px;\n  text-align: center;\n  font-size: 14px;\n}\n.wandhi_tab tr td a {\n  text-decoration: none;\n}\n.wandhi_tab_taobao,\n.wandhi_tab_tmall {\n  margin-bottom: 15px;\n}\n.wandhi_tab_taobao thead,\n.wandhi_tab_tmall thead {\n  background-color: #f40;\n  color: #FFF;\n}\n.wandhi_tab_taobao tr td,\n.wandhi_tab_tmall tr td {\n  border: 1px solid #e6602d;\n  color: #e6602d;\n}\n.wandhi_tab_taobao tr td a,\n.wandhi_tab_tmall tr td a {\n  color: #e6602d;\n}\n.wandhi_tab_tmall thead {\n  background-color: #ff0036;\n}\n.wandhi_tab_tmall tr td {\n  border: 1px solid #ff0036;\n  color: #ff0036;\n}\n.wandhi_tab_tmall tr td a {\n  color: #ff0036;\n}\n.tb-prop .tb-img li a {\n  width: auto !important;\n  background-position-x: 5px !important;\n}\n.tb-prop .tb-img li span {\n  text-indent: 1em !important;\n  display: block !important;\n  padding: 0 5px !important;\n  margin-left: 35px;\n}\n", 
+    }(), css_248z$7 = "#wandhi_div {\n  margin-top: 25px;\n}\n.wandhi_tab {\n  width: 100%;\n  font-family: PingFangSC-Regular;\n  font-weight: 400;\n  font-size: 14px;\n  border: 1px solid #f40;\n  border-collapse: collapse;\n}\n.wandhi_tab thead {\n  font-size: 14px;\n  text-align: center;\n}\n.wandhi_tab tr th {\n  padding: 10px 10px;\n  text-align: center;\n}\n.wandhi_tab tr td {\n  padding: 10px 10px;\n  text-align: center;\n  font-size: 14px;\n}\n.wandhi_tab tr td a {\n  text-decoration: none;\n}\n.wandhi_tab_taobao,\n.wandhi_tab_tmall {\n  margin-bottom: 15px;\n}\n.wandhi_tab_taobao thead,\n.wandhi_tab_tmall thead {\n  background-color: #f40;\n  color: #FFF;\n}\n.wandhi_tab_taobao tr td,\n.wandhi_tab_tmall tr td {\n  border: 1px solid #e6602d;\n  color: #e6602d;\n}\n.wandhi_tab_taobao tr td a,\n.wandhi_tab_tmall tr td a {\n  color: #e6602d;\n}\n.wandhi_tab_tmall thead {\n  background-color: #ff0036;\n}\n.wandhi_tab_tmall tr td {\n  border: 1px solid #ff0036;\n  color: #ff0036;\n}\n.wandhi_tab_tmall tr td a {\n  color: #ff0036;\n}\n.tb-prop .tb-img li a {\n  width: auto !important;\n  background-position-x: 5px !important;\n}\n.tb-prop .tb-img li span {\n  text-indent: 1em !important;\n  display: block !important;\n  padding: 0 5px !important;\n  margin-left: 35px;\n}\n", 
     styleInject(css_248z$7), TaoBaoService = function(_super) {
         function TaoBaoService() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
@@ -3309,13 +3309,12 @@
             var _this = this, init = "<div id='wandhi_div'><table class='wandhi_tab " + (this.site == SiteEnum.TaoBao ? "wandhi_tab_taobao" : "wandhi_tab_tmall") + "' id='wandhi_table'><thead><tr><th><b style='cursor:pointer'>\u4f18\u60e0\u5238</b></th><th>\u5238\u540e</th><th>\u6709 \u6548 \u671f</th><th>\u64cd\u4f5c</th></tr></thead><tr><td colspan='4'>\u6b63\u5728\u67e5\u8be2\u4f18\u60e0\u4fe1\u606f\uff0c\u8bf7\u7a0d\u5019...</td></tr></table></div>";
             Core.autoLazyload((function() {
                 var _a, _b;
-                return (null === (_a = $("#skuWrap")) || void 0 === _a ? void 0 : _a.length) > 0 || (null === (_b = $('[class^="Price--"][class*=" hasBgImg--"]')) || void 0 === _b ? void 0 : _b.length) > 0;
+                return (null === (_a = $('[class^="skuWrapper"]')) || void 0 === _a ? void 0 : _a.length) > 0 || (null === (_b = $('[class^="Price--"][class*=" hasBgImg--"]')) || void 0 === _b ? void 0 : _b.length) > 0;
             }), (function() {
                 var itemId, key, d;
-                $("#skuWrap").prepend(init), $("#J_LinkBasket").parent().parent().prepend(init), 
-                $(".J_LinkAdd").parent().parent().prepend(init), $("[class*=BasicContent--actions]").prepend(init), 
-                $(".beautify-scroll-bar").prepend(init), itemId = Core.getPar("id"), key = "td_s_" + itemId, 
-                (d = Config.get(key, !1)) ? _this.initElement(d) : Route.queryCoupons(itemId, (function(data) {
+                $("#J_LinkBasket").parent().parent().prepend(init), $(".J_LinkAdd").parent().parent().prepend(init), 
+                $("[class*=BasicContent--actions]").prepend(init), $(".beautify-scroll-bar").prepend(init), 
+                itemId = Core.getPar("id"), key = "td_s_" + itemId, (d = Config.get(key, !1)) ? _this.initElement(d) : Route.queryCoupons(itemId, (function(data) {
                     Config.set(key, data, 43200), _this.initElement(data);
                 }));
             }), .2);
@@ -3849,8 +3848,8 @@
             switch (ListService.that = this, this.site) {
               case SiteEnum.TaoBao:
                 this.selectorList.push(".items .item"), this.selectorList.push('a[class^="Card--doubleCardWrapper"]'), 
-                this.selectorList.push('a[class^="doubleCardWrapper--"]'), this.atrack.push(".pic a", ".title a"), 
-                this.itemType = ItemType.TaoBao;
+                this.selectorList.push('a[class^="doubleCardWrapper"]'), this.selectorList.push('a[class*="doubleCardWrapper"]'), 
+                this.atrack.push(".pic a", ".title a"), this.itemType = ItemType.TaoBao;
                 break;
 
               case SiteEnum.TMall:
