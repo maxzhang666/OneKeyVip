@@ -3,7 +3,7 @@
 // @namespace      https://www.wandhi.com/
 // @description    功能介绍：1、ScriptsCat脚本猫脚本查询 2、CSDN页面清理 3、页面磁力链接提取
 // @license        MIT
-// @version        1.1.2
+// @version        1.1.3
 // @author         MaxZhang
 // @include        *://*
 // @require        https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
@@ -49,7 +49,7 @@
             default: e
         };
     }
-    var SiteEnum, Swal__default = _interopDefaultLegacy(Swal), extendStatics = function(d, b) {
+    var Swal__default = _interopDefaultLegacy(Swal), extendStatics = function(d, b) {
         return (extendStatics = Object.setPrototypeOf || {
             __proto__: []
         } instanceof Array && function(d, b) {
@@ -65,6 +65,12 @@
         extendStatics(d, b), d.prototype = null === b ? Object.create(b) : (__.prototype = b.prototype, 
         new __);
     }
+    var SiteEnum, __assign = function() {
+        return (__assign = Object.assign || function __assign(t) {
+            for (var s, i = 1, n = arguments.length; i < n; i++) for (var p in s = arguments[i]) Object.prototype.hasOwnProperty.call(s, p) && (t[p] = s[p]);
+            return t;
+        }).apply(this, arguments);
+    };
     function __awaiter$1(thisArg, _arguments, P, generator) {
         return new (P || (P = Promise))((function(resolve, reject) {
             function fulfilled(value) {
@@ -206,7 +212,8 @@
         SiteEnum.BD_DETAIL_NEW = "BD_DETAIL_NEW", SiteEnum.BD_DETAIL_Share = "BD_DETAIL_Share", 
         SiteEnum.LZY = "LZY", SiteEnum.SuNing = "SuNing", SiteEnum.Vp = "Vp", SiteEnum.Gwd = "Gwd", 
         SiteEnum.Xxqg = "Xxqg", SiteEnum.CSDN = "CSDN", SiteEnum.FeiShuDoc = "FeiShuDoc", 
-        SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin";
+        SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin", SiteEnum.NodeSeek = "NodeSeek", 
+        SiteEnum.NodeSeekCategory = "NodeSeekCategory", SiteEnum.NodeSeekDetail = "NodeSeekDetail";
     }(SiteEnum || (SiteEnum = {}));
     var LogLevel$1, Core$1 = function() {
         function Core() {}
@@ -271,11 +278,7 @@
             void 0 === group && (group = "error"), this.log(msg, group, LogLevel$1.error);
         }, Logger;
     }();
-    !function(LogLevel) {
-        LogLevel[LogLevel.debug = 0] = "debug", LogLevel[LogLevel.info = 1] = "info", LogLevel[LogLevel.warn = 2] = "warn", 
-        LogLevel[LogLevel.error = 3] = "error";
-    }(LogLevel$1 || (LogLevel$1 = {}));
-    !function styleInject(css, ref) {
+    function styleInject(css, ref) {
         void 0 === ref && (ref = {});
         var insertAt = ref.insertAt;
         if (css && "undefined" != typeof document) {
@@ -283,7 +286,12 @@
             style.type = "text/css", "top" === insertAt && head.firstChild ? head.insertBefore(style, head.firstChild) : head.appendChild(style), 
             style.styleSheet ? style.styleSheet.cssText = css : style.appendChild(document.createTextNode(css));
         }
-    }("#content_views pre,#content_views pre code{-webkit-touch-callout:auto!important;-webkit-user-select:auto!important;-khtml-user-select:auto!important;-moz-user-select:auto!important;-ms-user-select:auto!important;user-select:auto!important}.passport-login-container{display:none!important}");
+    }
+    !function(LogLevel) {
+        LogLevel[LogLevel.debug = 0] = "debug", LogLevel[LogLevel.info = 1] = "info", LogLevel[LogLevel.warn = 2] = "warn", 
+        LogLevel[LogLevel.error = 3] = "error";
+    }(LogLevel$1 || (LogLevel$1 = {}));
+    styleInject("#content_views pre,#content_views pre code{-webkit-touch-callout:auto!important;-webkit-user-select:auto!important;-khtml-user-select:auto!important;-moz-user-select:auto!important;-ms-user-select:auto!important;user-select:auto!important}.passport-login-container{display:none!important}");
     var LogLevel, __awaiter = function(thisArg, _arguments, P, generator) {
         return new (P || (P = Promise))((function(resolve, reject) {
             function fulfilled(value) {
@@ -310,7 +318,7 @@
             step((generator = generator.apply(thisArg, _arguments || [])).next());
         }));
     }, __generator = function(thisArg, body) {
-        var f, y, t, g, _ = {
+        var f, y, t, _ = {
             label: 0,
             sent: function() {
                 if (1 & t[0]) throw t[1];
@@ -318,12 +326,8 @@
             },
             trys: [],
             ops: []
-        };
-        return g = {
-            next: verb(0),
-            throw: verb(1),
-            return: verb(2)
-        }, "function" == typeof Symbol && (g[Symbol.iterator] = function() {
+        }, g = Object.create(("function" == typeof Iterator ? Iterator : Object).prototype);
+        return g.next = verb(0), g.throw = verb(1), g.return = verb(2), "function" == typeof Symbol && (g[Symbol.iterator] = function() {
             return this;
         }), g;
         function verb(n) {
@@ -864,9 +868,85 @@
                 unsafeWindow.document.body.contentEditable = "true", unsafeWindow.document.designMode = "on";
             }));
         }, CommonFeature;
+    }(AppBase);
+    function createButton(props) {
+        var children = props.children, _a = props.className, className = void 0 === _a ? "" : _a, _b = props.type, type = void 0 === _b ? "button" : _b, _c = props.tag, tag = void 0 === _c ? "button" : _c, $button = $("<" + tag + ' class="normal button ' + className + '">' + children + "</" + tag + ">");
+        return "button" === tag && $button.prop("type", type), $button;
+    }
+    styleInject(".nodeseek-topic-preview-btn{background-color:#e2e8f0;border:none;border-color:initial;border-image:initial;border-radius:3px;color:#64748b;cursor:pointer;font-size:13px;outline:none;visibility:hidden}.post-list-item:hover .nodeseek-topic-preview-btn{visibility:visible}.nodeseek-topic-actions{display:inline-flex;gap:2px 10px;pointer-events:auto;position:relative;z-index:2}");
+    styleInject("body .button.normal,body .button.super{align-items:center;background:#f1f5f9;border:none;border-color:initial;border-image:initial;border-radius:6px;box-shadow:0 1.8px 0 e2e8f0,0 1.8px 0 #f1f5f9;color:#64748b;cursor:pointer;display:inline-flex;font-family:inherit;font-size:14px;font-weight:500;gap:5px;height:28px;line-height:28px;outline:none;padding:0 12px;position:relative;text-shadow:none;transition:color .25s,background-color .25s,box-shadow .25s;user-select:none;white-space:nowrap}body .button.normal:is(:hover:enabled,:active:enabled),body .button.super:is(:hover:enabled,:active:enabled){background:#e2e8f0;border:none initial;border-color:initial;border-image:initial;box-shadow:0 1.8px 0 #cbd5e1,0 1.8px 0 #f1f5f9;color:#475569;font-weight:500;text-shadow:none}.one-modal-mask{background-color:rgba(0,0,0,.25);inset:0;overflow:hidden;overflow-y:auto;padding:min(2vh,60px);position:fixed;z-index:888}.one-modal-main{border-radius:10px;box-sizing:border-box;flex-direction:column;height:100%;margin:0 auto;overflow:hidden;position:relative;width:800px}.one-modal-header,.one-modal-main{background-color:#fff;display:flex}.one-modal-header{align-items:center;border-bottom:1px solid #e2e8f0;gap:0 20px;padding:15px 20px 20px}.one-modal-title{font-size:16px;font-weight:700;overflow:hidden;padding:2px 0;text-overflow:ellipsis;white-space:nowrap}.one-modal-actions{align-items:center;display:flex;gap:0 10px;margin-left:auto}.one-modal-content{flex:1}#Main.one-topic-preview>.box{border:none;box-shadow:none}.one-modal-comments{inset:0;overflow-y:auto;padding:0 20px;position:absolute;visibility:hidden}.one-modal-comments.one-tab-content-active{visibility:visible;z-index:20}.one-modal-comment-tabs{align-items:center;background-color:var(--button-background-color);border-radius:4px;display:flex;font-size:14px;font-weight:400;gap:4px;padding:4px 5px}.one-modal-comment-tabs>[data-tab-key]{border-radius:4px;cursor:pointer;padding:4px 5px}.one-modal-comment-tabs>[data-tab-key]:hover{background-color:var(--one-color-button-background-hover)}.one-modal-comment-tabs>[data-tab-key].one-tab-active{background-color:var(--one-color-accent-100);color:var(--one-color-foreground)}.one-modal-content{flex:1 1 0%;outline:none;overflow-y:auto;overflow:hidden;overscroll-behavior-y:contain;position:relative;width:100%}.one-topic-preview-frame{border:none initial;border-color:initial;border-image:initial;height:100%;width:100%}");
+    var NodeSeekPreview = function(_super) {
+        function NodeSeekPreview() {
+            var _this = null !== _super && _super.apply(this, arguments) || this;
+            return _this.rules = new Map([ [ SiteEnum.NodeSeekCategory, [ /nodeseek\.com\/categories/i ] ] ]), 
+            _this._unique = !1, _this.appName = "NodeSeekPreview", _this;
+        }
+        return __extends(NodeSeekPreview, _super), NodeSeekPreview.prototype.loader = function() {}, 
+        NodeSeekPreview.prototype.run = function() {
+            this.InitList();
+        }, NodeSeekPreview.prototype.InitList = function() {
+            var $detailBtn = createButton({
+                children: "\u8fdb\u5165\u4e3b\u9898",
+                className: "special",
+                tag: "a"
+            }), modal = function createModal(props) {
+                var mouseDownTarget, root = props.root, title = props.title, onMount = props.onMount, onOpen = props.onOpen, onClose = props.onClose, $mask = $('<div class="one-modal-mask">'), $content = $('<div class="one-modal-content">'), $closeBtn = createButton({
+                    children: "\u5173\u95ed<kbd>Esc</kbd>",
+                    className: "one-modal-close-btn"
+                }), $title = $('<div class="one-modal-title">' + (null != title ? title : "") + "</div>"), $actions = $('<div class="one-modal-actions">').append($closeBtn), $header = $('<div class="one-modal-header">').append($title, $actions), $main = $('<div class="one-modal-main">').append($header, $content).on("click", (function(ev) {
+                    ev.stopPropagation();
+                })), $container = $mask.append($main).hide(), modalElements = {
+                    $mask: $mask,
+                    $main: $main,
+                    $header: $header,
+                    $container: $container,
+                    $title: $title,
+                    $actions: $actions,
+                    $content: $content
+                }, boundEvent = !1, mouseDownHandler = function(ev) {
+                    mouseDownTarget = ev.target;
+                }, mouseUpHandler = function(ev) {
+                    mouseDownTarget === $mask.get(0) && ev.target === $mask.get(0) && ev.currentTarget === ev.target && handleModalClose();
+                }, keyupHandler = function(ev) {
+                    "Escape" === ev.key && handleModalClose();
+                }, handleModalClose = function() {
+                    $mask.off("mousedown", mouseDownHandler), $mask.off("mouseup", mouseUpHandler), 
+                    $(document).off("keydown", keyupHandler), boundEvent = !1, $container.fadeOut("fast"), 
+                    document.body.classList.remove("one-modal-open"), null == onClose || onClose(modalElements);
+                };
+                return $closeBtn.on("click", handleModalClose), null == onMount || onMount(modalElements), 
+                root && root.append($container), __assign(__assign({}, modalElements), {
+                    open: function() {
+                        setTimeout((function() {
+                            boundEvent || ($mask.on("mousedown", mouseDownHandler), $mask.on("mouseup", mouseUpHandler), 
+                            $(document).on("keydown", keyupHandler), boundEvent = !0);
+                        })), $container.fadeIn("fast"), document.body.classList.add("one-modal-open"), null == onOpen || onOpen(modalElements);
+                    },
+                    close: handleModalClose
+                });
+            }({
+                root: $("body"),
+                onMount: function(_a) {
+                    _a.$actions.prepend($detailBtn);
+                },
+                onClose: function(_a) {
+                    var $title = _a.$title, $content = _a.$content;
+                    $title.empty(), $content.empty();
+                }
+            }), btn = $('<span class="nodeseek-topic-actions"><button class="nodeseek-topic-preview-btn">\u9884\u89c8</button></span>'), list = $(".post-title a");
+            Logger$1.debug("NodeSeekPreview list:" + list.length), list.each((function(i, e) {
+                var relativeUrl = $(e).attr("href");
+                Logger$1.debug("NodeSeekPreview relativeUrl:" + relativeUrl);
+                var absoluteUrl = new URL(relativeUrl, unsafeWindow.window.location.origin), title = $(e).text();
+                btn.clone().on("click", (function() {
+                    Logger$1.debug("NodeSeekPreview click"), modal.open(), Logger$1.debug("NodeSeekPreview open:" + absoluteUrl.href), 
+                    modal.$title.html(title), modal.$content.html('<iframe src="' + absoluteUrl.href + '" class="one-topic-preview-frame"></iframe>');
+                })).appendTo($(e).parent());
+            }));
+        }, NodeSeekPreview;
     }(AppBase), One = function() {
         function One() {
-            this.services = [ Ioc.register(CommonFeature), Ioc.register(CsdnApp), Ioc.register(MagnetRegApp), Ioc.register(FeiShuDocApp), Ioc.register(RightClickFreeApp), Ioc.register(AdBlockApp), Ioc.register(ScriptsFind) ];
+            this.services = [ Ioc.register(CommonFeature), Ioc.register(CsdnApp), Ioc.register(NodeSeekPreview), Ioc.register(MagnetRegApp), Ioc.register(FeiShuDocApp), Ioc.register(RightClickFreeApp), Ioc.register(AdBlockApp), Ioc.register(ScriptsFind) ];
         }
         return One.prototype.run = function() {
             this.services.every((function(element) {

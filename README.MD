@@ -28,14 +28,6 @@
 <img src="https://i1.wp.com/s2.loli.net/2024/02/28/FC5BLZXjHrYs6bo.png" alt="垃圾佬" width="20%">
 <img src="https://i1.wp.com/s2.loli.net/2024/02/28/GCj54flKsEiMgkm.png" alt="垃圾佬" width="20%">
 
-## 声明
-
-> 脚本未最小化或混淆
->
-> 未引用不符合规则的外部资源
->
-> 举报前三思,瞎举报会被Ban
-
 ## 版本号说明
 
 ![x2TF67](https://cdn.jsdelivr.net/gh/maxzhang666/assets@master/img/2022/02/22/x2TF67.png)[](https://)

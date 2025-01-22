@@ -17,6 +17,7 @@
 * ✅ 脚本猫可用脚本查询
 * ✅ CSDN页面清洁
 * ✅ 页面磁力链接提取
+* ✅ Nodeseek站点弹窗预览
 
   ![6otxWw2GDjMVNSK](https://s2.loli.net/2023/03/10/6otxWw2GDjMVNSK.png)
 
