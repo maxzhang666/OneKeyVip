@@ -533,7 +533,8 @@
         SiteEnum.KingSoftDoc = "KingSoftDoc", SiteEnum.BingCn = "BingCn", SiteEnum.Bing = "Bing", 
         SiteEnum.SiChuang = "SiChuang", SiteEnum.Uisdc = "Uisdc", SiteEnum.YuQue = "YuQue", 
         SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", SiteEnum.WenJuanXing = "WenJuanXing", 
-        SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork", SiteEnum.KuaKeShare = "KuaKeShare";
+        SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork", SiteEnum.KuaKeShare = "KuaKeShare", 
+        SiteEnum.GitCode = "GitCode";
     }(SiteEnum || (SiteEnum = {}));
     class AjaxOption {
         constructor(_url, _methodType = "GET", _data, _success, _header = new Map, timeOut = 60) {

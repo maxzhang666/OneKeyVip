@@ -106,6 +106,7 @@
 // @match         *://r.wjx.com/redirect.aspx*
 // @match         *://www.infoq.cn/link*
 // @match         *://open.work.weixin.qq.com/wwopen/uriconfirm?uri=
+// @match         *://link.gitcode.com/?target=*
 // @require       https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
 // @require       https://lib.baomitu.com/limonte-sweetalert2/11.4.7/sweetalert2.all.min.js
 // @require       https://lib.baomitu.com/echarts/4.6.0/echarts.min.js
@@ -623,7 +624,8 @@
         SiteEnum.KingSoftDoc = "KingSoftDoc", SiteEnum.BingCn = "BingCn", SiteEnum.Bing = "Bing", 
         SiteEnum.SiChuang = "SiChuang", SiteEnum.Uisdc = "Uisdc", SiteEnum.YuQue = "YuQue", 
         SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", SiteEnum.WenJuanXing = "WenJuanXing", 
-        SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork", SiteEnum.KuaKeShare = "KuaKeShare";
+        SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork", SiteEnum.KuaKeShare = "KuaKeShare", 
+        SiteEnum.GitCode = "GitCode";
     }(SiteEnum || (SiteEnum = {}));
     class AjaxOption {
         constructor(_url, _methodType = "GET", _data, _success, _header = new Map, timeOut = 60) {
@@ -1712,7 +1714,7 @@
     WenKuService.loaded = !1;
     class LinkJumpService extends PluginBase {
         constructor() {
-            super(), this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ], [ SiteEnum.Gitee, /gitee\.com\/link/i ], [ SiteEnum.JueJin, /juejin\.cn\/\?target/i ], [ SiteEnum.Weibo, /weibo\.cn\/sinaurl/i ], [ SiteEnum.TuXiaoChao, /support\.qq\.com\/products\/.*\/link-jump/i ], [ SiteEnum.OsCh, /oschina\.net\/action\/GoToLink/i ], [ SiteEnum.AiFaDian, /afdian\.net\/link\?target/i ], [ SiteEnum.Baidu, /jump(2?)\.bdimg\.com\/safecheck/i ], [ SiteEnum.DouBan, /www\.douban\.com\/link2\// ], [ SiteEnum.g17173, /link\.17173\.com\/\?target/i ], [ SiteEnum.TencentDoc, /docs\.qq\.com\/scenario\/link/i ], [ SiteEnum.TencentMail, /mail\.qq\.com\/cgi-bin\/readtemplate/i ], [ SiteEnum.TencentQQ, /c\.pc\.qq\.com\/(middlem|ios)\.html/i ], [ SiteEnum.SsPAi, /sspai\.com\/link/i ], [ SiteEnum.NodeSeek, /nodeseek\.com\/jump/i ], [ SiteEnum.KingSoftDoc, /[p|www]\.kdocs\.cn\/office\/link/i ], [ SiteEnum.TencentCloudBlog, /cloud\.tencent\.com\/developer\/tools\/blog-entry/i ], [ SiteEnum.Uisdc, /link\.uisdc\.com\/\?redirect/i ], [ SiteEnum.YuQue, /www\.yuque\.com\/r\/goto/i ], [ SiteEnum.CTO51, /blog\.51cto\.com\/transfer/i ], [ SiteEnum.WenJuanXing, /r\.wjx\.com\/redirect\.aspx/i ], [ SiteEnum.InfoQ, /www\.infoq\.cn\/link/i ], [ SiteEnum.WeChatWork, /open\.work\.weixin\.qq\.com\/wwopen\/uriconfirm/i ], [ SiteEnum.TencentDiskDoc, /weboffice\.qq\.com\/scenario\/link\.html/i ] ]), 
+            super(), this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ], [ SiteEnum.Gitee, /gitee\.com\/link/i ], [ SiteEnum.JueJin, /juejin\.cn\/\?target/i ], [ SiteEnum.Weibo, /weibo\.cn\/sinaurl/i ], [ SiteEnum.TuXiaoChao, /support\.qq\.com\/products\/.*\/link-jump/i ], [ SiteEnum.OsCh, /oschina\.net\/action\/GoToLink/i ], [ SiteEnum.AiFaDian, /afdian\.net\/link\?target/i ], [ SiteEnum.Baidu, /jump(2?)\.bdimg\.com\/safecheck/i ], [ SiteEnum.DouBan, /www\.douban\.com\/link2\// ], [ SiteEnum.g17173, /link\.17173\.com\/\?target/i ], [ SiteEnum.TencentDoc, /docs\.qq\.com\/scenario\/link/i ], [ SiteEnum.TencentMail, /mail\.qq\.com\/cgi-bin\/readtemplate/i ], [ SiteEnum.TencentQQ, /c\.pc\.qq\.com\/(middlem|ios)\.html/i ], [ SiteEnum.SsPAi, /sspai\.com\/link/i ], [ SiteEnum.NodeSeek, /nodeseek\.com\/jump/i ], [ SiteEnum.KingSoftDoc, /[p|www]\.kdocs\.cn\/office\/link/i ], [ SiteEnum.TencentCloudBlog, /cloud\.tencent\.com\/developer\/tools\/blog-entry/i ], [ SiteEnum.Uisdc, /link\.uisdc\.com\/\?redirect/i ], [ SiteEnum.YuQue, /www\.yuque\.com\/r\/goto/i ], [ SiteEnum.CTO51, /blog\.51cto\.com\/transfer/i ], [ SiteEnum.WenJuanXing, /r\.wjx\.com\/redirect\.aspx/i ], [ SiteEnum.InfoQ, /www\.infoq\.cn\/link/i ], [ SiteEnum.WeChatWork, /open\.work\.weixin\.qq\.com\/wwopen\/uriconfirm/i ], [ SiteEnum.TencentDiskDoc, /weboffice\.qq\.com\/scenario\/link\.html/i ], [ SiteEnum.GitCode, /link\.gitcode\.com\/\?target/i ] ]), 
             this.key = "", this.selector = "", this._unique = !1, this._appName = "LinkJump", 
             this.semiui = !0;
         }
@@ -1732,6 +1734,7 @@
               case SiteEnum.KingSoftDoc:
               case SiteEnum.TencentCloudBlog:
               case SiteEnum.InfoQ:
+              case SiteEnum.GitCode:
                 this.key = "target";
                 break;
 
