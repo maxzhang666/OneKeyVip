@@ -3611,9 +3611,6 @@
         title: "JY",
         url: "https://jx.playerjy.com/?url="
     }, {
-        title: "JY\u89e3\u6790",
-        url: "https://jx.we-vip.com/?url="
-    }, {
         title: "\u2478\u53f7\u89e3\u6790\u63a5\u53e3",
         url: "https://www.8090g.cn/jiexi/?url="
     }, {
