@@ -1495,7 +1495,8 @@
         }
         clipboardClean() {
             Logger.info("\u590d\u5236\u7c98\u8d34\u51c0\u5316"), Core.background(() => {
-                unsafeWindow.csdn.copyright.textData = "";
+                var _a, _b;
+                null === (_b = null === (_a = unsafeWindow.csdn) || void 0 === _a ? void 0 : _a.copyright) || void 0 === _b || (_b.textData = "");
             }), Core.autoLazyload(() => $(".hljs-button").length > 0, () => {
                 var _a;
                 let copyBtn = $(".hljs-button");

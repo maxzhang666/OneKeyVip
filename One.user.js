@@ -3,7 +3,7 @@
 // @namespace      https://www.wandhi.com/
 // @description    功能介绍：1、ScriptsCat脚本猫脚本查询 2、CSDN页面清理 3、页面磁力链接提取
 // @license        MIT
-// @version        1.1.3
+// @version        1.1.4
 // @author         MaxZhang
 // @include        *://*
 // @require        https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
@@ -758,7 +758,7 @@
         function FeiShuDocApp() {
             var _this = null !== _super && _super.apply(this, arguments) || this;
             return _this._unique = !1, _this.appName = "\u98de\u4e66\u6587\u6863\u590d\u5236", 
-            _this.rules = new Map([ [ SiteEnum.FeiShuDoc, [ /bytedance\.feishu\.cn/i, /feishu\.cn\/docx/i, /feishu\.cn\/wiki/i ] ] ]), 
+            _this.rules = new Map([ [ SiteEnum.FeiShuDoc, [ /bytedance\.feishu\.cn/i, /feishu\.cn\/docx/i, /feishu\.cn\/sheets/i, /feishu\.cn\/wiki/i ] ] ]), 
             _this;
         }
         return __extends(FeiShuDocApp, _super), FeiShuDocApp.prototype.loader = function() {
@@ -773,7 +773,7 @@
                             response = JSON.parse(response);
                         } catch (e) {}
                         Logger$1.debug("\u98de\u4e66\u62e6\u622a:response"), Logger$1.debug(response), 1 !== (null === (_a = response.data.actions) || void 0 === _a ? void 0 : _a.copy) && (response.data.actions.copy = 1, 
-                        Object.defineProperty(xml, "response", {
+                        response.data.actions.duplicate = 1, response.data.actions.export = 1, Object.defineProperty(xml, "response", {
                             get: function() {
                                 return response;
                             }
