@@ -3,7 +3,7 @@
 // @namespace     https://www.wandhi.com/
 // @description   🔥功能介绍🔥：🎉 1、Vip视频解析；🎉 2、一站式音乐搜索解决方案；🎉 3、bilibili视频封面获取；🎉 4、bilibili视频下载(已支持分P下载)；🎉 5、夸克网盘直链批量获取；🎉 6、商品历史价格展示(一次性告别虚假降价)；🎉 7、优惠券查询；🎉 8、CSDN页面、剪切板清理；🎉 9、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 10、YouTube视频下载🎉 11、中间页自动跳转；🎉 12、搜索引擎快速跳转
 // @license       MIT
-// @version       4.9.45
+// @version       4.9.46
 // @author        MaxZhang
 // @include       *://item.taobao.com/*
 // @include       *://s.taobao.com/search*
@@ -22,6 +22,7 @@
 // @exclude       *://vip.wandhi.com/*
 // @match         *://*blog.csdn.net/*
 // @match         *://*download.csdn.net/*
+// @match         *://*wenku.csdn.net/*
 // @match         *://*c.pc.qq.com/middlem*
 // @match         *://*pan.baidu.com/disk/main*
 // @match         *://link.csdn.net/*
@@ -89,6 +90,7 @@
 // @match         *://m.youku.com/v*
 // @match         *://m.youku.com/a*
 // @match         *://v.youku.com/v_*
+// @match         *://v.youku.com/video*
 // @match         *://v.youku.com/pad_show*
 // @match         *://*.iqiyi.com/v_*
 // @match         *://*.iqiyi.com/w_*
@@ -1034,24 +1036,24 @@
         SiteEnum.WenKu = "WenKu", SiteEnum.YouTuBe = "YouTuBe", SiteEnum.SXB = "SXB", SiteEnum.BDY = "BDY", 
         SiteEnum.ALY = "ALY", SiteEnum.ALY_P = "ALY_P", SiteEnum.BDY1 = "BDY1", SiteEnum.LZY = "LZY", 
         SiteEnum.SuNing = "SuNing", SiteEnum.Steam = "Steam", SiteEnum.Vp = "Vp", SiteEnum.CSDN = "CSDN", 
-        SiteEnum.CSDN_Download = "CSDN_Download", SiteEnum.ZhiHu = "ZhiHu", SiteEnum.JianShu = "JianShu", 
-        SiteEnum.JueJin = "JueJin", SiteEnum.Gitee = "Gitee", SiteEnum.Weibo = "Weibo", 
-        SiteEnum.TuXiaoChao = "TuXiaoChao", SiteEnum.OsCh = "OsCh", SiteEnum.AiFaDian = "AiFaDian", 
-        SiteEnum.Baidu = "Baidu", SiteEnum.BaiduPanMain = "BaiduPanMain", SiteEnum.BaiduPanHome = "BaiduPanHome", 
-        SiteEnum.DouBan = "DouBan", SiteEnum.g17173 = "g17173", SiteEnum.Google = "Google", 
-        SiteEnum.SoGou = "SoGou", SiteEnum.KuaKeHome = "KuaKeHome", SiteEnum.TencentDoc = "TencentDoc", 
-        SiteEnum.TencentDiskDoc = "TencentDiskDoc", SiteEnum.TencentMail = "TencentMail", 
-        SiteEnum.TencentCloudBlog = "TencentCloudBlog", SiteEnum.SsPAi = "SsPai", SiteEnum.FeiShuDoc = "FeiShuDoc", 
-        SiteEnum.TencentQQ = "TencentQQ", SiteEnum.Shuma = "Shuma", SiteEnum.BD_DETAIL_OLD = "BD_DETAIL_OLD", 
-        SiteEnum.BD_DETAIL_NEW = "BD_DETAIL_NEW", SiteEnum.BD_DETAIL_Share = "BD_DETAIL_Share", 
-        SiteEnum.Gwd = "Gwd", SiteEnum.Xxqg = "Xxqg", SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin", 
-        SiteEnum.V2EX = "V2EX", SiteEnum.Github = "Github", SiteEnum.NodeSeek = "NodeSeek", 
-        SiteEnum.HiTv = "HiTv", SiteEnum.HiTvCheck = "HiTvCheck", SiteEnum.Xhs = "Xhs", 
-        SiteEnum.KingSoftDoc = "KingSoftDoc", SiteEnum.BingCn = "BingCn", SiteEnum.Bing = "Bing", 
-        SiteEnum.SiChuang = "SiChuang", SiteEnum.Uisdc = "Uisdc", SiteEnum.YuQue = "YuQue", 
-        SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", SiteEnum.WenJuanXing = "WenJuanXing", 
-        SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork", SiteEnum.KuaKeShare = "KuaKeShare", 
-        SiteEnum.GitCode = "GitCode";
+        SiteEnum.CSDN_Download = "CSDN_Download", SiteEnum.CSDN_Wenku = "CSDN_Wenku", SiteEnum.ZhiHu = "ZhiHu", 
+        SiteEnum.JianShu = "JianShu", SiteEnum.JueJin = "JueJin", SiteEnum.Gitee = "Gitee", 
+        SiteEnum.Weibo = "Weibo", SiteEnum.TuXiaoChao = "TuXiaoChao", SiteEnum.OsCh = "OsCh", 
+        SiteEnum.AiFaDian = "AiFaDian", SiteEnum.Baidu = "Baidu", SiteEnum.BaiduPanMain = "BaiduPanMain", 
+        SiteEnum.BaiduPanHome = "BaiduPanHome", SiteEnum.DouBan = "DouBan", SiteEnum.g17173 = "g17173", 
+        SiteEnum.Google = "Google", SiteEnum.SoGou = "SoGou", SiteEnum.KuaKeHome = "KuaKeHome", 
+        SiteEnum.TencentDoc = "TencentDoc", SiteEnum.TencentDiskDoc = "TencentDiskDoc", 
+        SiteEnum.TencentMail = "TencentMail", SiteEnum.TencentCloudBlog = "TencentCloudBlog", 
+        SiteEnum.SsPAi = "SsPai", SiteEnum.FeiShuDoc = "FeiShuDoc", SiteEnum.TencentQQ = "TencentQQ", 
+        SiteEnum.Shuma = "Shuma", SiteEnum.BD_DETAIL_OLD = "BD_DETAIL_OLD", SiteEnum.BD_DETAIL_NEW = "BD_DETAIL_NEW", 
+        SiteEnum.BD_DETAIL_Share = "BD_DETAIL_Share", SiteEnum.Gwd = "Gwd", SiteEnum.Xxqg = "Xxqg", 
+        SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin", SiteEnum.V2EX = "V2EX", 
+        SiteEnum.Github = "Github", SiteEnum.NodeSeek = "NodeSeek", SiteEnum.HiTv = "HiTv", 
+        SiteEnum.HiTvCheck = "HiTvCheck", SiteEnum.Xhs = "Xhs", SiteEnum.KingSoftDoc = "KingSoftDoc", 
+        SiteEnum.BingCn = "BingCn", SiteEnum.Bing = "Bing", SiteEnum.SiChuang = "SiChuang", 
+        SiteEnum.Uisdc = "Uisdc", SiteEnum.YuQue = "YuQue", SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", 
+        SiteEnum.WenJuanXing = "WenJuanXing", SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork", 
+        SiteEnum.KuaKeShare = "KuaKeShare", SiteEnum.GitCode = "GitCode";
     }(SiteEnum || (SiteEnum = {})), UpdateService = function(_super) {
         function UpdateService() {
             var _this = _super.call(this) || this;
@@ -3706,7 +3708,8 @@
             unsafeWindow.dihejk && $("#url").val() && unsafeWindow.dihejk();
         }, MovieService.prototype._onClick = function() {
             $("body").on("click", "[data-cat=process]", (function() {
-                Core.open("http://tv.wandhi.com/go.html?url=" + encodeURIComponent(window.location.href));
+                var _a, _b, _c, url, baseUrl = "http://tv.wandhi.com/go.html?url=";
+                /v\.youku\.com\/video/i.test(unsafeWindow.location.href) && (null === (_c = null === (_b = null === (_a = unsafeWindow.__INITIAL_DATA__) || void 0 === _a ? void 0 : _a.pageMap) || void 0 === _b ? void 0 : _b.extra) || void 0 === _c ? void 0 : _c.videoId) && (url = unsafeWindow.__INITIAL_DATA__.pageMap.extra.videoId) ? Core.open("" + baseUrl + encodeURIComponent("https://v.youku.com/v_show/id_" + url + ".html")) : Core.open(baseUrl + encodeURIComponent(window.location.href));
             })), $("body").on("click", "[data-cat=search]", (function() {
                 Menu$2.close();
             })), $("body").on("click", "[data-cat=tb]", (function() {
@@ -4026,8 +4029,8 @@
     styleInject(css_248z$5), CsdnAdService = function(_super) {
         function CsdnAdService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.CSDN, /blog\.csdn\.net/i ] ]), _this._appName = "csdn", 
-            _this._unique = !1, _this;
+            return _this.rules = new Map([ [ SiteEnum.CSDN, /blog\.csdn\.net/i ], [ SiteEnum.CSDN_Wenku, /wenku\.csdn\.net\/answer/i ] ]), 
+            _this._appName = "csdn", _this._unique = !1, _this;
         }
         return __extends(CsdnAdService, _super), CsdnAdService.prototype.loader = function() {}, 
         CsdnAdService.prototype.run = function() {
@@ -4349,7 +4352,7 @@
     }(PluginBase), AutoExpandService = function(_super) {
         function AutoExpandService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.CSDN, /blog\.csdn\.net\/*/i ], [ SiteEnum.CSDN_Download, /download\.csdn\.net\/download/i ], [ SiteEnum.SiChuang, /ispacesoft\.com\/.*?\.html/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.CSDN, /blog\.csdn\.net\/*/i ], [ SiteEnum.CSDN_Download, /download\.csdn\.net\/download/i ], [ SiteEnum.CSDN_Wenku, /wenku\.csdn\.net\/answer/i ], [ SiteEnum.SiChuang, /ispacesoft\.com\/.*?\.html/i ] ]), 
             _this.contentStyle = "{height: auto !important;max-height: none !important;}", _this.expandRules = [ {
                 site: [ SiteEnum.CSDN ],
                 selector: [ ".guide-box", ".wap-shadowbox", ".readall_box", ".btn_open_app_prompt_div" ],
@@ -4369,6 +4372,13 @@
                 content: [ ".detail.hidden.no-preview" ],
                 script: function() {},
                 clicker: [ "#download-detail .fl[role]" ]
+            }, {
+                site: [ SiteEnum.CSDN_Wenku ],
+                selector: [ ".guide-box", ".wap-shadowbox", ".readall_box", ".btn_open_app_prompt_div" ],
+                content: [ ".article_content" ],
+                clicker: [ ".hide-preCode-bt" ],
+                style: [],
+                script: function() {}
             }, {
                 site: [ SiteEnum.SiChuang ],
                 selector: [],
