@@ -48,7 +48,6 @@
 
 ## 🔧 [插件功能(点我查看详情)](https://wiki.wandhi.com/zh-cn/Feature.html)
 
-* ✅ 视频解析
 * ✅ 音乐下载
 * ✅ 夸克网盘直链获取
 * ✅ 商品详情页优惠券
