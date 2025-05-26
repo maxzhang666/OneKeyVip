@@ -3,7 +3,7 @@
 // @namespace     https://www.wandhi.com/
 // @description   🔥功能介绍🔥：🎉 1、一站式音乐搜索解决方案；🎉 2、bilibili视频封面获取；🎉 3、bilibili视频下载(已支持分P下载)；🎉 4、夸克网盘直链批量获取；🎉 5、商品历史价格展示(一次性告别虚假降价)；🎉 6、优惠券查询；🎉 7、CSDN页面、剪切板清理；🎉 8、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 9、YouTube视频下载🎉 10、中间页自动跳转；🎉 11、搜索引擎快速跳转
 // @license       MIT
-// @version       4.9.47
+// @version       4.9.48
 // @author        MaxZhang
 // @include       *://item.taobao.com/*
 // @include       *://s.taobao.com/search*
@@ -123,6 +123,7 @@
 // @match         *://www.infoq.cn/link*
 // @match         *://open.work.weixin.qq.com/wwopen/uriconfirm?uri=
 // @match         *://link.gitcode.com/?target=*
+// @match         *://wx.mail.qq.com/xmspamcheck/xmsafejump*
 // @require       https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
 // @require       https://lib.baomitu.com/limonte-sweetalert2/11.4.7/sweetalert2.all.min.js
 // @require       https://lib.baomitu.com/echarts/4.6.0/echarts.min.js
@@ -623,11 +624,10 @@
         }), Config.get = function(key, defaultValue) {
             var objStr, obj;
             if (void 0 === defaultValue && (defaultValue = ""), objStr = GM_getValue(this.encode(key), null)) {
-                if (-1 == (obj = JSON.parse(objStr)).exp || obj.exp > (new Date).getTime()) return Logger.info("cache true:" + key + "," + obj.exp), 
-                obj.value;
+                if (-1 == (obj = JSON.parse(objStr)).exp || obj.exp > (new Date).getTime()) return obj.value;
                 GM_deleteValue(key);
             }
-            return Logger.info("cache false"), defaultValue;
+            return defaultValue;
         }, Config.set = function(key, v, exp) {
             void 0 === exp && (exp = -1);
             var obj = {
@@ -635,7 +635,7 @@
                 value: v,
                 exp: -1 == exp ? exp : (new Date).getTime() + 1e3 * exp
             };
-            Logger.debug(obj), GM_setValue(this.encode(key), JSON.stringify(obj));
+            GM_setValue(this.encode(key), JSON.stringify(obj));
         }, Config.remember = function(key, exp, callback) {
             var _this = this;
             return new Promise((function(reso, reject) {
@@ -644,7 +644,7 @@
                     _this.set(key, res, exp), reso(res);
                 })).catch((function(e) {
                     reject(e);
-                })) : (Logger.debug(v), reso(v));
+                })) : reso(v);
             }));
         }, Config.clear = function(key) {
             GM_deleteValue(key);
@@ -825,20 +825,6 @@
             void 0 === timeOut && (timeOut = 10), Http.post(Route.apiRoot + api, data, timeOut).then((function(res) {
                 callback(res);
             }));
-        }, Route.querySbx = function(id, callback) {
-            var _this = this;
-            "" !== Config.get(this.sxb_key, "") ? this.query365(id, Config.get(this.sxb_key), callback) : this.queryValue("sxb_anhao", (function(res) {
-                _this.query365(id, res.data, callback);
-            }));
-        }, Route.sbxFeedback = function(id, answer) {
-            this.baseApi("/tools/record", new Map([ [ "id", id ], [ "data", answer ], [ "anhao", Config.get(this.sxb_key) ] ]), (function() {}));
-        }, Route.query365 = function(id, anhao, callback) {
-            var api = Config.get("sxb_api");
-            api ? Http.post(api, new Map([ [ "docinfo", "https://www.shangxueba.com/ask/" + id + ".html" ], [ "anhao", anhao ] ])).then((function(res) {
-                callback(res);
-            })) : this.queryValue("sxb_api", (function(res) {
-                Config.set("sxb_api", res.data, 864e5), Http.post(res.data, new Map([ [ "docinfo", "https://www.shangxueba.com/ask/" + id + ".html" ], [ "anhao", anhao ] ]));
-            }));
         }, Route.queryValue = function(key, callback) {
             this.baseApi(Route.config, new Map([ [ "key", key ] ]), callback);
         }, Route.queryHistory = function(url, siteType, callback) {
@@ -929,12 +915,12 @@
                     Config.set("script_config", config, 2 * Hour), resolve(config);
                 }));
             }));
-        }, Route.sxb_key = "sxb_anhao", Route.config = "/config/query", Route.history = "/history/", 
-        Route.historyv1 = "/history/v1", Route.historyv2 = "/history/v2", Route.historyv3 = "/history/v3", 
-        Route.bili = "/tools/bili", Route.biliInfo = "https://api.bilibili.com/x/web-interface/view", 
-        Route.bilidown = "https://api.bilibili.com/x/player/wbi/playurl", Route.coupons = "/tb/infos/", 
-        Route.like = "/tb/guesslike", Route.jd_coupons = "/jd/info", Route.sn_coupons = "/sn/info", 
-        Route.vp_coupons = "/vp/info", Route.kl_coupons = "/kl/info", Route;
+        }, Route.config = "/config/query", Route.history = "/history/", Route.historyv1 = "/history/v1", 
+        Route.historyv2 = "/history/v2", Route.historyv3 = "/history/v3", Route.bili = "/tools/bili", 
+        Route.biliInfo = "https://api.bilibili.com/x/web-interface/view", Route.bilidown = "https://api.bilibili.com/x/player/wbi/playurl", 
+        Route.coupons = "/tb/infos/", Route.like = "/tb/guesslike", Route.jd_coupons = "/jd/info", 
+        Route.sn_coupons = "/sn/info", Route.vp_coupons = "/vp/info", Route.kl_coupons = "/kl/info", 
+        Route;
     }(), css_248z$a = 'html .aside-nav {\n    -ms-text-size-adjust: 100%;\n    -webkit-text-size-adjust: 100%;\n    -webkit-font-smoothing: antialiased;\n    font-size: 62.5%\n}\n\nbody .aside-nav {\n    font-family: "Helvetica Neue", Helvetica, "Microsoft YaHei", Arial, sans-serif;\n    margin: 0;\n    font-size: 1.6rem;\n    color: #4e546b\n}\n\n.aside-nav-LT {\n    top: 0 !important;\n}\n\n.aside-nav-LC {\n    top: 40% !important;\n}\n\n.aside-nav-LB {\n    bottom: 0 !important;\n}\n\n\n.aside-nav {\n    position: fixed;\n    bottom: 0;\n    left: -47px;\n    width: 260px;\n    height: 260px;\n    -webkit-filter: url(#goo);\n    filter: url(#goo);\n    -ms-user-select: none;\n    -moz-user-select: none;\n    -webkit-user-select: none;\n    user-select: none;\n    opacity: .75;\n    z-index: 99999\n}\n\n.aside-nav.no-filter {\n    -webkit-filter: none;\n    filter: none\n}\n\n.aside-nav .aside-menu {\n    position: absolute;\n    width: 70px;\n    height: 70px;\n    -webkit-border-radius: 50%;\n    border-radius: 50%;\n    background: #f34444;\n    left: -95px;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    margin: auto;\n    text-align: center;\n    line-height: 70px;\n    color: #fff;\n    font-size: 20px;\n    z-index: 1;\n    cursor: move\n}\n\n.aside-nav .menu-item {\n    position: absolute;\n    width: 60px;\n    height: 60px;\n    background-color: #ff7676;\n    left: -95px;\n    top: 0;\n    right: 0;\n    bottom: 0;\n    margin: auto;\n    line-height: 60px;\n    text-align: center;\n    -webkit-border-radius: 50%;\n    border-radius: 50%;\n    text-decoration: none;\n    color: #fff;\n    -webkit-transition: background .5s, -webkit-transform .6s;\n    transition: background .5s, -webkit-transform .6s;\n    -moz-transition: transform .6s, background .5s, -moz-transform .6s;\n    transition: transform .6s, background .5s;\n    transition: transform .6s, background .5s, -webkit-transform .6s, -moz-transform .6s;\n    font-size: 14px;\n    -webkit-box-sizing: border-box;\n    -moz-box-sizing: border-box;\n    box-sizing: border-box\n}\n\n.aside-nav .menu-item:hover {\n    background: #a9c734\n}\n\n.aside-nav .menu-line {\n    line-height: 20px;\n    padding-top: 10px\n}\n\n.aside-nav:hover {\n    opacity: 1\n}\n\n.aside-nav:hover .aside-menu {\n    -webkit-animation: jello 1s;\n    -moz-animation: jello 1s;\n    animation: jello 1s\n}\n\n.aside-nav:hover .menu-first {\n    -webkit-transform: translate3d(0, -135%, 0);\n    -moz-transform: translate3d(0, -135%, 0);\n    transform: translate3d(0, -135%, 0)\n}\n\n.aside-nav:hover .menu-second {\n    -webkit-transform: translate3d(120%, -70%, 0);\n    -moz-transform: translate3d(120%, -70%, 0);\n    transform: translate3d(120%, -70%, 0)\n}\n\n.aside-nav:hover .menu-third {\n    -webkit-transform: translate3d(120%, 70%, 0);\n    -moz-transform: translate3d(120%, 70%, 0);\n    transform: translate3d(120%, 70%, 0)\n}\n\n.aside-nav:hover .menu-fourth {\n    -webkit-transform: translate3d(0, 135%, 0);\n    -moz-transform: translate3d(0, 135%, 0);\n    transform: translate3d(0, 135%, 0)\n}\n\n@-webkit-keyframes jello {\n\n    from,\n    11.1%,\n    to {\n        -webkit-transform: none;\n        transform: none\n    }\n\n    22.2% {\n        -webkit-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n\n    33.3% {\n        -webkit-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n\n    44.4% {\n        -webkit-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n\n    55.5% {\n        -webkit-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n\n    66.6% {\n        -webkit-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n\n    77.7% {\n        -webkit-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n\n    88.8% {\n        -webkit-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n@-moz-keyframes jello {\n\n    from,\n    11.1%,\n    to {\n        -moz-transform: none;\n        transform: none\n    }\n\n    22.2% {\n        -moz-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n\n    33.3% {\n        -moz-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n\n    44.4% {\n        -moz-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n\n    55.5% {\n        -moz-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n\n    66.6% {\n        -moz-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n\n    77.7% {\n        -moz-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n\n    88.8% {\n        -moz-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n@keyframes jello {\n\n    from,\n    11.1%,\n    to {\n        -webkit-transform: none;\n        -moz-transform: none;\n        transform: none\n    }\n\n    22.2% {\n        -webkit-transform: skewX(-12.5deg) skewY(-12.5deg);\n        -moz-transform: skewX(-12.5deg) skewY(-12.5deg);\n        transform: skewX(-12.5deg) skewY(-12.5deg)\n    }\n\n    33.3% {\n        -webkit-transform: skewX(6.25deg) skewY(6.25deg);\n        -moz-transform: skewX(6.25deg) skewY(6.25deg);\n        transform: skewX(6.25deg) skewY(6.25deg)\n    }\n\n    44.4% {\n        -webkit-transform: skewX(-3.125deg) skewY(-3.125deg);\n        -moz-transform: skewX(-3.125deg) skewY(-3.125deg);\n        transform: skewX(-3.125deg) skewY(-3.125deg)\n    }\n\n    55.5% {\n        -webkit-transform: skewX(1.5625deg) skewY(1.5625deg);\n        -moz-transform: skewX(1.5625deg) skewY(1.5625deg);\n        transform: skewX(1.5625deg) skewY(1.5625deg)\n    }\n\n    66.6% {\n        -webkit-transform: skewX(-.78125deg) skewY(-.78125deg);\n        -moz-transform: skewX(-.78125deg) skewY(-.78125deg);\n        transform: skewX(-.78125deg) skewY(-.78125deg)\n    }\n\n    77.7% {\n        -webkit-transform: skewX(0.390625deg) skewY(0.390625deg);\n        -moz-transform: skewX(0.390625deg) skewY(0.390625deg);\n        transform: skewX(0.390625deg) skewY(0.390625deg)\n    }\n\n    88.8% {\n        -webkit-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        -moz-transform: skewX(-.1953125deg) skewY(-.1953125deg);\n        transform: skewX(-.1953125deg) skewY(-.1953125deg)\n    }\n}\n\n.animated {\n    -webkit-animation-duration: 1s;\n    -moz-animation-duration: 1s;\n    animation-duration: 1s;\n    -webkit-animation-fill-mode: both;\n    -moz-animation-fill-mode: both;\n    animation-fill-mode: both\n}\n\n@-webkit-keyframes bounceInUp {\n\n    from,\n    60%,\n    75%,\n    90%,\n    to {\n        -webkit-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n\n    from {\n        opacity: 0;\n        -webkit-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n\n    60% {\n        opacity: 1;\n        -webkit-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n\n    75% {\n        -webkit-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n\n    90% {\n        -webkit-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n\n    to {\n        -webkit-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n@-moz-keyframes bounceInUp {\n\n    from,\n    60%,\n    75%,\n    90%,\n    to {\n        -moz-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n\n    from {\n        opacity: 0;\n        -moz-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n\n    60% {\n        opacity: 1;\n        -moz-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n\n    75% {\n        -moz-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n\n    90% {\n        -moz-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n\n    to {\n        -moz-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n@keyframes bounceInUp {\n\n    from,\n    60%,\n    75%,\n    90%,\n    to {\n        -webkit-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        -moz-animation-timing-function: cubic-bezier(0.215, .61, .355, 1);\n        animation-timing-function: cubic-bezier(0.215, .61, .355, 1)\n    }\n\n    from {\n        opacity: 0;\n        -webkit-transform: translate3d(0, 800px, 0);\n        -moz-transform: translate3d(0, 800px, 0);\n        transform: translate3d(0, 800px, 0)\n    }\n\n    60% {\n        opacity: 1;\n        -webkit-transform: translate3d(0, -20px, 0);\n        -moz-transform: translate3d(0, -20px, 0);\n        transform: translate3d(0, -20px, 0)\n    }\n\n    75% {\n        -webkit-transform: translate3d(0, 10px, 0);\n        -moz-transform: translate3d(0, 10px, 0);\n        transform: translate3d(0, 10px, 0)\n    }\n\n    90% {\n        -webkit-transform: translate3d(0, -5px, 0);\n        -moz-transform: translate3d(0, -5px, 0);\n        transform: translate3d(0, -5px, 0)\n    }\n\n    to {\n        -webkit-transform: translate3d(0, 0, 0);\n        -moz-transform: translate3d(0, 0, 0);\n        transform: translate3d(0, 0, 0)\n    }\n}\n\n.bounceInUp {\n    -webkit-animation-name: bounceInUp;\n    -moz-animation-name: bounceInUp;\n    animation-name: bounceInUp;\n    -webkit-animation-delay: 1s;\n    -moz-animation-delay: 1s;\n    animation-delay: 1s\n}', 
     styleInject(css_248z$a), function(ConfigEnum) {
         ConfigEnum.WangPan_Aria_Host = "WangPan_Aria_Host", ConfigEnum.WangPan_Aria_Port = "WangPan_Aria_Port", 
@@ -1043,17 +1029,18 @@
         SiteEnum.BaiduPanHome = "BaiduPanHome", SiteEnum.DouBan = "DouBan", SiteEnum.g17173 = "g17173", 
         SiteEnum.Google = "Google", SiteEnum.SoGou = "SoGou", SiteEnum.KuaKeHome = "KuaKeHome", 
         SiteEnum.TencentDoc = "TencentDoc", SiteEnum.TencentDiskDoc = "TencentDiskDoc", 
-        SiteEnum.TencentMail = "TencentMail", SiteEnum.TencentCloudBlog = "TencentCloudBlog", 
-        SiteEnum.SsPAi = "SsPai", SiteEnum.FeiShuDoc = "FeiShuDoc", SiteEnum.TencentQQ = "TencentQQ", 
-        SiteEnum.Shuma = "Shuma", SiteEnum.BD_DETAIL_OLD = "BD_DETAIL_OLD", SiteEnum.BD_DETAIL_NEW = "BD_DETAIL_NEW", 
-        SiteEnum.BD_DETAIL_Share = "BD_DETAIL_Share", SiteEnum.Gwd = "Gwd", SiteEnum.Xxqg = "Xxqg", 
-        SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin", SiteEnum.V2EX = "V2EX", 
-        SiteEnum.Github = "Github", SiteEnum.NodeSeek = "NodeSeek", SiteEnum.HiTv = "HiTv", 
-        SiteEnum.HiTvCheck = "HiTvCheck", SiteEnum.Xhs = "Xhs", SiteEnum.KingSoftDoc = "KingSoftDoc", 
-        SiteEnum.BingCn = "BingCn", SiteEnum.Bing = "Bing", SiteEnum.SiChuang = "SiChuang", 
-        SiteEnum.Uisdc = "Uisdc", SiteEnum.YuQue = "YuQue", SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", 
-        SiteEnum.WenJuanXing = "WenJuanXing", SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork", 
-        SiteEnum.KuaKeShare = "KuaKeShare", SiteEnum.GitCode = "GitCode";
+        SiteEnum.TencentMail = "TencentMail", SiteEnum.TencentMailNew = "TencentMailNew", 
+        SiteEnum.TencentCloudBlog = "TencentCloudBlog", SiteEnum.SsPAi = "SsPai", SiteEnum.FeiShuDoc = "FeiShuDoc", 
+        SiteEnum.TencentQQ = "TencentQQ", SiteEnum.Shuma = "Shuma", SiteEnum.BD_DETAIL_OLD = "BD_DETAIL_OLD", 
+        SiteEnum.BD_DETAIL_NEW = "BD_DETAIL_NEW", SiteEnum.BD_DETAIL_Share = "BD_DETAIL_Share", 
+        SiteEnum.Gwd = "Gwd", SiteEnum.Xxqg = "Xxqg", SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin", 
+        SiteEnum.V2EX = "V2EX", SiteEnum.Github = "Github", SiteEnum.NodeSeek = "NodeSeek", 
+        SiteEnum.HiTv = "HiTv", SiteEnum.HiTvCheck = "HiTvCheck", SiteEnum.Xhs = "Xhs", 
+        SiteEnum.KingSoftDoc = "KingSoftDoc", SiteEnum.BingCn = "BingCn", SiteEnum.Bing = "Bing", 
+        SiteEnum.SiChuang = "SiChuang", SiteEnum.Uisdc = "Uisdc", SiteEnum.YuQue = "YuQue", 
+        SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", SiteEnum.WenJuanXing = "WenJuanXing", 
+        SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork", SiteEnum.KuaKeShare = "KuaKeShare", 
+        SiteEnum.GitCode = "GitCode";
     }(SiteEnum || (SiteEnum = {})), UpdateService = function(_super) {
         function UpdateService() {
             var _this = _super.call(this) || this;
@@ -1233,9 +1220,9 @@
             return new Promise((function(resolve) {
                 Core.autoLazyload((function() {
                     var _a;
-                    return (null === (_a = $('[class^="BasicContent--"] [class^="detailInfoWrap--"]')) || void 0 === _a ? void 0 : _a.length) > 0;
+                    return (null === (_a = $('[class*="BasicContent--"] [class*="detailInfoWrap--"]')) || void 0 === _a ? void 0 : _a.length) > 0;
                 }), (function() {
-                    $('[class^="BasicContent--"] [class^="detailInfoWrap--"]').before(html), resolve(!0);
+                    $('[class*="BasicContent--"] [class*="detailInfoWrap--"]').before(html), resolve(!0);
                 }), .2);
             }));
         }, TaoCoupon.prototype.init_coupons = function() {
@@ -2786,7 +2773,7 @@
               case SiteEnum.TaoBao:
               case SiteEnum.TMall:
                 this.factory = new TaoCoupon, this.itemUrl = "https://item.taobao.com/item.htm?id=" + Core.getPar("id"), 
-                this.parentEleSelector = '[class^="BasicContent--"] [class^="detailInfoWrap--"]';
+                this.parentEleSelector = '[class*="BasicContent--"] [class*="detailInfoWrap--"]';
                 break;
 
               case SiteEnum.JingDong:
@@ -2848,7 +2835,7 @@
                 }));
             }));
         }, GwdService.prototype.getHistoryHtml = function() {
-            return '<div id="vip-plugin-outside">\n                    <div class="vip-plugin-outside-toolbar">\n                    [\u624b\u5de5\u67e5\u8be2\uff1a<a href="https://tool.manmanbuy.com/m/disSitePro.aspx?c_from=m&url=' + Core.url + '" target="_blank">\u63a5\u53e3\u4e00</a>,<a href="http://www.hisprice.cn/his.php?hisurl=' + Core.url + '" target="_blank">\u63a5\u53e3\u4e8c</a>]\n                    </div>\n                    <div class="vip-plugin-outside-coupons">\n                        <div class="vip-plugin-outside-coupons-qrcode" id="vip-plugin-outside-coupons-qrcode-img"></div>\n                        <div class="vip-plugin-outside-coupons-title"></div>\n                        <div class="vip-plugin-outside-coupons-action"></div>\n                    </div>\n                    <div id="vip-plugin-outside-history" class="vip-plugin-outside-history">\n                        <div class="vip-plugin-outside-chart-container"></div>\n                        <p class="vip-plugin-outside-history-tip"></p>\n                    </div>    \n                    \n                </div>';
+            return '<div id="vip-plugin-outside">\n                    <div class="vip-plugin-outside-toolbar">\n                    [\u624b\u5de5\u67e5\u8be2\uff1a<a href="https://tool.manmanbuy.com/m/disSitePro.aspx?c_from=m&url=' + encodeURIComponent(Core.url) + '" target="_blank">\u63a5\u53e3\u4e00</a>,<a href="http://www.hisprice.cn/his.php?hisurl=' + encodeURIComponent(Core.url) + '" target="_blank">\u63a5\u53e3\u4e8c</a>]\n                    </div>\n                    <div class="vip-plugin-outside-coupons">\n                        <div class="vip-plugin-outside-coupons-qrcode" id="vip-plugin-outside-coupons-qrcode-img"></div>\n                        <div class="vip-plugin-outside-coupons-title"></div>\n                        <div class="vip-plugin-outside-coupons-action"></div>\n                    </div>\n                    <div id="vip-plugin-outside-history" class="vip-plugin-outside-history">\n                        <div class="vip-plugin-outside-chart-container"></div>\n                        <p class="vip-plugin-outside-history-tip"></p>\n                    </div>    \n                    \n                </div>';
         }, GwdService.prototype.chartMsg = function(msg) {
             $(".vip-plugin-outside-history-tip").html(msg);
         }, GwdService.prototype.getChartOption = function(data) {
@@ -3331,7 +3318,7 @@
             var _this = this, init = "<div id='wandhi_div'><table class='wandhi_tab " + (this.site == SiteEnum.TaoBao ? "wandhi_tab_taobao" : "wandhi_tab_tmall") + "' id='wandhi_table'><thead><tr><th><b style='cursor:pointer'>\u4f18\u60e0\u5238</b></th><th>\u5238\u540e</th><th>\u6709 \u6548 \u671f</th><th>\u64cd\u4f5c</th></tr></thead><tr><td colspan='4'>\u6b63\u5728\u67e5\u8be2\u4f18\u60e0\u4fe1\u606f\uff0c\u8bf7\u7a0d\u5019...</td></tr></table></div>";
             Core.autoLazyload((function() {
                 var _a, _b;
-                return (null === (_a = $('[class^="skuWrapper"]')) || void 0 === _a ? void 0 : _a.length) > 0 || (null === (_b = $('[class^="Price--"][class*=" hasBgImg--"]')) || void 0 === _b ? void 0 : _b.length) > 0;
+                return (null === (_a = $(".beautify-scroll-bar")) || void 0 === _a ? void 0 : _a.length) > 0 || (null === (_b = $('[class^="Price--"][class*=" hasBgImg--"]')) || void 0 === _b ? void 0 : _b.length) > 0;
             }), (function() {
                 var itemId, key, d;
                 $("#J_LinkBasket").parent().parent().prepend(init), $(".J_LinkAdd").parent().parent().prepend(init), 
@@ -3472,8 +3459,8 @@
             $(this.hookSelector).last().append(BiliImgService.coverBtn), $("body").on("click", "#findimg", (function() {
                 var aid = unsafeWindow.__INITIAL_STATE__.videoData.aid;
                 that.getVideoInfo(aid).then((function(res) {
-                    res ? sAlert.showImg(res.pic, "\u662f\u5c01\u9762\u5566", "\u554a\u54c8\u54c8\u54c8\u3001\u5c01\u9762\u6765\u54af", "\u662f\u5c01\u9762\u9171\u5566>\u3002<", "\u4e0b\u8f7d").then((function() {
-                        Core.open(res.pic);
+                    res ? sAlert.showImg(res.pic, "\u662f\u5c01\u9762\u5566", "\u554a\u54c8\u54c8\u54c8\u3001\u5c01\u9762\u6765\u54af", "\u662f\u5c01\u9762\u9171\u5566>\u3002<", "\u4e0b\u8f7d").then((function(result) {
+                        result.isConfirmed && Core.open(res.pic);
                     })) : Toast.error("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f");
                 })).catch((function() {
                     Toast.error("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f", 5);
@@ -3524,7 +3511,7 @@
                         title: "\u51c6\u5907\u4e0b\u8f7d",
                         html: '<span id="bili-download-step">\u5f00\u59cb\u4e0b\u8f7d\u540e\u5f53\u524d\u9875\u9762\u5c06\u4e0d\u53ef\u64cd\u4f5c,\u662f\u5426\u5f00\u59cb\u4e0b\u8f7d\uff1f</span>',
                         showCancelButton: !0,
-                        confirmButtonText: "\u597d\u7684\u5f00\u59cb",
+                        confirmButtonText: "\u5f00\u59cb\u4e0b\u8f7d",
                         cancelButtonText: "\u8fd8\u662f\u7b97\u4e86",
                         showLoaderOnConfirm: !0,
                         preConfirm: function() {
@@ -3540,6 +3527,7 @@
                                     },
                                     onprogress: function(data) {
                                         $("#bili-download-step").text("\u5f53\u524d\u8fdb\u5ea6" + Core.getPercent(data.done, data.total) + "%"), 
+                                        Logger.debug("\u5f53\u524d\u8fdb\u5ea6\u4fe1\u606f:\u5b8c\u6210[" + data.done + "],\u603b\u5171[" + data.total + "]"), 
                                         data.done == data.total && r();
                                     }
                                 });
@@ -4256,7 +4244,7 @@
     }(PluginBase), LinkJumpService = function(_super) {
         function LinkJumpService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ], [ SiteEnum.Gitee, /gitee\.com\/link/i ], [ SiteEnum.JueJin, /juejin\.cn\/\?target/i ], [ SiteEnum.Weibo, /weibo\.cn\/sinaurl/i ], [ SiteEnum.TuXiaoChao, /support\.qq\.com\/products\/.*\/link-jump/i ], [ SiteEnum.OsCh, /oschina\.net\/action\/GoToLink/i ], [ SiteEnum.AiFaDian, /afdian\.net\/link\?target/i ], [ SiteEnum.Baidu, /jump(2?)\.bdimg\.com\/safecheck/i ], [ SiteEnum.DouBan, /www\.douban\.com\/link2\// ], [ SiteEnum.g17173, /link\.17173\.com\/\?target/i ], [ SiteEnum.TencentDoc, /docs\.qq\.com\/scenario\/link/i ], [ SiteEnum.TencentMail, /mail\.qq\.com\/cgi-bin\/readtemplate/i ], [ SiteEnum.TencentQQ, /c\.pc\.qq\.com\/(middlem|ios)\.html/i ], [ SiteEnum.SsPAi, /sspai\.com\/link/i ], [ SiteEnum.NodeSeek, /nodeseek\.com\/jump/i ], [ SiteEnum.KingSoftDoc, /[p|www]\.kdocs\.cn\/office\/link/i ], [ SiteEnum.TencentCloudBlog, /cloud\.tencent\.com\/developer\/tools\/blog-entry/i ], [ SiteEnum.Uisdc, /link\.uisdc\.com\/\?redirect/i ], [ SiteEnum.YuQue, /www\.yuque\.com\/r\/goto/i ], [ SiteEnum.CTO51, /blog\.51cto\.com\/transfer/i ], [ SiteEnum.WenJuanXing, /r\.wjx\.com\/redirect\.aspx/i ], [ SiteEnum.InfoQ, /www\.infoq\.cn\/link/i ], [ SiteEnum.WeChatWork, /open\.work\.weixin\.qq\.com\/wwopen\/uriconfirm/i ], [ SiteEnum.TencentDiskDoc, /weboffice\.qq\.com\/scenario\/link\.html/i ], [ SiteEnum.GitCode, /link\.gitcode\.com\/\?target/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ], [ SiteEnum.Gitee, /gitee\.com\/link/i ], [ SiteEnum.JueJin, /juejin\.cn\/\?target/i ], [ SiteEnum.Weibo, /weibo\.cn\/sinaurl/i ], [ SiteEnum.TuXiaoChao, /support\.qq\.com\/products\/.*\/link-jump/i ], [ SiteEnum.OsCh, /oschina\.net\/action\/GoToLink/i ], [ SiteEnum.AiFaDian, /afdian\.net\/link\?target/i ], [ SiteEnum.Baidu, /jump(2?)\.bdimg\.com\/safecheck/i ], [ SiteEnum.DouBan, /www\.douban\.com\/link2\// ], [ SiteEnum.g17173, /link\.17173\.com\/\?target/i ], [ SiteEnum.TencentDoc, /docs\.qq\.com\/scenario\/link/i ], [ SiteEnum.TencentMail, /mail\.qq\.com\/cgi-bin\/readtemplate/i ], [ SiteEnum.TencentMailNew, /wx\.mail\.qq\.com\/xmspamcheck\/xmsafejump/i ], [ SiteEnum.TencentQQ, /c\.pc\.qq\.com\/(middlem|ios)\.html/i ], [ SiteEnum.SsPAi, /sspai\.com\/link/i ], [ SiteEnum.NodeSeek, /nodeseek\.com\/jump/i ], [ SiteEnum.KingSoftDoc, /[p|www]\.kdocs\.cn\/office\/link/i ], [ SiteEnum.TencentCloudBlog, /cloud\.tencent\.com\/developer\/tools\/blog-entry/i ], [ SiteEnum.Uisdc, /link\.uisdc\.com\/\?redirect/i ], [ SiteEnum.YuQue, /www\.yuque\.com\/r\/goto/i ], [ SiteEnum.CTO51, /blog\.51cto\.com\/transfer/i ], [ SiteEnum.WenJuanXing, /r\.wjx\.com\/redirect\.aspx/i ], [ SiteEnum.InfoQ, /www\.infoq\.cn\/link/i ], [ SiteEnum.WeChatWork, /open\.work\.weixin\.qq\.com\/wwopen\/uriconfirm/i ], [ SiteEnum.TencentDiskDoc, /weboffice\.qq\.com\/scenario\/link\.html/i ], [ SiteEnum.GitCode, /link\.gitcode\.com\/\?target/i ] ]), 
             _this.key = "", _this.selector = "", _this._unique = !1, _this._appName = "LinkJump", 
             _this.semiui = !0, _this;
         }
@@ -4286,6 +4274,7 @@
               case SiteEnum.YuQue:
               case SiteEnum.WenJuanXing:
               case SiteEnum.TencentDiskDoc:
+              case SiteEnum.TencentMailNew:
                 this.key = "url";
                 break;
 

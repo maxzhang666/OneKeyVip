@@ -109,6 +109,7 @@
 // @match         *://www.infoq.cn/link*
 // @match         *://open.work.weixin.qq.com/wwopen/uriconfirm?uri=
 // @match         *://link.gitcode.com/?target=*
+// @match         *://wx.mail.qq.com/xmspamcheck/xmsafejump*
 // @require       https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
 // @require       https://lib.baomitu.com/limonte-sweetalert2/11.4.7/sweetalert2.all.min.js
 // @require       https://lib.baomitu.com/echarts/4.6.0/echarts.min.js
@@ -461,11 +462,10 @@
             let objStr = GM_getValue(this.encode(key), null);
             if (objStr) {
                 let obj = JSON.parse(objStr);
-                if (-1 == obj.exp || obj.exp > (new Date).getTime()) return Logger.info(`cache true:${key},${obj.exp}`), 
-                obj.value;
+                if (-1 == obj.exp || obj.exp > (new Date).getTime()) return obj.value;
                 GM_deleteValue(key);
             }
-            return Logger.info("cache false"), defaultValue;
+            return defaultValue;
         }
         static set(key, v, exp = -1) {
             let obj = {
@@ -473,7 +473,7 @@
                 value: v,
                 exp: -1 == exp ? exp : (new Date).getTime() + 1e3 * exp
             };
-            Logger.debug(obj), GM_setValue(this.encode(key), JSON.stringify(obj));
+            GM_setValue(this.encode(key), JSON.stringify(obj));
         }
         static remember(key, exp, callback) {
             return new Promise((reso, reject) => {
@@ -482,7 +482,7 @@
                     this.set(key, res, exp), reso(res);
                 }).catch(e => {
                     reject(e);
-                }) : (Logger.debug(v), reso(v));
+                }) : reso(v);
             });
         }
         static clear(key) {
@@ -617,17 +617,18 @@
         SiteEnum.BaiduPanHome = "BaiduPanHome", SiteEnum.DouBan = "DouBan", SiteEnum.g17173 = "g17173", 
         SiteEnum.Google = "Google", SiteEnum.SoGou = "SoGou", SiteEnum.KuaKeHome = "KuaKeHome", 
         SiteEnum.TencentDoc = "TencentDoc", SiteEnum.TencentDiskDoc = "TencentDiskDoc", 
-        SiteEnum.TencentMail = "TencentMail", SiteEnum.TencentCloudBlog = "TencentCloudBlog", 
-        SiteEnum.SsPAi = "SsPai", SiteEnum.FeiShuDoc = "FeiShuDoc", SiteEnum.TencentQQ = "TencentQQ", 
-        SiteEnum.Shuma = "Shuma", SiteEnum.BD_DETAIL_OLD = "BD_DETAIL_OLD", SiteEnum.BD_DETAIL_NEW = "BD_DETAIL_NEW", 
-        SiteEnum.BD_DETAIL_Share = "BD_DETAIL_Share", SiteEnum.Gwd = "Gwd", SiteEnum.Xxqg = "Xxqg", 
-        SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin", SiteEnum.V2EX = "V2EX", 
-        SiteEnum.Github = "Github", SiteEnum.NodeSeek = "NodeSeek", SiteEnum.HiTv = "HiTv", 
-        SiteEnum.HiTvCheck = "HiTvCheck", SiteEnum.Xhs = "Xhs", SiteEnum.KingSoftDoc = "KingSoftDoc", 
-        SiteEnum.BingCn = "BingCn", SiteEnum.Bing = "Bing", SiteEnum.SiChuang = "SiChuang", 
-        SiteEnum.Uisdc = "Uisdc", SiteEnum.YuQue = "YuQue", SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", 
-        SiteEnum.WenJuanXing = "WenJuanXing", SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork", 
-        SiteEnum.KuaKeShare = "KuaKeShare", SiteEnum.GitCode = "GitCode";
+        SiteEnum.TencentMail = "TencentMail", SiteEnum.TencentMailNew = "TencentMailNew", 
+        SiteEnum.TencentCloudBlog = "TencentCloudBlog", SiteEnum.SsPAi = "SsPai", SiteEnum.FeiShuDoc = "FeiShuDoc", 
+        SiteEnum.TencentQQ = "TencentQQ", SiteEnum.Shuma = "Shuma", SiteEnum.BD_DETAIL_OLD = "BD_DETAIL_OLD", 
+        SiteEnum.BD_DETAIL_NEW = "BD_DETAIL_NEW", SiteEnum.BD_DETAIL_Share = "BD_DETAIL_Share", 
+        SiteEnum.Gwd = "Gwd", SiteEnum.Xxqg = "Xxqg", SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin", 
+        SiteEnum.V2EX = "V2EX", SiteEnum.Github = "Github", SiteEnum.NodeSeek = "NodeSeek", 
+        SiteEnum.HiTv = "HiTv", SiteEnum.HiTvCheck = "HiTvCheck", SiteEnum.Xhs = "Xhs", 
+        SiteEnum.KingSoftDoc = "KingSoftDoc", SiteEnum.BingCn = "BingCn", SiteEnum.Bing = "Bing", 
+        SiteEnum.SiChuang = "SiChuang", SiteEnum.Uisdc = "Uisdc", SiteEnum.YuQue = "YuQue", 
+        SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", SiteEnum.WenJuanXing = "WenJuanXing", 
+        SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork", SiteEnum.KuaKeShare = "KuaKeShare", 
+        SiteEnum.GitCode = "GitCode";
     }(SiteEnum || (SiteEnum = {}));
     class AjaxOption {
         constructor(_url, _methodType = "GET", _data, _success, _header = new Map, timeOut = 60) {
@@ -810,22 +811,6 @@
                 callback(res);
             });
         }
-        static querySbx(id, callback) {
-            "" !== Config.get(this.sxb_key, "") ? this.query365(id, Config.get(this.sxb_key), callback) : this.queryValue("sxb_anhao", res => {
-                this.query365(id, res.data, callback);
-            });
-        }
-        static sbxFeedback(id, answer) {
-            this.baseApi("/tools/record", new Map([ [ "id", id ], [ "data", answer ], [ "anhao", Config.get(this.sxb_key) ] ]), () => {});
-        }
-        static query365(id, anhao, callback) {
-            let api = Config.get("sxb_api");
-            api ? Http.post(api, new Map([ [ "docinfo", `https://www.shangxueba.com/ask/${id}.html` ], [ "anhao", anhao ] ])).then(res => {
-                callback(res);
-            }) : this.queryValue("sxb_api", res => {
-                Config.set("sxb_api", res.data, 864e5), Http.post(res.data, new Map([ [ "docinfo", `https://www.shangxueba.com/ask/${id}.html` ], [ "anhao", anhao ] ]));
-            });
-        }
         static queryValue(key, callback) {
             this.baseApi(Route.config, new Map([ [ "key", key ] ]), callback);
         }
@@ -922,12 +907,12 @@
             });
         }
     }
-    Route.sxb_key = "sxb_anhao", Route.config = "/config/query", Route.history = "/history/", 
-    Route.historyv1 = "/history/v1", Route.historyv2 = "/history/v2", Route.historyv3 = "/history/v3", 
-    Route.bili = "/tools/bili", Route.biliInfo = "https://api.bilibili.com/x/web-interface/view", 
-    Route.bilidown = "https://api.bilibili.com/x/player/wbi/playurl", Route.coupons = "/tb/infos/", 
-    Route.like = "/tb/guesslike", Route.jd_coupons = "/jd/info", Route.sn_coupons = "/sn/info", 
-    Route.vp_coupons = "/vp/info", Route.kl_coupons = "/kl/info", css_248z$4 = ".one-key-vip-container { z-index: 99999!important }\n.one-key-vip-popup { font-size: 14px !important }\n.one-key-vip-setting-label { display: flex;align-items: center;justify-content: space-between;padding-top: 20px; }\n.one-key-vip-setting-checkbox { width: 16px;height: 16px; }\n", 
+    Route.config = "/config/query", Route.history = "/history/", Route.historyv1 = "/history/v1", 
+    Route.historyv2 = "/history/v2", Route.historyv3 = "/history/v3", Route.bili = "/tools/bili", 
+    Route.biliInfo = "https://api.bilibili.com/x/web-interface/view", Route.bilidown = "https://api.bilibili.com/x/player/wbi/playurl", 
+    Route.coupons = "/tb/infos/", Route.like = "/tb/guesslike", Route.jd_coupons = "/jd/info", 
+    Route.sn_coupons = "/sn/info", Route.vp_coupons = "/vp/info", Route.kl_coupons = "/kl/info", 
+    css_248z$4 = ".one-key-vip-container { z-index: 99999!important }\n.one-key-vip-popup { font-size: 14px !important }\n.one-key-vip-setting-label { display: flex;align-items: center;justify-content: space-between;padding-top: 20px; }\n.one-key-vip-setting-checkbox { width: 16px;height: 16px; }\n", 
     styleInject(css_248z$4);
     class sAlert {
         static toast(msg, icon = "success", position = "top", time = 2) {
@@ -1166,8 +1151,8 @@
             $(this.hookSelector).last().append(BiliImgService.coverBtn), $("body").on("click", "#findimg", () => {
                 let aid = unsafeWindow.__INITIAL_STATE__.videoData.aid;
                 that.getVideoInfo(aid).then(res => {
-                    res ? sAlert.showImg(res.pic, "\u662f\u5c01\u9762\u5566", "\u554a\u54c8\u54c8\u54c8\u3001\u5c01\u9762\u6765\u54af", "\u662f\u5c01\u9762\u9171\u5566>\u3002<", "\u4e0b\u8f7d").then(() => {
-                        Core.open(res.pic);
+                    res ? sAlert.showImg(res.pic, "\u662f\u5c01\u9762\u5566", "\u554a\u54c8\u54c8\u54c8\u3001\u5c01\u9762\u6765\u54af", "\u662f\u5c01\u9762\u9171\u5566>\u3002<", "\u4e0b\u8f7d").then(result => {
+                        result.isConfirmed && Core.open(res.pic);
                     }) : Toast.error("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f");
                 }).catch(() => {
                     Toast.error("\u54ce\u54df\u6ca1\u627e\u5230\u5c01\u9762\u54e6\uff0c\u8981\u4e0d\u8ddf\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\uff1f", 5);
@@ -1210,7 +1195,7 @@
                         title: "\u51c6\u5907\u4e0b\u8f7d",
                         html: '<span id="bili-download-step">\u5f00\u59cb\u4e0b\u8f7d\u540e\u5f53\u524d\u9875\u9762\u5c06\u4e0d\u53ef\u64cd\u4f5c,\u662f\u5426\u5f00\u59cb\u4e0b\u8f7d\uff1f</span>',
                         showCancelButton: !0,
-                        confirmButtonText: "\u597d\u7684\u5f00\u59cb",
+                        confirmButtonText: "\u5f00\u59cb\u4e0b\u8f7d",
                         cancelButtonText: "\u8fd8\u662f\u7b97\u4e86",
                         showLoaderOnConfirm: !0,
                         preConfirm: () => new Promise((r, j) => {
@@ -1225,6 +1210,7 @@
                                 },
                                 onprogress(data) {
                                     $("#bili-download-step").text(`\u5f53\u524d\u8fdb\u5ea6${Core.getPercent(data.done, data.total)}%`), 
+                                    Logger.debug(`\u5f53\u524d\u8fdb\u5ea6\u4fe1\u606f:\u5b8c\u6210[${data.done}],\u603b\u5171[${data.total}]`), 
                                     data.done == data.total && r();
                                 }
                             });
@@ -1708,7 +1694,7 @@
     WenKuService.loaded = !1;
     class LinkJumpService extends PluginBase {
         constructor() {
-            super(), this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ], [ SiteEnum.Gitee, /gitee\.com\/link/i ], [ SiteEnum.JueJin, /juejin\.cn\/\?target/i ], [ SiteEnum.Weibo, /weibo\.cn\/sinaurl/i ], [ SiteEnum.TuXiaoChao, /support\.qq\.com\/products\/.*\/link-jump/i ], [ SiteEnum.OsCh, /oschina\.net\/action\/GoToLink/i ], [ SiteEnum.AiFaDian, /afdian\.net\/link\?target/i ], [ SiteEnum.Baidu, /jump(2?)\.bdimg\.com\/safecheck/i ], [ SiteEnum.DouBan, /www\.douban\.com\/link2\// ], [ SiteEnum.g17173, /link\.17173\.com\/\?target/i ], [ SiteEnum.TencentDoc, /docs\.qq\.com\/scenario\/link/i ], [ SiteEnum.TencentMail, /mail\.qq\.com\/cgi-bin\/readtemplate/i ], [ SiteEnum.TencentQQ, /c\.pc\.qq\.com\/(middlem|ios)\.html/i ], [ SiteEnum.SsPAi, /sspai\.com\/link/i ], [ SiteEnum.NodeSeek, /nodeseek\.com\/jump/i ], [ SiteEnum.KingSoftDoc, /[p|www]\.kdocs\.cn\/office\/link/i ], [ SiteEnum.TencentCloudBlog, /cloud\.tencent\.com\/developer\/tools\/blog-entry/i ], [ SiteEnum.Uisdc, /link\.uisdc\.com\/\?redirect/i ], [ SiteEnum.YuQue, /www\.yuque\.com\/r\/goto/i ], [ SiteEnum.CTO51, /blog\.51cto\.com\/transfer/i ], [ SiteEnum.WenJuanXing, /r\.wjx\.com\/redirect\.aspx/i ], [ SiteEnum.InfoQ, /www\.infoq\.cn\/link/i ], [ SiteEnum.WeChatWork, /open\.work\.weixin\.qq\.com\/wwopen\/uriconfirm/i ], [ SiteEnum.TencentDiskDoc, /weboffice\.qq\.com\/scenario\/link\.html/i ], [ SiteEnum.GitCode, /link\.gitcode\.com\/\?target/i ] ]), 
+            super(), this.rules = new Map([ [ SiteEnum.CSDN, /link\.csdn\.net/i ], [ SiteEnum.ZhiHu, /link\.zhihu\.com/i ], [ SiteEnum.JianShu, /www\.jianshu\.com\/go-wild/i ], [ SiteEnum.Gitee, /gitee\.com\/link/i ], [ SiteEnum.JueJin, /juejin\.cn\/\?target/i ], [ SiteEnum.Weibo, /weibo\.cn\/sinaurl/i ], [ SiteEnum.TuXiaoChao, /support\.qq\.com\/products\/.*\/link-jump/i ], [ SiteEnum.OsCh, /oschina\.net\/action\/GoToLink/i ], [ SiteEnum.AiFaDian, /afdian\.net\/link\?target/i ], [ SiteEnum.Baidu, /jump(2?)\.bdimg\.com\/safecheck/i ], [ SiteEnum.DouBan, /www\.douban\.com\/link2\// ], [ SiteEnum.g17173, /link\.17173\.com\/\?target/i ], [ SiteEnum.TencentDoc, /docs\.qq\.com\/scenario\/link/i ], [ SiteEnum.TencentMail, /mail\.qq\.com\/cgi-bin\/readtemplate/i ], [ SiteEnum.TencentMailNew, /wx\.mail\.qq\.com\/xmspamcheck\/xmsafejump/i ], [ SiteEnum.TencentQQ, /c\.pc\.qq\.com\/(middlem|ios)\.html/i ], [ SiteEnum.SsPAi, /sspai\.com\/link/i ], [ SiteEnum.NodeSeek, /nodeseek\.com\/jump/i ], [ SiteEnum.KingSoftDoc, /[p|www]\.kdocs\.cn\/office\/link/i ], [ SiteEnum.TencentCloudBlog, /cloud\.tencent\.com\/developer\/tools\/blog-entry/i ], [ SiteEnum.Uisdc, /link\.uisdc\.com\/\?redirect/i ], [ SiteEnum.YuQue, /www\.yuque\.com\/r\/goto/i ], [ SiteEnum.CTO51, /blog\.51cto\.com\/transfer/i ], [ SiteEnum.WenJuanXing, /r\.wjx\.com\/redirect\.aspx/i ], [ SiteEnum.InfoQ, /www\.infoq\.cn\/link/i ], [ SiteEnum.WeChatWork, /open\.work\.weixin\.qq\.com\/wwopen\/uriconfirm/i ], [ SiteEnum.TencentDiskDoc, /weboffice\.qq\.com\/scenario\/link\.html/i ], [ SiteEnum.GitCode, /link\.gitcode\.com\/\?target/i ] ]), 
             this.key = "", this.selector = "", this._unique = !1, this._appName = "LinkJump", 
             this.semiui = !0;
         }
@@ -1739,6 +1725,7 @@
               case SiteEnum.YuQue:
               case SiteEnum.WenJuanXing:
               case SiteEnum.TencentDiskDoc:
+              case SiteEnum.TencentMailNew:
                 this.key = "url";
                 break;
 

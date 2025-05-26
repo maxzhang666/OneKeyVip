@@ -3,7 +3,7 @@
 // @namespace      https://www.wandhi.com/
 // @description    功能介绍：1、ScriptsCat脚本猫脚本查询 2、CSDN页面清理 3、页面磁力链接提取
 // @license        MIT
-// @version        1.1.4
+// @version        1.1.5
 // @author         MaxZhang
 // @include        *://*
 // @require        https://lib.baomitu.com/jquery/1.12.4/jquery.min.js
@@ -532,11 +532,10 @@
             var objStr = GM_getValue(this.encode(key), null);
             if (objStr) {
                 var obj = JSON.parse(objStr);
-                if (-1 == obj.exp || obj.exp > (new Date).getTime()) return Logger$1.info("cache true:" + key + "," + obj.exp), 
-                obj.value;
+                if (-1 == obj.exp || obj.exp > (new Date).getTime()) return obj.value;
                 GM_deleteValue(key);
             }
-            return Logger$1.info("cache false"), defaultValue;
+            return defaultValue;
         }, Config.set = function(key, v, exp) {
             void 0 === exp && (exp = -1);
             var obj = {
@@ -544,7 +543,7 @@
                 value: v,
                 exp: -1 == exp ? exp : (new Date).getTime() + 1e3 * exp
             };
-            Logger$1.debug(obj), GM_setValue(this.encode(key), JSON.stringify(obj));
+            GM_setValue(this.encode(key), JSON.stringify(obj));
         }, Config.remember = function(key, exp, callback) {
             var _this = this;
             return new Promise((function(reso, reject) {
@@ -553,7 +552,7 @@
                     _this.set(key, res, exp), reso(res);
                 })).catch((function(e) {
                     reject(e);
-                })) : (Logger$1.debug(v), reso(v));
+                })) : reso(v);
             }));
         }, Config.clear = function(key) {
             GM_deleteValue(key);

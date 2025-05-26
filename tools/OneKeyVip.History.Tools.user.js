@@ -368,11 +368,10 @@
             let objStr = GM_getValue(this.encode(key), null);
             if (objStr) {
                 let obj = JSON.parse(objStr);
-                if (-1 == obj.exp || obj.exp > (new Date).getTime()) return Logger.info(`cache true:${key},${obj.exp}`), 
-                obj.value;
+                if (-1 == obj.exp || obj.exp > (new Date).getTime()) return obj.value;
                 GM_deleteValue(key);
             }
-            return Logger.info("cache false"), defaultValue;
+            return defaultValue;
         }
         static set(key, v, exp = -1) {
             let obj = {
@@ -380,7 +379,7 @@
                 value: v,
                 exp: -1 == exp ? exp : (new Date).getTime() + 1e3 * exp
             };
-            Logger.debug(obj), GM_setValue(this.encode(key), JSON.stringify(obj));
+            GM_setValue(this.encode(key), JSON.stringify(obj));
         }
         static remember(key, exp, callback) {
             return new Promise((reso, reject) => {
@@ -389,7 +388,7 @@
                     this.set(key, res, exp), reso(res);
                 }).catch(e => {
                     reject(e);
-                }) : (Logger.debug(v), reso(v));
+                }) : reso(v);
             });
         }
         static clear(key) {
@@ -524,17 +523,18 @@
         SiteEnum.BaiduPanHome = "BaiduPanHome", SiteEnum.DouBan = "DouBan", SiteEnum.g17173 = "g17173", 
         SiteEnum.Google = "Google", SiteEnum.SoGou = "SoGou", SiteEnum.KuaKeHome = "KuaKeHome", 
         SiteEnum.TencentDoc = "TencentDoc", SiteEnum.TencentDiskDoc = "TencentDiskDoc", 
-        SiteEnum.TencentMail = "TencentMail", SiteEnum.TencentCloudBlog = "TencentCloudBlog", 
-        SiteEnum.SsPAi = "SsPai", SiteEnum.FeiShuDoc = "FeiShuDoc", SiteEnum.TencentQQ = "TencentQQ", 
-        SiteEnum.Shuma = "Shuma", SiteEnum.BD_DETAIL_OLD = "BD_DETAIL_OLD", SiteEnum.BD_DETAIL_NEW = "BD_DETAIL_NEW", 
-        SiteEnum.BD_DETAIL_Share = "BD_DETAIL_Share", SiteEnum.Gwd = "Gwd", SiteEnum.Xxqg = "Xxqg", 
-        SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin", SiteEnum.V2EX = "V2EX", 
-        SiteEnum.Github = "Github", SiteEnum.NodeSeek = "NodeSeek", SiteEnum.HiTv = "HiTv", 
-        SiteEnum.HiTvCheck = "HiTvCheck", SiteEnum.Xhs = "Xhs", SiteEnum.KingSoftDoc = "KingSoftDoc", 
-        SiteEnum.BingCn = "BingCn", SiteEnum.Bing = "Bing", SiteEnum.SiChuang = "SiChuang", 
-        SiteEnum.Uisdc = "Uisdc", SiteEnum.YuQue = "YuQue", SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", 
-        SiteEnum.WenJuanXing = "WenJuanXing", SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork", 
-        SiteEnum.KuaKeShare = "KuaKeShare", SiteEnum.GitCode = "GitCode";
+        SiteEnum.TencentMail = "TencentMail", SiteEnum.TencentMailNew = "TencentMailNew", 
+        SiteEnum.TencentCloudBlog = "TencentCloudBlog", SiteEnum.SsPAi = "SsPai", SiteEnum.FeiShuDoc = "FeiShuDoc", 
+        SiteEnum.TencentQQ = "TencentQQ", SiteEnum.Shuma = "Shuma", SiteEnum.BD_DETAIL_OLD = "BD_DETAIL_OLD", 
+        SiteEnum.BD_DETAIL_NEW = "BD_DETAIL_NEW", SiteEnum.BD_DETAIL_Share = "BD_DETAIL_Share", 
+        SiteEnum.Gwd = "Gwd", SiteEnum.Xxqg = "Xxqg", SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin", 
+        SiteEnum.V2EX = "V2EX", SiteEnum.Github = "Github", SiteEnum.NodeSeek = "NodeSeek", 
+        SiteEnum.HiTv = "HiTv", SiteEnum.HiTvCheck = "HiTvCheck", SiteEnum.Xhs = "Xhs", 
+        SiteEnum.KingSoftDoc = "KingSoftDoc", SiteEnum.BingCn = "BingCn", SiteEnum.Bing = "Bing", 
+        SiteEnum.SiChuang = "SiChuang", SiteEnum.Uisdc = "Uisdc", SiteEnum.YuQue = "YuQue", 
+        SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", SiteEnum.WenJuanXing = "WenJuanXing", 
+        SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork", SiteEnum.KuaKeShare = "KuaKeShare", 
+        SiteEnum.GitCode = "GitCode";
     }(SiteEnum || (SiteEnum = {}));
     class AjaxOption {
         constructor(_url, _methodType = "GET", _data, _success, _header = new Map, timeOut = 60) {
@@ -717,22 +717,6 @@
                 callback(res);
             });
         }
-        static querySbx(id, callback) {
-            "" !== Config.get(this.sxb_key, "") ? this.query365(id, Config.get(this.sxb_key), callback) : this.queryValue("sxb_anhao", res => {
-                this.query365(id, res.data, callback);
-            });
-        }
-        static sbxFeedback(id, answer) {
-            this.baseApi("/tools/record", new Map([ [ "id", id ], [ "data", answer ], [ "anhao", Config.get(this.sxb_key) ] ]), () => {});
-        }
-        static query365(id, anhao, callback) {
-            let api = Config.get("sxb_api");
-            api ? Http.post(api, new Map([ [ "docinfo", `https://www.shangxueba.com/ask/${id}.html` ], [ "anhao", anhao ] ])).then(res => {
-                callback(res);
-            }) : this.queryValue("sxb_api", res => {
-                Config.set("sxb_api", res.data, 864e5), Http.post(res.data, new Map([ [ "docinfo", `https://www.shangxueba.com/ask/${id}.html` ], [ "anhao", anhao ] ]));
-            });
-        }
         static queryValue(key, callback) {
             this.baseApi(Route.config, new Map([ [ "key", key ] ]), callback);
         }
@@ -829,12 +813,11 @@
             });
         }
     }
-    Route.sxb_key = "sxb_anhao", Route.config = "/config/query", Route.history = "/history/", 
-    Route.historyv1 = "/history/v1", Route.historyv2 = "/history/v2", Route.historyv3 = "/history/v3", 
-    Route.bili = "/tools/bili", Route.biliInfo = "https://api.bilibili.com/x/web-interface/view", 
-    Route.bilidown = "https://api.bilibili.com/x/player/wbi/playurl", Route.coupons = "/tb/infos/", 
-    Route.like = "/tb/guesslike", Route.jd_coupons = "/jd/info", Route.sn_coupons = "/sn/info", 
-    Route.vp_coupons = "/vp/info", Route.kl_coupons = "/kl/info";
+    Route.config = "/config/query", Route.history = "/history/", Route.historyv1 = "/history/v1", 
+    Route.historyv2 = "/history/v2", Route.historyv3 = "/history/v3", Route.bili = "/tools/bili", 
+    Route.biliInfo = "https://api.bilibili.com/x/web-interface/view", Route.bilidown = "https://api.bilibili.com/x/player/wbi/playurl", 
+    Route.coupons = "/tb/infos/", Route.like = "/tb/guesslike", Route.jd_coupons = "/jd/info", 
+    Route.sn_coupons = "/sn/info", Route.vp_coupons = "/vp/info", Route.kl_coupons = "/kl/info";
     class EventHelper {
         static bind_click(query, act) {
             var _a;
@@ -956,9 +939,9 @@
             return new Promise(resolve => {
                 Core.autoLazyload(() => {
                     var _a;
-                    return (null === (_a = $('[class^="BasicContent--"] [class^="detailInfoWrap--"]')) || void 0 === _a ? void 0 : _a.length) > 0;
+                    return (null === (_a = $('[class*="BasicContent--"] [class*="detailInfoWrap--"]')) || void 0 === _a ? void 0 : _a.length) > 0;
                 }, () => {
-                    $('[class^="BasicContent--"] [class^="detailInfoWrap--"]').before(html), resolve(!0);
+                    $('[class*="BasicContent--"] [class*="detailInfoWrap--"]').before(html), resolve(!0);
                 }, .2);
             });
         }
@@ -2598,7 +2581,7 @@
               case SiteEnum.TaoBao:
               case SiteEnum.TMall:
                 this.factory = new TaoCoupon, this.itemUrl = "https://item.taobao.com/item.htm?id=" + Core.getPar("id"), 
-                this.parentEleSelector = '[class^="BasicContent--"] [class^="detailInfoWrap--"]';
+                this.parentEleSelector = '[class*="BasicContent--"] [class*="detailInfoWrap--"]';
                 break;
 
               case SiteEnum.JingDong:
@@ -2674,7 +2657,7 @@
             });
         }
         getHistoryHtml() {
-            return `<div id="vip-plugin-outside">\n                    <div class="vip-plugin-outside-toolbar">\n                    [\u624b\u5de5\u67e5\u8be2\uff1a<a href="https://tool.manmanbuy.com/m/disSitePro.aspx?c_from=m&url=${Core.url}" target="_blank">\u63a5\u53e3\u4e00</a>,<a href="http://www.hisprice.cn/his.php?hisurl=${Core.url}" target="_blank">\u63a5\u53e3\u4e8c</a>]\n                    </div>\n                    <div class="vip-plugin-outside-coupons">\n                        <div class="vip-plugin-outside-coupons-qrcode" id="vip-plugin-outside-coupons-qrcode-img"></div>\n                        <div class="vip-plugin-outside-coupons-title"></div>\n                        <div class="vip-plugin-outside-coupons-action"></div>\n                    </div>\n                    <div id="vip-plugin-outside-history" class="vip-plugin-outside-history">\n                        <div class="vip-plugin-outside-chart-container"></div>\n                        <p class="vip-plugin-outside-history-tip"></p>\n                    </div>    \n                    \n                </div>`;
+            return `<div id="vip-plugin-outside">\n                    <div class="vip-plugin-outside-toolbar">\n                    [\u624b\u5de5\u67e5\u8be2\uff1a<a href="https://tool.manmanbuy.com/m/disSitePro.aspx?c_from=m&url=${encodeURIComponent(Core.url)}" target="_blank">\u63a5\u53e3\u4e00</a>,<a href="http://www.hisprice.cn/his.php?hisurl=${encodeURIComponent(Core.url)}" target="_blank">\u63a5\u53e3\u4e8c</a>]\n                    </div>\n                    <div class="vip-plugin-outside-coupons">\n                        <div class="vip-plugin-outside-coupons-qrcode" id="vip-plugin-outside-coupons-qrcode-img"></div>\n                        <div class="vip-plugin-outside-coupons-title"></div>\n                        <div class="vip-plugin-outside-coupons-action"></div>\n                    </div>\n                    <div id="vip-plugin-outside-history" class="vip-plugin-outside-history">\n                        <div class="vip-plugin-outside-chart-container"></div>\n                        <p class="vip-plugin-outside-history-tip"></p>\n                    </div>    \n                    \n                </div>`;
         }
         chartMsg(msg) {
             $(".vip-plugin-outside-history-tip").html(msg);
@@ -3205,7 +3188,7 @@
             var init = `<div id='wandhi_div'><table class='wandhi_tab ${this.site == SiteEnum.TaoBao ? "wandhi_tab_taobao" : "wandhi_tab_tmall"}' id='wandhi_table'><thead><tr><th><b style='cursor:pointer'>\u4f18\u60e0\u5238</b></th><th>\u5238\u540e</th><th>\u6709 \u6548 \u671f</th><th>\u64cd\u4f5c</th></tr></thead><tr><td colspan='4'>\u6b63\u5728\u67e5\u8be2\u4f18\u60e0\u4fe1\u606f\uff0c\u8bf7\u7a0d\u5019...</td></tr></table></div>`;
             Core.autoLazyload(() => {
                 var _a, _b;
-                return (null === (_a = $('[class^="skuWrapper"]')) || void 0 === _a ? void 0 : _a.length) > 0 || (null === (_b = $('[class^="Price--"][class*=" hasBgImg--"]')) || void 0 === _b ? void 0 : _b.length) > 0;
+                return (null === (_a = $(".beautify-scroll-bar")) || void 0 === _a ? void 0 : _a.length) > 0 || (null === (_b = $('[class^="Price--"][class*=" hasBgImg--"]')) || void 0 === _b ? void 0 : _b.length) > 0;
             }, () => {
                 $("#J_LinkBasket").parent().parent().prepend(init), $(".J_LinkAdd").parent().parent().prepend(init), 
                 $("[class*=BasicContent--actions]").prepend(init), $(".beautify-scroll-bar").prepend(init);
