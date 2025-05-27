@@ -445,7 +445,29 @@
             return "";
         }
     }
-    const Min = 60, Hour = 60 * Min, Day = 24 * Hour, Week = 7 * Day;
+    class VersionCompar {
+        constructor(e) {
+            /^[\d\.]+$/.test(e) || Logger.error("Invalid version string"), this.parts = e.split(".").map(e => parseInt(e)), 
+            this.versionString = e;
+        }
+        compareTo(e) {
+            for (let t = 0; t < this.parts.length; ++t) {
+                if (e.parts.length === t) return VersionResult.greater;
+                if (this.parts[t] !== e.parts[t]) return this.parts[t] > e.parts[t] ? VersionResult.greater : VersionResult.less;
+            }
+            return this.parts.length !== e.parts.length ? VersionResult.less : VersionResult.equal;
+        }
+        greaterThan(e) {
+            return this.compareTo(e) === VersionResult.greater;
+        }
+        lessThan(e) {
+            return this.compareTo(e) === VersionResult.less;
+        }
+        equals(e) {
+            return this.compareTo(e) === VersionResult.equal;
+        }
+    }
+    const update_key = "isUpdate", Min = 60, Hour = 60 * Min, Day = 24 * Hour, Week = 7 * Day;
     function styleInject(css, ref) {
         var insertAt, head, style;
         void 0 === ref && (ref = {}), insertAt = ref.insertAt, css && "undefined" != typeof document && (head = document.head || document.getElementsByTagName("head")[0], 
@@ -2433,6 +2455,43 @@
             }
         }
     }
+    class GfUpdateService extends PluginBase {
+        constructor() {
+            super(), this.rules = new Map([ [ SiteEnum.All, /(.*)/i ] ]), this._unique = !1, 
+            this._appName = "update";
+        }
+        loader() {}
+        run() {
+            if (!Config.get(update_key, !1)) {
+                let current = new VersionCompar(Config.env.script.version);
+                this.scriptCat(current);
+            }
+        }
+        scriptCat(current) {
+            Route.RouteConfig().then(res => {
+                Http.get(null == res ? void 0 : res.update, new Map, new Map, !1).then(r => {
+                    var _a, _b;
+                    let version = new VersionCompar(null === (_b = null === (_a = null == r ? void 0 : r.data) || void 0 === _a ? void 0 : _a.script) || void 0 === _b ? void 0 : _b.version);
+                    if (Logger.debug(`\u5f53\u524d\u7248\u672c:[${current.versionString}],\u6700\u65b0\u7248\u672c:[${version.versionString}]`), 
+                    version.compareTo(current) === VersionResult.greater) {
+                        Config.get("update-" + Core.format(new Date, "yyyy-MM-dd"), !1) || (Core.open(null == res ? void 0 : res.home_url_update_target), 
+                        Config.set("update-" + Core.format(new Date, "yyyy-MM-dd"), !0, Day));
+                        const msg = `<span style="color: red">${version.versionString}</span>\u5df2\u53d1\u5e03.<a class="link" target="_blank" href="${null == res ? void 0 : res.home_url_update}">\u66f4\u65b0\u65e5\u5fd7</a>`;
+                        GM.addStyle(".swal2-popup{font-size: 16px !important}"), Swal__default.default.fire({
+                            toast: !0,
+                            position: "bottom-left",
+                            icon: "success",
+                            showCloseButton: !0,
+                            showConfirmButton: !1,
+                            title: "\u68c0\u67e5\u66f4\u65b0",
+                            html: msg
+                        });
+                    }
+                    Config.set(update_key, !0, 2 * Day);
+                });
+            });
+        }
+    }
     class SettingUI extends React__default.default.Component {
         constructor(p) {
             super(p), this.configKeys = [ "search_helper_switch", "search_helper_postion" ], 
@@ -2507,7 +2566,7 @@
     }
     class OneKeyVipGfInjection {
         constructor() {
-            this.plugins = new Array, this.plugins = [ Container.Require(AdClearService), Container.Require(ControlMenuService), Container.Require(SettingUIService), Container.Require(SettingService), Container.Require(AutoExpandService), Container.Require(AliyunPanToken), Container.Require(BiliImgService), Container.Require(BiliMobileService), Container.Require(MovieService), Container.Require(MusicService), Container.Require(CsdnAdService), Container.Require(WenKuService), Container.Require(LinkJumpService), Container.Require(YoutubeService), Container.Require(XhsService), Container.Require(SearchService), Container.Require(NetDiskDirectService) ], 
+            this.plugins = new Array, this.plugins = [ Container.Require(AdClearService), Container.Require(GfUpdateService), Container.Require(ControlMenuService), Container.Require(SettingUIService), Container.Require(SettingService), Container.Require(AutoExpandService), Container.Require(AliyunPanToken), Container.Require(BiliImgService), Container.Require(BiliMobileService), Container.Require(MovieService), Container.Require(MusicService), Container.Require(CsdnAdService), Container.Require(WenKuService), Container.Require(LinkJumpService), Container.Require(YoutubeService), Container.Require(XhsService), Container.Require(SearchService), Container.Require(NetDiskDirectService) ], 
             Logger.info("container loaded");
         }
         Init() {
