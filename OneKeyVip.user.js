@@ -3,7 +3,7 @@
 // @namespace     https://www.wandhi.com/
 // @description   🔥功能介绍🔥：🎉 1、一站式音乐搜索解决方案；🎉 2、bilibili视频封面获取；🎉 3、bilibili视频下载(已支持分P下载)；🎉 4、夸克网盘直链批量获取；🎉 5、商品历史价格展示(一次性告别虚假降价)；🎉 6、优惠券查询；🎉 7、CSDN页面、剪切板清理；🎉 8、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 9、YouTube视频下载🎉 10、中间页自动跳转；🎉 11、搜索引擎快速跳转
 // @license       MIT
-// @version       4.9.50
+// @version       4.9.51
 // @author        MaxZhang
 // @include       *://item.taobao.com/*
 // @include       *://s.taobao.com/search*
@@ -1197,7 +1197,7 @@
         return __extends(JdCoupon, _super), JdCoupon.prototype.init_html = function(html) {
             var _this = this;
             return new Promise((function(resolve) {
-                $(".product-intro").length ? (Core.appendTo(".product-intro", html), resolve(!0)) : setTimeout(_this.init_html, 2e3);
+                $(".detail").length ? (Core.prepend(".detail", html), resolve(!0)) : setTimeout(_this.init_html, 2e3);
             }));
         }, JdCoupon.prototype.init_coupons = function() {
             var _a, _b, key_1, coupon, q_1, exp_1, _this = this, item_id = null === (_b = null === (_a = unsafeWindow.pageConfig) || void 0 === _a ? void 0 : _a.product) || void 0 === _b ? void 0 : _b.skuid;
@@ -3764,8 +3764,8 @@
         }, JdService.prototype.run = function() {
             var btn = '<a href="javascript:;" class="btn-special1 btn-lg btn-yhj"><span class="">\u67e5\u8be2\u4f18\u60e0\u5238</span></a>', keywords = $(".sku-name").text().trim();
             Core.lazyload((function() {
-                $("#choose-btns").prepend(btn), $(".btn-yhj").on("click", (function() {
-                    Core.open("https://hdkcmsc73.kuaizhan.com/?cid=mzSOcMW#/search?keyword=" + encodeURIComponent(keywords));
+                $(".J_choose_btn").prepend(btn), $(".btn-yhj").on("click", (function() {
+                    Core.open("https://jd.huizhek.com/?cid=mzSOcMW#/search?pt=2&keyword=" + encodeURIComponent(keywords));
                 }));
             }), 1);
         }, JdService;

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           【玩的嗨】淘宝、天猫、京东、唯品会隐藏优惠券查询，自动显示历史价格和比价,拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手 长期更新，放心使用
 // @namespace      https://www.wandhi.com/
-// @version        2.4
+// @version        2.5
 // @homepage       https://wiki.wandhi.com
 // @support        https:://wiki.wandhi.com
 // @description    拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手
@@ -910,7 +910,7 @@
     class JdCoupon extends BaseCoupon {
         init_html(html) {
             return new Promise(resolve => {
-                $(".product-intro").length ? (Core.appendTo(".product-intro", html), resolve(!0)) : setTimeout(this.init_html, 2e3);
+                $(".detail").length ? (Core.prepend(".detail", html), resolve(!0)) : setTimeout(this.init_html, 2e3);
             });
         }
         init_coupons() {
@@ -3217,9 +3217,9 @@
         run() {
             var keywords = $(".sku-name").text().trim();
             Core.lazyload(() => {
-                $("#choose-btns").prepend('<a href="javascript:;" class="btn-special1 btn-lg btn-yhj"><span class="">\u67e5\u8be2\u4f18\u60e0\u5238</span></a>'), 
+                $(".J_choose_btn").prepend('<a href="javascript:;" class="btn-special1 btn-lg btn-yhj"><span class="">\u67e5\u8be2\u4f18\u60e0\u5238</span></a>'), 
                 $(".btn-yhj").on("click", (function() {
-                    Core.open("https://hdkcmsc73.kuaizhan.com/?cid=mzSOcMW#/search?keyword=" + encodeURIComponent(keywords));
+                    Core.open("https://jd.huizhek.com/?cid=mzSOcMW#/search?pt=2&keyword=" + encodeURIComponent(keywords));
                 }));
             }, 1);
         }
