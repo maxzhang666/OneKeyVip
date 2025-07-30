@@ -3217,7 +3217,7 @@
         run() {
             var keywords = $(".sku-name").text().trim();
             Core.lazyload(() => {
-                $(".J_choose_btn").prepend('<a href="javascript:;" class="btn-special1 btn-lg btn-yhj"><span class="">\u67e5\u8be2\u4f18\u60e0\u5238</span></a>'), 
+                $(".J_choose_btn").prepend('<a href="javascript:;" class="btn-special1 btn-lg btn-yhj" style="margin-right:8px"><span class="">\u67e5\u8be2\u4f18\u60e0\u5238</span></a>'), 
                 $(".btn-yhj").on("click", (function() {
                     Core.open("https://jd.huizhek.com/?cid=mzSOcMW#/search?pt=2&keyword=" + encodeURIComponent(keywords));
                 }));

@@ -3512,6 +3512,8 @@
             })).catch((function() {
                 Toast.error("\u54ce\u54df\u6ca1\u627e\u5230\u89c6\u9891\u4fe1\u606f\u54e6\uff0c\u8981\u4e0d\u518d\u8bd5\u4e00\u4e0b\uff1f", 5), 
                 Loading.hide();
+            })).finally((function() {
+                Loading.hide();
             }));
         }, BiliImgService.downVideo = function(aid, cid, title) {
             var _this = this, key = "" + aid + cid + "MDD-NEW";
@@ -3762,7 +3764,7 @@
         return __extends(JdService, _super), JdService.prototype.loader = function() {
             this.historyService.linkTest() && this.historyService.Process();
         }, JdService.prototype.run = function() {
-            var btn = '<a href="javascript:;" class="btn-special1 btn-lg btn-yhj"><span class="">\u67e5\u8be2\u4f18\u60e0\u5238</span></a>', keywords = $(".sku-name").text().trim();
+            var btn = '<a href="javascript:;" class="btn-special1 btn-lg btn-yhj" style="margin-right:8px"><span class="">\u67e5\u8be2\u4f18\u60e0\u5238</span></a>', keywords = $(".sku-name").text().trim();
             Core.lazyload((function() {
                 $(".J_choose_btn").prepend(btn), $(".btn-yhj").on("click", (function() {
                     Core.open("https://jd.huizhek.com/?cid=mzSOcMW#/search?pt=2&keyword=" + encodeURIComponent(keywords));

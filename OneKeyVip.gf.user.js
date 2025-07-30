@@ -1236,6 +1236,8 @@
             }).catch(() => {
                 Toast.error("\u54ce\u54df\u6ca1\u627e\u5230\u89c6\u9891\u4fe1\u606f\u54e6\uff0c\u8981\u4e0d\u518d\u8bd5\u4e00\u4e0b\uff1f", 5), 
                 Loading.hide();
+            }).finally(() => {
+                Loading.hide();
             });
         }
         static downVideo(aid, cid, title) {
