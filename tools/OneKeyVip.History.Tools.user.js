@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           【玩的嗨】淘宝、天猫、京东、唯品会隐藏优惠券查询，自动显示历史价格和比价,拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手 长期更新，放心使用
 // @namespace      https://www.wandhi.com/
-// @version        2.5
+// @version        2.6
 // @homepage       https://wiki.wandhi.com
 // @support        https:://wiki.wandhi.com
 // @description    拒绝虚假价格，让您购买到最优惠的商品,网购省钱小助手
@@ -3268,7 +3268,8 @@
                 return void this._initQuery();
 
               case SiteEnum.JingDongList:
-                this.selectorList.push(".gl-warp .gl-item"), this.atrack.push(".p-img a", ".p-name a"), 
+                this.selectorList.push(".plugin_goodsCardWrapper"), this.atrack.push('[class*="wrapper_"]'), 
+                this.atrack.push('[class*="_card_"]'), this.atrack.push(".plugin_goodsCardWrapper"), 
                 this.itemType = ItemType.JingDong;
                 break;
 
@@ -3287,7 +3288,8 @@
             Core.background(() => that.initQuery(), 4);
         }
         initStyle() {
-            Core.appendCssContent(ListService.style), this.itemType == ItemType.Suning && Core.appendCssContent(".onekeyvip-sn-box-area{position: relative;}");
+            Core.appendCssContent(ListService.style), this.itemType == ItemType.Suning && Core.appendCssContent(".onekeyvip-sn-box-area{position: relative;}"), 
+            this.itemType == ItemType.JingDong && Core.appendCssContent(".onekeyvip-jd-box-area{top:5px !important;}");
         }
         initSearchEvent() {
             let that = this;
