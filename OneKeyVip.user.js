@@ -3391,8 +3391,15 @@
             if (this.loading) {
                 this.timeoutId && (clearTimeout(this.timeoutId), this.timeoutId = null);
                 var totalTime = Math.floor((Date.now() - this.startTime) / 1e3);
-                document.body.style.overflow = "", document.body.removeChild(this.loading), this.loading = null, 
-                this.textElement = null, this.startTime = 0, Logger.debug("Loading\u7ec4\u4ef6\u5df2\u9690\u85cf\uff0c\u603b\u8017\u65f6: " + totalTime + "s");
+                try {
+                    document.body.style.overflow = "", document.body.removeChild(this.loading), this.textElement = null, 
+                    this.startTime = 0;
+                } catch (error) {
+                    Logger.error("Loading\u7ec4\u4ef6\u9690\u85cf\u5931\u8d25: " + error);
+                } finally {
+                    this.loading = null;
+                }
+                Logger.debug("Loading\u7ec4\u4ef6\u5df2\u9690\u85cf\uff0c\u603b\u8017\u65f6: " + totalTime + "s");
             }
         }, Loading.isShowing = function() {
             return null !== this.loading;
@@ -3404,10 +3411,12 @@
             return _this.rules = new Map([ [ SiteEnum.BiliBili, /www\.bilibili\.com\/video\/[av|bv]*/i ] ]), 
             _this._appName = "bilibili", _this;
         }
-        return __extends(BiliImgService, _super), BiliImgService.listHtml = function(list) {
-            var rows = "";
-            return list.forEach((function(e) {
-                rows += '<tr>\n                        <td class="bili-table-cell">' + e.part + '</td>\n                        <td class="bili-table-cell">\n                            <button class="okv-btn okv-btn-primary bili-down-item" data-cid="' + e.cid + '" data-part-title="' + e.part + '">\u4e0b\u8f7d</button>                            \n                        </td>\n                    </tr>';
+        return __extends(BiliImgService, _super), BiliImgService.listHtml = function(data) {
+            var _a, _b, _c, rows, list = data.pages;
+            return 1 === list.length && (null === (_b = null === (_a = data.ugc_season) || void 0 === _a ? void 0 : _a.sections) || void 0 === _b ? void 0 : _b.length) > 0 && (list = null === (_c = data.ugc_season.sections[0]) || void 0 === _c ? void 0 : _c.episodes), 
+            rows = "", list.forEach((function(e) {
+                var _a, _b;
+                rows += '<tr>\n                        <td class="bili-table-cell">' + (null !== (_a = e.part) && void 0 !== _a ? _a : e.title) + '</td>\n                        <td class="bili-table-cell">\n                            <button class="okv-btn okv-btn-primary bili-down-item" data-cid="' + e.cid + '" data-part-title="' + (null !== (_b = e.part) && void 0 !== _b ? _b : e.title) + '">\u4e0b\u8f7d</button>                            \n                        </td>\n                    </tr>';
             })), '<div style="height: 30rem"><table class="bili-table bili-table-small">\n                    <thead class="bili-table-head">\n                        <tr>                        \n                            <th class="bili-table-cell">\u6807\u9898</th>\n                            <th class="bili-table-cell">\u64cd\u4f5c</th>\n                        </tr>\n                    </thead>\n                    <tbody class="at-table-tbody">                    \n                        ' + rows + "\n                    </tbody>    \n                </table></div>";
         }, BiliImgService.getQuality = function(id) {
             switch (id) {
@@ -3504,7 +3513,7 @@
         }, BiliImgService.initDown = function() {
             var _this = this, aid = unsafeWindow.__INITIAL_STATE__.videoData.aid;
             Loading.show("\u6b63\u5728\u83b7\u53d6\u89c6\u9891\u4fe1\u606f..."), BiliImgService.getVideoInfo(aid).then((function(res) {
-                Loading.hide(), sAlert.html(res.title, _this.listHtml(res.pages), !0, "\u6211\u597d\u4e86", "#3085d6", "40%"), 
+                Loading.hide(), sAlert.html(res.title, _this.listHtml(res), !0, "\u6211\u597d\u4e86", "#3085d6", "40%"), 
                 $(".bili-down-item").on("click", (function(e) {
                     var cid = $(e.currentTarget).attr("data-cid"), title = $(e.currentTarget).attr("data-part-title");
                     BiliImgService.downVideo(aid, cid, title);
@@ -3586,7 +3595,7 @@
                     }));
                 }));
             })).catch((function(e) {
-                Logger.error(e), sAlert.error("\u5565\u4e5f\u6ca1\u67e5\u7740,\u518d\u8bd5\u4e00\u4e0b\u6216\u8005\u5e26\u7740\u89c6\u9891\u5730\u5740\u7ed9\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\u5427~"), 
+                Logger.error(e), sAlert.error("\u5565\u4e5f\u6ca1\u67e5\u7740,\u518d\u8bd5\u4e00\u4e0b\u6216\u8005\u5e26\u7740\u89c6\u9891\u5730\u5740\u7ed9\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\u5427~(\u6216\u8005\u767b\u9646B\u7ad9\u8d26\u53f7\u540e\u518d\u8bd5\u4e00\u4e0b)"), 
                 Loading.hide();
             }));
         }, BiliImgService.getVideoInfo = function(aid) {
@@ -3859,7 +3868,7 @@
         return __extends(ListService, _super), ListService.prototype.loader = function() {}, 
         Object.defineProperty(ListService, "style", {
             get: function() {
-                return "    \n    .onekeyvip-tb-box-area {position: absolute;top: 10px;right: 5px;z-index: 9999;}\n    .onekeyvip-jd-box-area {position: absolute;top: 275px;right: 10px;z-index: 9999;}  \n    .onekeyvip-jdcs-box-area {position: absolute;top: 5px;right: 0px;z-index: 9999;}\n    .onekeyvip-box-info-translucent{opacity: .33;}\n    .onekeyvip-box-info, .onekeyvip-box-info:hover, .onekeyvip-box-info:visited {text-decoration: none!important;}\n    .onekeyvip-box-wait{cursor:pointer}\n    .onekeyvip-box-info {width: auto!important;height: auto!important;padding: 6px 8px!important;font-size: 12px;color: #fff!important;border-radius: 15px;cursor: pointer;font-weight:bold}\n    .onekeyvip-jd-box-info-default, .onekeyvip-tb-box-info-default, .onekeyvip-jdcs-box-info-default{background: #3186fd!important;}\n    .onekeyvip-box-info-empty {color: #000!important;background: #ccc!important;}\n    .onekeyvip-box-info-find {background: #ff0036!important;}\n    .onekeyvip-box-done{position:relative}\n    ";
+                return "    \n    .onekeyvip-tb-box-area {position: absolute;top: 10px;right: 5px;z-index: 9999999;}\n    .onekeyvip-jd-box-area {position: absolute;top: 275px;right: 10px;z-index: 9999999;}  \n    .onekeyvip-jdcs-box-area {position: absolute;top: 5px;right: 0px;z-index: 9999999;}\n    .onekeyvip-box-info-translucent{opacity: .33;}\n    .onekeyvip-box-info, .onekeyvip-box-info:hover, .onekeyvip-box-info:visited {text-decoration: none!important;}\n    .onekeyvip-box-wait{cursor:pointer}\n    .onekeyvip-box-info {width: auto!important;height: auto!important;padding: 6px 8px!important;font-size: 12px;color: #fff!important;border-radius: 15px;cursor: pointer;font-weight:bold}\n    .onekeyvip-jd-box-info-default, .onekeyvip-tb-box-info-default, .onekeyvip-jdcs-box-info-default{background: #3186fd!important;}\n    .onekeyvip-box-info-empty {color: #000!important;background: #ccc!important;}\n    .onekeyvip-box-info-find {background: #ff0036!important;}\n    .onekeyvip-box-done{position:relative}\n    ";
             },
             enumerable: !1,
             configurable: !0
