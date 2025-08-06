@@ -3,7 +3,7 @@
 // @namespace     https://www.wandhi.com/
 // @description   🔥功能介绍🔥：🎉 1、一站式音乐搜索解决方案；🎉 2、bilibili视频封面获取；🎉 3、bilibili视频下载(已支持分P下载)；🎉 4、夸克网盘直链批量获取；🎉 5、商品历史价格展示(一次性告别虚假降价)；🎉 6、优惠券查询；🎉 7、CSDN页面、剪切板清理；🎉 8、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 9、YouTube视频下载🎉 10、中间页自动跳转；🎉 11、搜索引擎快速跳转
 // @license       MIT
-// @version       4.9.53
+// @version       4.9.54
 // @author        MaxZhang
 // @include       *://item.taobao.com/*
 // @include       *://s.taobao.com/search*
@@ -1040,7 +1040,7 @@
         SiteEnum.SiChuang = "SiChuang", SiteEnum.Uisdc = "Uisdc", SiteEnum.YuQue = "YuQue", 
         SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", SiteEnum.WenJuanXing = "WenJuanXing", 
         SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork", SiteEnum.KuaKeShare = "KuaKeShare", 
-        SiteEnum.GitCode = "GitCode";
+        SiteEnum.GitCode = "GitCode", SiteEnum.DouYin = "DouYin";
     }(SiteEnum || (SiteEnum = {})), UpdateService = function(_super) {
         function UpdateService() {
             var _this = _super.call(this) || this;
@@ -3667,6 +3667,30 @@
     }, {
         title: "\u7231\u8c46",
         url: "https://jx.xymp4.cc/?url="
+    }, {
+        title: "\u4e03\u4e03\u4e91\u89e3\u6790",
+        url: "https://jx.77flv.cc/?url="
+    }, {
+        title: "\u6781\u901f\u89e3\u6790",
+        url: "https://jx.2s0.cn/player/?url="
+    }, {
+        title: "\u8292\u679cTV1",
+        url: "https://video.isyour.love/player/getplayer?url="
+    }, {
+        title: "HLS\u89e3\u6790",
+        url: "https://jx.hls.one/?url="
+    }, {
+        title: "973\u89e3\u6790",
+        url: "https://jx.973973.xyz/?url="
+    }, {
+        title: "789\u89e3\u6790",
+        url: "https://jiexi.789jiexi.com/?url="
+    }, {
+        title: "UTR\u89e3\u6790",
+        url: "https://jx.nnsvip.cn/?url="
+    }, {
+        title: "\u4e03\u54e5\u89e3\u6790",
+        url: "https://jx.nnxv.cn/tv.php?url="
     } ], MovieService = function(_super) {
         function MovieService() {
             var _this = _super.call(this) || this;

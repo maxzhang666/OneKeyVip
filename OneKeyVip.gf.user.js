@@ -650,7 +650,7 @@
         SiteEnum.SiChuang = "SiChuang", SiteEnum.Uisdc = "Uisdc", SiteEnum.YuQue = "YuQue", 
         SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", SiteEnum.WenJuanXing = "WenJuanXing", 
         SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork", SiteEnum.KuaKeShare = "KuaKeShare", 
-        SiteEnum.GitCode = "GitCode";
+        SiteEnum.GitCode = "GitCode", SiteEnum.DouYin = "DouYin";
     }(SiteEnum || (SiteEnum = {}));
     class AjaxOption {
         constructor(_url, _methodType = "GET", _data, _success, _header = new Map, timeOut = 60) {
@@ -1379,6 +1379,30 @@
     }, {
         title: "\u7231\u8c46",
         url: "https://jx.xymp4.cc/?url="
+    }, {
+        title: "\u4e03\u4e03\u4e91\u89e3\u6790",
+        url: "https://jx.77flv.cc/?url="
+    }, {
+        title: "\u6781\u901f\u89e3\u6790",
+        url: "https://jx.2s0.cn/player/?url="
+    }, {
+        title: "\u8292\u679cTV1",
+        url: "https://video.isyour.love/player/getplayer?url="
+    }, {
+        title: "HLS\u89e3\u6790",
+        url: "https://jx.hls.one/?url="
+    }, {
+        title: "973\u89e3\u6790",
+        url: "https://jx.973973.xyz/?url="
+    }, {
+        title: "789\u89e3\u6790",
+        url: "https://jiexi.789jiexi.com/?url="
+    }, {
+        title: "UTR\u89e3\u6790",
+        url: "https://jx.nnsvip.cn/?url="
+    }, {
+        title: "\u4e03\u54e5\u89e3\u6790",
+        url: "https://jx.nnxv.cn/tv.php?url="
     } ];
     class MovieService extends PluginBase {
         constructor() {
