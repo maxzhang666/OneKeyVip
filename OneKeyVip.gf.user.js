@@ -1636,7 +1636,7 @@
             });
         }
     }
-    CsdnAdService.adSelectors = [ "#footerRightAds", ".side-question-box", "div[id^='dmp_ad']", "div[class^='ad_']", "div[id^='floor-ad_']", ".adsbygoogle", "#recommendAdBox", "#asideNewNps", ".box-shadow" ];
+    CsdnAdService.adSelectors = [ "#footerRightAds", ".side-question-box", "div[id^='dmp_ad']", "div[class^='ad_']", "div[id^='floor-ad_']", ".adsbygoogle", "#recommendAdBox", "#asideNewNps", ".box-shadow", ".toolbar-advert" ];
     class Alert {
         static open(titls, content, area = [ "400px", "300px" ], shade = 0, offset = "lb", maxmin = !0) {
             return layer.open({
