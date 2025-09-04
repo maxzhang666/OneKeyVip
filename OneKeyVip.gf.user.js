@@ -119,6 +119,8 @@
 // @require       https://lib.baomitu.com/viewerjs/1.11.3/viewer.min.js
 // @require       https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/react/18.2.0/umd/react.production.min.js
 // @require       https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/react-dom/18.2.0/umd/react-dom.production.min.js
+// @require       https://cdn.wandhi.com/package/react/18.2.0/umd/react.production.min.js
+// @require       https://cdn.wandhi.com/package/react-dom/18.2.0/umd/react-dom.production.min.js
 // @require       https://registry.npmmirror.com/@douyinfe/semi-ui/2.51.0/files/dist/umd/semi-ui.min.js
 // @grant         GM_setClipboard
 // @grant         unsafeWindow
@@ -1347,9 +1349,6 @@
         title: "\u76d8\u53e4",
         url: "https://www.pangujiexi.com/jiexi/?url="
     }, {
-        title: "BL",
-        url: "https://vip.bljiex.com/?v="
-    }, {
         title: "play",
         url: "https://www.playm3u8.cn/jiexi.php?url="
     }, {
@@ -1364,9 +1363,6 @@
     }, {
         title: "\u867e\u7c731",
         url: "https://jx.xmflv.com/?url="
-    }, {
-        title: "\u867e\u7c732",
-        url: "https://jx.xmflv.cc/?url="
     }, {
         title: "m1907",
         url: "https://im1907.top/?jx="
@@ -1400,9 +1396,6 @@
     }, {
         title: "UTR\u89e3\u6790",
         url: "https://jx.nnsvip.cn/?url="
-    }, {
-        title: "\u4e03\u54e5\u89e3\u6790",
-        url: "https://jx.nnxv.cn/tv.php?url="
     } ];
     class MovieService extends PluginBase {
         constructor() {

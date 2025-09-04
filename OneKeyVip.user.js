@@ -3,7 +3,7 @@
 // @namespace     https://www.wandhi.com/
 // @description   🔥功能介绍🔥：🎉 1、一站式音乐搜索解决方案；🎉 2、bilibili视频封面获取；🎉 3、bilibili视频下载(已支持分P下载)；🎉 4、夸克网盘直链批量获取；🎉 5、商品历史价格展示(一次性告别虚假降价)；🎉 6、优惠券查询；🎉 7、CSDN页面、剪切板清理；🎉 8、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 9、YouTube视频下载🎉 10、中间页自动跳转；🎉 11、搜索引擎快速跳转
 // @license       MIT
-// @version       4.9.54
+// @version       4.9.55
 // @author        MaxZhang
 // @include       *://item.taobao.com/*
 // @include       *://s.taobao.com/search*
@@ -133,6 +133,8 @@
 // @require       https://lib.baomitu.com/viewerjs/1.11.3/viewer.min.js
 // @require       https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/react/18.2.0/umd/react.production.min.js
 // @require       https://lf26-cdn-tos.bytecdntp.com/cdn/expire-1-M/react-dom/18.2.0/umd/react-dom.production.min.js
+// @require       https://cdn.wandhi.com/package/react/18.2.0/umd/react.production.min.js
+// @require       https://cdn.wandhi.com/package/react-dom/18.2.0/umd/react-dom.production.min.js
 // @require       https://registry.npmmirror.com/@douyinfe/semi-ui/2.51.0/files/dist/umd/semi-ui.min.js
 // @grant         GM_setClipboard
 // @grant         unsafeWindow
@@ -3635,9 +3637,6 @@
         title: "\u76d8\u53e4",
         url: "https://www.pangujiexi.com/jiexi/?url="
     }, {
-        title: "BL",
-        url: "https://vip.bljiex.com/?v="
-    }, {
         title: "play",
         url: "https://www.playm3u8.cn/jiexi.php?url="
     }, {
@@ -3652,9 +3651,6 @@
     }, {
         title: "\u867e\u7c731",
         url: "https://jx.xmflv.com/?url="
-    }, {
-        title: "\u867e\u7c732",
-        url: "https://jx.xmflv.cc/?url="
     }, {
         title: "m1907",
         url: "https://im1907.top/?jx="
@@ -3688,9 +3684,6 @@
     }, {
         title: "UTR\u89e3\u6790",
         url: "https://jx.nnsvip.cn/?url="
-    }, {
-        title: "\u4e03\u54e5\u89e3\u6790",
-        url: "https://jx.nnxv.cn/tv.php?url="
     } ], MovieService = function(_super) {
         function MovieService() {
             var _this = _super.call(this) || this;
