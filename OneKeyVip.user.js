@@ -3679,9 +3679,6 @@
     }, {
         title: "789\u89e3\u6790",
         url: "https://jiexi.789jiexi.com/?url="
-    }, {
-        title: "UTR\u89e3\u6790",
-        url: "https://jx.nnsvip.cn/?url="
     } ], MovieService = function(_super) {
         function MovieService() {
             var _this = _super.call(this) || this;

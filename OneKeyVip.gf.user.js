@@ -1391,9 +1391,6 @@
     }, {
         title: "789\u89e3\u6790",
         url: "https://jiexi.789jiexi.com/?url="
-    }, {
-        title: "UTR\u89e3\u6790",
-        url: "https://jx.nnsvip.cn/?url="
     } ];
     class MovieService extends PluginBase {
         constructor() {
