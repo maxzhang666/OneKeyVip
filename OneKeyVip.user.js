@@ -3,7 +3,7 @@
 // @namespace     https://www.wandhi.com/
 // @description   🔥功能介绍🔥：🎉 1、一站式音乐搜索解决方案；🎉 2、bilibili视频封面获取；🎉 3、bilibili视频下载(已支持分P下载)；🎉 4、夸克网盘直链批量获取；🎉 5、商品历史价格展示(一次性告别虚假降价)；🎉 6、优惠券查询；🎉 7、CSDN页面、剪切板清理；🎉 8、页面自动展开(更多网站匹配中,欢迎提交想要支持的网站) 🎉 9、YouTube视频下载🎉 10、中间页自动跳转；🎉 11、搜索引擎快速跳转
 // @license       MIT
-// @version       4.9.55
+// @version       4.9.56
 // @author        MaxZhang
 // @include       *://item.taobao.com/*
 // @include       *://s.taobao.com/search*
@@ -115,6 +115,7 @@
 // @match         *://*.kdocs.cn/office/link*
 // @match         *://ispacesoft.com/*.html
 // @match         *://tv.wandhi.com/go.html*
+// @match         *://tv.wandhi.com/tv/tv.html*
 // @match         *://tv.wandhi.com/check.html
 // @match         *://*.xiaohongshu.com/explore*
 // @match         *://www.yuque.com/r/goto*
@@ -1035,10 +1036,10 @@
         SiteEnum.BD_DETAIL_NEW = "BD_DETAIL_NEW", SiteEnum.BD_DETAIL_Share = "BD_DETAIL_Share", 
         SiteEnum.Gwd = "Gwd", SiteEnum.Xxqg = "Xxqg", SiteEnum.Juhaowan = "Juhaowan", SiteEnum.MhXin = "MhXin", 
         SiteEnum.V2EX = "V2EX", SiteEnum.Github = "Github", SiteEnum.NodeSeek = "NodeSeek", 
-        SiteEnum.HiTv = "HiTv", SiteEnum.HiTvCheck = "HiTvCheck", SiteEnum.Xhs = "Xhs", 
-        SiteEnum.KingSoftDoc = "KingSoftDoc", SiteEnum.BingCn = "BingCn", SiteEnum.Bing = "Bing", 
-        SiteEnum.SiChuang = "SiChuang", SiteEnum.Uisdc = "Uisdc", SiteEnum.YuQue = "YuQue", 
-        SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", SiteEnum.WenJuanXing = "WenJuanXing", 
+        SiteEnum.HiTv = "HiTv", SiteEnum.HiTvM3u8 = "HiTvM3u8", SiteEnum.HiTvCheck = "HiTvCheck", 
+        SiteEnum.Xhs = "Xhs", SiteEnum.KingSoftDoc = "KingSoftDoc", SiteEnum.BingCn = "BingCn", 
+        SiteEnum.Bing = "Bing", SiteEnum.SiChuang = "SiChuang", SiteEnum.Uisdc = "Uisdc", 
+        SiteEnum.YuQue = "YuQue", SiteEnum.KDocs = "KDocs", SiteEnum.CTO51 = "CTO51", SiteEnum.WenJuanXing = "WenJuanXing", 
         SiteEnum.InfoQ = "InfoQ", SiteEnum.WeChatWork = "WeChatWork", SiteEnum.KuaKeShare = "KuaKeShare", 
         SiteEnum.GitCode = "GitCode", SiteEnum.DouYin = "DouYin";
     }(SiteEnum || (SiteEnum = {})), UpdateService = function(_super) {
@@ -3595,7 +3596,7 @@
                     }));
                 }));
             })).catch((function(e) {
-                Logger.error(e), sAlert.error("\u5565\u4e5f\u6ca1\u67e5\u7740,\u518d\u8bd5\u4e00\u4e0b\u6216\u8005\u5e26\u7740\u89c6\u9891\u5730\u5740\u7ed9\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\u5427~(\u6216\u8005\u767b\u9646B\u7ad9\u8d26\u53f7\u540e\u518d\u8bd5\u4e00\u4e0b)"), 
+                Logger.error(e), sAlert.error("\u5565\u4e5f\u6ca1\u67e5\u7740,\u518d\u8bd5\u4e00\u4e0b\u6216\u8005\u5e26\u7740\u89c6\u9891\u5730\u5740\u7ed9\u4f5c\u8005\u62a5\u544a\u4e00\u4e0b\u5427~(\u6216\u8005\u4f7f\u7528\u201c\u811a\u672c\u732b\u201d\u811a\u672c\u7ba1\u7406\u5668\uff0c\u7136\u540e\u767b\u9646B\u7ad9\u8d26\u53f7\u540e\u518d\u8bd5\u4e00\u4e0b)"), 
                 Loading.hide();
             }));
         }, BiliImgService.getVideoInfo = function(aid) {
@@ -3679,10 +3680,19 @@
     }, {
         title: "789\u89e3\u6790",
         url: "https://jiexi.789jiexi.com/?url="
+    }, {
+        title: "HLS",
+        url: "https://jx.hls.one/?url="
+    }, {
+        title: "XM",
+        url: "https://jx.xmflv.cc/?url="
+    }, {
+        title: "MAC",
+        url: "https://free.maccms.xyz/?url="
     } ], MovieService = function(_super) {
         function MovieService() {
             var _this = _super.call(this) || this;
-            return _this.rules = new Map([ [ SiteEnum.YouKu, /youku\.com/i ], [ SiteEnum.IQiYi, /iqiyi|iq\.com/i ], [ SiteEnum.LeShi, /\.le\.com/i ], [ SiteEnum.Tencent_V, /v\.qq/i ], [ SiteEnum.TuDou, /tudou\.com/i ], [ SiteEnum.MangGuo, /mgtv\.com/i ], [ SiteEnum.SoHu, /sohu\.com/i ], [ SiteEnum.Acfun, /acfun\.com/i ], [ SiteEnum.BiliBili, /bilibili\.com/i ], [ SiteEnum.M1905, /1905\.com/i ], [ SiteEnum.PPTV, /pptv\.com/i ], [ SiteEnum.YinYueTai, /yinyuetai\.com/ ], [ SiteEnum.HiTv, /tv\.wandhi\.com\/go\.html/i ], [ SiteEnum.HiTvCheck, /tv\.wandhi\.com\/check\.html/i ] ]), 
+            return _this.rules = new Map([ [ SiteEnum.YouKu, /youku\.com/i ], [ SiteEnum.IQiYi, /iqiyi|iq\.com/i ], [ SiteEnum.LeShi, /\.le\.com/i ], [ SiteEnum.Tencent_V, /v\.qq/i ], [ SiteEnum.TuDou, /tudou\.com/i ], [ SiteEnum.MangGuo, /mgtv\.com/i ], [ SiteEnum.SoHu, /sohu\.com/i ], [ SiteEnum.Acfun, /acfun\.com/i ], [ SiteEnum.BiliBili, /bilibili\.com/i ], [ SiteEnum.M1905, /1905\.com/i ], [ SiteEnum.PPTV, /pptv\.com/i ], [ SiteEnum.YinYueTai, /yinyuetai\.com/ ], [ SiteEnum.HiTv, /tv\.wandhi\.com\/go\.html/i ], [ SiteEnum.HiTvCheck, /tv\.wandhi\.com\/check\.html/i ], [ SiteEnum.HiTvM3u8, /tv\.wandhi\.com\/tv\/tv\.html/i ] ]), 
             _this.jkPre = "\u81ea\u5b9a\u4e49\u63a5\u53e3\uff1a", _this.menu = new Common.Menu, 
             _this._unique = !1, _this._appName = "MovieService", _this;
         }
@@ -3692,11 +3702,15 @@
             switch (this.site) {
               case SiteEnum.HiTv:
                 Logger.debug("HiTv\u89e3\u6790\u9875\u9762\uff0c\u52a0\u8f7d\u81ea\u5b9a\u4e49\u63a5\u53e3"), 
-                this.cusInterFace(), this.lastPlay();
+                $("#jk").html(this.cusInterface()), this.lastPlay();
                 break;
 
               case SiteEnum.HiTvCheck:
                 this.jkCheck();
+                break;
+
+              case SiteEnum.HiTvM3u8:
+                Logger.debug("HiTvM3u8\u6ce8\u5165\u63a5\u53e3"), this.InjectionUrl();
                 break;
 
               default:
@@ -3713,7 +3727,7 @@
                     show: "\u7edd\u4e16<br>\u597d\u5238",
                     type: "tb"
                 }, {
-                    title: "\u4eac\u4e1c\u597d\u5238",
+                    title: "\u65e7\u7248\u89e3\u6790",
                     show: "\u4eac\u4e1c<br>\u597d\u5238",
                     type: "jd"
                 } ], this._onClick), this.autoHide();
@@ -3744,14 +3758,21 @@
                     }
                 }));
             };
-        }, MovieService.prototype.cusInterFace = function() {
+        }, MovieService.prototype.InjectionUrl = function() {
+            this.cusInterface(), unsafeWindow.window.registerParseList && unsafeWindow.window.registerParseList(jks.map((function(e) {
+                return {
+                    name: e.title,
+                    url: e.url
+                };
+            })));
+        }, MovieService.prototype.cusInterface = function() {
             var _this = this, urls = Config.get(ConfigEnum.Jiexi_Cus_Interface), h = "";
-            urls && (h = $("#jk").html(), urls.split("\n").forEach((function(e) {
+            return urls && (h = $("#jk").html(), urls.split("\n").forEach((function(e) {
                 var datas = e.split("||");
                 "https:" == unsafeWindow.location.protocol ? h += '<option value="' + datas[0].replace("http:", "https:") + '" selected="">' + _this.jkPre + datas[1] + "</option>" : h += '<option value="' + datas[0] + '" selected="">' + _this.jkPre + datas[1] + "</option>";
             }))), jks.forEach((function(e) {
                 h += '<option value="' + e.url + '" selected="">' + e.title + "</option>";
-            })), Logger.debug(h), $("#jk").html(h), Logger.debug(urls);
+            })), h;
         }, MovieService.prototype.lastPlay = function() {
             var last, _this = this;
             $("#bf").on("click", (function() {
@@ -3761,14 +3782,15 @@
             unsafeWindow.dihejk && $("#url").val() && unsafeWindow.dihejk();
         }, MovieService.prototype._onClick = function() {
             $("body").on("click", "[data-cat=process]", (function() {
-                var _a, _b, _c, url, baseUrl = "http://tv.wandhi.com/go.html?url=";
+                var _a, _b, _c, url, baseUrl = "http://tv.wandhi.com/tv/tv.html?url=";
                 /v\.youku\.com\/video/i.test(unsafeWindow.location.href) && (null === (_c = null === (_b = null === (_a = unsafeWindow.__INITIAL_DATA__) || void 0 === _a ? void 0 : _a.pageMap) || void 0 === _b ? void 0 : _b.extra) || void 0 === _c ? void 0 : _c.videoId) && (url = unsafeWindow.__INITIAL_DATA__.pageMap.extra.videoId) ? Core.open("" + baseUrl + encodeURIComponent("https://v.youku.com/v_show/id_" + url + ".html")) : Core.open(baseUrl + encodeURIComponent(window.location.href));
             })), $("body").on("click", "[data-cat=search]", (function() {
                 Menu$2.close();
             })), $("body").on("click", "[data-cat=tb]", (function() {
                 Core.open("http://shop.huizhek.com");
             })), $("body").on("click", "[data-cat=jd]", (function() {
-                Core.open("http://shop.huizhek.com");
+                var _a, _b, _c, url, baseUrl = "http://tv.wandhi.com/go.html?url=";
+                /v\.youku\.com\/video/i.test(unsafeWindow.location.href) && (null === (_c = null === (_b = null === (_a = unsafeWindow.__INITIAL_DATA__) || void 0 === _a ? void 0 : _a.pageMap) || void 0 === _b ? void 0 : _b.extra) || void 0 === _c ? void 0 : _c.videoId) && (url = unsafeWindow.__INITIAL_DATA__.pageMap.extra.videoId) ? Core.open("" + baseUrl + encodeURIComponent("https://v.youku.com/v_show/id_" + url + ".html")) : Core.open(baseUrl + encodeURIComponent(window.location.href));
             }));
         }, MovieService.prototype.autoHide = function() {
             Logger.info("\u81ea\u52a8\u9690\u85cf"), this.site == SiteEnum.BiliBili && Core.background((function() {
